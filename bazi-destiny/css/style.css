@@ -1326,3 +1326,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   .compat-dp-pillars { grid-template-columns: 1fr; }
   .compat-pillars-row { grid-template-columns: 1fr; }
 }
+
+/* Payment Modal — Enhanced */
+.modal-icon { font-size: 48px; text-align: center; margin-bottom: 12px; }
+.modal-features { margin: 16px 0 20px; }
+.modal-feature-item { font-size: 14px; color: #c0b0a0; padding: 6px 0; border-bottom: 1px solid rgba(212,168,67,0.1); }
+.modal-feature-item:last-child { border-bottom: none; }
+.modal-email-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.modal-email-input { flex: 1; padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(212,168,67,0.3); border-radius: 8px; color: #e8d5c0; font-size: 14px; outline: none; }
+.modal-email-input:focus { border-color: #d4a843; }
+.modal-email-input::placeholder { color: #6a5a4a; }

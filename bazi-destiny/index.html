@@ -5,6 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BaZi Destiny — Chinese Astrology for the West</title>
   <meta name="description" content="Discover your destiny through the ancient wisdom of BaZi (Four Pillars) and Feng Shui. English-language Chinese astrology readings tailored for the modern seeker.">
+  <meta name="keywords" content="BaZi, Chinese astrology, Four Pillars of Destiny, Feng Shui, Chinese horoscope, bazi reading, fortune telling, destiny, Chinese zodiac">
+  <meta name="author" content="BaZi Destiny">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="BaZi Destiny — Chinese Astrology for the West">
+  <meta property="og:description" content="Unlock your destiny with ancient Chinese BaZi astrology, translated into beautiful English readings.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bazidestiny.com">
+  <meta property="og:image" content="assets/og-image.png">
+  <meta property="og:site_name" content="BaZi Destiny">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BaZi Destiny — Chinese Astrology for the West">
+  <meta name="twitter:description" content="Discover your destiny through ancient Chinese BaZi astrology.">
+  <meta name="twitter:image" content="assets/og-image.png">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☯</text></svg>">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://bazidestiny.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
@@ -822,12 +846,12 @@
         <p>Ancient Chinese wisdom for the modern world.</p>
       </div>
       <div class="footer-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Contact</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-service.html">Terms of Service</a>
+        <a href="mailto:contact@bazidestiny.com">Contact</a>
       </div>
       <div class="footer-copy">
-        © 2025 BaZi Destiny. All rights reserved.
+        © 2026 BaZi Destiny. All rights reserved.
       </div>
     </div>
   </footer>
@@ -836,13 +860,37 @@
   <div class="modal-overlay" id="paymentModal" style="display:none;">
     <div class="modal-card">
       <button class="modal-close" onclick="closePaymentModal()">×</button>
+      <div class="modal-icon">🔮</div>
       <div class="modal-title" id="modalTitle">Unlock Destiny Master</div>
       <p class="modal-desc" id="modalDesc">Get the complete BaZi reading with Career, Wealth, Relationships, Health analysis, and personalized Feng Shui guidance.</p>
-      <div class="modal-price" id="modalPrice">$9.90</div>
-      <div class="modal-note">💳 Payment coming soon — Stripe integration in development</div>
-      <button class="btn-primary btn-full" onclick="closePaymentModal()">Got it!</button>
+      <div class="modal-price" id="modalPrice">$9.90 / month</div>
+      <div class="modal-features">
+        <div class="modal-feature-item">✓ Full 12-section BaZi reading</div>
+        <div class="modal-feature-item">✓ Personalized Feng Shui analysis</div>
+        <div class="modal-feature-item">✓ Lucky numbers, colors & directions</div>
+        <div class="modal-feature-item">✓ PDF report download</div>
+      </div>
+      <div class="modal-email-row">
+        <input type="email" id="notifyEmail" placeholder="your@email.com" class="modal-email-input">
+        <button class="btn-primary" onclick="submitNotify()" style="padding: 10px 20px; font-size: 0.9rem;">Notify Me</button>
+      </div>
+      <p class="modal-note">💳 Stripe checkout — launching soon. Get notified when we go live.</p>
+      <button class="btn-ghost btn-full" onclick="closePaymentModal()">Maybe later</button>
     </div>
   </div>
+  <script>
+    function submitNotify() {
+      var email = document.getElementById('notifyEmail').value;
+      if (email && email.includes('@')) {
+        var note = document.querySelector('.modal-note');
+        note.textContent = '✅ You\'re on the list! We\'ll email you when Stripe goes live.';
+        note.style.color = '#5dba7d';
+        document.getElementById('notifyEmail').value = '';
+      } else {
+        alert('Please enter a valid email address.');
+      }
+    }
+  </script>
 
   <script src="js/bazi-engine.js"></script>
   <script src="js/readings.js"></script>
