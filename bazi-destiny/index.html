@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BaZi Destiny — Chinese Astrology for the West</title>
+  <meta name="description" content="Discover your destiny through the ancient wisdom of BaZi (Four Pillars) and Feng Shui. English-language Chinese astrology readings tailored for the modern seeker.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Ambient background -->
+  <div class="ambient-bg">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <a href="#" class="logo" onclick="showHome()">
+        <span class="logo-mark">☰</span>
+        <span class="logo-text">BaZi <em>Destiny</em></span>
+      </a>
+      <nav class="header-nav">
+        <a href="#" onclick="showHome()">Home</a>
+        <a href="#" onclick="scrollToSection('how-it-works')">How It Works</a>
+        <a href="#" onclick="scrollToSection('pricing')">Pricing</a>
+        <button class="btn-nav-cta" onclick="showCalculator()">Get Your Reading</button>
+      </nav>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#" onclick="showHome(); toggleMobileMenu()">Home</a>
+    <a href="#" onclick="scrollToSection('how-it-works'); toggleMobileMenu()">How It Works</a>
+    <a href="#" onclick="scrollToSection('pricing'); toggleMobileMenu()">Pricing</a>
+    <button class="btn-primary" onclick="showCalculator(); toggleMobileMenu()">Get Your Reading</button>
+  </div>
+
+  <!-- Main Content -->
+  <main id="appRoot">
+
+    <!-- HOME SECTION -->
+    <section class="hero-section" id="homeSection">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Ancient Chinese Wisdom · Modern English Clarity
+        </div>
+        <h1 class="hero-title">
+          Unlock Your<br>
+          <span class="title-accent">Destiny</span><br>
+          Through the Stars
+        </h1>
+        <p class="hero-subtitle">
+          BaZi Destiny translates the ancient art of Chinese astrology — the Four Pillars of Destiny and classical Feng Shui — into beautiful, precise English readings for the modern world.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary btn-large" onclick="showCalculator()">
+            <span>Discover Your Destiny</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <button class="btn-ghost btn-large" onclick="scrollToSection('how-it-works')">
+            How It Works
+          </button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <strong>4 Pillars</strong>
+            <span>Year · Month · Day · Hour</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <strong>5 Elements</strong>
+            <span>Wood · Fire · Earth · Metal · Water</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <strong>3 Feng Shui</strong>
+            <span>Ba Gua · Five Elements · Placement</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="bazi-symbol-ring">
+          <div class="symbol-ring-inner">
+            <div class="pillar-card pillar-y">
+              <span class="pillar-label">年</span>
+              <span class="pillar-stem" id="demoStem1">甲</span>
+              <span class="pillar-branch" id="demoBranch1">子</span>
+              <span class="pillar-elem" id="demoElem1">木</span>
+            </div>
+            <div class="pillar-card pillar-m">
+              <span class="pillar-label">月</span>
+              <span class="pillar-stem" id="demoStem2">乙</span>
+              <span class="pillar-branch" id="demoBranch2">丑</span>
+              <span class="pillar-elem" id="demoElem2">木</span>
+            </div>
+            <div class="pillar-card pillar-d">
+              <span class="pillar-label">日</span>
+              <span class="pillar-stem" id="demoStem3">丙</span>
+              <span class="pillar-branch" id="demoBranch3">寅</span>
+              <span class="pillar-elem" id="demoElem3">火</span>
+            </div>
+            <div class="pillar-card pillar-h">
+              <span class="pillar-label">时</span>
+              <span class="pillar-stem" id="demoStem4">丁</span>
+              <span class="pillar-branch" id="demoBranch4">卯</span>
+              <span class="pillar-elem" id="demoElem4">火</span>
+            </div>
+          </div>
+          <div class="bagua-overlay">
+            <svg viewBox="0 0 200 200" class="bagua-svg">
+              <circle cx="100" cy="100" r="95" fill="none" stroke="rgba(212,165,116,0.15)" stroke-width="1"/>
+              <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(212,165,116,0.1)" stroke-width="1"/>
+              <text x="100" y="20" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.3)" font-size="12">☰ Heaven</text>
+              <text x="100" y="195" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.3)" font-size="12">☷ Earth</text>
+              <text x="10" y="105" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.3)" font-size="12">☴ Wind</text>
+              <text x="190" y="105" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.3)" font-size="12">☶ Mountain</text>
+              <text x="30" y="40" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.2)" font-size="11">☱ Lake</text>
+              <text x="170" y="40" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.2)" font-size="11">☵ Water</text>
+              <text x="30" y="170" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.2)" font-size="11">☲ Fire</text>
+              <text x="170" y="170" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.2)" font-size="11">☳ Thunder</text>
+              <circle cx="100" cy="100" r="8" fill="rgba(212,165,116,0.6)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works-section" id="how-it-works">
+      <div class="section-inner">
+        <div class="section-label">The Process</div>
+        <h2 class="section-title">Ancient Science, Modern Clarity</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">01</div>
+            <div class="step-icon">📋</div>
+            <h3>Enter Your Details</h3>
+            <p>Provide your birth date, time, and location. Your personal BaZi chart — the Four Pillars of Destiny — is calculated using ancient Chinese calendrical astronomy.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">02</div>
+            <div class="step-icon">⚖️</div>
+            <h3>Your Five Elements</h3>
+            <p>Your birth chart reveals your elemental composition — Wood, Fire, Earth, Metal, or Water. Each element shapes your personality, strengths, and life path in unique ways.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">03</div>
+            <div class="step-icon">🔮</div>
+            <h3>Deep Reading</h3>
+            <p>Receive a comprehensive English-language reading covering Career, Wealth, Relationships, and Health — interpreted through the lens of Feng Shui principles.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">04</div>
+            <div class="step-icon">🏠</div>
+            <h3>Feng Shui Guidance</h3>
+            <p>Get personalized Feng Shui recommendations — auspicious directions, lucky colors, ideal living spaces — tailored to harmonize your environment with your BaZi energy.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ELEMENTS SHOWCASE -->
+    <section class="elements-section">
+      <div class="section-inner">
+        <div class="section-label">The Five Elements</div>
+        <h2 class="section-title">Your Element Shapes Your World</h2>
+        <div class="elements-showcase">
+          <div class="element-item element-wood">
+            <div class="element-symbol">🌳</div>
+            <div class="element-chinese">木</div>
+            <h3>Wood</h3>
+            <p>Growth, creativity, flexibility. Your vision takes root and flourishes.</p>
+            <div class="element-colors">
+              <span style="background:#4CAF50"></span>
+              <span style="background:#8BC34A"></span>
+              <span style="background:#AED581"></span>
+            </div>
+          </div>
+          <div class="element-item element-fire">
+            <div class="element-symbol">🔥</div>
+            <div class="element-chinese">火</div>
+            <h3>Fire</h3>
+            <p>Passion, energy, transformation. Your spark lights up every room.</p>
+            <div class="element-colors">
+              <span style="background:#F44336"></span>
+              <span style="background:#FF5722"></span>
+              <span style="background:#FF9800"></span>
+            </div>
+          </div>
+          <div class="element-item element-earth">
+            <div class="element-symbol">⛰️</div>
+            <div class="element-chinese">土</div>
+            <h3>Earth</h3>
+            <p>Stability, nourishment, grounding. The foundation everything rests upon.</p>
+            <div class="element-colors">
+              <span style="background:#8D6E63"></span>
+              <span style="background:#A1887F"></span>
+              <span style="background:#D7CCC8"></span>
+            </div>
+          </div>
+          <div class="element-item element-metal">
+            <div class="element-symbol">⚪</div>
+            <div class="element-chinese">金</div>
+            <h3>Metal</h3>
+            <p>Strength, precision, clarity. You cut through to what matters most.</p>
+            <div class="element-colors">
+              <span style="background:#9E9E9E"></span>
+              <span style="background:#BDBDBD"></span>
+              <span style="background:#E0E0E0"></span>
+            </div>
+          </div>
+          <div class="element-item element-water">
+            <div class="element-symbol">🌊</div>
+            <div class="element-chinese">水</div>
+            <h3>Water</h3>
+            <p>Wisdom, flow, adaptability. You navigate life's currents with grace.</p>
+            <div class="element-colors">
+              <span style="background:#2196F3"></span>
+              <span style="background:#03A9F4"></span>
+              <span style="background:#80DEEA"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials-section">
+      <div class="section-inner">
+        <div class="section-label">What People Say</div>
+        <h2 class="section-title">Wisdom That Resonates</h2>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p>"I've studied Western astrology for 15 years. BaZi Destiny gave me a completely new dimension of understanding myself. The English translations are beautifully written and deeply insightful."</p>
+            <div class="testimonial-author">
+              <strong>Sarah M.</strong>
+              <span>London, UK</span>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p>"The Feng Shui recommendations completely changed how I arranged my apartment. I placed my desk in my auspicious direction and my productivity improved dramatically within a week."</p>
+            <div class="testimonial-author">
+              <strong>Marcus T.</strong>
+              <span>New York, USA</span>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p>"As a Westerner, I was skeptical. But the depth of the reading was astonishing — it described my relationship patterns with accuracy that no Western astrology chart has ever matched."</p>
+            <div class="testimonial-author">
+              <strong>Elena K.</strong>
+              <span>Berlin, Germany</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing-section" id="pricing">
+      <div class="section-inner">
+        <div class="section-label">Simple Pricing</div>
+        <h2 class="section-title">Your Journey Starts Here</h2>
+        <div class="pricing-grid">
+          <div class="pricing-card pricing-free">
+            <div class="pricing-header">
+              <h3>Explorer's Reading</h3>
+              <div class="pricing-price">Free</div>
+              <p>A taste of your BaZi destiny — perfect for the curious soul.</p>
+            </div>
+            <ul class="pricing-features">
+              <li class="included">✓ Your Four Pillars chart</li>
+              <li class="included">✓ Five Elements overview</li>
+              <li class="included">✓ Basic personality traits</li>
+              <li class="included">✓ Lucky directions (basic)</li>
+              <li class="excluded">✗ Career & Wealth deep dive</li>
+              <li class="excluded">✗ Relationship compatibility</li>
+              <li class="excluded">✗ Health insights</li>
+              <li class="excluded">✗ Feng Shui full report</li>
+              <li class="excluded">✗ PDF download</li>
+            </ul>
+            <button class="btn-outline btn-full" onclick="showCalculator()">Get Free Reading</button>
+          </div>
+          <div class="pricing-card pricing-pro">
+            <div class="pricing-badge">Most Popular</div>
+            <div class="pricing-header">
+              <h3>Destiny Master</h3>
+              <div class="pricing-price">$9.90<span>/one-time</span></div>
+              <p>Complete BaZi analysis with Feng Shui guidance for life mastery.</p>
+            </div>
+            <ul class="pricing-features">
+              <li class="included">✓ Your Four Pillars chart</li>
+              <li class="included">✓ Five Elements deep analysis</li>
+              <li class="included">✓ Career & Wealth reading</li>
+              <li class="included">✓ Relationship compatibility</li>
+              <li class="included">✓ Health insights</li>
+              <li class="included">✓ Feng Shui full report</li>
+              <li class="included">✓ Lucky colors & numbers</li>
+              <li class="included">✓ PDF download</li>
+              <li class="included">✓ Annual forecast</li>
+            </ul>
+            <button class="btn-primary btn-full" onclick="showCalculator()">Unlock Full Reading — $9.90</button>
+          </div>
+          <div class="pricing-card pricing-premium">
+            <div class="pricing-header">
+              <h3>Soul Guide</h3>
+              <div class="pricing-price">$29.90<span>/one-time</span></div>
+              <p>Expert-level reading with personalized Feng Shui placement map.</p>
+            </div>
+            <ul class="pricing-features">
+              <li class="included">✓ Everything in Destiny Master</li>
+              <li class="included">✓ 1:1 AI follow-up Q&A (5 questions)</li>
+              <li class="included">✓ 30-min Feng Shui room consultation</li>
+              <li class="included">✓ Monthly lucky horoscope (3 months)</li>
+              <li class="included">✓ Relationship compatibility report (2 people)</li>
+              <li class="included">✓ Personalized lucky objects & talismans</li>
+              <li class="included">✓ Priority support</li>
+            </ul>
+            <button class="btn-outline btn-full" onclick="showCalculator()">Go Premium — $29.90</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALCULATOR SECTION -->
+    <section class="calculator-section" id="calculator" style="display:none;">
+      <div class="section-inner">
+        <button class="back-btn" onclick="showHome()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to Home
+        </button>
+
+        <div class="section-label">Your BaZi Chart</div>
+        <h2 class="section-title">Enter Your Birth Information</h2>
+
+        <div class="calculator-form" id="calcForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Name <span class="optional">(optional)</span></label>
+              <input type="text" id="userName" placeholder="How should we address you?" maxlength="50">
+            </div>
+          </div>
+          <div class="form-row form-row-3">
+            <div class="form-group">
+              <label>Birth Date</label>
+              <input type="date" id="birthDate" required>
+            </div>
+            <div class="form-group">
+              <label>Birth Time</label>
+              <select id="birthHour" required>
+                <option value="">Select hour</option>
+                <option value="0">00:00 – 00:59 (Rat)</option>
+                <option value="1">01:00 – 02:59 (Ox)</option>
+                <option value="2">03:00 – 04:59 (Tiger)</option>
+                <option value="3">05:00 – 06:59 (Rabbit)</option>
+                <option value="4">07:00 – 08:59 (Dragon)</option>
+                <option value="5">09:00 – 10:59 (Snake)</option>
+                <option value="6">11:00 – 12:59 (Horse)</option>
+                <option value="7">13:00 – 14:59 (Goat)</option>
+                <option value="8">15:00 – 16:59 (Monkey)</option>
+                <option value="9">17:00 – 18:59 (Rooster)</option>
+                <option value="10">19:00 – 20:59 (Dog)</option>
+                <option value="11">21:00 – 22:59 (Pig)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Gender</label>
+              <select id="userGender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Birth Location <span class="optional">(optional, for Feng Shui)</span></label>
+              <input type="text" id="birthLocation" placeholder="City, Country" maxlength="100">
+            </div>
+          </div>
+          <div class="form-note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span><strong>Birth time is critical</strong> — BaZi accuracy depends heavily on the exact hour. If you're unsure, select the closest hour you know.</span>
+          </div>
+          <button class="btn-primary btn-large btn-full" onclick="calculateBaZi()">
+            <span>Analyze My Destiny</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state" id="loadingState" style="display:none;">
+          <div class="loading-spinner"></div>
+          <p>Reading your destiny...</p>
+          <div class="loading-steps">
+            <span class="loading-step active" id="ls1">Mapping Stars</span>
+            <span class="loading-step" id="ls2">Calculating Pillars</span>
+            <span class="loading-step" id="ls3">Balancing Elements</span>
+            <span class="loading-step" id="ls4">Interpreting Fate</span>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="results-section" id="resultsSection" style="display:none;">
+          <!-- Summary Card -->
+          <div class="result-summary-card">
+            <div class="summary-left">
+              <h2 id="resultGreeting">Your BaZi Destiny</h2>
+              <p id="resultSubtitle">Based on your birth information, here is your personal BaZi chart and elemental profile.</p>
+            </div>
+            <div class="summary-chart">
+              <div class="mini-pillars">
+                <div class="mini-pillar">
+                  <span class="mp-label">Year</span>
+                  <span class="mp-text" id="resYearPillar">甲子</span>
+                  <span class="mp-elem" id="resYearElem">木</span>
+                </div>
+                <div class="mini-pillar">
+                  <span class="mp-label">Month</span>
+                  <span class="mp-text" id="resMonthPillar">乙丑</span>
+                  <span class="mp-elem" id="resMonthElem">木</span>
+                </div>
+                <div class="mini-pillar">
+                  <span class="mp-label">Day</span>
+                  <span class="mp-text" id="resDayPillar">丙寅</span>
+                  <span class="mp-elem" id="resDayElem">火</span>
+                </div>
+                <div class="mini-pillar">
+                  <span class="mp-label">Hour</span>
+                  <span class="mp-text" id="resHourPillar">丁卯</span>
+                  <span class="mp-elem" id="resHourElem">火</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Element Balance Chart -->
+          <div class="result-card">
+            <h3>Your Five Elements Balance</h3>
+            <p class="result-subtitle">Each person has a unique elemental composition. Knowing your dominant elements helps you understand your strengths and find harmony.</p>
+            <div class="element-bars" id="elementBars"></div>
+            <div class="element-analysis" id="elementAnalysis"></div>
+          </div>
+
+          <!-- Personality Traits (Free) -->
+          <div class="result-card result-free" id="cardPersonality">
+            <div class="card-free-badge">Free</div>
+            <h3>Your Core Personality</h3>
+            <div class="reading-content" id="readingPersonality"></div>
+          </div>
+
+          <!-- Lucky Directions (Free) -->
+          <div class="result-card result-free" id="cardLuckyFree">
+            <div class="card-free-badge">Free</div>
+            <h3>Lucky Directions</h3>
+            <p class="result-subtitle">Face these directions during important activities for maximum positive energy flow.</p>
+            <div class="lucky-directions" id="luckyDirections"></div>
+          </div>
+
+          <!-- Paywall -->
+          <div class="paywall-card" id="paywallCard">
+            <div class="paywall-inner">
+              <div class="paywall-icon">🔮</div>
+              <h3>Unlock Your Full Destiny Reading</h3>
+              <p>You've seen the foundation. Now unlock the complete analysis — Career, Wealth, Relationships, Health, and personalized Feng Shui guidance.</p>
+              <div class="paywall-options">
+                <div class="paywall-option paywall-pro" onclick="showUpgrade('pro')">
+                  <div class="paywall-option-title">Destiny Master — $9.90</div>
+                  <div class="paywall-option-desc">Full reading + Feng Shui + PDF</div>
+                </div>
+                <div class="paywall-option paywall-premium" onclick="showUpgrade('premium')">
+                  <div class="paywall-option-title">Soul Guide — $29.90</div>
+                  <div class="paywall-option-desc">+ 5 AI questions + room consultation</div>
+                </div>
+              </div>
+              <button class="btn-ghost" onclick="showUpgrade('pro')">See what's inside →</button>
+            </div>
+          </div>
+
+          <!-- Pro Content -->
+          <div class="result-card result-pro" id="cardCareer" style="display:none;">
+            <div class="card-pro-badge">Destiny Master</div>
+            <h3>Career & Wealth</h3>
+            <div class="reading-content" id="readingCareer"></div>
+            <div class="pro-tip">
+              <strong>💡 Feng Shui for Your Career:</strong>
+              <span id="fengshuiCareer"></span>
+            </div>
+          </div>
+
+          <div class="result-card result-pro" id="cardRelationships" style="display:none;">
+            <div class="card-pro-badge">Destiny Master</div>
+            <h3>Relationships & Love</h3>
+            <div class="reading-content" id="readingRelationships"></div>
+          </div>
+
+          <div class="result-card result-pro" id="cardHealth" style="display:none;">
+            <div class="card-pro-badge">Destiny Master</div>
+            <h3>Health & Wellbeing</h3>
+            <div class="reading-content" id="readingHealth"></div>
+            <div class="pro-tip">
+              <strong>💡 Feng Shui for Your Health:</strong>
+              <span id="fengshuiHealth"></span>
+            </div>
+          </div>
+
+          <!-- Lucky Elements/Colors (Pro) -->
+          <div class="result-card result-pro" id="cardLuckyPro" style="display:none;">
+            <div class="card-pro-badge">Destiny Master</div>
+            <h3>Lucky Elements, Colors & Numbers</h3>
+            <div class="lucky-pro-grid" id="luckyProGrid"></div>
+          </div>
+
+          <!-- Feng Shui (Pro) -->
+          <div class="result-card result-pro" id="cardFengShui" style="display:none;">
+            <div class="card-pro-badge">Destiny Master</div>
+            <h3>Your Personal Feng Shui Report</h3>
+            <div class="reading-content" id="readingFengShui"></div>
+            <div class="fshui-tips" id="fshuiTips"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-text">BaZi <em>Destiny</em></span>
+        <p>Ancient Chinese wisdom for the modern world.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-copy">
+        © 2025 BaZi Destiny. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Payment Modal -->
+  <div class="modal-overlay" id="paymentModal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closePaymentModal()">×</button>
+      <div class="modal-title" id="modalTitle">Unlock Destiny Master</div>
+      <p class="modal-desc" id="modalDesc">Get the complete BaZi reading with Career, Wealth, Relationships, Health analysis, and personalized Feng Shui guidance.</p>
+      <div class="modal-price" id="modalPrice">$9.90</div>
+      <div class="modal-note">💳 Payment coming soon — Stripe integration in development</div>
+      <button class="btn-primary btn-full" onclick="closePaymentModal()">Got it!</button>
+    </div>
+  </div>
+
+  <script src="js/bazi-engine.js"></script>
+  <script src="js/readings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
