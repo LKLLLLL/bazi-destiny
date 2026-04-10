@@ -1097,11 +1097,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .compat-section {
   min-height: 100vh;
   padding: 120px 24px 80px;
-  display: none;
-}
-.compat-section.is-visible {
   display: flex;
-}
   justify-content: center;
 }
 .compat-inner {
