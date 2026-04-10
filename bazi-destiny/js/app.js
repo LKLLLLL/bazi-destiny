@@ -182,6 +182,15 @@
     // Pro content (hidden until paid)
     renderProContent(data);
 
+    // New visualizations
+    if (typeof Viz !== 'undefined') {
+      Viz.renderFiveElementsWheel('fiveElementsWheel', data.elements);
+      Viz.renderCompass('fengShuiCompass', data.directions, data.pillars.day.element);
+      Viz.renderPillarStrength('pillarStrength', data.pillars);
+      Viz.initShareAndPDF();
+      Viz.animateResultsEntrance();
+    }
+
     // Scroll to results
     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -382,10 +391,20 @@
 
   function unlockPro() {
     isProUnlocked = true;
-    // Show pro cards
-    ['cardCareer','cardRelationships','cardHealth','cardLuckyPro','cardFengShui'].forEach(id => {
+    // Show pro cards with stagger animation
+    const proIds = ['cardCareer','cardRelationships','cardHealth','cardLuckyPro','cardFengShui'];
+    proIds.forEach((id, i) => {
       const el = document.getElementById(id);
-      if (el) el.style.display = '';
+      if (el) {
+        el.style.display = '';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(24px)';
+        setTimeout(() => {
+          el.style.transition = 'opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, i * 150);
+      }
     });
     // Hide paywall
     const paywall = document.getElementById('paywallCard');

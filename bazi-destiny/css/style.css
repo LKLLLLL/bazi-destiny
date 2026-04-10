@@ -804,3 +804,148 @@ section { position: relative; z-index: 1; }
   .form-row-3 { grid-template-columns: 1fr; }
   .modal-card { padding: 36px 24px; }
 }
+
+/* ============================================================
+   NEW VISUALIZATION STYLES
+   ============================================================ */
+
+/* --- Five Elements Wheel --- */
+.wheel-wrapper {
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+.elements-wheel-svg {
+  animation: wheelFadeIn 0.8s ease forwards;
+}
+@keyframes wheelFadeIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.el-wheel-legend {
+  display: flex; flex-wrap: wrap; gap: 16px 24px;
+  justify-content: center;
+  font-size: 13px; color: var(--text-secondary);
+}
+.el-legend-item {
+  display: flex; align-items: center; gap: 8px;
+}
+.el-legend-line {
+  width: 24px; height: 2px; border-radius: 2px;
+}
+.gen-line { background: rgba(212,165,116,0.5); border-top: 2px dashed rgba(212,165,116,0.5); }
+.over-line { background: rgba(232,93,74,0.3); border-top: 2px dotted rgba(232,93,74,0.3); }
+
+/* --- Compass --- */
+.compass-wrapper {
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+}
+.compass-svg {
+  animation: compassSpin 1.5s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+@keyframes compassSpin {
+  from { opacity: 0; transform: rotate(-45deg) scale(0.8); }
+  to { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+
+.compass-ring-anim {
+  animation: compassRingPulse 3s ease-in-out infinite;
+}
+@keyframes compassRingPulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.5; }
+}
+
+.compass-dir-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%;
+}
+.compass-dir-card {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 12px 8px;
+  text-align: center;
+}
+.dir-good { border-color: rgba(90,173,104,0.25); }
+.dir-bad { border-color: rgba(232,93,74,0.15); }
+.cdir-emoji { font-size: 22px; }
+.cdir-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.cdir-status { font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.05em; }
+.dir-good .cdir-status { color: #5aad68; }
+.dir-bad .cdir-status { color: #e85d4a; }
+
+/* --- Pillar Strength --- */
+.pillar-strength-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+.pillar-str-card {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 20px 12px; text-align: center;
+  transition: all var(--transition);
+}
+.pillar-str-card:hover { border-color: var(--border-bright); background: rgba(255,255,255,0.05); }
+.psc-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); margin-bottom: 10px; }
+.psc-stem { font-family: 'Noto Serif SC', serif; font-size: 36px; font-weight: 600; line-height: 1; margin-bottom: 4px; }
+.psc-branch { font-size: 16px; color: var(--text-secondary); margin-bottom: 10px; }
+.psc-branch small { display: block; font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; }
+.psc-elem-bar {
+  height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; margin-bottom: 6px;
+}
+.psc-elem-fill { height: 100%; border-radius: 2px; transition: width 1s cubic-bezier(0.4,0,0.2,1); }
+.psc-elem-name { font-size: 12px; font-weight: 600; }
+
+/* --- Visualization containers in result cards --- */
+.result-card .viz-section {
+  margin: 20px 0;
+}
+
+/* --- Result Card Entrance Animations --- */
+.card-hidden {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.card-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1),
+              transform 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* --- Share Bar --- */
+.result-share-bar {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  margin: 32px 0;
+}
+.result-share-bar button {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border-radius: 100px; font-size: 14px;
+  font-weight: 500; transition: all var(--transition);
+  cursor: pointer; border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03); color: var(--text-secondary);
+  font-family: var(--font-body);
+}
+.result-share-bar button:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-bright);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+.result-share-bar button svg { width: 16px; height: 16px; }
+
+/* --- Toast Animation --- */
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* --- New Result Layout --- */
+.result-main-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  margin-bottom: 24px;
+}
+.result-main-left { display: flex; flex-direction: column; gap: 20px; }
+.result-main-right { display: flex; flex-direction: column; gap: 20px; }
+
+@media (max-width: 768px) {
+  .compass-dir-grid { grid-template-columns: repeat(2, 1fr); }
+  .pillar-strength-grid { grid-template-columns: repeat(2, 1fr); }
+  .result-main-grid { grid-template-columns: 1fr; }
+}
