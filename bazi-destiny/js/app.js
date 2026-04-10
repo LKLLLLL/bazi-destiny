@@ -12,6 +12,7 @@
 
   let currentData = null;
   let isProUnlocked = false;
+  window.currentReading = null;
 
   // ============================================================
   // TRANSLATION MAPS — Chinese → English
@@ -52,6 +53,7 @@
     document.getElementById('pricing').style.display = '';
     document.getElementById('calculator').style.display = 'none';
     document.getElementById('resultsSection').style.display = 'none';
+    document.getElementById('compatSection').style.display = 'none';
     document.getElementById('calcForm').style.display = '';
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('userName').value = '';
@@ -181,6 +183,9 @@
     // Update summary
     const name = data.name;
     const dominantElemEn = ELEM_TO_EN[data.elements.dominant] || data.elements.dominant;
+
+    // Expose for share button
+    window.currentReading = data;
     document.getElementById('resultGreeting').textContent =
       `${name}'s BaZi Destiny`;
     document.getElementById('resultSubtitle').textContent =
@@ -535,6 +540,34 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closePaymentModal();
     });
+
+    // Share button
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', function() {
+        const elem = window.currentReading ? window.currentReading.elements.dominant : 'Balanced';
+        const name = window.currentReading ? (window.currentReading.name || 'Your') : 'My';
+        const text = `${name} BaZi Destiny Reading\n\nDominant Element: ${elem}\n\nDiscover your own at: bazidestiny.com`;
+        if (navigator.share) {
+          navigator.share({ title: 'BaZi Destiny Reading', text });
+        } else {
+          navigator.clipboard.writeText(text).then(() => {
+            shareBtn.textContent = '✓ Copied!';
+            setTimeout(() => { shareBtn.textContent = 'Share Reading'; }, 2500);
+          });
+        }
+      });
+    }
+
+    // PDF download button
+    const pdfBtn = document.getElementById('pdfBtn');
+    if (pdfBtn) {
+      pdfBtn.addEventListener('click', function() {
+        window.currentReading ? showUpgrade('pro') : null;
+        // Simple browser print as fallback
+        window.print();
+      });
+    }
   }
 
   if (document.readyState === 'loading') {
