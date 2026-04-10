@@ -340,7 +340,15 @@ ul { list-style: none; }
   display: flex; align-items: center; justify-content: center;
   pointer-events: none;
 }
-.bagua-svg { width: 100%; height: 100%; }
+.bagua-svg {
+  width: 100%; height: 100%;
+  animation: baguaSlowSpin 120s linear infinite;
+}
+@keyframes baguaSlowSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.bagua-overlay { pointer-events: none; }
 
 /* --- Sections --- */
 section { position: relative; z-index: 1; }

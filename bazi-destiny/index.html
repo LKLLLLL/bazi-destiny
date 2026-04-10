@@ -119,18 +119,70 @@
             </div>
           </div>
           <div class="bagua-overlay">
-            <svg viewBox="0 0 200 200" class="bagua-svg">
-              <circle cx="100" cy="100" r="95" fill="none" stroke="rgba(212,165,116,0.15)" stroke-width="1"/>
-              <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(212,165,116,0.1)" stroke-width="1"/>
-              <text x="100" y="20" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.3)" font-size="12">☰ Heaven</text>
-              <text x="100" y="195" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.3)" font-size="12">☷ Earth</text>
-              <text x="10" y="105" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.3)" font-size="12">☴ Wind</text>
-              <text x="190" y="105" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.3)" font-size="12">☶ Mountain</text>
-              <text x="30" y="40" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.2)" font-size="11">☱ Lake</text>
-              <text x="170" y="40" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.2)" font-size="11">☵ Water</text>
-              <text x="30" y="170" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.2)" font-size="11">☲ Fire</text>
-              <text x="170" y="170" text-anchor="middle" class="bagua-char" fill="rgba(212,165,116,0.2)" font-size="11">☳ Thunder</text>
-              <circle cx="100" cy="100" r="8" fill="rgba(212,165,116,0.6)"/>
+            <svg viewBox="0 0 200 200" class="bagua-svg" xmlns="http://www.w3.org/2000/svg">
+              <!-- Outer decorative ring -->
+              <circle cx="100" cy="100" r="97" fill="none" stroke="rgba(212,165,116,0.12)" stroke-width="1" stroke-dasharray="4 6"/>
+              <!-- Main compass ring -->
+              <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(212,165,116,0.25)" stroke-width="1.5"/>
+              <!-- Inner ring -->
+              <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(212,165,116,0.12)" stroke-width="1"/>
+              <!-- Inner dot ring -->
+              <circle cx="100" cy="100" r="48" fill="none" stroke="rgba(212,165,116,0.1)" stroke-width="1" stroke-dasharray="2 4"/>
+              <!-- Cardinal tick marks -->
+              <line x1="100" y1="10" x2="100" y2="20" stroke="rgba(212,165,116,0.5)" stroke-width="2"/>
+              <line x1="100" y1="180" x2="100" y2="190" stroke="rgba(212,165,116,0.5)" stroke-width="2"/>
+              <line x1="10" y1="100" x2="20" y2="100" stroke="rgba(212,165,116,0.5)" stroke-width="2"/>
+              <line x1="180" y1="100" x2="190" y2="100" stroke="rgba(212,165,116,0.5)" stroke-width="2"/>
+              <!-- Diagonal tick marks (smaller) -->
+              <line x1="163" y1="37" x2="156" y2="44" stroke="rgba(212,165,116,0.25)" stroke-width="1.5"/>
+              <line x1="163" y1="163" x2="156" y2="156" stroke="rgba(212,165,116,0.25)" stroke-width="1.5"/>
+              <line x1="37" y1="163" x2="44" y2="156" stroke="rgba(212,165,116,0.25)" stroke-width="1.5"/>
+              <line x1="37" y1="37" x2="44" y2="44" stroke="rgba(212,165,116,0.25)" stroke-width="1.5"/>
+
+              <!-- Ba Gua trigrams — positioned at 45° intervals from top -->
+              <!-- Position angles: South=90, Southwest=135, West=180, Northwest=225, North=270, Northeast=315, East=0, Southeast=45 -->
+              <!-- y = cy + r*sin(θ), x = cx + r*cos(θ), SVG y is down so angles are offset -->
+
+              <!-- South (N) 离 ☲ — y=10 (top in SVG) -->
+              <text x="100" y="26" text-anchor="middle" font-family="serif" font-size="14" font-weight="400" fill="rgba(212,165,116,0.55)">☲</text>
+              <text x="100" y="36" text-anchor="middle" font-family="Inter,sans-serif" font-size="6.5" letter-spacing="0.5" fill="rgba(212,165,116,0.35)">S</text>
+
+              <!-- South-West 坤 ☷ -->
+              <text x="147" y="47" text-anchor="middle" font-family="serif" font-size="14" font-weight="400" fill="rgba(212,165,116,0.55)">☷</text>
+              <text x="156" y="57" text-anchor="middle" font-family="Inter,sans-serif" font-size="6.5" letter-spacing="0.5" fill="rgba(212,165,116,0.35)">SW</text>
+
+              <!-- West 兑 ☱ -->
+              <text x="174" y="100" text-anchor="middle" font-family="serif" font-size="14" font-weight="400" fill="rgba(212,165,116,0.55)">☱</text>
+              <text x="184" y="103" text-anchor="middle" font-family="Inter,sans-serif" font-size="6.5" letter-spacing="0.5" fill="rgba(212,165,116,0.35)">W</text>
+
+              <!-- North-West 乾 ☰ -->
+              <text x="147" y="153" text-anchor="middle" font-family="serif" font-size="14" font-weight="400" fill="rgba(212,165,116,0.55)">☰</text>
+              <text x="156" y="163" text-anchor="middle" font-family="Inter,sans-serif" font-size="6.5" letter-spacing="0.5" fill="rgba(212,165,116,0.35)">NW</text>
+
+              <!-- North 坎 ☵ — y=190 (bottom in SVG) -->
+              <text x="100" y="181" text-anchor="middle" font-family="serif" font-size="14" font-weight="400" fill="rgba(212,165,116,0.55)">☵</text>
+              <text x="100" y="191" text-anchor="middle" font-family="Inter,sans-serif" font-size="6.5" letter-spacing="0.5" fill="rgba(212,165,116,0.35)">N</text>
+
+              <!-- North-East 艮 ☶ -->
+              <text x="53" y="153" text-anchor="middle" font-family="serif" font-size="14" font-weight="400" fill="rgba(212,165,116,0.55)">☶</text>
+              <text x="44" y="163" text-anchor="middle" font-family="Inter,sans-serif" font-size="6.5" letter-spacing="0.5" fill="rgba(212,165,116,0.35)">NE</text>
+
+              <!-- East 震 ☳ -->
+              <text x="26" y="100" text-anchor="middle" font-family="serif" font-size="14" font-weight="400" fill="rgba(212,165,116,0.55)">☳</text>
+              <text x="16" y="103" text-anchor="middle" font-family="Inter,sans-serif" font-size="6.5" letter-spacing="0.5" fill="rgba(212,165,116,0.35)">E</text>
+
+              <!-- South-East 巽 ☴ -->
+              <text x="53" y="47" text-anchor="middle" font-family="serif" font-size="14" font-weight="400" fill="rgba(212,165,116,0.55)">☴</text>
+              <text x="44" y="57" text-anchor="middle" font-family="Inter,sans-serif" font-size="6.5" letter-spacing="0.5" fill="rgba(212,165,116,0.35)">SE</text>
+
+              <!-- Center gold glow -->
+              <circle cx="100" cy="100" r="36" fill="rgba(212,165,116,0.04)" stroke="rgba(212,165,116,0.15)" stroke-width="1"/>
+              <!-- Center yin-yang style ring -->
+              <circle cx="100" cy="100" r="28" fill="none" stroke="rgba(212,165,116,0.2)" stroke-width="1"/>
+              <!-- Center dot with glow -->
+              <circle cx="100" cy="100" r="12" fill="rgba(212,165,116,0.12)" stroke="rgba(212,165,116,0.4)" stroke-width="1"/>
+              <circle cx="100" cy="100" r="5" fill="rgba(212,165,116,0.7)"/>
+              <circle cx="100" cy="100" r="2" fill="rgba(7,7,16,0.9)"/>
             </svg>
           </div>
         </div>
