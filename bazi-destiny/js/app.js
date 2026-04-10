@@ -48,12 +48,10 @@
   // ============================================================
 
   function showHome() {
+    hideAllSections();
     document.getElementById('homeSection').style.display = '';
     document.getElementById('how-it-works').style.display = '';
     document.getElementById('pricing').style.display = '';
-    document.getElementById('calculator').style.display = 'none';
-    document.getElementById('resultsSection').style.display = 'none';
-    document.getElementById('compatSection').style.display = 'none';
     document.getElementById('calcForm').style.display = '';
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('userName').value = '';
@@ -66,11 +64,8 @@
   }
 
   function showCalculator() {
-    document.getElementById('homeSection').style.display = 'none';
-    document.getElementById('how-it-works').style.display = 'none';
-    document.getElementById('pricing').style.display = 'none';
+    hideAllSections();
     document.getElementById('calculator').style.display = '';
-    document.getElementById('resultsSection').style.display = 'none';
     document.getElementById('calcForm').style.display = '';
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('userName').value = '';
@@ -581,6 +576,15 @@
   // ============================================================
   // LOVE COMPATIBILITY
   // ============================================================
+
+  function hideAllSections() {
+    const sections = ['homeSection','how-it-works','pricing','calculator',
+                       'resultsSection','compatSection'];
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+  }
 
   function showCompatibility() {
     hideAllSections();
