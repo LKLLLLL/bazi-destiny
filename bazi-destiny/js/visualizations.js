@@ -155,9 +155,9 @@
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    const size = 280;
+    const size = 360;
     const cx = size / 2, cy = size / 2;
-    const r1 = 130, r2 = 100, r3 = 70, r4 = 40;
+    const r1 = 167, r2 = 128, r3 = 90, r4 = 52;
     const auspicious = directions.auspicious || [];
     const inauspicious = directions.inauspicious || [];
 
@@ -222,7 +222,7 @@
     // Cardinal labels
     ['East','South','West','North'].forEach(d => {
       const angle = dirAngles[d];
-      const lp = polarToXY(cx, cy, r1 + 12, angle);
+      const lp = polarToXY(cx, cy, r1 + 16, angle);
       svg += `<text x="${lp.x.toFixed(1)}" y="${(lp.y + 4).toFixed(1)}" text-anchor="middle" fill="rgba(212,165,116,0.6)" font-size="9" font-family="var(--font-body)" letter-spacing="1">${d.toUpperCase()}</text>`;
     });
 
