@@ -64,155 +64,92 @@
   // FIVE ELEMENTS WHEEL
   // ============================================================
 
-  function renderFiveElementsWheel(containerId, elements) {
+  // ============================================================
+  // FIVE ELEMENTS PIE CHART
+  // ============================================================
+
+  function renderFiveElementsPie(containerId, elements) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    const size = 320;
+    const size = 300;
     const cx = size / 2, cy = size / 2;
-    const outerR = 145, innerR = 100;
+    const outerR = 125;
+    const innerR = 70;
     const elemOrder = ['木','火','土','金','水'];
     const elemLabels = { 木:'Wood', 火:'Fire', 土:'Earth', 金:'Metal', 水:'Water' };
-    const step = 360 / 5;
-
-    // Generators (相生): 木→火→土→金→水→木
-    const generators = [
-      { from: '木', to: '火' }, { from: '火', to: '土' },
-      { from: '土', to: '金' }, { from: '金', to: '水' }, { from: '水', to: '木' }
-    ];
-    // Overcomers (相克): 木→土, 火→金, 土→水, 金→木, 水→火
-    const overcomers = [
-      { from: '木', to: '土' }, { from: '火', to: '金' },
-      { from: '土', to: '水' }, { from: '金', to: '木' }, { from: '水', to: '火' }
-    ];
-
-    let svg = `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" class="elements-wheel-svg" style="overflow:visible">`;
-
-    // Defs
-    svg += `<defs>
-      <filter id="glow-w" x="-30%" y="-30%" width="160%" height="160%">
-        <feGaussianBlur stdDeviation="4" result="blur"/>
-        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-      <filter id="glow-strong" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="6" result="blur"/>
-        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-    </defs>`;
-
-    // Background ring
-    svg += svgEl('circle', { cx, cy, r: outerR + 10, fill: 'rgba(255,255,255,0.02)', stroke: 'rgba(212,165,116,0.06)', 'stroke-width': 1 });
-
-    // Generator arrows (相生) - dashed gold lines
-    generators.forEach(g => {
-      const fi = elemOrder.indexOf(g.from);
-      const ti = elemOrder.indexOf(g.to);
-      const fa = fi * step - 90;
-      const ta = ti * step - 90;
-      const rMid = (outerR + innerR) / 2 + 5;
-      const p1 = polarToXY(cx, cy, rMid, fa + step / 2 - 20);
-      const p2 = polarToXY(cx, cy, rMid, fa + step / 2 + 20);
-      const arc = describeArc(cx, cy, rMid, fa + step / 2 - 20, fa + step / 2 + 20);
-      svg += `<path d="${arc}" fill="none" stroke="rgba(212,165,116,0.25)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
-      // Arrow head
-      const ap = polarToXY(cx, cy, rMid, fa + step / 2 + 18);
-      svg += svgEl('polygon', { points: `${ap.x},${ap.y} ${ap.x-6},${ap.y-4} ${ap.x-6},${ap.y+4}`, fill: 'rgba(212,165,116,0.3)' });
-    });
-
-    // Overcomer arrows (相克) - dotted red lines
-    overcomers.forEach(o => {
-      const fi = elemOrder.indexOf(o.from);
-      const ti = elemOrder.indexOf(o.to);
-      const fa = fi * step - 90;
-      const ta = ti * step - 90;
-      const rOuter = outerR + 8;
-      const p1 = polarToXY(cx, cy, rOuter, fa + 5);
-      const p2 = polarToXY(cx, cy, rOuter, ta - 5);
-      svg += `<line x1="${p1.x.toFixed(1)}" y1="${p1.y.toFixed(1)}" x2="${p2.x.toFixed(1)}" y2="${p2.y.toFixed(1)}" stroke="rgba(232,93,74,0.15)" stroke-width="1" stroke-dasharray="2 4"/>`;
-    });
-
-    // Element sectors
     const counts = elements.counts;
-    const maxCount = Math.max(...Object.values(counts));
-    elemOrder.forEach((elem, i) => {
-      const angle = i * step - 90;
-      const count = counts[elem];
-      const pct = Math.round((count / maxCount) * 100);
-      const color = ELEM_COLORS[elem];
-      const isDominant = elements.dominant === elem;
-      const isDeficient = elements.deficient === elem;
+    const total = Object.values(counts).reduce((s, v) => s + v, 0) || 1;
 
-      const sa = angle - step / 2;
-      const ea = angle + step / 2;
-      const arc = describeArc(cx, cy, outerR, sa, ea);
-      const arcInner = describeArc(cx, cy, innerR, ea, sa).replace('M', 'L');
-      const close = `L ${polarToXY(cx, cy, outerR, sa).x.toFixed(2)} ${polarToXY(cx, cy, outerR, sa).y.toFixed(2)} Z`;
+    let currentAngle = -90;
+    const slices = elemOrder.map((elem) => {
+      const val = counts[elem] || 0;
+      const pct = val / total;
+      const startA = currentAngle;
+      const endA = currentAngle + pct * 360;
+      currentAngle = endA;
+      return { elem, val, pct, label: elemLabels[elem], color: ELEM_COLORS[elem], startA, endA };
+    });
 
-      // Glow for dominant
-      if (isDominant) {
-        const glowPath = `M ${polarToXY(cx, cy, innerR, sa).x.toFixed(2)} ${polarToXY(cx, cy, innerR, sa).y.toFixed(2)} ${arc} ${close}`;
-        svg += `<path d="${glowPath}" fill="${color.glow}" filter="url(#glow-strong)"/>`;
-      }
-
-      // Main sector
-      const sectorPath = `M ${polarToXY(cx, cy, innerR, sa).x.toFixed(2)} ${polarToXY(cx, cy, innerR, sa).y.toFixed(2)} ${arc} L ${polarToXY(cx, cy, innerR, ea).x.toFixed(2)} ${polarToXY(cx, cy, innerR, ea).y.toFixed(2)} Z`;
-      svg += `<path d="${sectorPath}" fill="${color.bg}" stroke="${isDominant ? color.primary : 'rgba(212,165,116,0.15)'}" stroke-width="${isDominant ? 2 : 1}"/>`;
-
-      // Radial bar for count
-      const barR = innerR - 12;
-      const barLen = 14 + (pct / 100) * (innerR - 22);
-      const p1 = polarToXY(cx, cy, barR, angle - 6);
-      const p2 = polarToXY(cx, cy, barLen, angle - 6);
-      const p3 = polarToXY(cx, cy, barLen, angle + 6);
-      const p4 = polarToXY(cx, cy, barR, angle + 6);
-      svg += `<polygon points="${p1.x.toFixed(1)},${p1.y.toFixed(1)} ${p2.x.toFixed(1)},${p2.y.toFixed(1)} ${p3.x.toFixed(1)},${p3.y.toFixed(1)} ${p4.x.toFixed(1)},${p4.y.toFixed(1)}" fill="${color.primary}" opacity="0.7"/>`;
-
-      // Label
-      const labelR = innerR - 30;
-      const lp = polarToXY(cx, cy, labelR, angle);
-      svg += `<text x="${lp.x.toFixed(1)}" y="${(lp.y + 5).toFixed(1)}" text-anchor="middle" fill="${color.label}" font-size="15" font-family="var(--font-display)" font-weight="600">${elemLabels[elem]}</text>`;
-      svg += `<text x="${lp.x.toFixed(1)}" y="${(lp.y + 20).toFixed(1)}" text-anchor="middle" fill="${color.primary}" font-size="9" fill-opacity="0.7" font-family="var(--font-body)" letter-spacing="1">${count}</text>`;
-
-      // Badge for dominant/deficient
-      if (isDominant || isDeficient) {
-        const badgeR = outerR + 18;
-        const bp = polarToXY(cx, cy, badgeR, angle);
-        const badgeColor = isDominant ? '#5aad68' : '#e85d4a';
-        const badgeText = isDominant ? '▲' : '▼';
-        svg += `<text x="${bp.x.toFixed(1)}" y="${(bp.y + 4).toFixed(1)}" text-anchor="middle" fill="${badgeColor}" font-size="10" font-weight="bold">${badgeText}</text>`;
+    let svgPaths = '';
+    slices.forEach(s => {
+      const sa = s.startA * Math.PI / 180;
+      const ea = s.endA * Math.PI / 180;
+      const isDom = elements.dominant === s.elem;
+      const isDef = elements.deficient === s.elem;
+      const opacity = isDom ? 1 : isDef ? 0.5 : 0.85;
+      const strokeC = isDom ? s.color.primary : 'rgba(212,165,116,0.2)';
+      const strokeW = isDom ? 2.5 : 1;
+      const x1 = (cx + outerR * Math.cos(sa)).toFixed(2);
+      const y1 = (cy + outerR * Math.sin(sa)).toFixed(2);
+      const x2 = (cx + outerR * Math.cos(ea)).toFixed(2);
+      const y2 = (cy + outerR * Math.sin(ea)).toFixed(2);
+      const x3 = (cx + innerR * Math.cos(ea)).toFixed(2);
+      const y3 = (cy + innerR * Math.sin(ea)).toFixed(2);
+      const x4 = (cx + innerR * Math.cos(sa)).toFixed(2);
+      const y4 = (cy + innerR * Math.sin(sa)).toFixed(2);
+      const large = s.pct > 0.5 ? 1 : 0;
+      svgPaths += `<path d="M ${x1} ${y1} A ${outerR} ${outerR} 0 ${large} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerR} ${innerR} 0 ${large} 0 ${x4} ${y4} Z" fill="${s.color.primary}" fill-opacity="${opacity}" stroke="${strokeC}" stroke-width="${strokeW}"${isDom ? ' filter="url(#pie-glow)"' : ''}/>`;
+      if (s.pct > 0.06) {
+        const midA = ((s.startA + s.endA) / 2) * Math.PI / 180;
+        const labelR = (outerR + innerR) / 2;
+        const lx = (cx + labelR * Math.cos(midA)).toFixed(1);
+        const ly = (cy + labelR * Math.sin(midA) + 4).toFixed(1);
+        svgPaths += `<text x="${lx}" y="${ly}" text-anchor="middle" fill="rgba(255,255,255,0.95)" font-size="11" font-weight="700" font-family="var(--font-body)">${Math.round(s.pct * 100)}%</text>`;
       }
     });
 
-    // Center text
-    svg += svgEl('circle', { cx, cy, r: innerR - 14, fill: 'rgba(7,7,16,0.8)', stroke: 'rgba(212,165,116,0.2)', 'stroke-width': 1 });
-    svg += `<text x="${cx}" y="${cy - 8}" text-anchor="middle" fill="var(--gold)" font-size="11" font-family="var(--font-body)" letter-spacing="1" opacity="0.8">FIVE</text>`;
-    svg += `<text x="${cx}" y="${cy + 8}" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-family="var(--font-display)" font-weight="600">ELEMENTS</text>`;
-    svg += `<text x="${cx}" y="${cy + 24}" text-anchor="middle" fill="var(--text-tertiary)" font-size="9" font-family="var(--font-body)" letter-spacing="0.5">Wood · Fire · Earth · Metal · Water</text>`;
+    svgPaths += `<circle cx="${cx}" cy="${cy}" r="${innerR - 1}" fill="rgba(7,7,16,0.9)"/>`;
+    const dom = elements.dominant;
+    const domColor = ELEM_COLORS[dom] || {};
+    svgPaths += `<text x="${cx}" y="${cy - 14}" text-anchor="middle" fill="${domColor.primary || '#d4a574'}" font-size="10" font-family="var(--font-body)" letter-spacing="1" opacity="0.9">DOMINANT</text>`;
+    svgPaths += `<text x="${cx}" y="${cy + 3}" text-anchor="middle" fill="var(--text-primary)" font-size="16" font-weight="600" font-family="var(--font-display)">${elemLabels[dom] || dom}</text>`;
+    svgPaths += `<text x="${cx}" y="${cy + 19}" text-anchor="middle" fill="var(--text-tertiary)" font-size="10" font-family="var(--font-body)">${counts[dom]} pillars</text>`;
 
-    svg += '</svg>';
+    let svg = `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" style="overflow:visible">`;
+    svg += `<defs>
+      <filter id="pie-glow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="5" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>${svgPaths}</svg>`;
 
-    // Legend
-    const dominant = elements.dominant;
-    const deficient = elements.deficient;
-    let legend = `<div class="el-wheel-legend">
-      <div class="el-legend-item el-legend-gen">
-        <span class="el-legend-line gen-line"></span>
-        <span>Generates (nurtures)</span>
-      </div>
-      <div class="el-legend-item el-legend-over">
-        <span class="el-legend-line over-line"></span>
-        <span>Controls (overcomes)</span>
-      </div>
-      <div class="el-legend-item" style="color:#5aad68">▲ Dominant: ${elemLabels[dominant] || dominant}</div>
-      <div class="el-legend-item" style="color:#e85d4a">▼ Deficient: ${elemLabels[deficient] || deficient}</div>
-    </div>`;
-
-    container.innerHTML = `<div class="wheel-wrapper">${svg}${legend}</div>`;
+    let legend = `<div class="pie-legend">`;
+    slices.forEach(s => {
+      const isDom = elements.dominant === s.elem;
+      const isDef = elements.deficient === s.elem;
+      const badge = isDom ? '▲' : isDef ? '▼' : '';
+      const badgeColor = isDom ? '#5aad68' : isDef ? '#e85d4a' : 'transparent';
+      legend += `<div class="pie-legend-item">
+        <span class="pie-legend-dot" style="background:${s.color.primary}"></span>
+        <span class="pie-legend-name">${s.label}</span>
+        <span class="pie-legend-bar"><span style="width:${Math.round(s.pct*100)}%;background:${s.color.primary}"></span></span>
+        <span class="pie-legend-val">${s.val} <span style="color:${badgeColor};font-size:10px">${badge}</span></span>
+      </div>`;
+    });
+    legend += `</div>`;
+    container.innerHTML = `<div class="pie-wrapper">${svg}${legend}</div>`;
   }
-
-  // ============================================================
-  // FENG SHUI COMPASS
-  // ============================================================
 
   function renderCompass(containerId, directions, dayElement) {
     const container = document.getElementById(containerId);
@@ -519,7 +456,7 @@
   // ============================================================
 
   const Viz = {
-    renderFiveElementsWheel,
+    renderFiveElementsPie,
     renderCompass,
     renderPillarStrength,
     initShareAndPDF,

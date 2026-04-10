@@ -219,7 +219,7 @@
 
     // New visualizations
     if (typeof Viz !== 'undefined') {
-      Viz.renderFiveElementsWheel('fiveElementsWheel', data.elements);
+      Viz.renderFiveElementsPie('fiveElementsWheel', data.elements);
       Viz.renderCompass('fengShuiCompass', data.directions, data.pillars.day.element);
       Viz.renderPillarStrength('pillarStrength', data.pillars);
       Viz.initShareAndPDF();
