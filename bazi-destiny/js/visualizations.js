@@ -7,6 +7,30 @@
   'use strict';
 
   // ============================================================
+  // TRANSLATION MAPS — Chinese → English
+  // ============================================================
+  const STEM_SHORT_EN = {
+    '甲': 'Yang Wood', '乙': 'Yin Wood',
+    '丙': 'Yang Fire', '丁': 'Yin Fire',
+    '戊': 'Yang Earth', '己': 'Yin Earth',
+    '庚': 'Yang Metal', '辛': 'Yin Metal',
+    '壬': 'Yang Water', '癸': 'Yin Water',
+  };
+  const BRANCH_TO_EN = {
+    '子':'Rat', '丑':'Ox', '寅':'Tiger', '卯':'Rabbit',
+    '辰':'Dragon', '巳':'Snake', '午':'Horse', '未':'Goat',
+    '申':'Monkey', '酉':'Rooster', '戌':'Dog', '亥':'Pig',
+  };
+  const ELEM_TO_EN = {
+    '木': 'Wood', '火': 'Fire', '土': 'Earth', '金': 'Metal', '水': 'Water',
+  };
+  const STEM_TO_EN = {
+    '甲': 'Jia', '乙': 'Yi', '丙': 'Bing', '丁': 'Ding',
+    '戊': 'Wu', '己': 'Ji', '庚': 'Geng', '辛': 'Xin',
+    '壬': 'Ren', '癸': 'Gui',
+  };
+
+  // ============================================================
   // UTILITIES
   // ============================================================
 
@@ -339,32 +363,29 @@
     if (!container) return;
 
     const pillarData = [
-      { label: 'Year',  name: 'Year',  ...pillars.year },
-      { label: 'Month', name: 'Month', ...pillars.month },
-      { label: 'Day',   name: 'Day',   ...pillars.day },
-      { label: 'Hour',  name: 'Hour',  ...pillars.hour }
+      { label: 'Year Pillar',  enStem: STEM_SHORT_EN[pillars.year.stem],   branch: pillars.year.branch,   element: pillars.year.element,   stemIdx: pillars.year.stemIdx },
+      { label: 'Month Pillar', enStem: STEM_SHORT_EN[pillars.month.stem],  branch: pillars.month.branch,  element: pillars.month.element,  stemIdx: pillars.month.stemIdx },
+      { label: 'Day Pillar',   enStem: STEM_SHORT_EN[pillars.day.stem],    branch: pillars.day.branch,    element: pillars.day.element,    stemIdx: pillars.day.stemIdx },
+      { label: 'Hour Pillar',  enStem: STEM_SHORT_EN[pillars.hour.stem],   branch: pillars.hour.branch,   element: pillars.hour.element,   stemIdx: pillars.hour.stemIdx },
     ];
 
     const elemColors = {
-      木: '#5aad68', 火: '#e85d4a', 土: '#c49a6c', 金: '#9e9e9e', 水: '#4a90c4'
-    };
-    const zodiacAnimals = {
-      子:'Rat', 丑:'Ox', 寅:'Tiger', 卯:'Rabbit', 辰:'Dragon', 巳:'Snake',
-      午:'Horse', 未:'Goat', 申:'Monkey', 酉:'Rooster', 戌:'Dog', 亥:'Pig'
+      '木': '#5aad68', '火': '#e85d4a', '土': '#c49a6c', '金': '#9e9e9e', '水': '#4a90c4'
     };
 
     let html = '<div class="pillar-strength-grid">';
     pillarData.forEach((p, i) => {
       const color = elemColors[p.element];
+      const branchEn = BRANCH_TO_EN[p.branch] || '';
       html += `
         <div class="pillar-str-card" style="animation-delay:${i * 120}ms">
-          <div class="psc-label">${p.label} · ${p.name}</div>
-          <div class="psc-stem" style="color:${color}">${p.stem}</div>
-          <div class="psc-branch">${p.branch} <small>${zodiacAnimals[p.branch] || ''}</small></div>
+          <div class="psc-label">${p.label}</div>
+          <div class="psc-stem" style="color:${color}">${p.enStem}</div>
+          <div class="psc-branch"><span class="psc-branch-en">${branchEn}</span> <small>(${p.branch})</small></div>
           <div class="psc-elem-bar">
             <div class="psc-elem-fill" style="background:${color};width:${Math.round((parseInt(p.stemIdx % 5) + 1) * 20)}%"></div>
           </div>
-          <div class="psc-elem-name" style="color:${color}">${p.element}</div>
+          <div class="psc-elem-name" style="color:${color}">${ELEM_TO_EN[p.element]}</div>
         </div>
       `;
     });
