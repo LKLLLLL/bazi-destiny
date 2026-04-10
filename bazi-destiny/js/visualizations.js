@@ -146,7 +146,7 @@
       // Label
       const labelR = innerR - 30;
       const lp = polarToXY(cx, cy, labelR, angle);
-      svg += `<text x="${lp.x.toFixed(1)}" y="${(lp.y + 5).toFixed(1)}" text-anchor="middle" fill="${color.label}" font-size="15" font-family="var(--font-display)" font-weight="600">${elem}</text>`;
+      svg += `<text x="${lp.x.toFixed(1)}" y="${(lp.y + 5).toFixed(1)}" text-anchor="middle" fill="${color.label}" font-size="15" font-family="var(--font-display)" font-weight="600">${elemLabels[elem]}</text>`;
       svg += `<text x="${lp.x.toFixed(1)}" y="${(lp.y + 20).toFixed(1)}" text-anchor="middle" fill="${color.primary}" font-size="9" fill-opacity="0.7" font-family="var(--font-body)" letter-spacing="1">${count}</text>`;
 
       // Badge for dominant/deficient
@@ -163,7 +163,7 @@
     svg += svgEl('circle', { cx, cy, r: innerR - 14, fill: 'rgba(7,7,16,0.8)', stroke: 'rgba(212,165,116,0.2)', 'stroke-width': 1 });
     svg += `<text x="${cx}" y="${cy - 8}" text-anchor="middle" fill="var(--gold)" font-size="11" font-family="var(--font-body)" letter-spacing="1" opacity="0.8">FIVE</text>`;
     svg += `<text x="${cx}" y="${cy + 8}" text-anchor="middle" fill="var(--text-primary)" font-size="13" font-family="var(--font-display)" font-weight="600">ELEMENTS</text>`;
-    svg += `<text x="${cx}" y="${cy + 24}" text-anchor="middle" fill="var(--text-tertiary)" font-size="9" font-family="var(--font-body)" letter-spacing="0.5">木火土金水</text>`;
+    svg += `<text x="${cx}" y="${cy + 24}" text-anchor="middle" fill="var(--text-tertiary)" font-size="9" font-family="var(--font-body)" letter-spacing="0.5">Wood · Fire · Earth · Metal · Water</text>`;
 
     svg += '</svg>';
 
@@ -173,14 +173,14 @@
     let legend = `<div class="el-wheel-legend">
       <div class="el-legend-item el-legend-gen">
         <span class="el-legend-line gen-line"></span>
-        <span>Generates (生)</span>
+        <span>Generates (nurtures)</span>
       </div>
       <div class="el-legend-item el-legend-over">
         <span class="el-legend-line over-line"></span>
-        <span>Controls (克)</span>
+        <span>Controls (overcomes)</span>
       </div>
-      <div class="el-legend-item" style="color:#5aad68">▲ Dominant: ${dominant}</div>
-      <div class="el-legend-item" style="color:#e85d4a">▼ Deficient: ${deficient}</div>
+      <div class="el-legend-item" style="color:#5aad68">▲ Dominant: ${elemLabels[dominant] || dominant}</div>
+      <div class="el-legend-item" style="color:#e85d4a">▼ Deficient: ${elemLabels[deficient] || deficient}</div>
     </div>`;
 
     container.innerHTML = `<div class="wheel-wrapper">${svg}${legend}</div>`;
@@ -339,10 +339,10 @@
     if (!container) return;
 
     const pillarData = [
-      { label: '年', name: 'Year', ...pillars.year },
-      { label: '月', name: 'Month', ...pillars.month },
-      { label: '日', name: 'Day', ...pillars.day },
-      { label: '时', name: 'Hour', ...pillars.hour }
+      { label: 'Year',  name: 'Year',  ...pillars.year },
+      { label: 'Month', name: 'Month', ...pillars.month },
+      { label: 'Day',   name: 'Day',   ...pillars.day },
+      { label: 'Hour',  name: 'Hour',  ...pillars.hour }
     ];
 
     const elemColors = {

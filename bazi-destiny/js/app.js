@@ -14,6 +14,35 @@
   let isProUnlocked = false;
 
   // ============================================================
+  // TRANSLATION MAPS — Chinese → English
+  // ============================================================
+  const STEM_TO_EN = {
+    '甲': 'Jia (Yang Wood)', '乙': 'Yi (Yin Wood)',
+    '丙': 'Bing (Yang Fire)', '丁': 'Ding (Yin Fire)',
+    '戊': 'Wu (Yang Earth)', '己': 'Ji (Yin Earth)',
+    '庚': 'Geng (Yang Metal)', '辛': 'Xin (Yin Metal)',
+    '壬': 'Ren (Yang Water)', '癸': 'Gui (Yin Water)',
+  };
+
+  const STEM_SHORT_EN = {
+    '甲': 'Yang Wood', '乙': 'Yin Wood',
+    '丙': 'Yang Fire', '丁': 'Yin Fire',
+    '戊': 'Yang Earth', '己': 'Yin Earth',
+    '庚': 'Yang Metal', '辛': 'Yin Metal',
+    '壬': 'Yang Water', '癸': 'Yin Water',
+  };
+
+  const BRANCH_TO_EN = {
+    '子': 'Rat', '丑': 'Ox', '寅': 'Tiger', '卯': 'Rabbit',
+    '辰': 'Dragon', '巳': 'Snake', '午': 'Horse', '未': 'Goat',
+    '申': 'Monkey', '酉': 'Rooster', '戌': 'Dog', '亥': 'Pig',
+  };
+
+  const ELEM_TO_EN = {
+    '木': 'Wood', '火': 'Fire', '土': 'Earth', '金': 'Metal', '水': 'Water',
+  };
+
+  // ============================================================
   // NAVIGATION
   // ============================================================
 
@@ -151,20 +180,26 @@
 
     // Update summary
     const name = data.name;
+    const dominantElemEn = ELEM_TO_EN[data.elements.dominant] || data.elements.dominant;
     document.getElementById('resultGreeting').textContent =
       `${name}'s BaZi Destiny`;
     document.getElementById('resultSubtitle').textContent =
-      `Your Four Pillars reveal a unique energetic profile shaped by ${data.elements.dominant} energy. Below is your free foundation reading.`;
+      `Your Four Pillars reveal a unique energetic profile shaped by ${dominantElemEn} energy. Below is your free foundation reading.`;
 
-    // Mini pillars
-    document.getElementById('resYearPillar').textContent = data.pillars.year.stem + data.pillars.year.branch;
-    document.getElementById('resYearElem').textContent = data.pillars.year.element;
-    document.getElementById('resMonthPillar').textContent = data.pillars.month.stem + data.pillars.month.branch;
-    document.getElementById('resMonthElem').textContent = data.pillars.month.element;
-    document.getElementById('resDayPillar').textContent = data.pillars.day.stem + data.pillars.day.branch;
-    document.getElementById('resDayElem').textContent = data.pillars.day.element;
-    document.getElementById('resHourPillar').textContent = data.pillars.hour.stem + data.pillars.hour.branch;
-    document.getElementById('resHourElem').textContent = data.pillars.hour.element;
+    // Mini pillars — show English stem + English branch
+    const p = data.pillars;
+    document.getElementById('resYearPillar').textContent =
+      STEM_SHORT_EN[p.year.stem] + ' · ' + BRANCH_TO_EN[p.year.branch];
+    document.getElementById('resYearElem').textContent = ELEM_TO_EN[p.year.element];
+    document.getElementById('resMonthPillar').textContent =
+      STEM_SHORT_EN[p.month.stem] + ' · ' + BRANCH_TO_EN[p.month.branch];
+    document.getElementById('resMonthElem').textContent = ELEM_TO_EN[p.month.element];
+    document.getElementById('resDayPillar').textContent =
+      STEM_SHORT_EN[p.day.stem] + ' · ' + BRANCH_TO_EN[p.day.branch];
+    document.getElementById('resDayElem').textContent = ELEM_TO_EN[p.day.element];
+    document.getElementById('resHourPillar').textContent =
+      STEM_SHORT_EN[p.hour.stem] + ' · ' + BRANCH_TO_EN[p.hour.branch];
+    document.getElementById('resHourElem').textContent = ELEM_TO_EN[p.hour.element];
 
     // Element bars
     renderElementBars(data.elements);
@@ -233,21 +268,29 @@
 
   function renderLuckyDirections(directions) {
     const container = document.getElementById('luckyDirections');
-    const directionEmojis = {
-      'East': '🌅', 'Southeast': '🌄', 'South': '☀️', 'Southwest': '🌇',
-      'West': '🌆', 'Northwest': '🌬️', 'North': '🌌', 'Northeast': '🏔️'
+
+    // Clear directional SVG icons
+    const dirIcons = {
+      'North':     '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L12 22M12 2L7 7M12 2L17 7"/><text x="12" y="8" text-anchor="middle" font-size="6" stroke="none" fill="currentColor" font-family="Inter">N</text></svg>',
+      'South':     '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22L12 2M12 22L7 17M12 22L17 17"/><text x="12" y="19" text-anchor="middle" font-size="6" stroke="none" fill="currentColor" font-family="Inter">S</text></svg>',
+      'East':      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12L22 12M22 12L17 7M22 12L17 17"/><text x="17" y="15" text-anchor="middle" font-size="6" stroke="none" fill="currentColor" font-family="Inter">E</text></svg>',
+      'West':      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12L2 12M2 12L7 7M2 12L7 17"/><text x="7" y="15" text-anchor="middle" font-size="6" stroke="none" fill="currentColor" font-family="Inter">W</text></svg>',
+      'Northeast': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20L20 4M20 4L4 4M20 4L20 10"/></svg>',
+      'Northwest': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 20L4 4M4 4L20 4M4 4L4 10"/></svg>',
+      'Southeast': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4L20 20M4 20L20 20M4 20L10 20"/></svg>',
+      'Southwest': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 4L4 20M20 4L4 4M20 4L20 10"/></svg>',
     };
 
     const auspicious = directions.auspicious.map(d => ({
       name: d,
-      icon: directionEmojis[d] || '🧭',
-      desc: d + ' is your power direction'
+      icon: dirIcons[d] || '',
+      desc: 'Your power direction — maximize energy here'
     }));
 
     const inauspicious = directions.inauspicious.map(d => ({
       name: d,
-      icon: directionEmojis[d] || '⚠️',
-      desc: 'Use with caution'
+      icon: dirIcons[d] || '',
+      desc: 'Rest & recover here — minimize effort in this direction'
     }));
 
     let html = '';
