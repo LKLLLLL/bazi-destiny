@@ -588,7 +588,9 @@
 
   function showCompatibility() {
     hideAllSections();
-    document.getElementById('compatSection').style.display = '';
+    const compat = document.getElementById('compatSection');
+    compat.style.display = 'flex';
+    document.getElementById('compatResults').style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
