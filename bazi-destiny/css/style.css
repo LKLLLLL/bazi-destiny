@@ -603,28 +603,81 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 /* --- Results --- */
 .results-section { padding-bottom: 80px; }
+/* ---- Summary Card ---- */
 .result-summary-card {
-  background: var(--bg-card); border: 1px solid rgba(212,165,116,0.2);
-  border-radius: var(--radius-xl); padding: 36px;
-  margin-bottom: 24px;
+  background: var(--bg-card);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: var(--radius-xl);
+  padding: 40px 44px;
+  margin-bottom: 28px;
   display: grid; grid-template-columns: 1fr auto;
-  gap: 32px; align-items: center;
+  gap: 48px; align-items: center;
   box-shadow: var(--shadow-gold);
+  position: relative; overflow: hidden;
+}
+.result-summary-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.6;
+}
+.summary-eyebrow {
+  font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold); font-weight: 600; margin-bottom: 10px;
 }
 .result-summary-card h2 {
   font-family: var(--font-display);
-  font-size: 30px; font-weight: 600; margin-bottom: 8px;
+  font-size: 34px; font-weight: 600; margin-bottom: 12px; line-height: 1.1;
+  color: var(--text-primary);
 }
-.result-summary-card > .summary-left > p { font-size: 15px; color: var(--text-secondary); }
-.mini-pillars { display: flex; gap: 12px; }
+.summary-accent-line {
+  width: 48px; height: 2px;
+  background: var(--gold); border-radius: 2px;
+  margin-bottom: 14px;
+}
+.summary-intro {
+  font-size: 15px; color: var(--text-secondary); line-height: 1.7;
+  margin-bottom: 20px; max-width: 440px;
+}
+.summary-element-highlight {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(212,165,116,0.08);
+  border: 1px solid rgba(212,165,116,0.25);
+  border-radius: 100px; padding: 8px 18px;
+}
+.selh-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(0.8); }
+}
+.selh-label {
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.selh-value {
+  font-size: 13px; font-weight: 700; color: var(--gold);
+  letter-spacing: 0.02em;
+}
+.summary-chart { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.summary-chart-label {
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-tertiary); font-weight: 600;
+}
+.mini-pillars { display: flex; gap: 8px; }
 .mini-pillar {
   display: flex; flex-direction: column; align-items: center;
-  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 12px 14px; min-width: 72px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(212,165,116,0.15);
+  border-radius: var(--radius-sm); padding: 10px 12px; min-width: 72px;
 }
 .mp-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 4px; }
-.mp-text { font-family: 'Noto Serif SC', serif; font-size: 20px; color: var(--gold); line-height: 1.2; }
-.mp-elem { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+.mp-text { font-family: 'Noto Serif SC', serif; font-size: 18px; color: var(--gold); line-height: 1.2; }
+.mp-elem { font-size: 10px; color: var(--text-tertiary); margin-top: 3px; }
 
 .result-card {
   background: var(--bg-card); border: 1px solid var(--border);
@@ -1020,9 +1073,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .result-main-left { display: flex; flex-direction: column; gap: 20px; }
 .result-main-right { display: flex; flex-direction: column; gap: 20px; }
-
 @media (max-width: 768px) {
   .compass-dir-grid { grid-template-columns: repeat(2, 1fr); }
   .pillar-strength-grid { grid-template-columns: repeat(2, 1fr); }
   .result-main-grid { grid-template-columns: 1fr; }
+  .result-summary-card {
+    grid-template-columns: 1fr; gap: 28px; padding: 28px 24px;
+  }
+  .result-summary-card h2 { font-size: 26px; }
+  .mini-pillars { flex-wrap: wrap; justify-content: center; }
+  .mini-pillar { min-width: 64px; padding: 8px 10px; }
 }

@@ -185,6 +185,8 @@
       `${name}'s BaZi Destiny`;
     document.getElementById('resultSubtitle').textContent =
       `Your Four Pillars reveal a unique energetic profile shaped by ${dominantElemEn} energy. Below is your free foundation reading.`;
+    const domLabel = document.getElementById('dominantElemLabel');
+    if (domLabel) domLabel.textContent = dominantElemEn;
 
     // Mini pillars — show English stem + English branch
     const p = data.pillars;
