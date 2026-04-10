@@ -543,6 +543,243 @@
     init();
   }
 
+
+
+  // ============================================================
+  // LOVE COMPATIBILITY
+  // ============================================================
+
+  function showCompatibility() {
+    hideAllSections();
+    document.getElementById('compatSection').style.display = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function runCompatibility() {
+    const name1 = document.getElementById('compatName1').value.trim();
+    const date1 = document.getElementById('compatDate1').value;
+    const hour1 = parseInt(document.getElementById('compatHour1').value);
+    const name2 = document.getElementById('compatName2').value.trim();
+    const date2 = document.getElementById('compatDate2').value;
+    const hour2 = parseInt(document.getElementById('compatHour2').value);
+
+    if (!name1 || !date1 || isNaN(hour1)) {
+      alert('Please fill in all fields for Person 1.');
+      return;
+    }
+    if (!name2 || !date2 || isNaN(hour2)) {
+      alert('Please fill in all fields for Person 2.');
+      return;
+    }
+
+    const d1 = date1.split('-');
+    const d2 = date2.split('-');
+    const year1 = parseInt(d1[0]), month1 = parseInt(d1[1]), day1 = parseInt(d1[2]);
+    const year2 = parseInt(d2[0]), month2 = parseInt(d2[1]), day2 = parseInt(d2[2]);
+
+    const data1 = BaZiEngine.calculateFourPillars(year1, month1, day1, hour1);
+    const data2 = BaZiEngine.calculateFourPillars(year2, month2, day2, hour2);
+
+    const result = Compatibility.analyzeCompatibility(data1, data2);
+    renderCompatibilityResult(result, name1, name2, data1, data2);
+
+    document.getElementById('compatResults').style.display = '';
+    document.getElementById('compatResults').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function renderCompatibilityResult(result, name1, name2, data1, data2) {
+    const tier = result.tier;
+    const scoreColor = tier.color;
+    const stemColors = { Wood:'#5aad68', Fire:'#e85d4a', Earth:'#c49a6c', Metal:'#9e9e9e', Water:'#4a90c4' };
+
+    // Score ring SVG
+    const circ = 2 * Math.PI * 52;
+    const dashOffset = circ * (1 - result.overall / 100);
+
+    const pillarRows = (pillars, label) => {
+      const stems = [pillars.year.stem, pillars.month.stem, pillars.day.stem, pillars.hour.stem];
+      const branches = [pillars.year.branch, pillars.month.branch, pillars.day.branch, pillars.hour.branch];
+      const elems = [pillars.year.element, pillars.month.element, pillars.day.element, pillars.hour.element];
+      const STEM_TO_EN_FULL = {
+        甲:'Yang Wood', 乙:'Yin Wood', 丙:'Yang Fire', 丁:'Yin Fire',
+        戊:'Yang Earth', 己:'Yin Earth', 庚:'Yang Metal', 辛:'Yin Metal',
+        壬:'Yang Water', 癸:'Yin Water'
+      };
+      const BRANCH_TO_EN = {
+        子:'Rat', 丑:'Ox', 寅:'Tiger', 卯:'Rabbit', 辰:'Dragon', 巳:'Snake',
+        午:'Horse', 未:'Goat', 申:'Monkey', 酉:'Rooster', 戌:'Dog', 亥:'Pig'
+      };
+      const ELEM_CN = { 木:'Wood', 火:'Fire', 土:'Earth', 金:'Metal', 水:'Water' };
+      const labels = ['Year', 'Month', 'Day', 'Hour'];
+      return labels.map((lbl, i) => `
+        <div class="cp-mini-card">
+          <div class="cp-mini-left">
+            <span class="cp-mini-pillar">${lbl}</span>
+            <span class="cp-mini-stem">${STEM_TO_EN_FULL[stems[i]]}</span>
+            <span class="cp-mini-elem">${ELEM_CN[elems[i]]} · ${BRANCH_TO_EN[branches[i]]}</span>
+          </div>
+        </div>
+      `).join('');
+    };
+
+    const elemBar = (counts, dominant) => {
+      const elems = ['木','火','土','金','水'];
+      const names = ['Wood','Fire','Earth','Metal','Water'];
+      const colors = ['#5aad68','#e85d4a','#c49a6c','#9e9e9e','#4a90c4'];
+      const max = Math.max(...Object.values(counts));
+      return elems.map((e, i) => {
+        const w = max > 0 ? Math.round((counts[e] / max) * 100) : 0;
+        const isDom = e === dominant;
+        return `<div class="elem-bar-row">
+          <span class="elem-bar-label">${names[i]}</span>
+          <div class="elem-bar-track">
+            <div class="elem-bar-fill" style="width:${w}%;background:${isDom ? '#d4a574' : colors[i]}"></div>
+          </div>
+          <span class="elem-bar-count">${counts[e]}</span>
+        </div>`;
+      }).join('');
+    };
+
+    const html = `
+      <!-- Score Hero -->
+      <div class="compat-score-hero">
+        <div class="compat-score-ring">
+          <svg viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="ring-fill" cx="60" cy="60" r="52"
+              stroke="${scoreColor}"
+              stroke-dasharray="${circ.toFixed(1)}"
+              stroke-dashoffset="${dashOffset.toFixed(1)}"
+              style="filter: drop-shadow(0 0 6px ${scoreColor})"/>
+          </svg>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:${scoreColor};line-height:1">${result.overall}</div>
+            <div style="font-size:10px;color:var(--text-tertiary);letter-spacing:0.05em">out of 100</div>
+          </div>
+        </div>
+        <div class="compat-score-label" style="color:${scoreColor}">${tier.label}</div>
+        <div class="compat-pair-names">${name1} & ${name2}</div>
+        <div class="compat-today-tip">"${result.dayPillar.title}"</div>
+      </div>
+
+      <!-- Three score cards -->
+      <div class="compat-grid-3">
+        <div class="compat-card">
+          <div class="compat-card-label">Day Pillar Harmony</div>
+          <div class="compat-card-value" style="color:${scoreColor}">${result.dayPillar.score}/100</div>
+          <div class="compat-card-desc">${result.dayPillar.desc}</div>
+        </div>
+        <div class="compat-card">
+          <div class="compat-card-label">Polarity Connection</div>
+          <div class="compat-card-value" style="color:${scoreColor}">${result.polarity.score}/100</div>
+          <div class="compat-card-desc">${result.polarity.desc}</div>
+        </div>
+        <div class="compat-card">
+          <div class="compat-card-label">Elemental Balance</div>
+          <div class="compat-card-value" style="color:${scoreColor}">${result.element.score}/100</div>
+          <div class="compat-card-desc">${result.element.elem1Name} & ${result.element.elem2Name}</div>
+        </div>
+      </div>
+
+      <!-- Day Pillar deep dive -->
+      <div class="compat-dp-section">
+        <div class="compat-dp-header">
+          <div class="compat-dp-title">Day Pillar Analysis — The Core Bond</div>
+          <div class="compat-dp-relation">The Day Pillar represents your core self and romantic identity</div>
+        </div>
+        <div class="compat-dp-pillars">
+          <div class="compat-pillar-mini">
+            <span style="font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;text-transform:uppercase">${name1} Day Pillar</span>
+            <span class="cpm-stem">${result.dayPillar.p1.stemName}</span>
+            <span class="cpm-branch">${result.dayPillar.p1.branchName}</span>
+            <span class="cpm-elem" style="background:${stemColors[result.dayPillar.p1.elementName].replace('#','')}22;color:${stemColors[result.dayPillar.p1.elementName]}">${result.dayPillar.p1.elementName}</span>
+          </div>
+          <div class="cpm-vs">×</div>
+          <div class="compat-pillar-mini">
+            <span style="font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;text-transform:uppercase">${name2} Day Pillar</span>
+            <span class="cpm-stem">${result.dayPillar.p2.stemName}</span>
+            <span class="cpm-branch">${result.dayPillar.p2.branchName}</span>
+            <span class="cpm-elem" style="background:${stemColors[result.dayPillar.p2.elementName].replace('#','')}22;color:${stemColors[result.dayPillar.p2.elementName]}">${result.dayPillar.p2.elementName}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Harmony analysis -->
+      <div class="compat-harmony-card">
+        <div class="compat-harmony-title">💫 Elemental Harmony</div>
+        <div class="compat-harmony-desc">${result.element.harmonyDesc}</div>
+        <div class="compat-harmony-badges">
+          ${result.strengths.map(s => `<span class="hbadge habadge-good">✓ ${s}</span>`).join('')}
+          ${result.challenges.map(c => `<span class="hbadge habadge-challenge">⚠ ${c}</span>`).join('')}
+        </div>
+      </div>
+
+      <!-- Both full pillar charts -->
+      <div class="compat-pillars-compare">
+        <div class="compat-pillars-compare-title">Full Four Pillar Comparison</div>
+        <div class="compat-pillars-row">
+          <div>
+            <div class="cp-col-title">${name1}</div>
+            <div class="cp-mini-grid">
+              ${pillarRows(data1.pillars, name1)}
+              <div style="margin-top:8px">
+                <div class="compat-card-label" style="text-align:left;margin-bottom:8px">Element Distribution</div>
+                ${elemBar(data1.elements.counts, data1.elements.dominant)}
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="cp-col-title">${name2}</div>
+            <div class="cp-mini-grid">
+              ${pillarRows(data2.pillars, name2)}
+              <div style="margin-top:8px">
+                <div class="compat-card-label" style="text-align:left;margin-bottom:8px">Element Distribution</div>
+                ${elemBar(data2.elements.counts, data2.elements.dominant)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="compat-tips-card">
+        <div class="compat-tips-title">🌿 Your Relationship Guidance</div>
+        ${result.tips.map(tip => `
+          <div class="compat-tip-item">
+            <span class="compat-tip-icon">✦</span>
+            <span class="compat-tip-text">${tip}</span>
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- Share -->
+      <div class="compat-share-row">
+        <p>Share your BaZi Love Match with friends! 💕</p>
+        <button class="btn-primary" onclick="compatShare('${name1}', '${name2}', ${result.overall}, '${tier.label}')">
+          🔮 Share Our Match
+        </button>
+      </div>
+    `;
+
+    document.getElementById('compatResults').innerHTML = html;
+  }
+
+  function compatShare(name1, name2, score, label) {
+    const text = `💕 Our BaZi Love Match: ${name1} & ${name2}
+
+Compatibility Score: ${score}/100 — "${label}"
+
+Discover yours at: bazidestiny.com`;
+    if (navigator.share) {
+      navigator.share({ title: 'BaZi Love Match', text });
+    } else {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('✨ Love match copied! Share it with your partner 💕');
+      });
+    }
+  }
+
+
   // Expose
   window.showHome = showHome;
   window.showCalculator = showCalculator;
@@ -551,5 +788,7 @@
   window.calculateBaZi = calculateBaZi;
   window.showUpgrade = showUpgrade;
   window.closePaymentModal = closePaymentModal;
+  window.showCompatibility = showCompatibility;
+  window.runCompatibility = runCompatibility;
 
 })();

@@ -36,6 +36,7 @@
         <a href="#" onclick="showHome()">Home</a>
         <a href="#" onclick="scrollToSection('how-it-works')">How It Works</a>
         <a href="#" onclick="scrollToSection('pricing')">Pricing</a>
+        <a href="#" onclick="showCompatibility()" class="nav-love-link">💕 Love Match</a>
         <button class="btn-nav-cta" onclick="showCalculator()">Get Your Reading</button>
       </nav>
       <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
@@ -703,6 +704,114 @@
       </div>
     </section>
 
+  
+    <!-- Love Compatibility Section -->
+    <section class="compat-section" id="compatSection" style="display:none;">
+      <div class="compat-inner">
+        <div class="compat-header">
+          <div class="compat-badge">💕 Love Compatibility</div>
+          <h2 class="compat-title">Discover Your<br><span class="title-accent">BaZi Love Match</span></h2>
+          <p class="compat-desc">Enter both birth details to reveal your elemental compatibility, relationship dynamics, and personalized harmony tips.</p>
+        </div>
+
+        <div class="compat-form-grid">
+          <!-- Person 1 -->
+          <div class="compat-person-card">
+            <div class="compat-person-label">
+              <span class="compat-num">01</span>
+              <span class="compat-person-name">First Person</span>
+            </div>
+            <div class="compat-form">
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="compatName1" placeholder="Your name" maxlength="50">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Birth Date</label>
+                  <input type="date" id="compatDate1" required>
+                </div>
+                <div class="form-group">
+                  <label>Birth Hour</label>
+                  <select id="compatHour1" required>
+                    <option value="">Select hour</option>
+                    <option value="0">23:00 – 00:59 (Rat)</option>
+                    <option value="1">01:00 – 02:59 (Ox)</option>
+                    <option value="2">03:00 – 04:59 (Tiger)</option>
+                    <option value="3">05:00 – 06:59 (Rabbit)</option>
+                    <option value="4">07:00 – 08:59 (Dragon)</option>
+                    <option value="5">09:00 – 10:59 (Snake)</option>
+                    <option value="6">11:00 – 12:59 (Horse)</option>
+                    <option value="7">13:00 – 14:59 (Goat)</option>
+                    <option value="8">15:00 – 16:59 (Monkey)</option>
+                    <option value="9">17:00 – 18:59 (Rooster)</option>
+                    <option value="10">19:00 – 20:59 (Dog)</option>
+                    <option value="11">21:00 – 22:59 (Pig)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Heart connector -->
+          <div class="compat-heart-connector">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <path d="M20 35 C8 25 4 16 10 10 C14 6 20 12 20 16 C20 12 26 6 30 10 C36 16 32 25 20 35Z" fill="rgba(212,165,116,0.6)" stroke="rgba(212,165,116,0.3)" stroke-width="1"/>
+            </svg>
+            <span>vs</span>
+          </div>
+
+          <!-- Person 2 -->
+          <div class="compat-person-card">
+            <div class="compat-person-label">
+              <span class="compat-num">02</span>
+              <span class="compat-person-name">Second Person</span>
+            </div>
+            <div class="compat-form">
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="compatName2" placeholder="Partner's name" maxlength="50">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Birth Date</label>
+                  <input type="date" id="compatDate2" required>
+                </div>
+                <div class="form-group">
+                  <label>Birth Hour</label>
+                  <select id="compatHour2" required>
+                    <option value="">Select hour</option>
+                    <option value="0">23:00 – 00:59 (Rat)</option>
+                    <option value="1">01:00 – 02:59 (Ox)</option>
+                    <option value="2">03:00 – 04:59 (Tiger)</option>
+                    <option value="3">05:00 – 06:59 (Rabbit)</option>
+                    <option value="4">07:00 – 08:59 (Dragon)</option>
+                    <option value="5">09:00 – 10:59 (Snake)</option>
+                    <option value="6">11:00 – 12:59 (Horse)</option>
+                    <option value="7">13:00 – 14:59 (Goat)</option>
+                    <option value="8">15:00 – 16:59 (Monkey)</option>
+                    <option value="9">17:00 – 18:59 (Rooster)</option>
+                    <option value="10">19:00 – 20:59 (Dog)</option>
+                    <option value="11">21:00 – 22:59 (Pig)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="compat-cta-row">
+          <button class="btn-primary btn-large" onclick="runCompatibility()">
+            <span>🔮 Reveal Our Compatibility</span>
+          </button>
+          <button class="btn-ghost" onclick="showHome()">Back to Home</button>
+        </div>
+
+        <!-- Compatibility Results -->
+        <div class="compat-results" id="compatResults" style="display:none;"></div>
+      </div>
+    </section>
+
   </main>
 
   <!-- Footer -->
@@ -738,6 +847,7 @@
   <script src="js/bazi-engine.js"></script>
   <script src="js/readings.js"></script>
   <script src="js/visualizations.js"></script>
+  <script src="js/compatibility.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
