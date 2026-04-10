@@ -304,16 +304,23 @@
     svg += '</svg>';
 
     // Direction cards
-    const dirEmojis = {
-      'East': '🌅', 'Southeast': '🌄', 'South': '☀️', 'Southwest': '🌇',
-      'West': '🌆', 'Northwest': '🌬️', 'North': '🌌', 'Northeast': '🏔️'
+    const dirSVG = {
+      'East': '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>',
+      'Southeast': '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg>',
+      'South': '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="2" x2="12" y2="17"/><line x1="12" y1="22" x2="12" y2="17"/></svg>',
+      'Southwest': '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="8" x2="16" y2="16"/></svg>',
+      'West': '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>',
+      'Northwest': '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="8" x2="16" y2="16"/></svg>',
+      'North': '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="2" x2="12" y2="22"/><polyline points="8 6 12 2 16 6"/></svg>',
+      'Northeast': '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="16" y1="8" x2="8" y2="16"/></svg>'
     };
 
     let dirCards = '<div class="compass-dir-grid">';
     [...auspicious, ...inauspicious].forEach(d => {
       const isGood = auspicious.includes(d);
+      const svgIcon = dirSVG[d] || '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>';
       dirCards += `<div class="compass-dir-card ${isGood ? 'dir-good' : 'dir-bad'}">
-        <span class="cdir-emoji">${dirEmojis[d] || '🧭'}</span>
+        <div class="cdir-emoji" style="color:${isGood ? '#5aad68' : '#e85d4a'}">${svgIcon}</div>
         <span class="cdir-name">${d}</span>
         <span class="cdir-status">${isGood ? 'Auspicious' : 'Use Caution'}</span>
       </div>`;

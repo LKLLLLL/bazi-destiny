@@ -392,7 +392,14 @@ section { position: relative; z-index: 1; }
   font-size: 42px; font-weight: 700; color: rgba(212,165,116,0.08);
   position: absolute; top: 20px; right: 20px;
 }
-.step-icon { font-size: 32px; margin-bottom: 16px; }
+.step-icon {
+  margin-bottom: 16px;
+  color: var(--gold);
+  opacity: 0.7;
+  transition: opacity var(--transition);
+}
+.step-icon svg { display: block; }
+.step-card:hover .step-icon { opacity: 1; }
 .step-card h3 {
   font-family: var(--font-display); font-size: 22px; font-weight: 600;
   margin-bottom: 12px;
@@ -423,7 +430,8 @@ section { position: relative; z-index: 1; }
 .element-metal::before { background: linear-gradient(90deg, #9E9E9E, #E0E0E0); }
 .element-water::before { background: linear-gradient(90deg, #2196F3, #80DEEA); }
 .element-item:hover::before { opacity: 1; }
-.element-symbol { font-size: 36px; margin-bottom: 8px; }
+.element-symbol { margin-bottom: 8px; }
+.element-symbol svg { display: block; margin: 0 auto; }
 .element-chinese {
   font-family: 'Noto Serif SC', serif;
   font-size: 28px; margin-bottom: 8px; opacity: 0.5;
@@ -680,7 +688,8 @@ section { position: relative; z-index: 1; }
   margin-bottom: 20px; text-align: center;
 }
 .paywall-inner { max-width: 480px; margin: 0 auto; }
-.paywall-icon { font-size: 48px; margin-bottom: 16px; }
+.paywall-icon { margin-bottom: 16px; display: flex; justify-content: center; }
+.paywall-icon svg { display: block; }
 .paywall-inner h3 {
   font-family: var(--font-display); font-size: 28px; font-weight: 600;
   margin-bottom: 12px;
