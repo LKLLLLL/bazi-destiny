@@ -579,17 +579,21 @@
 
   function hideAllSections() {
     const sections = ['homeSection','how-it-works','pricing','calculator',
-                       'resultsSection','compatSection'];
+                       'resultsSection'];
     sections.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
+    // compatSection uses .is-visible class (not style.display)
+    const compat = document.getElementById('compatSection');
+    if (compat) compat.classList.remove('is-visible');
   }
 
   function showCompatibility() {
     hideAllSections();
     const compat = document.getElementById('compatSection');
-    compat.style.display = 'flex';
+    compat.style.display = ''; // clears inline display:none → CSS .is-visible {display:flex} kicks in
+    compat.classList.add('is-visible');
     document.getElementById('compatResults').style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
