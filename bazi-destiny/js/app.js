@@ -646,11 +646,27 @@
 
     // Share button
     const shareBtn = document.getElementById('shareBtn');
+    const twitterShare = document.getElementById('twitterShare');
+    const facebookShare = document.getElementById('facebookShare');
+    const whatsappShare = document.getElementById('whatsappShare');
+
+    const getShareText = () => {
+      const elem = window.currentReading ? window.currentReading.elements.dominant : 'Balanced';
+      const name = window.currentReading ? (window.currentReading.name || 'My') : 'My';
+      return `${name} BaZi Destiny Reading — Dominant Element: ${elem}. Discover yours free:`;
+    };
+
+    const updateSocialLinks = () => {
+      const text = encodeURIComponent(getShareText());
+      const url = encodeURIComponent('https://mybazidestiny.com');
+      if (twitterShare) twitterShare.href = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+      if (facebookShare) facebookShare.href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+      if (whatsappShare) whatsappShare.href = `https://wa.me/?text=${text}%20${url}`;
+    };
+
     if (shareBtn) {
       shareBtn.addEventListener('click', function() {
-        const elem = window.currentReading ? window.currentReading.elements.dominant : 'Balanced';
-        const name = window.currentReading ? (window.currentReading.name || 'Your') : 'My';
-        const text = `${name} BaZi Destiny Reading\n\nDominant Element: ${elem}\n\nDiscover your own at: bazidestiny.com`;
+        const text = getShareText() + ' https://mybazidestiny.com';
         if (navigator.share) {
           navigator.share({ title: 'BaZi Destiny Reading', text });
         } else {
@@ -661,14 +677,21 @@
         }
       });
     }
+    updateSocialLinks();
 
     // PDF download button
     const pdfBtn = document.getElementById('pdfBtn');
     if (pdfBtn) {
       pdfBtn.addEventListener('click', function() {
-        window.currentReading ? showUpgrade('pro') : null;
-        // Simple browser print as fallback
-        window.print();
+        if (!window.currentReading) return;
+        if (localStorage.getItem('proUnlocked') === 'true') {
+          // Pro user — trigger PDF generation
+          if (typeof generatePDF === 'function') generatePDF();
+          else window.print();
+        } else {
+          // Free user — prompt upgrade
+          showUpgrade('pro');
+        }
       });
     }
   }
@@ -929,7 +952,7 @@
 
 Compatibility Score: ${score}/100 — "${label}"
 
-Discover yours at: bazidestiny.com`;
+Discover yours free at: https://mybazidestiny.com`;
     if (navigator.share) {
       navigator.share({ title: 'BaZi Love Match', text });
     } else {

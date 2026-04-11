@@ -1138,7 +1138,30 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   color: var(--text-primary);
   transform: translateY(-1px);
 }
-.result-share-bar button svg { width: 16px; height: 16px; }
+.result-share-bar button svg,
+.result-share-bar .share-social-btn svg { width: 16px; height: 16px; }
+
+/* Social share buttons */
+.share-social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(224,216,204,0.7);
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+.share-social-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.14);
+}
+.share-social-btn.share-twitter:hover { background: #1DA1F2; border-color: #1DA1F2; color: #fff; }
+.share-social-btn.share-facebook:hover { background: #1877F2; border-color: #1877F2; color: #fff; }
+.share-social-btn.share-whatsapp:hover { background: #25D366; border-color: #25D366; color: #fff; }
 
 /* --- Toast Animation --- */
 @keyframes toastIn {

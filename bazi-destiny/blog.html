@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BaZi Blog — Chinese Astrology Guides, Birth Chart Insights & Destiny Reading Tips</title>
+  <meta name="description" content="Explore BaZi (Four Pillars of Destiny) through expert guides. Learn how Chinese astrology birth charts work, discover your five elements, love compatibility, and unlock your destiny today.">
+  <meta name="keywords" content="BaZi, Four Pillars of Destiny, Chinese astrology, birth chart calculator, Five Elements, Chinese zodiac, love compatibility, bazi reading">
+  <meta property="og:title" content="BaZi Blog — Chinese Astrology Guides & Destiny Insights">
+  <meta property="og:description" content="Expert guides on BaZi Chinese astrology. Free calculator, element analysis, love compatibility, and more.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://mybazidestiny.com/blog.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔮</text></svg>">
+
+  <!-- Social Share -->
+  <meta property="og:title" content="BaZi Blog — Chinese Astrology Guides & Destiny Insights">
+  <meta property="og:description" content="Expert guides on BaZi Chinese astrology. Free calculator, element analysis, love compatibility, and more.">
+  <meta property="og:image" content="https://mybazidestiny.com/og-blog.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ============================================================
+       BLOG PAGE — Standalone clean layout, no header nav needed
+    ============================================================ */
+    :root {
+      --gold: #d4a574;
+      --gold-light: #e8c9a8;
+      --bg-void: #070710;
+      --bg-card: rgba(255,255,255,0.04);
+      --border-gold: rgba(212,165,116,0.2);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg-void);
+      color: #e0d8cc;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ---- Top Nav Bar ---- */
+    .blog-nav {
+      background: rgba(7,7,16,0.95);
+      border-bottom: 1px solid var(--border-gold);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .blog-nav .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gold);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .blog-nav .logo span { font-size: 24px; }
+    .blog-nav .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .blog-nav .nav-links a {
+      color: rgba(224,216,204,0.7);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    .blog-nav .nav-links a:hover { color: var(--gold); }
+    .blog-nav .cta-btn {
+      background: linear-gradient(135deg, var(--gold) 0%, #c49464 100%);
+      color: #070710;
+      padding: 8px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .blog-nav .cta-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(212,165,116,0.3);
+    }
+
+    /* ---- Hero ---- */
+    .blog-hero {
+      text-align: center;
+      padding: 72px 24px 56px;
+      background: radial-gradient(ellipse at center, rgba(212,165,116,0.06) 0%, transparent 70%);
+    }
+    .blog-hero .tag {
+      display: inline-block;
+      background: rgba(212,165,116,0.15);
+      color: var(--gold);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .blog-hero h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      color: #fff;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .blog-hero h1 span { color: var(--gold); }
+    .blog-hero p {
+      font-size: 18px;
+      color: rgba(224,216,204,0.65);
+      max-width: 560px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+    .blog-hero .hero-cta {
+      background: linear-gradient(135deg, var(--gold) 0%, #c49464 100%);
+      color: #070710;
+      padding: 14px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .blog-hero .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(212,165,116,0.35);
+    }
+
+    /* ---- Container ---- */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* ---- Section Titles ---- */
+    .section-title {
+      font-size: 24px;
+      color: #fff;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 24px;
+      background: var(--gold);
+      border-radius: 2px;
+    }
+
+    /* ---- Featured Article ---- */
+    .featured-article {
+      background: linear-gradient(145deg, rgba(212,165,116,0.08), rgba(212,165,116,0.02));
+      border: 1px solid var(--border-gold);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 320px;
+    }
+    .featured-article .article-visual {
+      background: radial-gradient(ellipse at center, rgba(212,165,116,0.15), rgba(7,7,16,0.5));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 96px;
+      min-height: 320px;
+    }
+    .featured-article .article-content {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .article-badge {
+      display: inline-block;
+      background: rgba(212,165,116,0.2);
+      color: var(--gold);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 12px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .featured-article h2 {
+      font-size: 26px;
+      color: #fff;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    .featured-article .excerpt {
+      color: rgba(224,216,204,0.65);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: gap 0.2s;
+    }
+    .read-more:hover { gap: 10px; }
+
+    /* ---- Article Grid ---- */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 64px;
+    }
+    .article-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 28px;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      display: flex;
+      flex-direction: column;
+    }
+    .article-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(212,165,116,0.5);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .article-card .card-emoji {
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+    .article-card .article-tag {
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .article-card h3 {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+    .article-card .card-excerpt {
+      color: rgba(224,216,204,0.6);
+      font-size: 14px;
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: 16px;
+    }
+    .article-card .read-time {
+      color: rgba(224,216,204,0.35);
+      font-size: 12px;
+    }
+
+    /* ---- Tags / Categories ---- */
+    .categories-section {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 64px;
+    }
+    .categories-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .category-tag {
+      background: rgba(212,165,116,0.1);
+      border: 1px solid rgba(212,165,116,0.3);
+      color: var(--gold-light);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .category-tag:hover {
+      background: rgba(212,165,116,0.2);
+      border-color: var(--gold);
+    }
+
+    /* ---- Newsletter ---- */
+    .newsletter-section {
+      background: linear-gradient(145deg, rgba(212,165,116,0.1), rgba(7,7,16,0.5));
+      border: 1px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 48px;
+      text-align: center;
+      margin-bottom: 80px;
+    }
+    .newsletter-section h2 {
+      font-size: 28px;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .newsletter-section p {
+      color: rgba(224,216,204,0.6);
+      margin-bottom: 28px;
+      font-size: 16px;
+    }
+    .newsletter-form {
+      display: flex;
+      gap: 12px;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+    .newsletter-form input {
+      flex: 1;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(212,165,116,0.3);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .newsletter-form input::placeholder { color: rgba(224,216,204,0.35); }
+    .newsletter-form input:focus { border-color: var(--gold); }
+    .newsletter-form button {
+      background: linear-gradient(135deg, var(--gold) 0%, #c49464 100%);
+      color: #070710;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+    .newsletter-form button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(212,165,116,0.35);
+    }
+    .newsletter-form button:active { transform: translateY(0); }
+    .newsletter-note {
+      font-size: 12px;
+      color: rgba(224,216,204,0.35);
+      margin-top: 12px;
+    }
+
+    /* ---- Footer ---- */
+    .blog-footer {
+      border-top: 1px solid var(--border-gold);
+      padding: 32px 24px;
+      text-align: center;
+      color: rgba(224,216,204,0.35);
+      font-size: 13px;
+    }
+    .blog-footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .blog-footer a:hover { text-decoration: underline; }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 768px) {
+      .blog-nav .nav-links { display: none; }
+      .featured-article { grid-template-columns: 1fr; }
+      .featured-article .article-visual { min-height: 200px; font-size: 64px; }
+      .featured-article .article-content { padding: 28px; }
+      .newsletter-section { padding: 32px 24px; }
+      .newsletter-form { flex-direction: column; }
+    }
+
+    @media (max-width: 480px) {
+      .articles-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Nav -->
+  <nav class="blog-nav">
+    <a href="/" class="logo"><span>🔮</span> BaZi Destiny</a>
+    <ul class="nav-links">
+      <li><a href="/">Calculator</a></li>
+      <li><a href="/#compatibility">Compatibility</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="/#upgrade">Pricing</a></li>
+    </ul>
+    <a href="/" class="cta-btn">🔮 Free Reading</a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="blog-hero">
+    <div class="tag">✨ Ancient Wisdom · Modern Science</div>
+    <h1>Unlock the Secrets of Your <span>BaZi Destiny</span></h1>
+    <p>Expert guides on Chinese astrology, Five Elements analysis, love compatibility, and the art of the Four Pillars — explained clearly for the modern world.</p>
+    <a href="/" class="hero-cta">🔮 Get Your Free BaZi Reading</a>
+  </section>
+
+  <!-- Featured Article -->
+  <div class="container">
+    <div class="featured-article" id="featured">
+      <div class="article-visual">🌌</div>
+      <div class="article-content">
+        <div class="article-badge">⭐ Featured Guide</div>
+        <h2>What is BaZi? The Complete Guide to the Four Pillars of Destiny</h2>
+        <p class="excerpt">BaZi (八字, "Eight Characters") is one of China's most ancient and accurate systems for understanding human destiny. Rooted in Taoist philosophy and refined over 1,200 years, it maps your unique energy blueprint using your birth date and time. Unlike Western astrology, BaZi doesn't just describe your personality — it reveals the specific strengths, challenges, and opportunities written into your personal timeline.</p>
+        <p class="excerpt">Your BaZi chart is built from four pillars — Year, Month, Day, and Hour — each containing a Heavenly Stem and Earthly Branch. Together they form a 8-character code that captures the interplay of the Five Elements (Wood, Fire, Earth, Metal, Water) within your life. In this guide, you'll learn exactly how BaZi works, what your chart reveals, and how to use this ancient wisdom to make better decisions in love, career, and health.</p>
+        <a href="/" class="read-more">Calculate your BaZi chart →</a>
+      </div>
+    </div>
+
+    <!-- Section Title -->
+    <h2 class="section-title">Popular Guides</h2>
+
+    <!-- Articles Grid -->
+    <div class="articles-grid">
+
+      <article class="article-card" id="five-elements">
+        <div class="card-emoji">🌿</div>
+        <div class="article-tag">Five Elements</div>
+        <h3>The Five Elements in Chinese Astrology: Your Element Reveals Your Path</h3>
+        <p class="card-excerpt">Wood, Fire, Earth, Metal, and Water — these five energies form the foundation of BaZi. Each element has distinct characteristics: Wood people are visionary and growing; Fire people are passionate and energetic; Earth people are stable and nurturing; Metal people are precise and authoritative; Water people are wise and flowing. Discovering your dominant element is the first step to understanding your natural strengths and where you need to balance your energy.</p>
+        <div class="read-time">📖 6 min read</div>
+      </article>
+
+      <article class="article-card" id="love-compatibility">
+        <div class="card-emoji">💕</div>
+        <div class="article-tag">Love & Relationships</div>
+        <h3>BaZi Love Compatibility: Find Your Most Harmonious Match</h3>
+        <p class="card-excerpt">In BaZi, not all zodiac signs are created equal for partnership. Your Day Master — the stem of your Day Pillar — acts as your core self. The compatibility between your Day Master and your partner's reveals whether your relationship will thrive naturally or require conscious effort. Some element combinations create instant harmony (like Wood feeding Fire), while others represent lifelong growth opportunities. Use our free compatibility calculator to discover your match score today.</p>
+        <div class="read-time">📖 5 min read</div>
+      </article>
+
+      <article class="article-card" id="career">
+        <div class="card-emoji">💼</div>
+        <div class="article-tag">Career & Wealth</div>
+        <h3>Your BaZi Career Guide: What Professions Match Your Destiny?</h3>
+        <p class="card-excerpt">Your BaZi chart doesn't just describe your personality — it reveals the types of work where you'll naturally excel and feel fulfilled. A strong Metal configuration might point toward law, engineering, or precision work. A Wood-dominant chart often thrives in growth industries, entrepreneurship, or creative fields. Fire types frequently succeed in leadership, entertainment, or teaching. Understanding your career element helps you make strategic decisions about education, job changes, and business direction.</p>
+        <div class="read-time">📖 7 min read</div>
+      </article>
+
+      <article class="article-card" id="lucky-numbers">
+        <div class="card-emoji">🔢</div>
+        <div class="article-tag">Daily Luck</div>
+        <h3>How to Find Your Lucky Numbers, Colors & Directions in BaZi</h3>
+        <p class="card-excerpt">Every BaZi chart contains hidden lucky numbers, auspicious colors, and favorable directions — specific to your personal energy signature. Wearing your lucky color, sleeping in your auspicious direction, or playing your lucky numbers on lottery days can subtly shift the energy in your favor. Our BaZi calculator generates these for you automatically: your personal lucky numbers, your best colors for health and career, and the compass directions that support your energy on any given day.</p>
+        <div class="read-time">📖 4 min read</div>
+      </article>
+
+      <article class="article-card" id="chinese-zodiac">
+        <div class="card-emoji">🐉</div>
+        <div class="article-tag">Chinese Zodiac</div>
+        <h3>Chinese Zodiac vs. BaZi: Why Your Animal Sign Is Only the Beginning</h3>
+        <p class="card-excerpt">Most people know their Chinese zodiac animal (Rat, Ox, Tiger...), but that's only one layer of BaZi. Your animal comes from your Year Branch — just 1 of 8 characters in your full chart. BaZi goes far deeper: it reveals the exact balance of elements in your chart, your Day Master personality, and the precise interactions between your year, month, day, and hour pillars. Two people can both be Dragons yet have radically different BaZi charts with completely different life paths. Discover your full picture with our free calculator.</p>
+        <div class="read-time">📖 5 min read</div>
+      </article>
+
+      <article class="article-card" id="feng-shui">
+        <div class="card-emoji">🏠</div>
+        <div class="article-tag">Feng Shui</div>
+        <h3>BaZi and Feng Shui: How Your Birth Chart Informs Your Home Energy</h3>
+        <p class="card-excerpt">Feng Shui and BaZi are natural partners. Your BaZi chart reveals which elements are missing or overabundant in your personal energy, and Feng Shui adjustments in your home can compensate for these imbalances. If your chart lacks Wood energy, adding plants and green decor strengthens your growth and creativity. A Metal-deficit chart benefits from white walls, metal fixtures, and round shapes. Our BaZi calculator includes a personalized Feng Shui section showing exactly which areas of your home to activate for health, wealth, and relationships.</p>
+        <div class="read-time">📖 6 min read</div>
+      </article>
+
+    </div>
+
+    <!-- Categories -->
+    <div class="categories-section">
+      <h2 class="section-title" style="margin-bottom:0">Browse by Topic</h2>
+      <div class="categories-list">
+        <a href="/" class="category-tag">🔮 BaZi Calculator</a>
+        <a href="/" class="category-tag">💕 Love Compatibility</a>
+        <a href="/" class="category-tag">🌿 Five Elements</a>
+        <a href="/" class="category-tag">💼 Career Reading</a>
+        <a href="/" class="category-tag">🐉 Chinese Zodiac</a>
+        <a href="/" class="category-tag">🏠 Feng Shui</a>
+        <a href="/" class="category-tag">🧘 Health & Wellness</a>
+        <a href="/" class="category-tag">🔢 Lucky Numbers</a>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="newsletter-section">
+      <h2>📜 Get Your Monthly BaZi Forecast</h2>
+      <p>Join thousands of seekers receiving personalized monthly predictions, Feng Shui tips, and insights into the cosmic energy of the month — free.</p>
+      <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+        <input type="email" id="emailInput" placeholder="your@email.com" required>
+        <button type="submit">Subscribe Free</button>
+      </form>
+      <div class="newsletter-note">No spam. Unsubscribe anytime. We respect your privacy.</div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="blog-footer">
+    <p>🔮 <a href="/">BaZi Destiny</a> — Your Free Chinese Astrology Calculator &nbsp;|&nbsp; <a href="/">Home</a> &nbsp;|&nbsp; <a href="blog.html">Blog</a></p>
+    <p style="margin-top:8px">© 2024 BaZi Destiny. All rights reserved. For entertainment purposes only.</p>
+  </footer>
+
+  <script>
+    function handleNewsletter(e) {
+      e.preventDefault();
+      const email = document.getElementById('emailInput').value;
+      // TODO: connect to Mailchimp/ConvertKit/Resend
+      localStorage.setItem('newsletterEmail', email);
+      document.querySelector('.newsletter-form').innerHTML =
+        '<p style="color:var(--gold);font-size:16px">✨ Thank you! Your first BaZi forecast arrives soon.</p>';
+    }
+  </script>
+
+</body>
+</html>
