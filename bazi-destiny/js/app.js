@@ -455,20 +455,24 @@
   // LEMON SQUEEZY CHECKOUT
   // ============================================================
 
-  const LEMON_CONFIG = {
-    storeId: '342486',
+  // PayPal Configuration
+  const PAYPAL_CONFIG = {
+    businessEmail: 'qwe4320325@gmail.com',
+    currency: 'USD',
     products: {
       pro: {
-        productId: '965368',
-        variantId: '1515888',
-        checkoutUrl: 'https://bazidestiny.lemonsqueezy.com/checkout/buy/c664c762-52f8-4063-9d44-2a61f184f0dc'
+        name: 'Destiny Master - Pro Reading',
+        price: '9.90',
+        itemId: 'BAZI-PRO'
       },
       ultimate: {
-        productId: '965369',
-        variantId: '1515889',
-        checkoutUrl: 'https://bazidestiny.lemonsqueezy.com/checkout/buy/622c0b89-74f1-44fd-b84c-ff29999c51a6'
+        name: 'Soul Guide - Ultimate Reading',
+        price: '29.90',
+        itemId: 'BAZI-ULTIMATE'
       }
-    }
+    },
+    returnUrl: 'https://mybazidestiny.com/success.html',
+    cancelUrl: 'https://mybazidestiny.com/?payment=cancel'
   };
 
   // Track selected tier (default to pro)
@@ -477,6 +481,7 @@
   function startCheckout(tier) {
     // Use provided tier or default to selectedTier
     const checkoutTier = tier || selectedTier;
+    const product = PAYPAL_CONFIG.products[checkoutTier];
 
     // Save current reading to localStorage so we can restore after payment
     if (currentData) {
@@ -484,8 +489,20 @@
       localStorage.setItem('pendingTier', checkoutTier);
     }
 
-    // Redirect to Lemon Squeezy checkout
-    window.location.href = LEMON_CONFIG.products[checkoutTier].checkoutUrl;
+    // Build PayPal checkout URL
+    const paypalUrl = new URL('https://www.paypal.com/cgi-bin/webscr');
+    paypalUrl.searchParams.set('cmd', '_xclick');
+    paypalUrl.searchParams.set('business', PAYPAL_CONFIG.businessEmail);
+    paypalUrl.searchParams.set('item_name', product.name);
+    paypalUrl.searchParams.set('amount', product.price);
+    paypalUrl.searchParams.set('currency_code', PAYPAL_CONFIG.currency);
+    paypalUrl.searchParams.set('item_number', product.itemId);
+    paypalUrl.searchParams.set('return', PAYPAL_CONFIG.returnUrl);
+    paypalUrl.searchParams.set('cancel_return', PAYPAL_CONFIG.cancelUrl);
+    paypalUrl.searchParams.set('custom', checkoutTier);
+
+    // Redirect to PayPal checkout
+    window.location.href = paypalUrl.toString();
   }
 
   function setCheckoutTier(tier) {
