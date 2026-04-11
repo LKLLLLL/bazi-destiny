@@ -414,15 +414,34 @@
     const title = document.getElementById('modalTitle');
     const desc = document.getElementById('modalDesc');
     const price = document.getElementById('modalPrice');
+    const features = document.getElementById('modalFeatures');
+    const btn = document.getElementById('checkoutBtn');
+
+    // Store selected tier for checkout
+    setCheckoutTier(tier);
 
     if (tier === 'pro') {
       title.textContent = 'Unlock Destiny Master';
       desc.textContent = 'Get the complete BaZi reading with Career, Wealth, Relationships, Health analysis, personalized Feng Shui guidance, and PDF download.';
       price.innerHTML = '$9.90 <small style="font-size:18px;color:var(--text-tertiary);font-weight:400;">one-time</small>';
+      features.innerHTML = `
+        <div class="modal-feature-item">✓ Full 12-section BaZi reading</div>
+        <div class="modal-feature-item">✓ Personalized Feng Shui analysis</div>
+        <div class="modal-feature-item">✓ Lucky numbers, colors & directions</div>
+        <div class="modal-feature-item">✓ PDF report download</div>
+      `;
+      btn.innerHTML = '💳 Pay $9.90 — Unlock Now';
     } else {
       title.textContent = 'Upgrade to Soul Guide';
       desc.textContent = 'Everything in Destiny Master plus 1:1 Follow-up Q&A, 30-minute Feng Shui room consultation, and 3 months of monthly horoscopes.';
       price.innerHTML = '$29.90 <small style="font-size:18px;color:var(--text-tertiary);font-weight:400;">one-time</small>';
+      features.innerHTML = `
+        <div class="modal-feature-item">✓ Everything in Destiny Master</div>
+        <div class="modal-feature-item">✓ 1:1 Follow-up Q&A session</div>
+        <div class="modal-feature-item">✓ 30-min Feng Shui room consultation</div>
+        <div class="modal-feature-item">✓ 3 months of monthly horoscopes</div>
+      `;
+      btn.innerHTML = '💳 Pay $29.90 — Unlock Now';
     }
 
     modal.style.display = '';
@@ -438,19 +457,39 @@
 
   const LEMON_CONFIG = {
     storeId: '342486',
-    productId: '965368',
-    variantId: '1515888',
-    checkoutUrl: 'https://bazidestiny.lemonsqueezy.com/checkout/buy/c664c762-52f8-4063-9d44-2a61f184f0dc'
+    products: {
+      pro: {
+        productId: '965368',
+        variantId: '1515888',
+        checkoutUrl: 'https://bazidestiny.lemonsqueezy.com/checkout/buy/c664c762-52f8-4063-9d44-2a61f184f0dc'
+      },
+      ultimate: {
+        productId: '965369',
+        variantId: '1515889',
+        checkoutUrl: 'https://bazidestiny.lemonsqueezy.com/checkout/buy/622c0b89-74f1-44fd-b84c-ff29999c51a6'
+      }
+    }
   };
 
-  function startCheckout() {
+  // Track selected tier (default to pro)
+  let selectedTier = 'pro';
+
+  function startCheckout(tier) {
+    // Use provided tier or default to selectedTier
+    const checkoutTier = tier || selectedTier;
+
     // Save current reading to localStorage so we can restore after payment
     if (currentData) {
       localStorage.setItem('pendingReading', JSON.stringify(currentData));
+      localStorage.setItem('pendingTier', checkoutTier);
     }
 
     // Redirect to Lemon Squeezy checkout
-    window.location.href = LEMON_CONFIG.checkoutUrl;
+    window.location.href = LEMON_CONFIG.products[checkoutTier].checkoutUrl;
+  }
+
+  function setCheckoutTier(tier) {
+    selectedTier = tier;
   }
 
   function checkPaymentSuccess() {
