@@ -466,8 +466,8 @@
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = Viz;
-  } else {
-    global.Viz = Viz;
+  } else if (typeof window !== 'undefined') {
+    window.Viz = Viz;
   }
 
 })(typeof window !== 'undefined' ? window : this);

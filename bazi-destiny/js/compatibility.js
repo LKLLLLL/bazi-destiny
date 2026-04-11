@@ -334,9 +334,16 @@
     };
   }
 
-  global.Compatibility = {
+  const Compatibility = {
     analyzeCompatibility,
     getScoreTier
   };
+
+  // Export (browser: attach to window; Node.js: module.exports)
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = Compatibility;
+  } else if (typeof window !== 'undefined') {
+    window.Compatibility = Compatibility;
+  }
 
 })(typeof window !== 'undefined' ? window : this);

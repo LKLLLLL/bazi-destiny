@@ -346,8 +346,8 @@
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = Readings;
-  } else {
-    global.Readings = Readings;
+  } else if (typeof window !== 'undefined') {
+    window.Readings = Readings;
   }
 
 })(typeof window !== 'undefined' ? window : this);
