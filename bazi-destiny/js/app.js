@@ -75,7 +75,7 @@
     document.getElementById('birthLocation').value = '';
     currentData = null;
     isProUnlocked = false;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('calcForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function scrollToSection(id) {
@@ -599,7 +599,7 @@
     const compat = document.getElementById('compatSection');
     compat.style.display = 'flex';
     document.getElementById('compatResults').style.display = 'none';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('compatSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function runCompatibility() {
