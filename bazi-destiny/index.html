@@ -8,7 +8,6 @@
   <meta name="keywords" content="BaZi, Chinese astrology, Four Pillars of Destiny, Feng Shui, Chinese horoscope, bazi reading, fortune telling, destiny, Chinese zodiac">
   <meta name="author" content="BaZi Destiny">
   <meta name="robots" content="index, follow">
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   
   <!-- Open Graph -->
   <meta property="og:title" content="BaZi Destiny — Chinese Astrology for the West">
@@ -72,11 +71,11 @@
 
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#" onclick="showHome(); toggleMobileMenu()">Home</a>
-    <a href="#" onclick="scrollToSection('how-it-works'); toggleMobileMenu()">How It Works</a>
-    <a href="#" onclick="scrollToSection('pricing'); toggleMobileMenu()">Pricing</a>
-    <a href="#" onclick="showCompatibility(); toggleMobileMenu()" style="color:var(--gold)">💕 Love Match</a>
-    <button class="btn-primary" onclick="showCalculator(); toggleMobileMenu()">Get Your Reading</button>
+    <a href="#" onclick="showHome(); return false">Home</a>
+    <a href="#" onclick="scrollToSection('how-it-works'); return false">How It Works</a>
+    <a href="#" onclick="scrollToSection('pricing'); return false">Pricing</a>
+    <a href="#" onclick="showCompatibility(); return false" style="color:var(--gold)">💕 Love Match</a>
+    <button class="btn-primary" onclick="showCalculator(); return false">Get Your Reading</button>
   </div>
 
   <!-- Main Content -->
@@ -370,7 +369,7 @@
             </div>
             <ul class="pricing-features">
               <li class="included">✓ Everything in Destiny Master</li>
-              <li class="included">✓ 1:1 AI follow-up Q&A (5 questions)</li>
+              <li class="included">✓ 1:1 Follow-up Q&A (5 sessions)</li>
               <li class="included">✓ 30-min Feng Shui room consultation</li>
               <li class="included">✓ Monthly lucky horoscope (3 months)</li>
               <li class="included">✓ Relationship compatibility report (2 people)</li>
@@ -607,7 +606,7 @@
                 </div>
                 <div class="paywall-option paywall-premium" onclick="showUpgrade('premium')">
                   <div class="paywall-option-title">Soul Guide — $29.90</div>
-                  <div class="paywall-option-desc">+ 5 AI questions + room consultation</div>
+                  <div class="paywall-option-desc">+ 5 Q&A sessions + room consultation</div>
                 </div>
               </div>
               <button class="btn-ghost" onclick="showUpgrade('pro')">See what's inside →</button>
@@ -664,6 +663,10 @@
     <!-- Love Compatibility Section -->
     <section class="compat-section" id="compatSection" style="display:none;">
       <div class="compat-inner">
+        <button class="compat-back-btn" onclick="showHome()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to Home
+        </button>
         <div class="compat-header">
           <div class="compat-badge">💕 Love Compatibility</div>
           <h2 class="compat-title">Discover Your<br><span class="title-accent">BaZi Love Match</span></h2>
@@ -691,7 +694,7 @@
                   <label>Birth Hour</label>
                   <select id="compatHour1" required>
                     <option value="">Select hour</option>
-                    <option value="0">23:00 – 00:59 (Rat)</option>
+                    <option value="0">00:00 – 00:59 (Rat)</option>
                     <option value="1">01:00 – 02:59 (Ox)</option>
                     <option value="2">03:00 – 04:59 (Tiger)</option>
                     <option value="3">05:00 – 06:59 (Rabbit)</option>
@@ -737,7 +740,7 @@
                   <label>Birth Hour</label>
                   <select id="compatHour2" required>
                     <option value="">Select hour</option>
-                    <option value="0">23:00 – 00:59 (Rat)</option>
+                    <option value="0">00:00 – 00:59 (Rat)</option>
                     <option value="1">01:00 – 02:59 (Ox)</option>
                     <option value="2">03:00 – 04:59 (Tiger)</option>
                     <option value="3">05:00 – 06:59 (Rabbit)</option>
@@ -795,7 +798,7 @@
       <div class="modal-icon">🔮</div>
       <div class="modal-title" id="modalTitle">Unlock Destiny Master</div>
       <p class="modal-desc" id="modalDesc">Get the complete BaZi reading with Career, Wealth, Relationships, Health analysis, and personalized Feng Shui guidance.</p>
-      <div class="modal-price" id="modalPrice">$9.90 / month</div>
+      <div class="modal-price" id="modalPrice">$9.90 <small style="font-size:18px;color:var(--text-tertiary);font-weight:400;">one-time</small></div>
       <div class="modal-features">
         <div class="modal-feature-item">✓ Full 12-section BaZi reading</div>
         <div class="modal-feature-item">✓ Personalized Feng Shui analysis</div>

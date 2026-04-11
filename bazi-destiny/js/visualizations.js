@@ -314,13 +314,15 @@
     pillarData.forEach((p, i) => {
       const color = elemColors[p.element];
       const branchEn = BRANCH_TO_EN[p.branch] || '';
+      // stemIdx is 0-9 (heavenly stem index), use modulo 10 for natural cycle
+      const strength = Math.round(((p.stemIdx % 10) / 10) * 100);
       html += `
         <div class="pillar-str-card" style="animation-delay:${i * 120}ms">
           <div class="psc-label">${p.label}</div>
           <div class="psc-stem" style="color:${color}">${p.enStem}</div>
           <div class="psc-branch"><span class="psc-branch-en">${branchEn}</span> <small>(${p.branch})</small></div>
           <div class="psc-elem-bar">
-            <div class="psc-elem-fill" style="background:${color};width:${Math.round((parseInt(p.stemIdx % 5) + 1) * 20)}%"></div>
+            <div class="psc-elem-fill" style="background:${color};width:${strength}%"></div>
           </div>
           <div class="psc-elem-name" style="color:${color}">${ELEM_TO_EN[p.element]}</div>
         </div>

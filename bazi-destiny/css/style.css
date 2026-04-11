@@ -583,6 +583,8 @@ input[type="date"] {
   position: relative;
   cursor: pointer;
   padding-right: 44px;
+  -webkit-appearance: none;
+  appearance: none;
 }
 input[type="date"]::-webkit-calendar-picker-indicator {
   position: absolute;
@@ -943,6 +945,24 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   .footer-links { justify-content: center; }
   .calculator-form { padding: 24px 20px; }
   .result-card { padding: 24px 20px; }
+  /* 结果页布局 */
+  .compass-dir-grid { grid-template-columns: repeat(2, 1fr); }
+  .pillar-strength-grid { grid-template-columns: repeat(2, 1fr); }
+  .result-main-grid { grid-template-columns: 1fr; }
+  .result-summary-card h2 { font-size: 26px; }
+  .mini-pillars { flex-wrap: wrap; justify-content: center; }
+  .mini-pillar { min-width: 64px; padding: 8px 10px; }
+  /* 姻缘页响应式 */
+  .compat-form-grid { grid-template-columns: 1fr; gap: 20px; }
+  .compat-heart-connector { flex-direction: row; padding: 12px 0; }
+  .compat-title { font-size: 36px; }
+  .compat-section { padding: 88px 16px 60px; }
+  .compat-score-hero { padding: 32px 24px; }
+  .compat-grid-3 { grid-template-columns: 1fr; }
+  .compat-dp-pillars { grid-template-columns: 1fr; gap: 16px; }
+  .cpm-vs { display: none; }
+  .compat-person-card { padding: 24px 20px; }
+  .compat-pillars-row { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
   .hero-title { font-size: 38px; }
@@ -1133,17 +1153,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .result-main-left { display: flex; flex-direction: column; gap: 20px; }
 .result-main-right { display: flex; flex-direction: column; gap: 20px; }
-@media (max-width: 768px) {
-  .compass-dir-grid { grid-template-columns: repeat(2, 1fr); }
-  .pillar-strength-grid { grid-template-columns: repeat(2, 1fr); }
-  .result-main-grid { grid-template-columns: 1fr; }
-  .result-summary-card {
-    grid-template-columns: 1fr; gap: 28px; padding: 28px 24px;
-  }
-  .result-summary-card h2 { font-size: 26px; }
-  .mini-pillars { flex-wrap: wrap; justify-content: center; }
-  .mini-pillar { min-width: 64px; padding: 8px 10px; }
-}
 
 /* ---- Love Compatibility ---- */
 .nav-love-link {
@@ -1156,7 +1165,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .compat-section {
   min-height: 100vh;
-  padding: 120px 24px 80px;
+  padding: 100px 24px 80px;
   display: flex;
   justify-content: center;
 }
@@ -1215,6 +1224,20 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .compat-cta-row {
   display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap;
 }
+.compat-back-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 100px; padding: 10px 20px;
+  color: var(--text-secondary); font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; margin-bottom: 40px;
+}
+.compat-back-btn:hover {
+  border-color: rgba(212,165,116,0.4);
+  color: var(--text-primary);
+  background: rgba(212,165,116,0.05);
+}
+
 
 /* ---- Compatibility Results ---- */
 .compat-results { margin-top: 48px; }
@@ -1378,23 +1401,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   font-size: 14px; color: var(--text-tertiary); margin-bottom: 16px;
 }
 
-@media (max-width: 768px) {
-  .compat-form-grid { grid-template-columns: 1fr; }
-  .compat-heart-connector { flex-direction: row; padding-top: 0; padding: 12px 0; }
-  .compat-grid-3 { grid-template-columns: 1fr; }
-  .compat-title { font-size: 36px; }
-  .compat-dp-pillars { grid-template-columns: 1fr; }
-  .compat-pillars-row { grid-template-columns: 1fr; }
-}
-
 /* Payment Modal — Enhanced */
 .modal-icon { font-size: 48px; text-align: center; margin-bottom: 12px; }
 .modal-features { margin: 16px 0 20px; }
 .modal-feature-item { font-size: 14px; color: #c0b0a0; padding: 6px 0; border-bottom: 1px solid rgba(212,168,67,0.1); }
 .modal-feature-item:last-child { border-bottom: none; }
 .modal-email-row { display: flex; gap: 8px; margin-bottom: 12px; }
-.modal-email-input { flex: 1; padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(212,168,67,0.3); border-radius: 8px; color: #e8d5c0; font-size: 14px; outline: none; }
-.modal-email-input:focus { border-color: #d4a843; }
+.modal-email-input { flex: 1; padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(212,168,67,0.3); border-radius: 8px; color: #e8d5c0; font-size: 14px; outline: none; transition: border-color var(--transition); }
+.modal-email-input:focus { border-color: var(--gold); }
 .modal-email-input::placeholder { color: #6a5a4a; }
 
 /* ============================================================

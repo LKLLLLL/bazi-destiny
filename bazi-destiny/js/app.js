@@ -54,6 +54,7 @@
     document.getElementById('pricing').style.display = '';
     document.getElementById('calcForm').style.display = '';
     document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('resultsSection').style.display = 'none';
     document.getElementById('userName').value = '';
     document.getElementById('birthDate').value = '';
     document.getElementById('birthHour').value = '';
@@ -92,6 +93,7 @@
 
   function toggleMobileMenu() {
     const menu = document.getElementById('mobileMenu');
+    if (!menu) return;
     menu.classList.toggle('open');
   }
 
@@ -416,11 +418,11 @@
     if (tier === 'pro') {
       title.textContent = 'Unlock Destiny Master';
       desc.textContent = 'Get the complete BaZi reading with Career, Wealth, Relationships, Health analysis, personalized Feng Shui guidance, and PDF download.';
-      price.textContent = '$9.90';
+      price.innerHTML = '$9.90 <small style="font-size:18px;color:var(--text-tertiary);font-weight:400;">one-time</small>';
     } else {
       title.textContent = 'Upgrade to Soul Guide';
-      desc.textContent = 'Everything in Destiny Master plus 1:1 AI follow-up Q&A, 30-minute Feng Shui room consultation, and 3 months of monthly horoscopes.';
-      price.textContent = '$29.90';
+      desc.textContent = 'Everything in Destiny Master plus 1:1 Follow-up Q&A, 30-minute Feng Shui room consultation, and 3 months of monthly horoscopes.';
+      price.innerHTML = '$29.90 <small style="font-size:18px;color:var(--text-tertiary);font-weight:400;">one-time</small>';
     }
 
     modal.style.display = '';
@@ -484,6 +486,8 @@
   ];
 
   function animateDemo() {
+    // Guard: only animate if demo pillar elements exist in the DOM
+    if (!document.getElementById('demoStem1')) return;
     const now = new Date();
     const idx = Math.floor(now.getSeconds() / 5) % DEMO_PILLARS.length;
     const p  = DEMO_PILLARS[idx];
@@ -583,6 +587,11 @@
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
+    // Close mobile menu if open
+    const menu = document.getElementById('mobileMenu');
+    if (menu && menu.classList.contains('open')) {
+      menu.classList.remove('open');
+    }
   }
 
   function showCompatibility() {
@@ -594,12 +603,18 @@
   }
 
   function runCompatibility() {
+    console.log('[DEBUG] runCompatibility called');
+    console.log('[DEBUG] BaZiEngine:', typeof BaZiEngine);
+    console.log('[DEBUG] Compatibility:', typeof Compatibility);
     const name1 = document.getElementById('compatName1').value.trim();
     const date1 = document.getElementById('compatDate1').value;
     const hour1 = parseInt(document.getElementById('compatHour1').value);
     const name2 = document.getElementById('compatName2').value.trim();
     const date2 = document.getElementById('compatDate2').value;
     const hour2 = parseInt(document.getElementById('compatHour2').value);
+
+    console.log('[DEBUG] name1:', name1, '| date1:', date1, '| hour1:', hour1);
+    console.log('[DEBUG] name2:', name2, '| date2:', date2, '| hour2:', hour2);
 
     if (!name1 || !date1 || isNaN(hour1)) {
       alert('Please fill in all fields for Person 1.');
@@ -615,8 +630,10 @@
     const year1 = parseInt(d1[0]), month1 = parseInt(d1[1]), day1 = parseInt(d1[2]);
     const year2 = parseInt(d2[0]), month2 = parseInt(d2[1]), day2 = parseInt(d2[2]);
 
+    console.log('[DEBUG] data1 calc...');
     const data1 = BaZiEngine.calculateFourPillars(year1, month1, day1, hour1);
     const data2 = BaZiEngine.calculateFourPillars(year2, month2, day2, hour2);
+    console.log('[DEBUG] data1:', data1, '| data2:', data2);
 
     const result = Compatibility.analyzeCompatibility(data1, data2);
     renderCompatibilityResult(result, name1, name2, data1, data2);
@@ -730,14 +747,14 @@
             <span style="font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;text-transform:uppercase">${name1} Day Pillar</span>
             <span class="cpm-stem">${result.dayPillar.p1.stemName}</span>
             <span class="cpm-branch">${result.dayPillar.p1.branchName}</span>
-            <span class="cpm-elem" style="background:${stemColors[result.dayPillar.p1.elementName].replace('#','')}22;color:${stemColors[result.dayPillar.p1.elementName]}">${result.dayPillar.p1.elementName}</span>
+            <span class="cpm-elem" style="background:${stemColors[result.dayPillar.p1.elementName]}22;color:${stemColors[result.dayPillar.p1.elementName]}">${result.dayPillar.p1.elementName}</span>
           </div>
           <div class="cpm-vs">×</div>
           <div class="compat-pillar-mini">
             <span style="font-size:11px;color:var(--text-tertiary);letter-spacing:0.1em;text-transform:uppercase">${name2} Day Pillar</span>
             <span class="cpm-stem">${result.dayPillar.p2.stemName}</span>
             <span class="cpm-branch">${result.dayPillar.p2.branchName}</span>
-            <span class="cpm-elem" style="background:${stemColors[result.dayPillar.p2.elementName].replace('#','')}22;color:${stemColors[result.dayPillar.p2.elementName]}">${result.dayPillar.p2.elementName}</span>
+            <span class="cpm-elem" style="background:${stemColors[result.dayPillar.p2.elementName]}22;color:${stemColors[result.dayPillar.p2.elementName]}">${result.dayPillar.p2.elementName}</span>
           </div>
         </div>
       </div>

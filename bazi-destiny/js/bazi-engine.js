@@ -463,10 +463,18 @@
         yearName: getYearName(year),
         dayStemMeaning: getStemMeaning(pillars.day.stem),
         dayBranchMeaning: getBranchMeaning(pillars.day.branch),
-        // Hidden day stem/branch indices for later use
         dayStemIdx: pillars.dayStemIdx,
-        dayBranchIdx: pillars.dayBranchIdx
+        dayBranchIdx: pillars.dayBranchIdx,
       };
+    },
+
+    // Expose calculateFourPillars for the Love Compatibility page
+    calculateFourPillars: function(year, month, day, hour) {
+      const pillars = calculateFourPillars(year, month, day, hour);
+      const elements = analyzeFiveElements(pillars);
+      const directions = getLuckyDirections(pillars, elements);
+      const lucky = getLuckyItems(pillars);
+      return { pillars, elements, directions, lucky };
     },
 
     solarToLunar: solarToLunar,
