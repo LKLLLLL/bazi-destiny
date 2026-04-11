@@ -805,27 +805,13 @@
         <div class="modal-feature-item">✓ Lucky numbers, colors & directions</div>
         <div class="modal-feature-item">✓ PDF report download</div>
       </div>
-      <div class="modal-email-row">
-        <input type="email" id="notifyEmail" placeholder="your@email.com" class="modal-email-input">
-        <button class="btn-primary" onclick="submitNotify()" style="padding: 10px 20px; font-size: 0.9rem;">Notify Me</button>
-      </div>
-      <p class="modal-note">💳 Stripe checkout — launching soon. Get notified when we go live.</p>
-      <button class="btn-ghost btn-full" onclick="closePaymentModal()">Maybe later</button>
+      <button class="btn-primary btn-full" id="checkoutBtn" onclick="startCheckout()" style="margin-top: 12px;">
+        💳 Pay $9.90 — Unlock Now
+      </button>
+      <p class="modal-note" style="margin-top: 16px;">Secure payment via Lemon Squeezy. Instant access after purchase.</p>
+      <button class="btn-ghost btn-full" onclick="closePaymentModal()" style="margin-top: 8px;">Maybe later</button>
     </div>
   </div>
-  <script>
-    function submitNotify() {
-      var email = document.getElementById('notifyEmail').value;
-      if (email && email.includes('@')) {
-        var note = document.querySelector('.modal-note');
-        note.textContent = '✅ You\'re on the list! We\'ll email you when Stripe goes live.';
-        note.style.color = '#5dba7d';
-        document.getElementById('notifyEmail').value = '';
-      } else {
-        alert('Please enter a valid email address.');
-      }
-    }
-  </script>
 
   <script src="js/bazi-engine.js"></script>
   <script src="js/readings.js"></script>

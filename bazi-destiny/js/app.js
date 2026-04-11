@@ -430,10 +430,56 @@
 
   function closePaymentModal() {
     document.getElementById('paymentModal').style.display = 'none';
-    // For demo purposes, unlock pro content
+  }
+
+  // ============================================================
+  // LEMON SQUEEZY CHECKOUT
+  // ============================================================
+
+  const LEMON_CONFIG = {
+    storeId: '342486',
+    productId: '965368',
+    variantId: '1515888',
+    checkoutUrl: 'https://bazidestiny.lemonsqueezy.com/checkout/buy/c664c762-52f8-4063-9d44-2a61f184f0dc'
+  };
+
+  function startCheckout() {
+    // Save current reading to localStorage so we can restore after payment
     if (currentData) {
-      unlockPro();
+      localStorage.setItem('pendingReading', JSON.stringify(currentData));
     }
+
+    // Redirect to Lemon Squeezy checkout
+    window.location.href = LEMON_CONFIG.checkoutUrl;
+  }
+
+  function checkPaymentSuccess() {
+    // Check URL params for success indicator
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentSuccess = urlParams.get('payment') === 'success';
+    const orderId = urlParams.get('order_id');
+
+    if (paymentSuccess || localStorage.getItem('proUnlocked')) {
+      // Restore pending reading if exists
+      const pending = localStorage.getItem('pendingReading');
+      if (pending) {
+        currentData = JSON.parse(pending);
+        localStorage.removeItem('pendingReading');
+      }
+
+      // Unlock pro content
+      isProUnlocked = true;
+      localStorage.setItem('proUnlocked', 'true');
+      unlockPro();
+
+      // Clean URL
+      if (paymentSuccess) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
+      return true;
+    }
+    return false;
   }
 
   function unlockPro() {
@@ -514,6 +560,9 @@
   // ============================================================
 
   function init() {
+    // Check for payment success on page load
+    checkPaymentSuccess();
+
     initScrollEffect();
     animateDemo();
     setInterval(animateDemo, 5000);
@@ -843,6 +892,7 @@ Discover yours at: bazidestiny.com`;
   window.calculateBaZi = calculateBaZi;
   window.showUpgrade = showUpgrade;
   window.closePaymentModal = closePaymentModal;
+  window.startCheckout = startCheckout;
   window.showCompatibility = showCompatibility;
   window.runCompatibility = runCompatibility;
 
