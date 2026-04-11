@@ -7,16 +7,14 @@
   <title>BaZi Blog — Chinese Astrology Guides, Birth Chart Insights & Destiny Reading Tips</title>
   <meta name="description" content="Explore BaZi (Four Pillars of Destiny) through expert guides. Learn how Chinese astrology birth charts work, discover your five elements, love compatibility, and unlock your destiny today.">
   <meta name="keywords" content="BaZi, Four Pillars of Destiny, Chinese astrology, birth chart calculator, Five Elements, Chinese zodiac, love compatibility, bazi reading">
-  <meta property="og:title" content="BaZi Blog — Chinese Astrology Guides & Destiny Insights">
-  <meta property="og:description" content="Expert guides on BaZi Chinese astrology. Free calculator, element analysis, love compatibility, and more.">
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://mybazidestiny.com/blog.html">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔮</text></svg>">
-
-  <!-- Social Share -->
-  <meta property="og:title" content="BaZi Blog — Chinese Astrology Guides & Destiny Insights">
-  <meta property="og:description" content="Expert guides on BaZi Chinese astrology. Free calculator, element analysis, love compatibility, and more.">
-  <meta property="og:image" content="https://mybazidestiny.com/og-blog.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="sitemap" type="application/xml" href="https://mybazidestiny.com/sitemap.xml">
+  <meta property="og:image" content="https://mybazidestiny.com/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="stylesheet" href="css/style.css">
@@ -524,7 +522,42 @@
       document.querySelector('.newsletter-form').innerHTML =
         '<p style="color:var(--gold);font-size:16px">✨ Thank you! Your first BaZi forecast arrives soon.</p>';
     }
+
+    // Sticky upgrade button — appears after user scrolls 300px
+    window.addEventListener('scroll', function() {
+      const btn = document.getElementById('stickyUpgrade');
+      if (btn) btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    });
   </script>
+
+  <!-- Sticky Upgrade CTA -->
+  <a href="/#upgrade" id="stickyUpgrade" class="sticky-upgrade-btn" style="display:none;" onclick="window.location.href='/?pro=1'">
+    ✨ Unlock Full Reading — $9.90
+  </a>
+  <style>
+    .sticky-upgrade-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: linear-gradient(135deg, #d4a574, #b8895a);
+      color: #070710;
+      padding: 14px 22px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      box-shadow: 0 8px 32px rgba(212,165,116,0.4);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .sticky-upgrade-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(212,165,116,0.5);
+    }
+  </style>
 
 </body>
 </html>

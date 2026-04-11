@@ -87,16 +87,22 @@
 </head>
 <body>
   <div class="success-card">
-    <div class="icon">✨</div>
-    <h1>Payment Successful!</h1>
-    <p>Thank you for unlocking Destiny Master. Your complete BaZi reading is now available.</p>
+    <div class="icon">🎉</div>
+    <h1>You're All Set!</h1>
+    <p>Payment confirmed. Your full BaZi reading is unlocked — we'll redirect you now.</p>
     <div class="features">
       <div><span>✓</span> Full 12-section BaZi reading</div>
       <div><span>✓</span> Personalized Feng Shui analysis</div>
       <div><span>✓</span> Lucky numbers, colors & directions</div>
       <div><span>✓</span> PDF report download</div>
     </div>
-    <a href="/" class="btn-primary" onclick="localStorage.setItem('proUnlocked', 'true')">🔮 View My Reading</a>
   </div>
+  <script>
+    // Unlock pro immediately, then redirect to home after brief celebration
+    localStorage.setItem('proUnlocked', 'true');
+    setTimeout(function() {
+      window.location.href = '/';
+    }, 2000);
+  </script>
 </body>
 </html>

@@ -535,6 +535,15 @@
 
       return true;
     }
+
+    // Handle payment cancellation
+    const paymentCancelled = urlParams.get('payment') === 'cancel';
+    if (paymentCancelled) {
+      // Clean URL silently
+      window.history.replaceState({}, document.title, window.location.pathname);
+      // No error shown — user can simply try again via paywall
+    }
+
     return false;
   }
 
