@@ -469,25 +469,24 @@
   // ============================================================
 
   const DEMO_PILLARS = [
-    { stem: '甲', branch: '子', elem: '木' },
-    { stem: '乙', branch: '丑', elem: '木' },
-    { stem: '丙', branch: '寅', elem: '火' },
-    { stem: '丁', branch: '卯', elem: '火' },
-    { stem: '戊', branch: '辰', elem: '土' },
-    { stem: '己', branch: '巳', elem: '火' },
-    { stem: '庚', branch: '午', elem: '金' },
-    { stem: '辛', branch: '未', elem: '金' },
-    { stem: '壬', branch: '申', elem: '水' },
-    { stem: '癸', branch: '酉', elem: '水' },
-    { stem: '甲', branch: '戌', elem: '木' },
-    { stem: '乙', branch: '亥', elem: '木' }
+    { stem: 'Yang Wood', branch: 'Rat',    elem: 'Wood'   },
+    { stem: 'Yin Wood',  branch: 'Ox',     elem: 'Wood'   },
+    { stem: 'Yang Fire', branch: 'Tiger',  elem: 'Fire'   },
+    { stem: 'Yin Fire',  branch: 'Rabbit', elem: 'Fire'   },
+    { stem: 'Yang Earth',branch: 'Dragon', elem: 'Earth'  },
+    { stem: 'Yin Earth', branch: 'Snake',  elem: 'Earth'  },
+    { stem: 'Yang Metal',branch: 'Horse',  elem: 'Metal'  },
+    { stem: 'Yin Metal', branch: 'Goat',   elem: 'Metal'  },
+    { stem: 'Yang Water',branch: 'Monkey', elem: 'Water'  },
+    { stem: 'Yin Water', branch: 'Rooster',elem: 'Water'  },
+    { stem: 'Yang Wood', branch: 'Dog',    elem: 'Wood'   },
+    { stem: 'Yin Wood',  branch: 'Pig',   elem: 'Wood'   },
   ];
 
   function animateDemo() {
     const now = new Date();
-    // Pick a pseudo-random pillar based on time
     const idx = Math.floor(now.getSeconds() / 5) % DEMO_PILLARS.length;
-    const p = DEMO_PILLARS[idx];
+    const p  = DEMO_PILLARS[idx];
     const p2 = DEMO_PILLARS[(idx + 1) % DEMO_PILLARS.length];
     const p3 = DEMO_PILLARS[(idx + 2) % DEMO_PILLARS.length];
     const p4 = DEMO_PILLARS[(idx + 3) % DEMO_PILLARS.length];
