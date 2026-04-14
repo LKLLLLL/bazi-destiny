@@ -740,9 +740,6 @@
   }
 
   function runCompatibility() {
-    console.log('[DEBUG] runCompatibility called');
-    console.log('[DEBUG] BaZiEngine:', typeof BaZiEngine);
-    console.log('[DEBUG] Compatibility:', typeof Compatibility);
     const name1 = document.getElementById('compatName1').value.trim();
     const date1 = document.getElementById('compatDate1').value;
     const hour1 = parseInt(document.getElementById('compatHour1').value);
@@ -750,8 +747,6 @@
     const date2 = document.getElementById('compatDate2').value;
     const hour2 = parseInt(document.getElementById('compatHour2').value);
 
-    console.log('[DEBUG] name1:', name1, '| date1:', date1, '| hour1:', hour1);
-    console.log('[DEBUG] name2:', name2, '| date2:', date2, '| hour2:', hour2);
 
     if (!name1 || !date1 || isNaN(hour1)) {
       alert('Please fill in all fields for Person 1.');
@@ -767,10 +762,8 @@
     const year1 = parseInt(d1[0]), month1 = parseInt(d1[1]), day1 = parseInt(d1[2]);
     const year2 = parseInt(d2[0]), month2 = parseInt(d2[1]), day2 = parseInt(d2[2]);
 
-    console.log('[DEBUG] data1 calc...');
     const data1 = BaZiEngine.calculateFourPillars(year1, month1, day1, hour1);
     const data2 = BaZiEngine.calculateFourPillars(year2, month2, day2, hour2);
-    console.log('[DEBUG] data1:', data1, '| data2:', data2);
 
     const result = Compatibility.analyzeCompatibility(data1, data2);
     renderCompatibilityResult(result, name1, name2, data1, data2);
