@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>欧美跨境电商市场数据报告 2025</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e2e8f0; }
+
+  .header {
+    background: linear-gradient(135deg, #1a1f35 0%, #0d1b2a 100%);
+    padding: 40px 20px;
+    text-align: center;
+    border-bottom: 1px solid #2d3748;
+  }
+  .header h1 { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .header p { color: #94a3b8; font-size: 0.9rem; }
+  .header .badge { display: inline-block; background: #3b82f6; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; margin-top: 10px; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+
+  /* KPI Cards */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 30px; }
+  .kpi-card {
+    background: linear-gradient(135deg, #1e2a3a, #162032);
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .kpi-card:hover { transform: translateY(-3px); }
+  .kpi-card .icon { font-size: 2rem; margin-bottom: 8px; }
+  .kpi-card .value { font-size: 1.8rem; font-weight: 700; color: #60a5fa; }
+  .kpi-card .label { font-size: 0.8rem; color: #94a3b8; margin-top: 4px; }
+  .kpi-card .growth { font-size: 0.75rem; color: #34d399; margin-top: 4px; }
+
+  /* Section */
+  .section { margin-bottom: 30px; }
+  .section-title {
+    font-size: 1.1rem; font-weight: 600; color: #e2e8f0;
+    margin-bottom: 16px; padding-left: 12px;
+    border-left: 3px solid #3b82f6;
+  }
+
+  /* Chart Grid */
+  .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+  .chart-card {
+    background: #1a2332;
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .chart-card h3 { font-size: 0.9rem; color: #94a3b8; margin-bottom: 16px; text-align: center; }
+  .chart-wrap { position: relative; height: 260px; }
+
+  /* Table */
+  .table-card {
+    background: #1a2332;
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+  }
+  .table-card h3 { font-size: 0.9rem; color: #94a3b8; margin-bottom: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { background: #0f1117; color: #60a5fa; padding: 10px 12px; text-align: left; font-weight: 600; }
+  td { padding: 9px 12px; border-bottom: 1px solid #2d3748; color: #cbd5e1; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1e2a3a; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 600; }
+  .tag-blue { background: #1d4ed8; color: #bfdbfe; }
+  .tag-green { background: #065f46; color: #6ee7b7; }
+  .tag-orange { background: #92400e; color: #fcd34d; }
+
+  /* Progress bars */
+  .progress-list { list-style: none; }
+  .progress-item { margin-bottom: 14px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 5px; }
+  .progress-bar { height: 8px; background: #2d3748; border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+
+  /* Trend cards */
+  .trend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .trend-card {
+    background: #1a2332;
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .trend-card .trend-icon { font-size: 1.5rem; margin-bottom: 8px; }
+  .trend-card h4 { font-size: 0.9rem; color: #e2e8f0; margin-bottom: 6px; }
+  .trend-card p { font-size: 0.8rem; color: #94a3b8; line-height: 1.5; }
+
+  .footer { text-align: center; padding: 30px; color: #4a5568; font-size: 0.75rem; border-top: 1px solid #2d3748; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 欧美跨境电商市场数据报告</h1>
+  <p>数据来源：Statista · eMarketer · Eurostat · Digital Commerce 360 · Shopify</p>
+  <span class="badge">2025年3月更新</span>
+</div>
+
+<div class="container">
+
+  <!-- KPI -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="icon">🌍</div>
+      <div class="value">$7.9T</div>
+      <div class="label">2024年全球跨境电商规模</div>
+      <div class="growth">↑ 预计2025年达 $9.0T</div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon">📈</div>
+      <div class="value">14.5%</div>
+      <div class="label">2024-2028 年复合增长率</div>
+      <div class="growth">↑ 持续高速增长</div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon">👥</div>
+      <div class="value">22亿+</div>
+      <div class="label">全球跨境网购用户数</div>
+      <div class="growth">↑ 2024年数据</div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon">🇺🇸</div>
+      <div class="value">$2,070亿</div>
+      <div class="label">美国跨境电商规模（2024）</div>
+      <div class="growth">↑ 2025年预计 $2,400亿</div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon">🇪🇺</div>
+      <div class="value">€8,870亿</div>
+      <div class="label">欧洲电商总规模（2024）</div>
+      <div class="growth">↑ 同比增长 10%</div>
+    </div>
+  </div>
+
+  <!-- 美国市场 -->
+  <div class="section">
+    <div class="section-title">🇺🇸 美国市场</div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>美国电商规模趋势（万亿美元）</h3>
+        <div class="chart-wrap">
+          <canvas id="usMarketChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>美国电商平台市场份额（2024）</h3>
+        <div class="chart-wrap">
+          <canvas id="usPlatformChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>美国热门跨境品类占比</h3>
+        <div class="chart-wrap">
+          <canvas id="usCategoryChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>美国跨境购物来源国分布</h3>
+        <div class="chart-wrap">
+          <canvas id="usSourceChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 欧洲市场 -->
+  <div class="section">
+    <div class="section-title">🇪🇺 欧洲市场</div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>欧洲主要国家电商规模（亿欧元，2024）</h3>
+        <div class="chart-wrap">
+          <canvas id="euCountryChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>欧洲跨境购物来源分布</h3>
+        <div class="chart-wrap">
+          <canvas id="euSourceChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card" style="margin-top:20px;">
+      <h3>欧洲主要电商平台（2024）</h3>
+      <table>
+        <thead><tr><th>平台</th><th>月活用户（欧洲）</th><th>特点</th><th>类型</th></tr></thead>
+        <tbody>
+          <tr><td>Amazon</td><td>3.2 亿</td><td>最大综合平台</td><td><span class="tag tag-blue">综合</span></td></tr>
+          <tr><td>eBay</td><td>1.5 亿</td><td>C2C + B2C</td><td><span class="tag tag-blue">综合</span></td></tr>
+          <tr><td>Zalando</td><td>5,000 万</td><td>时尚垂直</td><td><span class="tag tag-green">垂直</span></td></tr>
+          <tr><td>Allegro</td><td>2,200 万</td><td>波兰最大平台</td><td><span class="tag tag-orange">本土</span></td></tr>
+          <tr><td>ASOS</td><td>2,600 万</td><td>快时尚</td><td><span class="tag tag-green">垂直</span></td></tr>
+          <tr><td>Otto</td><td>1,100 万</td><td>德国本土</td><td><span class="tag tag-orange">本土</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 中国卖家出海 -->
+  <div class="section">
+    <div class="section-title">🇨🇳 中国卖家出海数据</div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>中国跨境出口电商规模（万亿元）</h3>
+        <div class="chart-wrap">
+          <canvas id="cnExportChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>主要出海平台 GMV 对比（2024，亿美元）</h3>
+        <div class="chart-wrap">
+          <canvas id="cnPlatformChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card" style="margin-top:20px;">
+      <h3>中国卖家主要出海平台对比</h3>
+      <table>
+        <thead><tr><th>平台</th><th>特点</th><th>适合品类</th><th>竞争程度</th></tr></thead>
+        <tbody>
+          <tr><td>Amazon</td><td>最大流量，竞争激烈</td><td>全品类</td><td><span class="tag tag-orange">高</span></td></tr>
+          <tr><td>Temu</td><td>极速增长，低价策略</td><td>日用百货</td><td><span class="tag tag-orange">高</span></td></tr>
+          <tr><td>SHEIN</td><td>快时尚独角兽</td><td>服装</td><td><span class="tag tag-orange">高</span></td></tr>
+          <tr><td>TikTok Shop</td><td>内容电商新兴</td><td>美妆、时尚</td><td><span class="tag tag-green">中</span></td></tr>
+          <tr><td>eBay</td><td>成熟市场，利润稳定</td><td>电子、收藏品</td><td><span class="tag tag-green">中</span></td></tr>
+          <tr><td>Shopify独立站</td><td>品牌化路线</td><td>高客单价品类</td><td><span class="tag tag-blue">低</span></td></tr>
+          <tr><td>Etsy</td><td>手工/个性化</td><td>工艺品</td><td><span class="tag tag-blue">低</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2025趋势 -->
+  <div class="section">
+    <div class="section-title">💡 2025年机会品类</div>
+    <div class="table-card">
+      <h3>蓝海品类增长潜力</h3>
+      <ul class="progress-list">
+        <li class="progress-item">
+          <div class="progress-label"><span>🐾 宠物用品</span><span>年增长 10%+</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:85%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div>
+        </li>
+        <li class="progress-item">
+          <div class="progress-label"><span>💊 健康 & 保健品</span><span>年增长 12%+</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:90%;background:linear-gradient(90deg,#10b981,#34d399)"></div></div>
+        </li>
+        <li class="progress-item">
+          <div class="progress-label"><span>🏠 智能家居</span><span>年增长 15%+</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:92%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div></div>
+        </li>
+        <li class="progress-item">
+          <div class="progress-label"><span>⛺ 户外 & 露营</span><span>年增长 9%+</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:75%;background:linear-gradient(90deg,#f59e0b,#fcd34d)"></div></div>
+        </li>
+        <li class="progress-item">
+          <div class="progress-label"><span>🎨 个性化定制品</span><span>年增长 18%+</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:95%;background:linear-gradient(90deg,#ef4444,#f87171)"></div></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 趋势卡片 -->
+  <div class="section">
+    <div class="section-title">⚠️ 关键风险与趋势</div>
+    <div class="trend-grid">
+      <div class="trend-card">
+        <div class="trend-icon">🏛️</div>
+        <h4>监管收紧</h4>
+        <p>美国 De Minimis $800 免税门槛面临收紧；欧盟 DSA/DMA 全面实施；英国 GPSR 新规已生效</p>
+      </div>
+      <div class="trend-card">
+        <div class="trend-icon">📱</div>
+        <h4>移动端主导</h4>
+        <p>欧美移动端电商占比超 60%，TikTok、Instagram Shopping 社交电商快速增长</p>
+      </div>
+      <div class="trend-card">
+        <div class="trend-icon">🚚</div>
+        <h4>物流升级</h4>
+        <p>消费者期望跨境 3-7 天送达；中国卖家海外仓渗透率约 35%，持续提升</p>
+      </div>
+      <div class="trend-card">
+        <div class="trend-icon">💰</div>
+        <h4>流量成本上涨</h4>
+        <p>Amazon CPC 均价 $1.5-3.0，平台流量成本持续上涨，独立站品牌化成趋势</p>
+      </div>
+      <div class="trend-card">
+        <div class="trend-icon">🌱</div>
+        <h4>可持续消费</h4>
+        <p>欧洲消费者对环保包装、碳足迹关注度提升，绿色认证成为竞争优势</p>
+      </div>
+      <div class="trend-card">
+        <div class="trend-icon">🤖</div>
+        <h4>AI 赋能</h4>
+        <p>各大平台加大 AI 投入，个性化推荐、智能定价、AI 客服成为标配</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  数据来源：Statista · eMarketer · Eurostat · Digital Commerce 360 · Shopify · 中国商务部 | 报告生成时间：2025年3月
+</div>
+
+<script>
+const chartDefaults = {
+  plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } },
+  scales: {
+    x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#2d3748' } },
+    y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#2d3748' } }
+  }
+};
+
+// 美国电商规模趋势
+new Chart(document.getElementById('usMarketChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2022', '2023', '2024', '2025E'],
+    datasets: [
+      { label: '电商总规模', data: [1.03, 1.12, 1.22, 1.33], backgroundColor: 'rgba(59,130,246,0.7)', borderRadius: 6 },
+      { label: '跨境规模', data: [0.155, 0.179, 0.207, 0.24], backgroundColor: 'rgba(16,185,129,0.7)', borderRadius: 6 }
+    ]
+  },
+  options: { ...chartDefaults, responsive: true, maintainAspectRatio: false }
+});
+
+// 美国平台份额
+new Chart(document.getElementById('usPlatformChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Amazon', 'Walmart', 'Apple', 'eBay', 'Target', '其他'],
+    datasets: [{ data: [37.6, 6.4, 3.6, 3.5, 2.1, 46.8],
+      backgroundColor: ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#6b7280'],
+      borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8', font: { size: 10 } } } } }
+});
+
+// 美国品类
+new Chart(document.getElementById('usCategoryChart'), {
+  type: 'bar',
+  data: {
+    labels: ['电子产品', '服装鞋类', '美妆个护', '家居园艺', '运动户外', '玩具婴童', '其他'],
+    datasets: [{ label: '占比%', data: [28, 22, 14, 11, 9, 7, 9],
+      backgroundColor: ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#6b7280'],
+      borderRadius: 6 }]
+  },
+  options: { ...chartDefaults, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, indexAxis: 'y' }
+});
+
+// 美国来源国
+new Chart(document.getElementById('usSourceChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['中国（含香港）', '英国', '加拿大', '德国', '日本', '其他'],
+    datasets: [{ data: [40, 12, 10, 8, 6, 24],
+      backgroundColor: ['#ef4444','#3b82f6','#10b981','#f59e0b','#8b5cf6','#6b7280'],
+      borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8', font: { size: 10 } } } } }
+});
+
+// 欧洲国家规模
+new Chart(document.getElementById('euCountryChart'), {
+  type: 'bar',
+  data: {
+    labels: ['英国', '德国', '法国', '西班牙', '意大利', '荷兰', '波兰'],
+    datasets: [{ label: '电商规模（亿欧元）', data: [2480, 1850, 1590, 870, 760, 430, 380],
+      backgroundColor: 'rgba(139,92,246,0.75)', borderRadius: 6 }]
+  },
+  options: { ...chartDefaults, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+});
+
+// 欧洲来源
+new Chart(document.getElementById('euSourceChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['欧盟内部跨境', '中国', '美国', '英国', '其他'],
+    datasets: [{ data: [45, 30, 12, 8, 5],
+      backgroundColor: ['#3b82f6','#ef4444','#10b981','#f59e0b','#6b7280'],
+      borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8', font: { size: 10 } } } } }
+});
+
+// 中国出口规模
+new Chart(document.getElementById('cnExportChart'), {
+  type: 'line',
+  data: {
+    labels: ['2022', '2023', '2024E'],
+    datasets: [{ label: '跨境出口规模（万亿元）', data: [1.5, 1.83, 2.2],
+      borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.15)',
+      pointBackgroundColor: '#f59e0b', pointRadius: 5, fill: true, tension: 0.4 }]
+  },
+  options: { ...chartDefaults, responsive: true, maintainAspectRatio: false }
+});
+
+// 出海平台GMV
+new Chart(document.getElementById('cnPlatformChart'), {
+  type: 'bar',
+  data: {
+    labels: ['SHEIN', 'Temu', 'TikTok Shop'],
+    datasets: [{ label: 'GMV（亿美元）', data: [450, 350, 300],
+      backgroundColor: ['#ef4444','#3b82f6','#10b981'], borderRadius: 8 }]
+  },
+  options: { ...chartDefaults, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+});
+</script>
+</body>
+</html>
