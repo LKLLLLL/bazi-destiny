@@ -180,10 +180,10 @@
     </defs>`;
 
     // Background rings
-    svg += svgEl('circle', { cx, cy, r: r1 + 4, fill: 'none', stroke: 'rgba(212,165,116,0.1)', 'stroke-width': 1 });
-    svg += svgEl('circle', { cx, cy, r: r1, fill: 'rgba(255,255,255,0.02)', stroke: 'rgba(212,165,116,0.2)', 'stroke-width': 1.5 });
-    svg += svgEl('circle', { cx, cy, r: r2, fill: 'none', stroke: 'rgba(212,165,116,0.08)', 'stroke-width': 1 });
-    svg += svgEl('circle', { cx, cy, r: r3, fill: 'rgba(255,255,255,0.02)', stroke: 'rgba(212,165,116,0.1)', 'stroke-width': 1 });
+    svg += `<circle cx="${cx}" cy="${cy}" r="${r1 + 4}" fill="none" stroke="rgba(212,165,116,0.1)" stroke-width="1"/>`;
+    svg += `<circle cx="${cx}" cy="${cy}" r="${r1}" fill="rgba(255,255,255,0.02)" stroke="rgba(212,165,116,0.2)" stroke-width="1.5"/>`;
+    svg += `<circle cx="${cx}" cy="${cy}" r="${r2}" fill="none" stroke="rgba(212,165,116,0.08)" stroke-width="1"/>`;
+    svg += `<circle cx="${cx}" cy="${cy}" r="${r3}" fill="rgba(255,255,255,0.02)" stroke="rgba(212,165,116,0.1)" stroke-width="1"/>`;
 
     // Cardinal ticks
     ['East','South','West','North'].forEach(d => {
@@ -240,11 +240,11 @@
     svg += `<line x1="${np.x.toFixed(1)}" y1="${np.y.toFixed(1)}" x2="${np.x.toFixed(1)}" y2="${np.y.toFixed(1)}" stroke="#e85d4a" stroke-width="2.5" stroke-linecap="round" filter="url(#compass-glow)"/>`;
 
     // Animated glow ring
-    svg += svgEl('circle', { cx, cy, r: r3 + 2, fill: 'none', stroke: 'rgba(212,165,116,0.2)', 'stroke-width': 1, class: 'compass-ring-anim' });
+    svg += `<circle cx="${cx}" cy="${cy}" r="${r3 + 2}" fill="none" stroke="rgba(212,165,116,0.2)" stroke-width="1" class="compass-ring-anim"/>`;
 
     // Center dot
-    svg += svgEl('circle', { cx, cy, r: 5, fill: 'var(--gold)', filter: 'url(#compass-glow)' });
-    svg += svgEl('circle', { cx, cy, r: 2, fill: '#0a0806' });
+    svg += `<circle cx="${cx}" cy="${cy}" r="5" fill="var(--gold)" filter="url(#compass-glow)"/>`;
+    svg += `<circle cx="${cx}" cy="${cy}" r="2" fill="#0a0806"/>`;
 
     // BaGua trigrams around outer ring
     const bagua = [
