@@ -1,0 +1,15 @@
+{
+  "entries": [
+    { "id": "demo-01", "name1": "Emma", "name2": "Jack", "score": 96, "tier": "Soulmate Connection", "elem1": "Wood", "elem2": "Fire", "year1": 1992, "year2": 1990, "submittedAt": "2026-04-10T00:00:00Z" },
+    { "id": "demo-02", "name1": "Sophia", "name2": "Lucas", "score": 93, "tier": "Deep Harmony", "elem1": "Earth", "elem2": "Metal", "year1": 1988, "year2": 1991, "submittedAt": "2026-04-11T00:00:00Z" },
+    { "id": "demo-03", "name1": "Olivia", "name2": "Noah", "score": 91, "tier": "Deep Harmony", "elem1": "Water", "elem2": "Wood", "year1": 1995, "year2": 1993, "submittedAt": "2026-04-11T00:00:00Z" },
+    { "id": "demo-04", "name1": "Ava", "name2": "Liam", "score": 88, "tier": "Strong Bond", "elem1": "Fire", "elem2": "Earth", "year1": 1990, "year2": 1989, "submittedAt": "2026-04-12T00:00:00Z" },
+    { "id": "demo-05", "name1": "Isabella", "name2": "Oliver", "score": 85, "tier": "Strong Bond", "elem1": "Metal", "elem2": "Fire", "year1": 1987, "year2": 1992, "submittedAt": "2026-04-12T00:00:00Z" },
+    { "id": "demo-06", "name1": "Mia", "name2": "Elijah", "score": 82, "tier": "Strong Bond", "elem1": "Wood", "elem2": "Water", "year1": 1993, "year2": 1988, "submittedAt": "2026-04-13T00:00:00Z" },
+    { "id": "demo-07", "name1": "Charlotte", "name2": "James", "score": 79, "tier": "Growing Together", "elem1": "Earth", "elem2": "Wood", "year1": 1989, "year2": 1994, "submittedAt": "2026-04-13T00:00:00Z" },
+    { "id": "demo-08", "name1": "Amelia", "name2": "Benjamin", "score": 76, "tier": "Growing Together", "elem1": "Water", "elem2": "Fire", "year1": 1996, "year2": 1991, "submittedAt": "2026-04-14T00:00:00Z" },
+    { "id": "demo-09", "name1": "Harper", "name2": "William", "score": 73, "tier": "Growing Together", "elem1": "Fire", "elem2": "Metal", "year1": 1991, "year2": 1986, "submittedAt": "2026-04-14T00:00:00Z" },
+    { "id": "demo-10", "name1": "Evelyn", "name2": "Alexander", "score": 70, "tier": "Learning Together", "elem1": "Wood", "elem2": "Earth", "year1": 1994, "year2": 1990, "submittedAt": "2026-04-15T00:00:00Z" }
+  ],
+  "lastUpdated": "2026-04-16T08:00:00Z"
+}

@@ -1101,6 +1101,63 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 0.8; }
   .compat-share-actions { flex-direction: column; }
 }
 
+/* ============================================
+   COMPAT LEADERBOARD SUBMISSION
+   ============================================ */
+.compat-leaderboard {
+  background: linear-gradient(135deg, rgba(201,169,110,0.08), rgba(201,169,110,0.03));
+  border: 1px solid rgba(201,169,110,0.2);
+  border-radius: 20px;
+  padding: 28px 32px;
+  margin: 0 auto 32px;
+  max-width: 540px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.compat-leaderboard-icon { font-size: 2.4rem; flex-shrink: 0; }
+.compat-leaderboard-body { flex: 1; min-width: 200px; }
+.compat-leaderboard-title { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.compat-leaderboard-sub { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
+.compat-leaderboard-sub strong { color: var(--gold); }
+.compat-leaderboard-form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 4px;
+}
+.compat-leaderboard-form input {
+  flex: 1;
+  min-width: 130px;
+  padding: 10px 14px;
+  border-radius: 50px;
+  border: 1.5px solid rgba(201,169,110,0.25);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.compat-leaderboard-form input:focus { border-color: rgba(201,169,110,0.6); }
+.compat-leaderboard-form input::placeholder { color: rgba(255,255,255,0.25); }
+.compat-leaderboard-done {
+  width: 100%;
+  text-align: center;
+}
+.compat-leaderboard-done-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #00FF88;
+  margin-bottom: 8px;
+}
+.compat-leaderboard-done-icon { font-size: 1.4rem; }
+
 /* ============================================================
    VISUALIZATIONS
    ============================================================ */
