@@ -85,8 +85,26 @@
         <a href="index.html#pricing">Pricing</a>
         <a href="faq.html" style="color: var(--gold);">FAQ</a>
       </nav>
+
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
     </div>
   </header>
+
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-content">
+      <a href="/" class="mobile-link" onclick="toggleMobileMenu()">🏠 Home</a>
+      <a href="/blog.html" class="mobile-link" onclick="toggleMobileMenu()">📖 Blog</a>
+      <a href="/faq.html" class="mobile-link" onclick="toggleMobileMenu()">❓ FAQ</a>
+      <a href="/#compatSection" class="mobile-link" onclick="toggleMobileMenu()">💕 Love Match</a>
+      <a href="/leaderboard" class="mobile-link" onclick="toggleMobileMenu()">🏆 Leaderboard</a>
+      <a href="/#calculator" class="mobile-link mobile-cta" onclick="toggleMobileMenu()">🔮 Get Your Reading</a>
+    </div>
+  </div>
 
   <main class="faq-page">
     <div class="faq-hero">
