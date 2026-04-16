@@ -1082,7 +1082,7 @@
             Copy Text
           </button>
         </div>
-        <p class="compat-share-note">💡 Share the image on WeChat Moments, Instagram or send directly to your partner</p>
+        <p class="compat-share-note">💡 Share the image on Facebook, X, Instagram or send directly to your partner</p>
       </div>
     `;
 
@@ -1302,5 +1302,7 @@ Discover your free BaZi Love Match at:
   window.startCheckout = startCheckout;
   window.showCompatibility = showCompatibility;
   window.runCompatibility = runCompatibility;
+  window.compatSaveCard = compatSaveCard;
+  window.compatCopyText = compatCopyText;
 
 })();
