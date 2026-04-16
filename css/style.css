@@ -1037,7 +1037,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 0.8; }
 .dir-bad .cdir-status { color: #C62828; }
 
 /* Pillar Strength */
-.pillar-strength-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.pillar-strength-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; overflow: hidden; }
 .pillar-str-card {
   background: var(--bg); border: 1px solid var(--border);
   border-radius: var(--radius-md); padding: 14px 8px; text-align: center;
@@ -1100,7 +1100,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 0.8; }
   .compat-dp-pillars { grid-template-columns: 1fr; }
   .compat-pillars-row { grid-template-columns: 1fr; }
   .compass-dir-grid { grid-template-columns: repeat(2, 1fr); }
-  .pillar-strength-grid { grid-template-columns: repeat(2, 1fr); }
+  .pillar-strength-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
 }
 @media (max-width: 480px) {
   .hero-title { font-size: 40px; }
