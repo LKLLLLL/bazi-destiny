@@ -1,9 +1,4 @@
 {
-  "version": 2,
-  "cleanUrls": true,
-  "routes": [
-    { "src": "/leaderboard", "dest": "/leaderboard.html" }
-  ],
   "headers": [
     {
       "source": "/css/(.*)",
