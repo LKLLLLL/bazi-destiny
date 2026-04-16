@@ -650,47 +650,49 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 0.8; }
 .element-analysis p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
 
 /* Element Highlight Cards (Simplified View) */
-.element-highlight-card {
+.element-bars .element-highlight-card,
+#elementBars .element-highlight-card {
   border-radius: var(--radius-md);
   padding: 20px;
   margin-bottom: 16px;
   color: var(--text);
+  display: block;
 }
-.element-highlight-card.dominant {
+#elementBars .element-highlight-card.dominant {
   background: linear-gradient(135deg, rgba(201,169,110,0.12), rgba(201,169,110,0.04));
   border: 1px solid var(--gold-light);
 }
-.element-highlight-card.deficient {
+#elementBars .element-highlight-card.deficient {
   background: var(--bg-alt);
   border: 1px solid var(--border);
 }
-.element-highlight-header {
+#elementBars .element-highlight-header {
   display: flex !important;
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
 }
-.element-icon {
+#elementBars .element-icon {
   font-size: 2rem;
   flex-shrink: 0;
 }
-.element-title-wrap {
+#elementBars .element-title-wrap {
   flex: 1;
 }
-.element-title {
+#elementBars .element-title {
   font-weight: 600;
   font-size: 1.1rem;
   color: var(--text) !important;
 }
-.element-highlight-card.dominant .element-title {
+#elementBars .element-highlight-card.dominant .element-title {
   color: var(--gold-dark) !important;
 }
-.element-subtitle {
+#elementBars .element-subtitle {
   font-size: 0.9rem;
   color: var(--text-tertiary) !important;
   margin-top: 2px;
 }
-.element-desc {
+#elementBars .element-desc {
   margin: 0;
   font-size: 0.95rem;
   line-height: 1.6;
