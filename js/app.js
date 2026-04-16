@@ -43,6 +43,29 @@
     '木': 'Wood', '火': 'Fire', '土': 'Earth', '金': 'Metal', '水': 'Water',
   };
 
+  // Zodiac animals with emojis
+  const ZODIAC_EMOJI = {
+    'Rat': '🐭', 'Ox': '🐂', 'Tiger': '🐯', 'Rabbit': '🐰',
+    'Dragon': '🐲', 'Snake': '🐍', 'Horse': '🐴', 'Goat': '🐐',
+    'Monkey': '🐵', 'Rooster': '🐓', 'Dog': '🐕', 'Pig': '🐷'
+  };
+
+  // Simple zodiac personality traits
+  const ZODIAC_TRAITS = {
+    'Rat': { traits: ['Intelligent', 'Adaptable', 'Quick-witted'], bestMatch: 'Dragon, Monkey', avoid: 'Horse' },
+    'Ox': { traits: ['Diligent', 'Reliable', 'Strong'], bestMatch: 'Snake, Rooster', avoid: 'Goat' },
+    'Tiger': { traits: ['Brave', 'Confident', 'Charismatic'], bestMatch: 'Horse, Dog', avoid: 'Monkey' },
+    'Rabbit': { traits: ['Gentle', 'Elegant', 'Compassionate'], bestMatch: 'Goat, Pig', avoid: 'Rooster' },
+    'Dragon': { traits: ['Powerful', 'Ambitious', 'Lucky'], bestMatch: 'Rat, Monkey', avoid: 'Dog' },
+    'Snake': { traits: ['Wise', 'Mysterious', 'Intuitive'], bestMatch: 'Ox, Rooster', avoid: 'Pig' },
+    'Horse': { traits: ['Energetic', 'Independent', 'Warm-hearted'], bestMatch: 'Tiger, Dog', avoid: 'Rat' },
+    'Goat': { traits: ['Creative', 'Gentle', 'Peaceful'], bestMatch: 'Rabbit, Pig', avoid: 'Ox' },
+    'Monkey': { traits: ['Clever', 'Curious', 'Playful'], bestMatch: 'Rat, Dragon', avoid: 'Tiger' },
+    'Rooster': { traits: ['Honest', 'Hardworking', 'Observant'], bestMatch: 'Ox, Snake', avoid: 'Rabbit' },
+    'Dog': { traits: ['Loyal', 'Honest', 'Caring'], bestMatch: 'Tiger, Horse', avoid: 'Dragon' },
+    'Pig': { traits: ['Generous', 'Optimistic', 'Sincere'], bestMatch: 'Rabbit, Goat', avoid: 'Snake' }
+  };
+
   // ============================================================
   // NAVIGATION
   // ============================================================
@@ -170,7 +193,7 @@
   }
 
   // ============================================================
-  // DISPLAY RESULTS
+  // DISPLAY RESULTS - SIMPLIFIED FOR BETTER UX
   // ============================================================
 
   function displayResults(data) {
@@ -179,41 +202,48 @@
 
     // Update summary
     const name = data.name;
+    const birthYear = new Date(data.birthDate).getFullYear();
+    const yearAnimal = BRANCH_TO_EN[data.pillars.year.branch];
+    const yearEmoji = ZODIAC_EMOJI[yearAnimal];
     const dominantElemEn = ELEM_TO_EN[data.elements.dominant] || data.elements.dominant;
 
     // Expose for share button
     window.currentReading = data;
+
+    // Simplified greeting with zodiac
     document.getElementById('resultGreeting').textContent =
-      `${name}'s BaZi Destiny`;
+      `${name}, You are a ${yearAnimal} ${yearEmoji}`;
     document.getElementById('resultSubtitle').textContent =
-      `Your Four Pillars reveal a unique energetic profile shaped by ${dominantElemEn} energy. Below is your free foundation reading.`;
+      `Born in ${birthYear}, your Chinese zodiac is the ${yearAnimal}. Your dominant element is ${dominantElemEn}. Here's your personalized reading.`;
+
     const domLabel = document.getElementById('dominantElemLabel');
     if (domLabel) domLabel.textContent = dominantElemEn;
 
-    // Mini pillars — show English stem + English branch
+    // Mini pillars — simplified for free version
     const p = data.pillars;
     document.getElementById('resYearPillar').textContent =
-      STEM_SHORT_EN[p.year.stem] + ' · ' + BRANCH_TO_EN[p.year.branch];
-    document.getElementById('resYearElem').textContent = ELEM_TO_EN[p.year.element];
+      `${yearEmoji} ${yearAnimal}`;
+    document.getElementById('resYearElem').textContent = `${birthYear} - Year of the ${yearAnimal}`;
     document.getElementById('resMonthPillar').textContent =
-      STEM_SHORT_EN[p.month.stem] + ' · ' + BRANCH_TO_EN[p.month.branch];
-    document.getElementById('resMonthElem').textContent = ELEM_TO_EN[p.month.element];
+      `${ELEM_TO_EN[p.month.element]} Element`;
+    document.getElementById('resMonthElem').textContent = 'Inner Nature';
     document.getElementById('resDayPillar').textContent =
-      STEM_SHORT_EN[p.day.stem] + ' · ' + BRANCH_TO_EN[p.day.branch];
-    document.getElementById('resDayElem').textContent = ELEM_TO_EN[p.day.element];
+      `${ELEM_TO_EN[p.day.element]} Element`;
+    document.getElementById('resDayElem').textContent = 'True Self';
     document.getElementById('resHourPillar').textContent =
-      STEM_SHORT_EN[p.hour.stem] + ' · ' + BRANCH_TO_EN[p.hour.branch];
-    document.getElementById('resHourElem').textContent = ELEM_TO_EN[p.hour.element];
+      `${ELEM_TO_EN[p.hour.element]} Element`;
+    document.getElementById('resHourElem').textContent = 'Hidden Potential';
 
-    // Element bars
-    renderElementBars(data.elements);
+    // Simplified element bars (just show dominant and deficient)
+    renderSimpleElementSummary(data.elements);
 
-    // Lucky directions
+    // Lucky directions - keep simple
     renderLuckyDirections(data.directions);
 
-    // Personality (free)
+    // Simplified personality with zodiac
     const personality = Readings.getPersonality(data.pillars.day.stem, data.elements.dominant);
-    document.getElementById('readingPersonality').innerHTML = renderPersonalityReading(personality);
+    const zodiacInfo = ZODIAC_TRAITS[yearAnimal];
+    document.getElementById('readingPersonality').innerHTML = renderSimplePersonality(personality, yearAnimal, zodiacInfo);
 
     // Paywall card (always shown for free users)
     document.getElementById('paywallCard').style.display = '';
@@ -221,17 +251,108 @@
     // Pro content (hidden until paid)
     renderProContent(data);
 
-    // New visualizations
+    // Visualizations - only show basic ones for free
     if (typeof Viz !== 'undefined') {
-      Viz.renderFiveElementsPie('fiveElementsWheel', data.elements);
-      Viz.renderCompass('fengShuiCompass', data.directions, data.pillars.day.element);
-      Viz.renderPillarStrength('pillarStrength', data.pillars);
+      // Hide complex visualizations initially
+      const wheelContainer = document.getElementById('fiveElementsWheel');
+      const compassContainer = document.getElementById('fengShuiCompass');
+      const pillarContainer = document.getElementById('pillarStrength');
+
+      if (wheelContainer) wheelContainer.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">🎁 Unlock full Five Elements analysis with Destiny Master</p>';
+      if (compassContainer) compassContainer.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">🎁 Unlock your personal Feng Shui compass with Destiny Master</p>';
+      if (pillarContainer) pillarContainer.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">🎁 Unlock detailed Four Pillars breakdown with Destiny Master</p>';
+
       Viz.initShareAndPDF();
       Viz.animateResultsEntrance();
     }
 
     // Scroll to results
     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Simplified element summary for free users
+  function renderSimpleElementSummary(elements) {
+    const container = document.getElementById('elementBars');
+    const dominant = elements.dominant;
+    const deficient = elements.deficient;
+    const dominantEn = ELEM_TO_EN[dominant];
+    const deficientEn = ELEM_TO_EN[deficient];
+
+    const elementDesc = {
+      'Wood': 'Growth, creativity, and flexibility',
+      'Fire': 'Passion, energy, and transformation',
+      'Earth': 'Stability, nurturing, and practicality',
+      'Metal': 'Clarity, precision, and determination',
+      'Water': 'Wisdom, adaptability, and intuition'
+    };
+
+    container.innerHTML = `
+      <div style="background:rgba(212,175,55,0.1);border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid rgba(212,175,55,0.2);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <span style="font-size:2rem;">✨</span>
+          <div>
+            <div style="font-weight:600;color:#d4af37;font-size:1.1rem;">Your Dominant Element: ${dominantEn}</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:0.9rem;">${elementDesc[dominantEn]}</div>
+          </div>
+        </div>
+        <p style="margin:0;color:rgba(255,255,255,0.8);font-size:0.95rem;line-height:1.6;">
+          This shapes your core personality and natural strengths. People with strong ${dominantEn} energy are typically ${getElementTraits(dominantEn)}.
+        </p>
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:20px;border:1px solid rgba(255,255,255,0.1);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <span style="font-size:2rem;">💫</span>
+          <div>
+            <div style="font-weight:600;color:rgba(255,255,255,0.9);font-size:1.1rem;">Element to Strengthen: ${deficientEn}</div>
+            <div style="color:rgba(255,255,255,0.6);font-size:0.9rem;">${elementDesc[deficientEn]}</div>
+          </div>
+        </div>
+        <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.95rem;line-height:1.6;">
+          This represents an area for growth. Balancing your ${deficientEn} energy can bring more harmony to your life.
+        </p>
+      </div>
+    `;
+
+    // Update analysis text
+    const analysis = document.getElementById('elementAnalysis');
+    analysis.innerHTML = `
+      <h4>🎯 Your Elemental Balance</h4>
+      <p>Every person has all five elements within them, but in different proportions. Your chart shows <strong>${dominantEn}</strong> as your strongest element — this is your natural superpower. Meanwhile, <strong>${deficientEn}</strong> is your growth area.</p>
+      <p style="margin-top:12px;"><strong>💡 Tip:</strong> To balance your energy, incorporate more ${deficientEn}-related activities and colors into your daily life.</p>
+    `;
+  }
+
+  function getElementTraits(element) {
+    const traits = {
+      'Wood': 'growth-oriented, creative, and compassionate',
+      'Fire': 'passionate, charismatic, and dynamic',
+      'Earth': 'reliable, nurturing, and practical',
+      'Metal': 'focused, disciplined, and principled',
+      'Water': 'intuitive, wise, and adaptable'
+    };
+    return traits[element] || 'unique and special';
+  }
+
+  // Simplified personality reading with zodiac
+  function renderSimplePersonality(personality, yearAnimal, zodiacInfo) {
+    const traits = zodiacInfo.traits.join(', ');
+    return `
+      <div style="margin-bottom:20px;">
+        <h4 style="color:#d4af37;margin-bottom:12px;font-size:1.1rem;">🐉 Your ${yearAnimal} Nature</h4>
+        <p>As a <strong>${yearAnimal}</strong>, you are naturally ${traits}. These qualities make you unique and shape how you approach life.</p>
+      </div>
+      <div style="background:rgba(212,175,55,0.05);border-radius:12px;padding:16px;margin:20px 0;border:1px solid rgba(212,175,55,0.15);">
+        <p style="margin:0 0 8px 0;"><strong>💕 Best Matches:</strong> ${zodiacInfo.bestMatch}</p>
+        <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.9rem;">These signs naturally complement your energy</p>
+      </div>
+      <div style="margin-top:20px;">
+        <h4 style="color:#d4af37;margin-bottom:12px;font-size:1.1rem;">🌟 Your Day Master Personality</h4>
+        <p><strong>${personality.title}</strong></p>
+        <p>${personality.summary}</p>
+        <p style="margin-top:12px;"><strong>Your Strength:</strong> ${personality.strength}</p>
+        <p><strong>Your Growth Area:</strong> ${personality.weakness}</p>
+      </div>
+    `;
   }
 
   function renderElementBars(elements) {
