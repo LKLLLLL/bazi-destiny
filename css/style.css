@@ -166,7 +166,7 @@ ul { list-style: none; }
 }
 .mobile-sub-link {
   font-size: 18px !important;
-  color: rgba(255,255,255,0.6) !important;
+  color: var(--text-secondary) !important;
   font-weight: 500 !important;
 }
 
