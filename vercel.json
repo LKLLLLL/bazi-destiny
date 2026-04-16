@@ -1,13 +1,11 @@
 {
-  "redirects": [
+  "headers": [
     {
-      "source": "/",
-      "destination": "https://www.mybazidestiny.com/",
-      "permanent": false,
-      "has": [
+      "source": "/css/(.*)",
+      "headers": [
         {
-          "type": "host",
-          "value": "mybazidestiny.com"
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
         }
       ]
     }
