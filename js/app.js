@@ -1334,9 +1334,10 @@ Discover your free BaZi Love Match at:
         localStorage.setItem('bazi_myleaderboard', JSON.stringify(data.entry));
         document.getElementById('compatLeaderboardForm').style.display = 'none';
         document.getElementById('compatLeaderboardDone').style.display = '';
+        const rank = data.entry?.rank || data.rank || '?';
         document.getElementById('compatLeaderboardMsg').textContent =
-          `Ranked #${data.rank} worldwide! 🎉`;
-        showToast(`🎉 You're #${data.rank} on the leaderboard!`);
+          `Ranked #${rank} worldwide! 🎉`;
+        showToast(`🎉 You're #${rank} on the leaderboard!`);
       } else {
         showToast('⚠️ ' + (data.error || 'Submission failed'));
         if (btn) { btn.disabled = false; btn.textContent = '🏆 Add Us to Leaderboard'; }
