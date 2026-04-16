@@ -286,39 +286,40 @@
       'Water': 'Wisdom, adaptability, and intuition'
     };
 
+    // Use CSS classes instead of inline styles for better theme compatibility
     container.innerHTML = `
-      <div style="background:rgba(212,175,55,0.1);border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid rgba(212,175,55,0.2);">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-          <span style="font-size:2rem;">✨</span>
-          <div>
-            <div style="font-weight:600;color:#d4af37;font-size:1.1rem;">Your Dominant Element: ${dominantEn}</div>
-            <div style="color:rgba(255,255,255,0.7);font-size:0.9rem;">${elementDesc[dominantEn]}</div>
+      <div class="element-highlight-card dominant">
+        <div class="element-highlight-header">
+          <span class="element-icon">✨</span>
+          <div class="element-title-wrap">
+            <div class="element-title">Your Dominant Element: ${dominantEn}</div>
+            <div class="element-subtitle">${elementDesc[dominantEn]}</div>
           </div>
         </div>
-        <p style="margin:0;color:rgba(255,255,255,0.8);font-size:0.95rem;line-height:1.6;">
+        <p class="element-desc">
           This shapes your core personality and natural strengths. People with strong ${dominantEn} energy are typically ${getElementTraits(dominantEn)}.
         </p>
       </div>
-      <div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:20px;border:1px solid rgba(255,255,255,0.1);">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-          <span style="font-size:2rem;">💫</span>
-          <div>
-            <div style="font-weight:600;color:rgba(255,255,255,0.9);font-size:1.1rem;">Element to Strengthen: ${deficientEn}</div>
-            <div style="color:rgba(255,255,255,0.6);font-size:0.9rem;">${elementDesc[deficientEn]}</div>
+      <div class="element-highlight-card deficient">
+        <div class="element-highlight-header">
+          <span class="element-icon">💫</span>
+          <div class="element-title-wrap">
+            <div class="element-title">Element to Strengthen: ${deficientEn}</div>
+            <div class="element-subtitle">${elementDesc[deficientEn]}</div>
           </div>
         </div>
-        <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.95rem;line-height:1.6;">
+        <p class="element-desc">
           This represents an area for growth. Balancing your ${deficientEn} energy can bring more harmony to your life.
         </p>
       </div>
     `;
 
-    // Update analysis text
+    // Update analysis text - keep it simple and clean
     const analysis = document.getElementById('elementAnalysis');
     analysis.innerHTML = `
-      <h4>🎯 Your Elemental Balance</h4>
+      <h4>Your Elemental Balance</h4>
       <p>Every person has all five elements within them, but in different proportions. Your chart shows <strong>${dominantEn}</strong> as your strongest element — this is your natural superpower. Meanwhile, <strong>${deficientEn}</strong> is your growth area.</p>
-      <p style="margin-top:12px;"><strong>💡 Tip:</strong> To balance your energy, incorporate more ${deficientEn}-related activities and colors into your daily life.</p>
+      <p style="margin-top:12px;"><strong>Tip:</strong> To balance your energy, incorporate more ${deficientEn}-related activities and colors into your daily life.</p>
     `;
   }
 
@@ -337,16 +338,16 @@
   function renderSimplePersonality(personality, yearAnimal, zodiacInfo) {
     const traits = zodiacInfo.traits.join(', ');
     return `
-      <div style="margin-bottom:20px;">
-        <h4 style="color:#d4af37;margin-bottom:12px;font-size:1.1rem;">🐉 Your ${yearAnimal} Nature</h4>
+      <div class="personality-section">
+        <h4 class="personality-title">Your ${yearAnimal} Nature</h4>
         <p>As a <strong>${yearAnimal}</strong>, you are naturally ${traits}. These qualities make you unique and shape how you approach life.</p>
       </div>
-      <div style="background:rgba(212,175,55,0.05);border-radius:12px;padding:16px;margin:20px 0;border:1px solid rgba(212,175,55,0.15);">
-        <p style="margin:0 0 8px 0;"><strong>💕 Best Matches:</strong> ${zodiacInfo.bestMatch}</p>
-        <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.9rem;">These signs naturally complement your energy</p>
+      <div class="best-matches-box">
+        <p class="best-matches-title">Best Matches: ${zodiacInfo.bestMatch}</p>
+        <p class="best-matches-desc">These signs naturally complement your energy</p>
       </div>
-      <div style="margin-top:20px;">
-        <h4 style="color:#d4af37;margin-bottom:12px;font-size:1.1rem;">🌟 Your Day Master Personality</h4>
+      <div class="personality-section">
+        <h4 class="personality-title">Your Day Master Personality</h4>
         <p><strong>${personality.title}</strong></p>
         <p>${personality.summary}</p>
         <p style="margin-top:12px;"><strong>Your Strength:</strong> ${personality.strength}</p>

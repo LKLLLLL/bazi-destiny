@@ -649,6 +649,85 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 0.8; }
 .element-analysis h4 { font-size: 15px; color: var(--gold-dark); margin-bottom: 8px; }
 .element-analysis p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
 
+/* Element Highlight Cards (Simplified View) */
+.element-highlight-card {
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.element-highlight-card.dominant {
+  background: linear-gradient(135deg, rgba(201,169,110,0.12), rgba(201,169,110,0.04));
+  border: 1px solid var(--gold-light);
+}
+.element-highlight-card.deficient {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+}
+.element-highlight-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.element-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+.element-title-wrap {
+  flex: 1;
+}
+.element-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+.element-highlight-card.dominant .element-title {
+  color: var(--gold-dark);
+}
+.element-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+.element-desc {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Personality Section Styling */
+.personality-section {
+  margin-bottom: 20px;
+}
+.personality-title {
+  color: var(--gold-dark);
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.best-matches-box {
+  background: var(--bg-alt);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin: 20px 0;
+  border: 1px solid var(--border);
+}
+.best-matches-title {
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  color: var(--text);
+}
+.best-matches-title::before {
+  content: "♥ ";
+  color: var(--gold);
+}
+.best-matches-desc {
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+}
+
 /* Lucky Directions */
 .lucky-directions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 .direction-card {
