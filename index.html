@@ -110,14 +110,39 @@
 
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#" onclick="showHome(); return false">Home</a>
-    <a href="blog.html">📖 Blog</a>
-    <a href="#" onclick="scrollToSection('pricing'); return false">Pricing</a>
-    <div class="mobile-nav-group">
-      <a href="#" onclick="showCompatibility(); return false" style="color:var(--gold)">💕 Love Match</a>
-      <a href="leaderboard" class="mobile-sub-link">🏆 Leaderboard</a>
+    <div class="mobile-menu-content">
+      <!-- 主要导航 -->
+      <div class="mobile-section">
+        <a href="#" onclick="showHome(); return false" class="mobile-link">
+          <span class="mobile-icon">🏠</span> Home
+        </a>
+        <a href="blog.html" class="mobile-link">
+          <span class="mobile-icon">📖</span> Blog
+        </a>
+        <a href="#" onclick="scrollToSection('pricing'); return false" class="mobile-link">
+          <span class="mobile-icon">💎</span> Pricing
+        </a>
+        <a href="faq.html" class="mobile-link">
+          <span class="mobile-icon">❓</span> FAQ
+        </a>
+      </div>
+      
+      <!-- Love Match 分组 -->
+      <div class="mobile-section mobile-section-highlight">
+        <div class="mobile-section-title">💕 Love Match</div>
+        <a href="#" onclick="showCompatibility(); return false" class="mobile-link mobile-link-gold">
+          <span class="mobile-icon">💑</span> Test Compatibility
+        </a>
+        <a href="leaderboard" class="mobile-link mobile-link-gold">
+          <span class="mobile-icon">🏆</span> Leaderboard
+        </a>
+      </div>
+      
+      <!-- CTA 按钮 -->
+      <button class="btn-primary btn-full" onclick="showCalculator(); return false">
+        🔮 Get Your Reading
+      </button>
     </div>
-    <button class="btn-primary" onclick="showCalculator(); return false">Get Your Reading</button>
   </div>
 
   <!-- Main Content -->
