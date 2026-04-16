@@ -767,7 +767,8 @@
     });
 
     // Modal overlay click to close
-    document.getElementById('paymentModal').addEventListener('click', (e) => {
+    const paymentModal = document.getElementById('paymentModal');
+    if (paymentModal) paymentModal.addEventListener('click', (e) => {
       if (e.target.id === 'paymentModal') closePaymentModal();
     });
 
