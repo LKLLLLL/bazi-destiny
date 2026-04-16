@@ -1323,7 +1323,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 0.8; }
    Warm gold design — matches homepage aesthetic
    ============================================ */
 .compat-promo-section {
-  background: var(--bg-alt);
+  background: linear-gradient(180deg, #F8F4EF 0%, #EDE8E3 100%);
   padding: 72px 20px;
   border-top: 1px solid rgba(201,169,110,0.15);
   border-bottom: 1px solid rgba(201,169,110,0.15);
