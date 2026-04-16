@@ -587,7 +587,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 0.8; }
 .selh-value { font-size: 13px; font-weight: 700; color: var(--gold-dark); letter-spacing: 0.02em; }
 .summary-chart { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .summary-chart-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); font-weight: 600; }
-.mini-pillars { display: flex; gap: 8px; }
+.mini-pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .mini-pillar {
   display: flex; flex-direction: column; align-items: center;
   background: var(--bg);
@@ -1084,7 +1084,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 0.8; }
   .form-row-3 { grid-template-columns: 1fr; }
   .result-summary-card { grid-template-columns: 1fr; gap: 24px; padding: 28px 24px; }
   .result-summary-card h2 { font-size: 26px; }
-  .mini-pillars { flex-wrap: wrap; }
+  .mini-pillars { grid-template-columns: repeat(2, 1fr); }
   .steps-grid { grid-template-columns: 1fr; }
   .elements-showcase { grid-template-columns: repeat(2, 1fr); }
   .lucky-directions { grid-template-columns: 1fr; }
