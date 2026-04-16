@@ -402,18 +402,30 @@
       const cls = order[i] === 1 ? 'top-card-1' : order[i] === 0 ? 'top-card-2' : 'top-card-3';
       const meCls = isMe(e) ? ' is-you' : '';
       const youBadge = isMe(e) ? '<div class="you-badge">YOU</div>' : '';
+      const displayName = e.name || `${e.name1 || '?'} & ${e.name2 || '?'}`;
+      const displayTier = e.tier || scoreToTier(e.score);
+      const displayElem1 = e.elem1 || '☯';
+      const displayElem2 = e.elem2 || '☯';
       html += `
         <div class="top-card ${cls}${meCls}">
           ${youBadge}
           <div class="crown">${crown(order[i]+1)}</div>
           <div class="rank-num">#${order[i]+1}</div>
           <div class="top-score" style="color:${scoreColor(e.score)}">${e.score}</div>
-          <div class="top-tier ${tierClass(e.tier)}">${e.tier}</div>
-          <div class="top-names">${e.name1} & ${e.name2}</div>
-          <div class="top-elems">${e.elem1} × ${e.elem2}</div>
+          <div class="top-tier ${tierClass(displayTier)}">${displayTier}</div>
+          <div class="top-names">${displayName}</div>
+          <div class="top-elems">${displayElem1} × ${displayElem2}</div>
         </div>`;
     }
     return html;
+  }
+
+  // Helper: score to tier
+  function scoreToTier(score) {
+    if (score >= 85) return 'Exceptional';
+    if (score >= 70) return 'Strong';
+    if (score >= 55) return 'Moderate';
+    return 'Challenging';
   }
 
   // Render rest (positions 4–100)
@@ -422,14 +434,18 @@
     for (let i = 3; i < entries.length; i++) {
       const e = entries[i];
       const meCls = isMe(e) ? ' is-you' : '';
+      const displayName = e.name || `${e.name1 || '?'} & ${e.name2 || '?'}`;
+      const displayTier = e.tier || scoreToTier(e.score);
+      const displayElem1 = e.elem1 || '☯';
+      const displayElem2 = e.elem2 || '☯';
       html += `
         <div class="rank-row${meCls}"${isMe(e) ? ' id="myEntryRow"' : ''}>
           <div class="rank-pos">#${i+1}</div>
-          <div class="rank-names">${e.name1} & ${e.name2}</div>
+          <div class="rank-names">${displayName}</div>
           <div class="rank-score" style="color:${scoreColor(e.score)}">${e.score}</div>
           <div>
-            <div class="rank-tier ${tierClass(e.tier)}">${shortTier(e.tier)}</div>
-            <div class="rank-elems">${e.elem1}×${e.elem2}</div>
+            <div class="rank-tier ${tierClass(displayTier)}">${shortTier(displayTier)}</div>
+            <div class="rank-elems">${displayElem1}×${displayElem2}</div>
           </div>
         </div>`;
     }
