@@ -654,6 +654,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 0.8; }
   border-radius: var(--radius-md);
   padding: 20px;
   margin-bottom: 16px;
+  color: var(--text);
 }
 .element-highlight-card.dominant {
   background: linear-gradient(135deg, rgba(201,169,110,0.12), rgba(201,169,110,0.04));
@@ -693,7 +694,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 0.8; }
   margin: 0;
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--text-secondary);
+  color: var(--text-secondary) !important;
 }
 
 /* Personality Section Styling */
