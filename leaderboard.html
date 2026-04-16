@@ -22,59 +22,8 @@
     }
 
     /* ========== NAVIGATION ========== */
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(11, 11, 20, 0.95);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(201,169,110,0.1);
-      padding: 0 24px;
-    }
-    .nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-    }
-    .nav-logo {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #fff;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .nav-logo:hover { color: #C9A96E; }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .nav-links a {
-      color: rgba(255,255,255,0.6);
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-    .nav-links a:hover { 
-      color: #fff; 
-      background: rgba(255,255,255,0.05);
-    }
-    .nav-links a.active { 
-      color: #C9A96E; 
-      background: rgba(201,169,110,0.1);
-    }
     @media (max-width: 700px) {
-      .nav-links { gap: 4px; }
-      .nav-links a { padding: 6px 10px; font-size: 0.8rem; }
-    }
+      }
 
     /* ========== HERO ========== */
     .hero {
@@ -533,18 +482,46 @@
 <body>
 
 <!-- Navigation -->
-<nav class="site-nav">
-  <div class="nav-inner">
-    <a href="/" class="nav-logo">☯ BaZi Destiny</a>
-    <div class="nav-links">
-      <a href="/">Home</a>
-      <a href="/#compatSection">💕 Love Match</a>
-      <a href="/#calculator">🔮 Calculator</a>
-      <a href="/leaderboard" class="active">🏆 Leaderboard</a>
-      <a href="/#pricing">Pricing</a>
+<header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <span class="logo-text">BaZi <em>Destiny</em></span>
+      </a>
+      <nav class="header-nav">
+        <a href="/">Home</a>
+        <a href="/blog.html">📖 Blog</a>
+        <a href="/faq.html">FAQ</a>
+        <div class="nav-dropdown">
+          <a href="/#compatSection" class="nav-love-link nav-dropdown-toggle">💕 Love Match ▾</a>
+          <div class="nav-dropdown-menu">
+            <a href="/#compatSection">💕 Love Match</a>
+            <a href="/leaderboard">🏆 Leaderboard</a>
+          </div>
+        </div>
+        <a href="/#calculator" class="btn-nav-cta">Get Your Reading</a>
+      </nav>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-content">
+      <div class="mobile-section">
+        <a href="/" class="mobile-link"><span class="mobile-icon">🏠</span> Home</a>
+        <a href="/blog.html" class="mobile-link"><span class="mobile-icon">📖</span> Blog</a>
+        <a href="/faq.html" class="mobile-link"><span class="mobile-icon">❓</span> FAQ</a>
+      </div>
+      <div class="mobile-section mobile-section-highlight">
+        <div class="mobile-section-title">💕 Love Match</div>
+        <a href="/#compatSection" class="mobile-link mobile-link-gold"><span class="mobile-icon">💑</span> Test Compatibility</a>
+        <a href="/leaderboard" class="mobile-link mobile-link-gold"><span class="mobile-icon">🏆</span> Leaderboard</a>
+      </div>
+      <a href="/#calculator" class="btn-primary btn-full">🔮 Get Your Reading</a>
     </div>
   </div>
-</nav>
 
 <!-- Hero -->
 <section class="hero">

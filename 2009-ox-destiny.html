@@ -26,66 +26,158 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="2009 Earth Ox Destiny — Your Complete BaZi Profile">
   <meta name="twitter:description" content="Discover the 2009 Earth Ox destiny profile. Your BaZi chart, Five Element strengths, career path, love compatibility, and 2026 fortune predictions.">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root { --elem-color: #795548; --bg-dark: #0f0f1a; --bg-card: rgba(255,255,255,0.05); --border: rgba(255,255,255,0.08); --text: #e0e0e0; --text-dim: #888; }
-    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-dark); color: var(--text); min-height: 100vh; }
-    nav { background: rgba(0,0,0,0.4); padding: 14px 24px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-    nav a { color: #a0a0c0; text-decoration: none; font-size: 0.9rem; font-weight: 500; }
-    nav a:hover { color: var(--elem-color); }
-    .hero { text-align: center; padding: 64px 20px 48px; background: linear-gradient(135deg, var(--bg-dark), #1a1525); border-bottom: 2px solid var(--elem-color); }
-    .hero-emoji { font-size: 5rem; margin-bottom: 12px; }
-    .hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); color: var(--elem-color); margin-bottom: 10px; font-weight: 700; }
-    .hero-sub { font-size: 1.1rem; color: var(--text-dim); margin-bottom: 6px; }
-    .hero-badge { display: inline-block; background: var(--elem-color); color: #fff; padding: 6px 20px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-top: 12px; }
-    .container { max-width: 860px; margin: 0 auto; padding: 40px 20px; }
-    .card { background: var(--bg-card); border-radius: 16px; padding: 28px 32px; margin-bottom: 24px; border: 1px solid var(--border); }
-    .card h2 { font-size: 1.3rem; margin-bottom: 16px; color: var(--elem-color); padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-    .card p { line-height: 1.8; color: var(--text); margin-bottom: 14px; font-size: 1.02rem; }
-    .card ul { padding-left: 22px; margin-bottom: 14px; }
-    .card li { line-height: 1.9; color: #c0c0c0; font-size: 1rem; margin-bottom: 6px; }
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 16px; }
-    .stat-box { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid var(--border); }
-    .stat-box .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 8px; }
-    .stat-box .value { font-size: 1.1rem; font-weight: 600; color: var(--elem-color); }
-    .element-bar { margin-top: 20px; }
-    .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-    .bar-label { font-size: 0.85rem; color: var(--text-dim); width: 60px; text-align: right; }
-    .bar-track { flex: 1; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 4px; }
-    .cta-section { background: linear-gradient(135deg, #79554822, #79554811); border-radius: 16px; padding: 36px; text-align: center; border: 1px solid #79554844; margin: 32px 0; }
-    .cta-section h2 { color: var(--text); margin-bottom: 10px; font-size: 1.4rem; }
-    .cta-section p { color: var(--text-dim); margin-bottom: 20px; font-size: 1rem; }
-    .cta-btn { display: inline-block; background: var(--elem-color); color: #fff; padding: 14px 36px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: transform 0.2s, opacity 0.2s; }
-    .cta-btn:hover { transform: scale(1.04); opacity: 0.9; }
-    .highlight-box { background: rgba(245,200,66,0.08); border-left: 4px solid #f5c842; padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 20px 0; }
-    .highlight-box p { color: #e8d8a0; font-style: italic; margin: 0; }
-    footer { text-align: center; padding: 40px 20px; color: #444; font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 20px; }
-    footer a { color: #666; text-decoration: none; }
-    footer a:hover { color: var(--elem-color); }
-    @media (max-width: 600px) { .card { padding: 20px 18px; } .stats-grid { grid-template-columns: 1fr 1fr; } }
-  </style>
+  
+<style>
+  /* 继承主样式表的变量和基础样式 */
+  .year-hero {
+    text-align: center;
+    padding: 80px 20px 60px;
+    background: linear-gradient(135deg, #FAF8F5 0%, #F2EDE8 100%);
+    border-bottom: 1px solid rgba(201,169,110,0.15);
+  }
+  .year-emoji { font-size: 5rem; margin-bottom: 16px; }
+  .year-hero h1 { 
+    font-size: clamp(2rem, 4vw, 3rem); 
+    color: var(--gold-dark); 
+    margin-bottom: 12px; 
+    font-weight: 700;
+  }
+  .year-sub { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 8px; }
+  .year-badge { 
+    display: inline-block; 
+    background: var(--gold); 
+    color: #fff; 
+    padding: 8px 24px; 
+    border-radius: 50px; 
+    font-size: 0.9rem; 
+    font-weight: 600; 
+    margin-top: 16px; 
+  }
+  .year-container { max-width: 860px; margin: 0 auto; padding: 48px 20px; }
+  .year-card { 
+    background: #fff; 
+    border-radius: 16px; 
+    padding: 32px; 
+    margin-bottom: 24px; 
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+  .year-card h2 { 
+    font-size: 1.4rem; 
+    margin-bottom: 16px; 
+    color: var(--gold-dark); 
+    padding-bottom: 12px; 
+    border-bottom: 1px solid var(--border);
+  }
+  .year-card p { line-height: 1.8; color: var(--text); margin-bottom: 14px; }
+  .year-card ul { padding-left: 24px; margin-bottom: 14px; }
+  .year-card li { line-height: 1.9; color: var(--text-secondary); margin-bottom: 6px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-top: 16px; }
+  .stat-box { 
+    background: var(--bg-alt); 
+    border-radius: 12px; 
+    padding: 20px; 
+    text-align: center; 
+    border: 1px solid var(--border);
+  }
+  .stat-box .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-tertiary); margin-bottom: 8px; }
+  .stat-box .value { font-size: 1.1rem; font-weight: 600; color: var(--gold-dark); }
+  .highlight-box { 
+    background: rgba(201,169,110,0.08); 
+    border-left: 4px solid var(--gold); 
+    padding: 20px 24px; 
+    border-radius: 0 12px 12px 0; 
+    margin: 20px 0; 
+  }
+  .highlight-box p { color: var(--text); font-style: italic; margin: 0; }
+  .year-cta { 
+    background: linear-gradient(135deg, rgba(201,169,110,0.1) 0%, rgba(201,169,110,0.05) 100%); 
+    border-radius: 16px; 
+    padding: 40px; 
+    text-align: center; 
+    border: 1px solid rgba(201,169,110,0.2); 
+    margin: 32px 0; 
+  }
+  .year-cta h2 { color: var(--text); margin-bottom: 12px; font-size: 1.5rem; }
+  .year-cta p { color: var(--text-secondary); margin-bottom: 24px; }
+  .year-cta-btn { 
+    display: inline-block; 
+    background: var(--gold); 
+    color: #fff; 
+    padding: 16px 40px; 
+    border-radius: 50px; 
+    text-decoration: none; 
+    font-weight: 700; 
+    font-size: 1.05rem; 
+    transition: all 0.2s;
+  }
+  .year-cta-btn:hover { background: var(--gold-dark); transform: translateY(-2px); }
+  .element-bar { margin-top: 20px; }
+  .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .bar-label { font-size: 0.85rem; color: var(--text-tertiary); width: 60px; text-align: right; }
+  .bar-track { flex: 1; height: 8px; background: var(--bg-alt); border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  @media (max-width: 600px) { 
+    .year-card { padding: 24px 20px; } 
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .year-cta { padding: 28px 20px; }
+  }
+</style>
+
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <nav>
-    <a href="/">Home</a>
-    <a href="/what-is-bazi.html">What is BaZi</a>
-    <a href="/complete-guide-bazi.html">BaZi Guide</a>
-    <a href="/career-bazi.html">Career</a>
-    <a href="/love-compatibility.html">Love</a>
-    <a href="/">Free BaZi Calculator →</a>
-  </nav>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <span class="logo-text">BaZi <em>Destiny</em></span>
+      </a>
+      <nav class="header-nav">
+        <a href="/">Home</a>
+        <a href="/blog.html">📖 Blog</a>
+        <a href="/faq.html">FAQ</a>
+        <div class="nav-dropdown">
+          <a href="/#compatSection" class="nav-love-link nav-dropdown-toggle">💕 Love Match ▾</a>
+          <div class="nav-dropdown-menu">
+            <a href="/#compatSection">💕 Love Match</a>
+            <a href="/leaderboard">🏆 Leaderboard</a>
+          </div>
+        </div>
+        <a href="/#calculator" class="btn-nav-cta">Get Your Reading</a>
+      </nav>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
 
-  <div class="hero">
-    <div class="hero-emoji">🐂</div>
-    <h1>2009 Earth Ox Destiny</h1>
-    <p class="hero-sub">Five Element: Earth · Chinese Zodiac: Ox</p>
-    <p class="hero-sub">Your BaZi Chart · 2026 Fortune · Elemental Analysis</p>
-    <div class="hero-badge">BaZi Destiny · Free Analysis</div>
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-content">
+      <div class="mobile-section">
+        <a href="/" class="mobile-link"><span class="mobile-icon">🏠</span> Home</a>
+        <a href="/blog.html" class="mobile-link"><span class="mobile-icon">📖</span> Blog</a>
+        <a href="/faq.html" class="mobile-link"><span class="mobile-icon">❓</span> FAQ</a>
+      </div>
+      <div class="mobile-section mobile-section-highlight">
+        <div class="mobile-section-title">💕 Love Match</div>
+        <a href="/#compatSection" class="mobile-link mobile-link-gold"><span class="mobile-icon">💑</span> Test Compatibility</a>
+        <a href="/leaderboard" class="mobile-link mobile-link-gold"><span class="mobile-icon">🏆</span> Leaderboard</a>
+      </div>
+      <a href="/#calculator" class="btn-primary btn-full">🔮 Get Your Reading</a>
+    </div>
   </div>
 
-  <div class="container">
-    <div class="card">
+  <div class="year-hero">
+    <div class="year-emoji">🐂</div>
+    <h1>2009 Earth Ox Destiny</h1>
+    <p class="year-sub">Five Element: Earth · Chinese Zodiac: Ox</p>
+    <p class="year-sub">Your BaZi Chart · 2026 Fortune · Elemental Analysis</p>
+    <div class="year-badge">BaZi Destiny · Free Analysis</div>
+  </div>
+
+  <div class="year-container">
+    <div class="year-card">
       <h2>🎯 Your Five Element Profile: Earth</h2>
       <p>Earth types are the foundation others rely upon. Like fertile soil, you nurture growth in those around you. Your patience and practicality create lasting stability, and your loyalty is unshakeable.</p>
       <p><strong>Core Traits:</strong> Stability, Nurturing, Dependability</p>
@@ -97,7 +189,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="year-card">
       <h2>💪 Your Earth Ox Strengths</h2>
       <p>People born in 2009 carry the Earth element's essence:</p>
       <ul>
@@ -107,7 +199,7 @@
       </ul>
     </div>
 
-    <div class="card">
+    <div class="year-card">
       <h2>⚡ 2009 Ox Growth Areas</h2>
       <p>Every element has shadow traits to develop. For Earth Ox natives:</p>
       <ul>
@@ -118,7 +210,7 @@
       <p>Self-awareness in these areas accelerates personal growth and strengthens your BaZi chart's balance.</p>
     </div>
 
-    <div class="card">
+    <div class="year-card">
       <h2>🔮 2026 Fortune: Earth Ox Natives</h2>
       <div class="highlight-box">
         <p>"Earth Ox natives build endurance in 2026. Consistent effort over time yields major results. Health improves with regular routine."</p>
@@ -131,7 +223,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="year-card">
       <h2>🎨 Earth Element — Complete Profile</h2>
       <p><strong>Emotional Nature:</strong> Earth energy expresses through practical stability and sustained nurturing.</p>
       <p><strong>Career Alignment:</strong> Best suited for careers that leverage practical execution and sustained effort.</p>
@@ -139,7 +231,7 @@
       <p><strong>Feng Shui Enhancements:</strong> Place earth tones, crystals, and ceramics in the Southwest to activate earth energy in your home and workspace.</p>
     </div>
 
-    <div class="card">
+    <div class="year-card">
       <h2>🧭 2009 Ox — Five Element Balance</h2>
       <p>Your birth year (Earth Ox) influences your elemental chart. In 2026, the Wood Dragon energy brings growth energy to all signs. See where your Earth nature sits in the full Five Element cycle:</p>
       <div class="element-bar">
@@ -148,10 +240,10 @@
       <p style="margin-top:16px; font-size:0.9rem; color: var(--text-dim);">Note: These show your birth-year elemental tendencies. For precise chart analysis including Day Master, Ten Gods, and 10-year luck cycles — generate your full BaZi report.</p>
     </div>
 
-    <div class="cta-section">
+    <div class="year-cta">
       <h2>Get Your Complete BaZi Chart</h2>
       <p>Your birth year reveals only one pillar. For a complete picture — including your Day Master, Ten Gods, and 10-year luck cycles — generate your full personalized BaZi report.</p>
-      <a href="/" class="cta-btn">Generate My Free BaZi Chart →</a>
+      <a href="/" class="year-cta-btn">Generate My Free BaZi Chart →</a>
     </div>
   </div>
 
