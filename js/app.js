@@ -1090,13 +1090,11 @@
         <div class="compat-leaderboard-icon">🏆</div>
         <div class="compat-leaderboard-body">
           <div class="compat-leaderboard-title">Join the World Leaderboard</div>
-          <div class="compat-leaderboard-sub">Your score of <strong>${result.overall}/100</strong> puts you ahead of ${Math.round(result.overall * 0.8)}% of couples worldwide. Add your names to the global leaderboard!</div>
+          <div class="compat-leaderboard-sub">Your score of <strong>${result.overall}/100</strong> puts you ahead of ${Math.round(result.overall * 0.8)}% of couples worldwide. Tap below to add your score to the global leaderboard!</div>
         </div>
         <div class="compat-leaderboard-form" id="compatLeaderboardForm">
-          <input type="text" id="lbName1" placeholder="Your name" maxlength="30" value="${name1}">
-          <input type="text" id="lbName2" placeholder="Partner's name" maxlength="30" value="${name2}">
           <button class="compat-share-btn compat-share-save" onclick="compatSubmitLeaderboard('${name1}','${name2}',${result.overall},'${tier.label}','${result.element.elem1Name}','${result.element.elem2Name}',${data1.year},${data2.year})">
-            🏆 Add to Leaderboard
+            🏆 Add Us to Leaderboard
           </button>
         </div>
         <div class="compat-leaderboard-done" id="compatLeaderboardDone" style="display:none">
@@ -1316,15 +1314,14 @@ Discover your free BaZi Love Match at:
   }
 
   function compatSubmitLeaderboard(name1, name2, score, tier, elem1, elem2, year1, year2) {
-    const n1 = (document.getElementById('lbName1') || {}).value.trim() || name1;
-    const n2 = (document.getElementById('lbName2') || {}).value.trim() || name2;
-    if (!n1 || !n2) { showToast('⚠️ Please enter both names'); return; }
+    const btn = document.querySelector('.compat-share-save');
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Adding...'; }
 
     fetch('/api/leaderboard', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name1: n1, name2: n2,
+        name1: name1, name2: name2,
         score: parseInt(score),
         tier: tier,
         elem1: elem1, elem2: elem2,
@@ -1342,9 +1339,13 @@ Discover your free BaZi Love Match at:
         showToast(`🎉 You're #${data.rank} on the leaderboard!`);
       } else {
         showToast('⚠️ ' + (data.error || 'Submission failed'));
+        if (btn) { btn.disabled = false; btn.textContent = '🏆 Add Us to Leaderboard'; }
       }
     })
-    .catch(() => showToast('⚠️ Network error, please try again'));
+    .catch(() => {
+      showToast('⚠️ Network error, please try again');
+      if (btn) { btn.disabled = false; btn.textContent = '🏆 Add Us to Leaderboard'; }
+    });
   }
 
 
