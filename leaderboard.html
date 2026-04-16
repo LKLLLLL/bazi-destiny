@@ -467,7 +467,7 @@
   fetch(API)
     .then(r => r.json())
     .then(data => {
-      const entries = data.entries || [];
+      const entries = data.leaderboard || data.entries || [];
       if (entries.length === 0) {
         document.getElementById('topThree').innerHTML =
           '<div class="loading-state" style="grid-column:1/-1;padding:40px">No entries yet — be the first! 💕</div>';
