@@ -1003,8 +1003,103 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 0.8; }
 .cp-mini-pillar { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; }
 .cp-mini-stem { font-size: 14px; color: var(--gold-dark); font-weight: 700; }
 .cp-mini-elem { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
-.compat-share-row { text-align: center; padding: 24px 0; }
-.compat-share-row p { font-size: 14px; color: var(--text-tertiary); margin-bottom: 16px; }
+/* ============================================
+   COMPAT SHARE CARD — Premium Social Sharing
+   ============================================ */
+.compat-share-card {
+  background: var(--bg-alt);
+  border: 1px solid rgba(201,169,110,0.15);
+  border-radius: 20px;
+  padding: 36px 32px;
+  margin: 32px auto;
+  max-width: 540px;
+  text-align: center;
+}
+.compat-share-header {
+  margin-bottom: 24px;
+}
+.compat-share-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.compat-share-sub {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+.compat-share-preview {
+  background: linear-gradient(135deg, #1A1A2E, #16213E);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(201,169,110,0.12);
+}
+.compat-share-preview-inner {
+  text-align: center;
+}
+.compat-share-preview-score {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.compat-share-preview-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.compat-share-preview-names {
+  color: rgba(255,255,255,0.8);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.compat-share-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.compat-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.compat-share-save {
+  background: var(--gold);
+  color: #fff;
+  box-shadow: 0 3px 16px rgba(201,169,110,0.3);
+}
+.compat-share-save:hover {
+  background: var(--gold-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(201,169,110,0.4);
+}
+.compat-share-copy {
+  background: rgba(201,169,110,0.1);
+  color: var(--gold-dark);
+  border: 1.5px solid rgba(201,169,110,0.3);
+}
+.compat-share-copy:hover {
+  background: rgba(201,169,110,0.18);
+  transform: translateY(-2px);
+}
+.compat-share-note {
+  font-size: 0.82rem;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+@media (max-width: 480px) {
+  .compat-share-card { padding: 28px 20px; }
+  .compat-share-actions { flex-direction: column; }
+}
 
 /* ============================================================
    VISUALIZATIONS

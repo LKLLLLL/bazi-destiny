@@ -1059,31 +1059,235 @@
         `).join('')}
       </div>
 
-      <!-- Share -->
-      <div class="compat-share-row">
-        <p>Share your BaZi Love Match with friends! 💕</p>
-        <button class="btn-primary" onclick="compatShare('${name1}', '${name2}', ${result.overall}, '${tier.label}')">
-          🔮 Share Our Match
-        </button>
+      <!-- Share Card -->
+      <div class="compat-share-card">
+        <div class="compat-share-header">
+          <div class="compat-share-title">✨ Share Your Match</div>
+          <div class="compat-share-sub">Save your result or send it to your partner 💕</div>
+        </div>
+        <div class="compat-share-preview">
+          <div class="compat-share-preview-inner" id="compatSharePreview">
+            <div class="compat-share-preview-score" style="color:${scoreColor}">${result.overall}</div>
+            <div class="compat-share-preview-label" style="color:${scoreColor}">${tier.label}</div>
+            <div class="compat-share-preview-names">${name1} & ${name2}</div>
+          </div>
+        </div>
+        <div class="compat-share-actions">
+          <button class="compat-share-btn compat-share-save" onclick="compatSaveCard('${name1}', '${name2}', '${result.overall}', '${tier.label}', '${result.element.elem1Name}', '${result.element.elem2Name}', '${scoreColor}')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Save as Image
+          </button>
+          <button class="compat-share-btn compat-share-copy" onclick="compatCopyText('${name1}', '${name2}', ${result.overall}, '${tier.label}')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copy Text
+          </button>
+        </div>
+        <p class="compat-share-note">💡 Share the image on WeChat Moments, Instagram or send directly to your partner</p>
       </div>
     `;
 
     document.getElementById('compatResults').innerHTML = html;
   }
 
-  function compatShare(name1, name2, score, label) {
+  function compatSaveCard(name1, name2, score, label, elem1, elem2, scoreColor) {
+    const W = 600, H = 820;
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext('2d');
+
+    // Background gradient
+    const bg = ctx.createLinearGradient(0, 0, W, H);
+    bg.addColorStop(0, '#1A1A2E');
+    bg.addColorStop(0.5, '#16213E');
+    bg.addColorStop(1, '#0F3460');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Ambient glow top
+    const glow = ctx.createRadialGradient(W/2, 0, 0, W/2, 0, 400);
+    glow.addColorStop(0, 'rgba(212,165,116,0.15)');
+    glow.addColorStop(1, 'transparent');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, H);
+
+    // Subtle grid pattern
+    ctx.strokeStyle = 'rgba(212,165,116,0.04)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < W; i += 40) {
+      ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke();
+    }
+    for (let j = 0; j < H; j += 40) {
+      ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(W, j); ctx.stroke();
+    }
+
+    // Top ornament line
+    const lineGrad = ctx.createLinearGradient(40, 0, W-40, 0);
+    lineGrad.addColorStop(0, 'transparent');
+    lineGrad.addColorStop(0.5, 'rgba(212,165,116,0.6)');
+    lineGrad.addColorStop(1, 'transparent');
+    ctx.strokeStyle = lineGrad;
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(40, 70); ctx.lineTo(W-40, 70); ctx.stroke();
+
+    // BaZi Destiny logo text
+    ctx.fillStyle = '#C9A96E';
+    ctx.font = 'bold 14px serif';
+    ctx.textAlign = 'center';
+    ctx.letterSpacing = '3px';
+    ctx.fillText('☯ BaZi Destiny', W/2, 46);
+    ctx.letterSpacing = '0px';
+
+    // Free badge
+    const badgeW = 110, badgeH = 26;
+    const badgeX = W/2 - badgeW/2, badgeY = 88;
+    ctx.fillStyle = 'rgba(201,169,110,0.15)';
+    ctx.beginPath();
+    ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 13);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(201,169,110,0.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 13);
+    ctx.stroke();
+    ctx.fillStyle = '#C9A96E';
+    ctx.font = '600 11px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('💕 FREE LOVE MATCH', W/2, badgeY + 17);
+
+    // Score ring
+    const cx = W/2, cy = 248, r = 88;
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 10;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.stroke();
+
+    const pct = parseInt(score) / 100;
+    ctx.strokeStyle = scoreColor;
+    ctx.lineWidth = 10;
+    ctx.lineCap = 'round';
+    ctx.shadowColor = scoreColor;
+    ctx.shadowBlur = 20;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, -Math.PI/2, -Math.PI/2 + Math.PI*2*pct);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = scoreColor;
+    ctx.font = 'bold 48px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(score, cx, cy + 14);
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.font = '12px sans-serif';
+    ctx.fillText('/ 100', cx, cy + 32);
+
+    // Tier label
+    ctx.fillStyle = scoreColor;
+    ctx.font = 'bold 22px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(label, cx, cy + r + 36);
+
+    // Divider
+    ctx.strokeStyle = 'rgba(201,169,110,0.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(W/2 - 120, cy + r + 56); ctx.lineTo(W/2 + 120, cy + r + 56);
+    ctx.stroke();
+
+    // Names
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 28px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${name1}  ♥  ${name2}`, cx, cy + r + 90);
+
+    // Subtitle
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = '13px sans-serif';
+    ctx.fillText('BaZi Love Compatibility Result', cx, cy + r + 114);
+
+    // Element badges
+    const ey = cy + r + 148;
+    const e1x = W/2 - 80, e2x = W/2 + 80;
+    // Elem 1
+    ctx.fillStyle = 'rgba(201,169,110,0.1)';
+    ctx.beginPath();
+    ctx.roundRect(e1x - 55, ey, 110, 44, 10);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(201,169,110,0.25)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(e1x - 55, ey, 110, 44, 10);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(201,169,110,0.8)';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(elem1, e1x, ey + 18);
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = '11px sans-serif';
+    ctx.fillText('Element', e1x, ey + 33);
+
+    // Connector
+    ctx.fillStyle = 'rgba(201,169,110,0.5)';
+    ctx.font = '16px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('×', W/2, ey + 25);
+
+    // Elem 2
+    ctx.fillStyle = 'rgba(201,169,110,0.1)';
+    ctx.beginPath();
+    ctx.roundRect(e2x - 55, ey, 110, 44, 10);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(201,169,110,0.25)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(e2x - 55, ey, 110, 44, 10);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(201,169,110,0.8)';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(elem2, e2x, ey + 18);
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = '11px sans-serif';
+    ctx.fillText('Element', e2x, ey + 33);
+
+    // Bottom divider
+    const bdy = ey + 70;
+    ctx.strokeStyle = 'rgba(201,169,110,0.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(60, bdy); ctx.lineTo(W-60, bdy);
+    ctx.stroke();
+
+    // Website URL
+    ctx.fillStyle = 'rgba(201,169,110,0.5)';
+    ctx.font = '13px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('mybazidestiny.com', cx, bdy + 28);
+    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    ctx.font = '11px sans-serif';
+    ctx.fillText('Free BaZi Love Match · No Sign-up Required', cx, bdy + 50);
+
+    canvas.toBlob(blob => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `bazi-love-match-${name1}-${name2}.png`.replace(/\s/g, '-');
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('💕 Image saved! Share it with your partner');
+    }, 'image/png');
+  }
+
+  function compatCopyText(name1, name2, score, label) {
     const text = `💕 Our BaZi Love Match: ${name1} & ${name2}
 
-Compatibility Score: ${score}/100 — "${label}"
+✨ Compatibility Score: ${score}/100 — "${label}"
 
-Discover yours free at: https://mybazidestiny.com`;
-    if (navigator.share) {
-      navigator.share({ title: 'BaZi Love Match', text });
-    } else {
-      navigator.clipboard.writeText(text).then(() => {
-        showToast('✨ Love match copied! Share it with your partner 💕');
-      });
-    }
+Discover your free BaZi Love Match at:
+👉 https://mybazidestiny.com`;
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('✨ Love match copied! Paste it anywhere 💕');
+    });
   }
 
 
