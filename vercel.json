@@ -4,7 +4,7 @@
   "outputDirectory": ".",
   "installCommand": null,
   "framework": null,
-  "routes": [
-    { "src": "/(.*)", "dest": "/$1", "status": 200 }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" }
   ]
 }
