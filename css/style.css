@@ -655,7 +655,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 0.8; }
   border-radius: var(--radius-md);
   padding: 20px;
   margin-bottom: 16px;
-  color: var(--text);
+  color: var(--text) !important;
   display: block;
 }
 #elementBars .element-highlight-card.dominant {
