@@ -254,6 +254,15 @@
       border-radius: 50px;
     }
 
+    /* Highlight flash animation for "My Rank" */
+    .highlight-flash {
+      animation: flash-highlight 2s ease-out;
+    }
+    @keyframes flash-highlight {
+      0%, 100% { background: rgba(201,169,110,0.08); }
+      50% { background: rgba(201,169,110,0.25); box-shadow: 0 0 20px rgba(201,169,110,0.3); }
+    }
+
     footer { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.25); font-size: 0.82rem; }
     footer a { color: rgba(201,169,110,0.6); text-decoration: none; }
     footer a:hover { color: #C9A96E; }
@@ -265,6 +274,7 @@
   <div class="nav-inner">
     <a href="/" class="nav-logo">☯ BaZi Destiny</a>
     <div class="nav-links">
+      <a href="/">Home</a>
       <a href="/#compatSection">💕 Love Match</a>
       <a href="/#calculator">🔮 Calculator</a>
       <a href="/leaderboard" class="active" style="color:#C9A96E;">🏆 Leaderboard</a>
@@ -281,6 +291,7 @@
   <div class="cta-row">
     <a href="/#compatSection" class="btn-gold">💕 Test My Score</a>
     <a href="/" class="btn-outline">← Back to Home</a>
+    <a href="#" class="btn-outline" id="jumpToMyRank" style="display:none;">🎯 My Rank</a>
   </div>
 </section>
 
@@ -483,11 +494,32 @@
       `${displayName} — ${displayTier} · Score: ${e.score}`;
     document.getElementById('myRankPos').textContent = `#${idx + 1}`;
     document.getElementById('myRankBanner').classList.add('visible');
-    // Scroll to my entry
-    setTimeout(() => {
-      const el = document.getElementById('myEntryRow');
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 500);
+    
+    // Show "My Rank" button and set up click handler
+    const jumpBtn = document.getElementById('jumpToMyRank');
+    if (jumpBtn) {
+      jumpBtn.style.display = '';
+      jumpBtn.onclick = function(ev) {
+        ev.preventDefault();
+        const el = document.getElementById('myEntryRow');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.classList.add('highlight-flash');
+          setTimeout(() => el.classList.remove('highlight-flash'), 2000);
+        } else if (idx < 3) {
+          // In top 3, scroll to top cards
+          document.querySelector('.top-three').scrollIntoView({ behavior: 'smooth' });
+        }
+      };
+    }
+    
+    // Auto-scroll if user just submitted (URL has ?justSubmitted)
+    if (new URLSearchParams(window.location.search).has('justSubmitted')) {
+      setTimeout(() => {
+        const el = document.getElementById('myEntryRow');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 500);
+    }
   }
 
   // Init

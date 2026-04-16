@@ -1335,8 +1335,8 @@ Discover your free BaZi Love Match at:
         document.getElementById('compatLeaderboardForm').style.display = 'none';
         document.getElementById('compatLeaderboardDone').style.display = '';
         const rank = data.entry?.rank || data.rank || '?';
-        document.getElementById('compatLeaderboardMsg').textContent =
-          `Ranked #${rank} worldwide! 🎉`;
+        document.getElementById('compatLeaderboardMsg').innerHTML =
+          `Ranked #${rank} worldwide! 🎉 <a href="/leaderboard?justSubmitted" style="color:#C9A96E;margin-left:8px;">View Leaderboard →</a>`;
         showToast(`🎉 You're #${rank} on the leaderboard!`);
       } else {
         showToast('⚠️ ' + (data.error || 'Submission failed'));
