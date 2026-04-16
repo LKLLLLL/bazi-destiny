@@ -385,7 +385,10 @@
   }
 
   function isMe(entry) {
-    return myEntry && myEntry.id === entry.id;
+    if (!myEntry) return false;
+    // Match by name since we don't have stable IDs
+    return entry.name === myEntry.name || 
+           (entry.name1 === myEntry.name1 && entry.name2 === myEntry.name2);
   }
 
   // Render top 3
@@ -465,11 +468,19 @@
   // My rank banner
   function showMyRank(entries) {
     if (!myEntry) return;
-    const idx = entries.findIndex(e => e.id === myEntry.id);
+    // Find by name match since we don't have stable IDs
+    const idx = entries.findIndex(e => 
+      e.name === myEntry.name || 
+      (e.name1 === myEntry.name1 && e.name2 === myEntry.name2)
+    );
     if (idx === -1) return;
     const e = entries[idx];
+    const displayName = e.name || `${e.name1 || '?'} & ${e.name2 || '?'}`;
+    const displayTier = e.tier || scoreToTier(e.score);
+    const displayElem1 = e.elem1 || '☯';
+    const displayElem2 = e.elem2 || '☯';
     document.getElementById('myRankDetail').textContent =
-      `${e.name1} & ${e.score} — ${e.tier} · ${e.elem1} × ${e.elem2}`;
+      `${displayName} — ${displayTier} · Score: ${e.score}`;
     document.getElementById('myRankPos').textContent = `#${idx + 1}`;
     document.getElementById('myRankBanner').classList.add('visible');
     // Scroll to my entry
