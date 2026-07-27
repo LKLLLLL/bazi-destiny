@@ -120,4 +120,4 @@ Each element has natural conflicts. Understanding what to avoid is as important 
 ---
 
 **Related Guides:**
-[The Five Elements](/bazi-elements.html) · [Earth Element Guide](/earth-element-personality.html) · [Fire Element Guide](/fire-element-personality.html)
+[The Five Elements](/bazi-elements.html) · [Earth Element Guide](/earth-element-personality.html) · [Fire Element Guide](/fire-element-personality.html) · [Wealth Analysis](/bazi-wealth-analysis.html)

@@ -154,4 +154,4 @@ Wisdom and strategy prevail. Great time for research, planning, education, and b
 ---
 
 **More Career Insights:**
-[BaZi Day Master Guide](/bazi-day-master-guide.html) · [The Five Elements](/bazi-elements.html) · [Lucky Colors & Numbers](/lucky-colors-numbers.html)
+[BaZi Day Master Guide](/bazi-day-master-guide.html) · [The Five Elements](/bazi-elements.html) · [Lucky Colors & Numbers](/lucky-colors-numbers.html) · [BaZi Wealth Analysis](/bazi-wealth-analysis.html)

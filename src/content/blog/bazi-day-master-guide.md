@@ -69,4 +69,4 @@ Discover your Day Master, Five Element balance, and complete destiny chart.
 ---
 
 **Go Deeper:**
-[How to Read Your BaZi Chart](/how-to-read-bazi-chart.html) · [The Five Elements](/bazi-elements.html) · [BaZi Career Guide](/career-bazi.html)
+[How to Read Your BaZi Chart](/how-to-read-bazi-chart.html) · [The Five Elements](/bazi-elements.html) · [BaZi Career Guide](/career-bazi.html) · [Wealth Analysis](/bazi-wealth-analysis.html)
