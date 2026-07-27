@@ -1,0 +1,103 @@
+---
+import Base from '../../layouts/Base.astro';
+import destinyZh from '../../data/destiny-zh.json';
+
+const years = destinyZh.map((r) => {
+  const m = r.h1.match(/(\d{4})年(\S+)/);
+  return { slug: r.slug, year: r.year, label: m ? m[2].replace('命理详解', '') : r.animal, emoji: r.emoji };
+});
+---
+
+<Base
+  title="免费八字算命 — 四柱命理在线查询 | 八字命运"
+  description="免费八字排盘与四柱命理查询。选择出生年份，查看五行分析、性格特质、幸运数字、事业爱情与2026年运势详解。"
+  keywords="八字, 四柱, 命理, 五行, 生肖, 运势, 八字算命, 免费排盘"
+  lang="zh"
+  path="/zh/"
+  altPath="/"
+>
+  <section class="zh-hero">
+    <div class="wrap-narrow center">
+      <p class="eyebrow center"><span class="han">四柱推命</span> BaZi Destiny</p>
+      <h1 data-reveal>免费八字<span>算命</span></h1>
+      <p class="zh-lead" data-reveal style="--reveal-delay:.1s">
+        输入你的出生年份，查看八字命盘与五行运势。<br />
+        完整的英文排盘工具（精确到出生时辰）在
+        <a href="/calculator.html">英文版计算器</a>。
+      </p>
+    </div>
+  </section>
+
+  <section class="section zh-years" id="years">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow"><span class="han">六十甲子</span> 1960 – 2030</p>
+        <h2 class="section-title">选择你的<em>出生年份</em></h2>
+        <p class="section-sub">查看五行命理、性格特质、幸运数字与 2026 年运势。</p>
+      </div>
+      <div class="years-grid" data-reveal>
+        {years.map((y) => (
+          <a href={`/zh/${y.slug}.html`} class="year-chip">
+            <span class="y-emoji" aria-hidden="true">{y.emoji}</span>
+            <span class="y-year">{y.year}</span>
+            <span class="y-label han">{y.label}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section zh-about">
+    <div class="wrap-narrow">
+      <div class="panel zh-panel" data-reveal>
+        <h2>什么是八字？</h2>
+        <p>
+          八字，又称四柱命理，是中国最古老的命理体系。它将你的出生年、月、日、时转化为四组天干地支——共八个字，
+          从中解读你的五行构成：金、木、水、火、土。五行之间的生克制化，揭示你的性格、事业、姻缘与运势起伏。
+        </p>
+        <p>
+          本站的英文版提供完整的在线排盘工具、五行合婚（Love Match）与风水指引，欢迎体验：
+        </p>
+        <div class="zh-ctas">
+          <a href="/calculator.html" class="btn btn-gold">🔮 免费排盘（英文工具）</a>
+          <a href="/love-match.html" class="btn btn-love">💕 五行合婚 Love Match</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .zh-hero { padding: calc(68px + clamp(3rem, 8vh, 6rem)) 0 clamp(1.4rem, 3vh, 2.4rem); text-align: center; }
+  .zh-hero h1 { font-family: var(--font-han); font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 700; letter-spacing: 0.08em; }
+  .zh-hero h1 span { color: var(--gold); }
+  .zh-lead { margin-top: 1.2rem; color: var(--bone-dim); }
+  .center { text-align: center; }
+
+  .years-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 0.7rem;
+  }
+  .year-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.9rem 0.4rem;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    background: linear-gradient(172deg, var(--ink-2), var(--ink-1));
+    color: var(--bone);
+    transition: transform 0.3s var(--ease-out), border-color 0.3s, box-shadow 0.3s;
+  }
+  .year-chip:hover { transform: translateY(-3px); border-color: var(--gold); color: var(--bone); box-shadow: var(--glow-gold); }
+  .y-emoji { font-size: 1.3rem; }
+  .y-year { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; }
+  .y-label { font-size: 0.72rem; color: var(--gold); }
+
+  .zh-panel { padding: clamp(1.6rem, 4vw, 2.4rem); }
+  .zh-panel h2 { font-size: 1.5rem; margin-bottom: 0.9rem; color: var(--gold-bright); }
+  .zh-panel p { color: var(--bone-dim); line-height: 1.9; margin-bottom: 0.9rem; }
+  .zh-ctas { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.4rem; }
+</style>

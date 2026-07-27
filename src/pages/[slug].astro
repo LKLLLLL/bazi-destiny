@@ -1,0 +1,191 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import DestinyPage from '../components/DestinyPage.astro';
+import destinyEn from '../data/destiny-en.json';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const pages = await getCollection('pages');
+  const articlePaths = posts.map((post) => ({
+    params: { slug: post.id },
+    props: { kind: 'article' as const, post },
+  }));
+  const pagePaths = pages.map((page) => ({
+    params: { slug: page.id },
+    props: { kind: 'page' as const, post: page },
+  }));
+  const destinyPaths = destinyEn.map((rec) => ({
+    params: { slug: rec.slug },
+    props: { kind: 'destiny' as const, rec },
+  }));
+  return [...articlePaths, ...pagePaths, ...destinyPaths];
+}
+
+const { kind, post, rec } = Astro.props as any;
+
+let Content: any = null;
+let related: any[] = [];
+if (kind === 'article' || kind === 'page') {
+  const r = await render(post);
+  Content = r.Content;
+}
+if (kind === 'article') {
+  const all = await getCollection('blog');
+  related = all
+    .filter((p) => p.id !== post.id)
+    .sort((a, b) => {
+      const sameA = a.data.tag === post.data.tag ? 1 : 0;
+      const sameB = b.data.tag === post.data.tag ? 1 : 0;
+      return sameB - sameA || b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+    })
+    .slice(0, 3);
+}
+
+const articleLd =
+  kind === 'article'
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: post.data.title,
+          description: post.data.description,
+          url: `https://mybazidestiny.com/${post.id}.html`,
+          datePublished: post.data.pubDate.toISOString().slice(0, 10),
+          author: { '@type': 'Organization', name: 'BaZi Destiny' },
+          publisher: { '@type': 'Organization', name: 'BaZi Destiny', url: 'https://mybazidestiny.com' },
+        },
+  ]
+    : [];
+
+const PAGE_ICONS: Record<string, string> = {
+  about: '☯',
+  'privacy-policy': '🔏',
+  'terms-of-service': '📜',
+  'editorial-policy': '🖋',
+};
+---
+
+{kind === 'destiny' ? (
+  <DestinyPage rec={rec} lang="en" />
+) : kind === 'page' ? (
+  <Base title={`${post.data.title} | BaZi Destiny`} description={post.data.description} path={`/${post.id}.html`}>
+    <header class="art-hero">
+      <div class="wrap-narrow">
+        <span class="pg-icon" aria-hidden="true">{PAGE_ICONS[post.id] ?? '☯'}</span>
+        <h1>{post.data.title}</h1>
+      </div>
+    </header>
+    <article class="wrap-narrow art-body prose">
+      <Content />
+    </article>
+  </Base>
+) : (
+  <Base
+    title={post.data.seoTitle ?? `${post.data.title} | BaZi Destiny`}
+    description={post.data.description}
+    path={`/${post.id}.html`}
+    ogType="article"
+    jsonLd={articleLd}
+  >
+    <header class="art-hero">
+      <div class="wrap-narrow">
+        <p class="art-tag"><span aria-hidden="true">{post.data.emoji}</span> {post.data.tag}</p>
+        <h1>{post.data.title}</h1>
+        <p class="art-meta">
+          {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          <span aria-hidden="true"> · </span>{post.data.readTime}<span aria-hidden="true"> · </span>BaZi Destiny
+        </p>
+      </div>
+    </header>
+
+    <article class="wrap-narrow art-body prose">
+      <Content />
+    </article>
+
+    <div class="wrap-narrow">
+      <div class="art-cta" data-reveal>
+        <span class="art-cta-han han" aria-hidden="true">排盘</span>
+        <h2>Read your own chart</h2>
+        <p>Everything in this article becomes personal once you see your Four Pillars. Free, instant, no sign-up.</p>
+        <a href="/calculator.html" class="btn btn-gold btn-lg">Cast My Chart — Free</a>
+      </div>
+
+      {related.length > 0 && (
+        <nav class="art-related" aria-label="Related articles">
+          <h2>Keep reading</h2>
+          <div class="rel-grid">
+            {related.map((p) => (
+              <a class="rel-card card" href={`/${p.id}.html`}>
+                <span class="rel-emoji" aria-hidden="true">{p.data.emoji}</span>
+                <span class="rel-title">{p.data.title}</span>
+                <span class="rel-meta">{p.data.readTime}</span>
+              </a>
+            ))}
+          </div>
+        </nav>
+      )}
+    </div>
+  </Base>
+)}
+
+<style>
+  .art-hero {
+    padding: calc(68px + clamp(2.5rem, 6vh, 4.5rem)) 0 clamp(1.8rem, 4vh, 2.8rem);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .art-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--line);
+    background: rgba(212, 175, 106, 0.06);
+    border-radius: 999px;
+    padding: 0.35rem 0.95rem;
+    margin-bottom: 1.3rem;
+  }
+  .art-hero h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); max-width: 24ch; }
+  .art-meta { margin-top: 1rem; color: var(--bone-faint); font-size: 0.85rem; }
+  .pg-icon { font-size: 2.4rem; display: block; margin-bottom: 0.9rem; }
+
+  .art-body { padding-top: clamp(1.8rem, 4vh, 2.8rem); }
+
+  .art-cta {
+    margin-top: 2.5rem;
+    text-align: center;
+    padding: clamp(1.8rem, 4vw, 2.4rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background:
+      linear-gradient(170deg, rgba(212, 175, 106, 0.08), transparent 55%),
+      linear-gradient(172deg, var(--ink-2), var(--ink-1));
+    position: relative;
+    overflow: hidden;
+  }
+  .art-cta-han {
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    font-size: 3.2rem;
+    color: rgba(212, 175, 106, 0.08);
+  }
+  .art-cta h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .art-cta p { color: var(--bone-dim); font-size: 0.92rem; max-width: 44ch; margin: 0 auto 1.3rem; }
+
+  .art-related { margin-top: 2.5rem; }
+  .art-related h2 { font-size: 1.4rem; margin-bottom: 1.1rem; }
+  .rel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.9rem; }
+  @media (max-width: 720px) { .rel-grid { grid-template-columns: 1fr; } }
+  .rel-card { display: flex; flex-direction: column; gap: 0.45rem; padding: 1.2rem 1.3rem; color: var(--bone); }
+  .rel-card:hover { color: var(--bone); }
+  .rel-emoji { font-size: 1.3rem; }
+  .rel-title { font-family: var(--font-display); font-size: 1.05rem; line-height: 1.35; }
+  .rel-meta { font-size: 0.75rem; color: var(--bone-faint); }
+</style>

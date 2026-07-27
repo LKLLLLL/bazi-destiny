@@ -1,0 +1,1724 @@
+---
+// StepCalculator — multi-step birth data wizard
+// 1. Birth Date → 2. Birth Hour → 3. Birth City
+// Progress bar + clickable back + localStorage persistence + True Solar Time
+---
+
+<section class="step-calc-section" id="calculator" aria-label="BaZi calculator">
+  <div class="wrap">
+    <div class="section-head center" data-reveal>
+      <p class="eyebrow center"><span class="han">排盘</span> The Calculator</p>
+      <h2 class="section-title">Cast Your <em>Four Pillars</em></h2>
+      <p class="section-sub">One step at a time. Your answers are saved as you go.</p>
+    </div>
+
+    <div class="sc-shell panel" data-reveal>
+      <!-- Welcome back banner -->
+      <div class="sc-welcome" id="scWelcome" hidden>
+        <div class="sc-welcome-inner">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v4m0 12v4M4.9 4.9l2.8 2.8m8.6 8.6l2.8 2.8M2 12h4m12 0h4M4.9 19.1l2.8-2.8m8.6-8.6l2.8-2.8"/></svg>
+          <span>Welcome back — we kept your details</span>
+          <button class="sc-welcome-continue" id="scWelcomeContinue">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="sc-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="3">
+        <div class="sc-progress-track">
+          <div class="sc-progress-fill" id="scProgressFill"></div>
+        </div>
+        <div class="sc-progress-steps" id="scProgressSteps">
+          <button class="sc-step-dot active" data-step="0" aria-label="Step 1: Birth Date">
+            <span class="sc-dot-num">1</span>
+            <span class="sc-dot-label">Date</span>
+          </button>
+          <button class="sc-step-dot" data-step="1" aria-label="Step 2: Birth Hour" disabled>
+            <span class="sc-dot-num">2</span>
+            <span class="sc-dot-label">Hour</span>
+          </button>
+          <button class="sc-step-dot" data-step="2" aria-label="Step 3: Birth City" disabled>
+            <span class="sc-dot-num">3</span>
+            <span class="sc-dot-label">City</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ============= STEP 1: DATE ============= -->
+      <div class="sc-step" id="scStep0">
+        <div class="sc-step-content">
+          <span class="sc-step-icon" aria-hidden="true">📅</span>
+          <h3 class="sc-step-title">When did you spawn?</h3>
+          <p class="sc-step-sub">Your birth date anchors everything. Accuracy here = accuracy everywhere.</p>
+          <div class="sc-date-wrap">
+            <input
+              class="sc-date-input"
+              type="date"
+              id="scDate"
+              min="1900-01-01"
+              max="2030-12-31"
+              required
+            />
+          </div>
+          <button class="btn btn-gold btn-lg sc-next" id="scNext0" disabled>
+            Continue
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p class="sc-hint">Press Enter to continue</p>
+        </div>
+      </div>
+
+      <!-- ============= STEP 2: HOUR ============= -->
+      <div class="sc-step" id="scStep1" hidden>
+        <div class="sc-step-content">
+          <span class="sc-step-icon" aria-hidden="true">🕐</span>
+          <h3 class="sc-step-title">What hour were you born?</h3>
+          <p class="sc-step-sub">The hour sets your fourth pillar — the most personal part of your chart.</p>
+
+          <div class="sc-hour-grid" id="scHourGrid">
+            {[
+              ['23', '子 Rat', '23:00–00:59'],
+              ['1', '丑 Ox', '01:00–02:59'],
+              ['3', '寅 Tiger', '03:00–04:59'],
+              ['5', '卯 Rabbit', '05:00–06:59'],
+              ['7', '辰 Dragon', '07:00–08:59'],
+              ['9', '巳 Snake', '09:00–10:59'],
+              ['11', '午 Horse', '11:00–12:59'],
+              ['13', '未 Goat', '13:00–14:59'],
+              ['15', '申 Monkey', '15:00–16:59'],
+              ['17', '酉 Rooster', '17:00–18:59'],
+              ['19', '戌 Dog', '19:00–20:59'],
+              ['21', '亥 Pig', '21:00–22:59'],
+            ].map(([val, label, range]) => (
+              <button class="sc-hour-btn" type="button" data-hour={val}>
+                <span class="sc-hour-num">{val}:00</span>
+                <span class="sc-hour-name han">{label.split(' ')[0]}</span>
+                <span class="sc-hour-en">{label.split(' ')[1]}</span>
+                <span class="sc-hour-range">{range}</span>
+              </button>
+            ))}
+          </div>
+
+          <div class="sc-options">
+            <button class="sc-option-btn" id="scUnknownHour" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.5 9.5a3 3 0 0 1 5 2c0 3-4 3-4 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>
+              I don't know my birth time
+            </button>
+
+            <label class="sc-toggle">
+              <input type="checkbox" id="scSolarToggle" />
+              <span class="sc-toggle-track">
+                <span class="sc-toggle-thumb"></span>
+              </span>
+              <span class="sc-toggle-label">
+                True Solar Time correction
+                <small>Account for your longitude (professional)</small>
+              </span>
+            </label>
+          </div>
+
+          <button class="btn btn-gold btn-lg sc-next" id="scNext1" disabled>
+            Continue
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ============= STEP 3: CITY ============= -->
+      <div class="sc-step" id="scStep2" hidden>
+        <div class="sc-step-content">
+          <span class="sc-step-icon" aria-hidden="true">🌍</span>
+          <h3 class="sc-step-title">Where's your spawn point?</h3>
+          <p class="sc-step-sub">Your coordinates fine-tune the model. Skip if unsure — defaults work fine.</p>
+
+          <div class="sc-city-search" id="scCitySearch">
+            <div class="sc-city-input-wrap">
+              <svg class="sc-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7.5"/><path d="M20 20l-3.5-3.5"/></svg>
+              <input
+                class="sc-city-input"
+                type="text"
+                id="scCityInput"
+                placeholder="Search city… (e.g. Beijing, London, New York)"
+                autocomplete="off"
+                aria-autocomplete="list"
+                aria-controls="scCityList"
+                aria-expanded="false"
+              />
+              <button class="sc-city-clear" id="scCityClear" type="button" aria-label="Clear" hidden>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+            <ul class="sc-city-list" id="scCityList" role="listbox" hidden></ul>
+          </div>
+
+          <!-- Selected city chip -->
+          <div class="sc-city-selected" id="scCitySelected" hidden>
+            <span class="sc-city-chip">
+              <span class="sc-chip-dot"></span>
+              <span class="sc-chip-name" id="scCityChipName"></span>
+              <span class="sc-chip-country" id="scCityChipCountry"></span>
+              <button class="sc-chip-remove" id="scCityChipRemove" aria-label="Remove city">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </span>
+            <p class="sc-city-solar" id="scCitySolar" hidden></p>
+          </div>
+
+          <button class="btn btn-ghost sc-skip" id="scSkipCity" type="button">
+            Skip — I don't know
+          </button>
+
+          <button class="btn btn-gold btn-lg sc-next" id="scNext2" disabled>
+            Generate Character Card
+            <span class="han" aria-hidden="true">生成</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ============= LOADING & RESULTS ============= -->
+      <div class="sc-loading" id="scLoading" hidden>
+        <svg class="bagua" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(212,175,106,0.25)" stroke-width="1" />
+          <g class="bagua-spin">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <g transform={`rotate(${i * 45} 50 50)`}>
+                <rect x="44" y="6" width="12" height="3" rx="1" fill="#d4af6a" opacity="0.9" />
+                <rect x="44" y="11" width="12" height="3" rx="1" fill="#d4af6a" opacity={i % 2 ? 0.35 : 0.9} />
+                <rect x="44" y="16" width="12" height="3" rx="1" fill="#d4af6a" opacity={i % 3 ? 0.9 : 0.35} />
+              </g>
+            ))}
+          </g>
+          <circle cx="50" cy="50" r="17" fill="none" stroke="#d4af6a" stroke-width="1.2" />
+          <path d="M50 33a17 17 0 0 1 0 34 8.5 8.5 0 0 1 0-17 8.5 8.5 0 0 0 0-17z" fill="#d4af6a" opacity="0.85" />
+          <circle cx="50" cy="41.5" r="2.6" fill="#0b0d17" />
+          <circle cx="50" cy="58.5" r="2.6" fill="#d4af6a" />
+        </svg>
+        <ol class="sc-cast-steps">
+          <li><span class="han">解码</span> Scanning birth data</li>
+          <li><span class="han">建模</span> Calculating attributes</li>
+          <li><span class="han">标识</span> Identifying core engine</li>
+          <li><span class="han">生成</span> Generating character card</li>
+        </ol>
+      </div>
+
+      <div class="calc-results" id="calcResults" hidden aria-live="polite">
+        <!-- ===== CHARACTER CARD HEADER ===== -->
+        <div class="cc-header">
+          <div class="cc-badge" id="ccBadge">
+            <span class="cc-badge-han han" id="ccDayMaster"></span>
+            <span class="cc-badge-label">Core Engine</span>
+          </div>
+          <h3 class="cc-name" id="ccName"></h3>
+          <p class="cc-subtitle" id="ccSubtitle"></p>
+        </div>
+
+        <!-- ===== FOUR PILLARS — MODULES ===== -->
+        <div class="cc-modules">
+          <div class="cc-module-label">
+            <span class="han">四柱</span> Modules
+          </div>
+          <div class="pillars-grid" id="pillarsGrid"></div>
+        </div>
+
+        <!-- ===== ATTRIBUTES PANEL ===== -->
+        <div class="cc-section">
+          <div class="cc-section-head">
+            <span class="han">属性</span> Attributes
+          </div>
+          <div class="cc-attrs">
+            <div class="cc-attrs-bars" id="attrBars"></div>
+            <div class="cc-attrs-summary" id="attrSummary"></div>
+          </div>
+        </div>
+
+        <!-- ===== TRAITS ===== -->
+        <div class="cc-section">
+          <div class="cc-section-head">
+            <span class="han">天赋</span> Traits
+          </div>
+          <div class="cc-traits" id="ccTraits"></div>
+        </div>
+
+        <!-- ===== ENVIRONMENT ===== -->
+        <div class="cc-section">
+          <div class="cc-section-head">
+            <span class="han">环境</span> Environment
+          </div>
+          <div class="cc-env" id="ccEnv"></div>
+        </div>
+
+        <!-- ===== PAYWALL ===== -->
+        <div class="cc-paywall" id="ccPaywall">
+          <div class="cc-paywall-lock" aria-hidden="true">🔒</div>
+          <h4>Full Life Blueprint</h4>
+          <p>Unlock your complete alignment guide — what to wear, what to carry, daily rhythms, diet, and conduct. One purchase, forever yours.</p>
+          <button class="btn btn-gold btn-lg" id="unlockProBtn">Unlock Full Blueprint — $9.90</button>
+        </div>
+
+        <!-- ===== PRO: LIFESTYLE GUIDE ===== -->
+        <div class="cc-pro" id="ccPro" hidden>
+          <div class="cc-pro-head">
+            <span class="han">改运</span> Life Alignment Guide
+          </div>
+          <div class="cc-pro-grid" id="ccProGrid"></div>
+        </div>
+
+        <div class="results-actions">
+          <button class="btn btn-ghost" id="shareBtn">Share Card</button>
+          <button class="btn btn-gold" id="pdfBtn">Download PDF</button>
+          <button class="btn btn-ghost" id="recastBtn">Rescan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .step-calc-section {}
+  .sc-shell {
+    max-width: 680px;
+    margin-inline: auto;
+    padding: clamp(1.6rem, 4vw, 2.6rem);
+    overflow: hidden;
+    position: relative;
+    min-height: 420px;
+  }
+
+  /* Welcome back */
+  .sc-welcome { margin-bottom: 1.4rem; }
+  .sc-welcome[hidden] { display: none; }
+  .sc-welcome-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    padding: 0.9rem 1.2rem;
+    border: 1px solid rgba(212, 175, 106, 0.25);
+    border-radius: var(--radius);
+    background: rgba(212, 175, 106, 0.06);
+    color: var(--gold-bright);
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+  .sc-welcome-inner svg { flex: none; }
+  .sc-welcome-continue {
+    margin-left: auto;
+    background: none;
+    border: 1px solid var(--line-strong);
+    color: var(--gold);
+    padding: 0.3rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.25s, color 0.25s;
+  }
+  .sc-welcome-continue:hover { background: rgba(212, 175, 106, 0.12); color: var(--gold-bright); }
+
+  /* Progress */
+  .sc-progress { margin-bottom: 2rem; }
+  .sc-progress-track {
+    height: 3px;
+    background: var(--line-soft);
+    border-radius: 2px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .sc-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold-deep), var(--gold));
+    border-radius: 2px;
+    transition: width 0.4s var(--ease-out);
+  }
+  .sc-progress-steps {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  .sc-step-dot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    color: var(--bone-faint);
+    transition: color 0.3s, transform 0.3s;
+    padding: 0.3rem;
+  }
+  .sc-step-dot[disabled] { cursor: default; opacity: 0.5; }
+  .sc-step-dot.active { color: var(--gold-bright); }
+  .sc-step-dot.active .sc-dot-num {
+    background: var(--gold);
+    color: #0f0b02;
+    box-shadow: 0 0 16px rgba(212, 175, 106, 0.45);
+  }
+  .sc-step-dot.done { color: var(--gold); }
+  .sc-step-dot.done .sc-dot-num {
+    background: var(--gold-deep);
+    color: #0f0b02;
+  }
+  .sc-dot-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--line-strong);
+    display: grid;
+    place-items: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.3s var(--ease-out);
+  }
+  .sc-dot-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* Step */
+  .sc-step { animation: scStepIn 0.4s var(--ease-out); }
+  .sc-step[hidden] { display: none !important; }
+  @keyframes scStepIn {
+    from { opacity: 0; transform: translateY(12px); }
+  }
+  .sc-step-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .sc-step-icon { font-size: 2.2rem; margin-bottom: 0.8rem; }
+  .sc-step-title { font-size: clamp(1.5rem, 3vw, 1.9rem); margin-bottom: 0.5rem; }
+  .sc-step-sub { color: var(--bone-dim); font-size: 0.92rem; max-width: 42ch; margin-bottom: 1.8rem; }
+
+  /* Step 1 — Date */
+  .sc-date-wrap { margin-bottom: 1.8rem; }
+  .sc-date-input {
+    background: var(--ink-1);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    color: var(--bone);
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    padding: 1rem 1.6rem;
+    text-align: center;
+    width: 100%;
+    max-width: 340px;
+    color-scheme: dark;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .sc-date-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212, 175, 106, 0.18);
+  }
+  .sc-date-input:valid { border-color: var(--gold); }
+
+  /* Step 2 — Hour */
+  .sc-hour-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.55rem;
+    margin-bottom: 1.6rem;
+    width: 100%;
+  }
+  @media (max-width: 640px) {
+    .sc-hour-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 420px) {
+    .sc-hour-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .sc-hour-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.8rem 0.4rem;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-s);
+    background: var(--ink-1);
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s, transform 0.2s;
+  }
+  .sc-hour-btn:hover {
+    border-color: var(--gold);
+    background: rgba(212, 175, 106, 0.06);
+  }
+  .sc-hour-btn.selected {
+    border-color: var(--gold);
+    background: rgba(212, 175, 106, 0.12);
+    box-shadow: 0 0 18px rgba(212, 175, 106, 0.2);
+    transform: scale(1.03);
+  }
+  .sc-hour-num { font-size: 0.68rem; color: var(--bone-faint); }
+  .sc-hour-name { font-size: 1.4rem; color: var(--gold-bright); }
+  .sc-hour-en { font-size: 0.7rem; color: var(--bone-dim); font-weight: 600; }
+  .sc-hour-range { font-size: 0.62rem; color: var(--bone-faint); }
+
+  .sc-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 1.8rem;
+  }
+  .sc-option-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.1rem;
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    background: rgba(212, 175, 106, 0.03);
+    color: var(--bone-dim);
+    cursor: pointer;
+    font-size: 0.88rem;
+    transition: border-color 0.25s, background 0.25s, color 0.25s;
+  }
+  .sc-option-btn:hover { border-color: var(--gold); color: var(--bone); }
+  .sc-option-btn.active {
+    border-style: solid;
+    border-color: var(--gold);
+    background: rgba(212, 175, 106, 0.08);
+    color: var(--gold-bright);
+  }
+  .sc-option-badge {
+    margin-left: auto;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+  }
+
+  /* Toggle switch */
+  .sc-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    font-size: 0.88rem;
+    user-select: none;
+  }
+  .sc-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .sc-toggle-track {
+    position: relative;
+    width: 42px;
+    height: 24px;
+    background: var(--ink-3);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    flex: none;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .sc-toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    background: var(--bone-dim);
+    border-radius: 50%;
+    transition: transform 0.3s var(--ease-out), background 0.3s;
+  }
+  .sc-toggle input:checked + .sc-toggle-track {
+    background: rgba(212, 175, 106, 0.2);
+    border-color: var(--gold);
+  }
+  .sc-toggle input:checked + .sc-toggle-track .sc-toggle-thumb {
+    transform: translateX(18px);
+    background: var(--gold-bright);
+  }
+  .sc-toggle-label {
+    display: flex;
+    flex-direction: column;
+    color: var(--bone-dim);
+  }
+  .sc-toggle-label small {
+    font-size: 0.7rem;
+    color: var(--bone-faint);
+    margin-top: 0.1rem;
+  }
+
+  /* Step 3 — City */
+  .sc-city-search {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    margin-bottom: 1rem;
+  }
+  .sc-city-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .sc-search-icon {
+    position: absolute;
+    left: 1rem;
+    color: var(--bone-faint);
+    pointer-events: none;
+  }
+  .sc-city-input {
+    width: 100%;
+    min-height: 52px;
+    padding: 0.8rem 2.8rem 0.8rem 2.8rem;
+    background: var(--ink-1);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    color: var(--bone);
+    font-size: 1rem;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  .sc-city-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212, 175, 106, 0.15);
+  }
+  .sc-city-input::placeholder { color: var(--bone-faint); }
+  .sc-city-clear {
+    position: absolute;
+    right: 0.7rem;
+    background: none;
+    border: 0;
+    color: var(--bone-faint);
+    cursor: pointer;
+    padding: 0.4rem;
+    border-radius: 50%;
+    transition: color 0.2s, background 0.2s;
+  }
+  .sc-city-clear:hover { color: var(--bone); background: var(--ink-3); }
+  .sc-city-clear[hidden] { display: none; }
+
+  .sc-city-list {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    max-height: 260px;
+    overflow-y: auto;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 20px 48px -16px rgba(0,0,0,0.7);
+    list-style: none;
+    padding: 0.4rem;
+    margin: 0;
+    z-index: 10;
+  }
+  .sc-city-list[hidden] { display: none; }
+  .sc-city-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: var(--radius-s);
+    cursor: pointer;
+    color: var(--bone-dim);
+    font-size: 0.9rem;
+    transition: background 0.15s, color 0.15s;
+  }
+  .sc-city-item:hover, .sc-city-item.highlight {
+    background: rgba(212, 175, 106, 0.1);
+    color: var(--gold-bright);
+  }
+  .sc-city-item-flag { font-size: 1.1rem; width: 1.4rem; text-align: center; }
+  .sc-city-item-name { flex: 1; font-weight: 500; }
+  .sc-city-item-country { font-size: 0.75rem; color: var(--bone-faint); }
+  .sc-city-item-tz { font-size: 0.68rem; color: var(--gold-deep); background: rgba(212,175,106,0.08); padding: 0.1rem 0.45rem; border-radius: 999px; }
+
+  /* City chip */
+  .sc-city-selected { margin-bottom: 1rem; text-align: center; }
+  .sc-city-selected[hidden] { display: none; }
+  .sc-city-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.6rem 0.5rem 0.9rem;
+    border: 1px solid rgba(212, 175, 106, 0.35);
+    border-radius: 999px;
+    background: rgba(212, 175, 106, 0.08);
+    font-size: 0.92rem;
+  }
+  .sc-chip-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px rgba(212, 175, 106, 0.5);
+  }
+  .sc-chip-name { color: var(--gold-bright); font-weight: 600; }
+  .sc-chip-country { color: var(--bone-faint); font-size: 0.78rem; }
+  .sc-chip-remove {
+    background: none;
+    border: 0;
+    color: var(--bone-faint);
+    cursor: pointer;
+    padding: 0.2rem;
+    border-radius: 50%;
+    transition: color 0.2s, background 0.2s;
+  }
+  .sc-chip-remove:hover { color: var(--cinnabar); background: rgba(224,87,74,0.1); }
+  .sc-city-solar {
+    margin-top: 0.6rem;
+    font-size: 0.78rem;
+    color: var(--bone-faint);
+    font-style: italic;
+  }
+  .sc-skip {
+    margin-bottom: 1.4rem;
+  }
+
+  .sc-next { min-width: 200px; }
+  .sc-hint { margin-top: 0.8rem; font-size: 0.72rem; color: var(--bone-faint); }
+
+  /* Loading (reuse existing styles) */
+  .sc-loading { display: grid; place-items: center; gap: 2rem; padding: 2.5rem 0; }
+  .sc-loading[hidden] { display: none; }
+  .bagua { width: 110px; height: 110px; }
+  .bagua-spin { transform-origin: 50px 50px; animation: spin 14s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .sc-cast-steps {
+    list-style: none; padding: 0; display: grid; gap: 0.55rem;
+  }
+  .sc-cast-steps li {
+    display: flex; align-items: center; gap: 0.7rem;
+    color: var(--bone-faint); font-size: 0.92rem;
+    opacity: 0.3; transform: translateX(8px);
+    transition: opacity 0.5s var(--ease-out), transform 0.5s, color 0.5s;
+  }
+  .sc-cast-steps li.active { opacity: 1; transform: none; color: var(--gold-bright); }
+  .sc-cast-steps li.done { opacity: 0.65; color: var(--bone-dim); }
+  .sc-cast-steps li .han { font-size: 0.8rem; color: var(--gold-deep); width: 3.2rem; }
+
+  /* ── Results — RPG Character Card ── */
+  .calc-results[hidden] { display: none; }
+  .calc-results { animation: resIn 0.5s var(--ease-out); }
+  @keyframes resIn { from { opacity: 0; transform: translateY(14px); } }
+
+  /* Card header */
+  .cc-header { text-align: center; margin-bottom: 2rem; }
+  .cc-badge {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1.2rem 0.6rem;
+    border: 1px solid color-mix(in srgb, var(--dm-color, var(--gold)) 40%, transparent);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--dm-color, var(--gold)) 8%, transparent);
+  }
+  .cc-badge-han {
+    font-size: 1.6rem;
+    color: var(--dm-color, var(--gold-bright));
+    text-shadow: 0 0 18px color-mix(in srgb, var(--dm-color, var(--gold)) 40%, transparent);
+    letter-spacing: 0.15em;
+  }
+  .cc-badge-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bone-faint);
+  }
+  .cc-name {
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    margin-bottom: 0.35rem;
+  }
+  .cc-subtitle {
+    color: var(--bone-dim);
+    font-size: 0.88rem;
+    max-width: 48ch;
+    margin-inline: auto;
+  }
+
+  /* Modules (pillars) */
+  .cc-modules { margin-bottom: 1.8rem; }
+  .cc-module-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .cc-module-label .han { font-size: 0.85rem; color: var(--gold-deep); }
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.55rem;
+  }
+  @media (max-width: 500px) { .pillars-grid { grid-template-columns: repeat(2, 1fr); } }
+  .ptile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.9rem 0.3rem 0.75rem;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-s);
+    background: var(--ink-1);
+    animation: steleIn 0.7s var(--ease-out) both;
+    animation-delay: var(--d, 0s);
+  }
+  .ptile.core {
+    border-color: var(--dm-color, var(--gold));
+    box-shadow: 0 0 20px color-mix(in srgb, var(--dm-color, var(--gold)) 25%, transparent);
+  }
+  .ptile.locked { opacity: 0.4; }
+  .ptile-tag {
+    position: absolute;
+    top: -8px;
+    font-size: 0.52rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: var(--dm-color, var(--gold));
+    color: #0f0b02;
+    font-weight: 700;
+    padding: 0.08rem 0.45rem;
+    border-radius: 999px;
+  }
+  .ptile-han {
+    font-size: 1.8rem;
+    line-height: 1.2;
+    color: var(--c, var(--bone));
+    text-shadow: 0 0 14px color-mix(in srgb, var(--c, var(--gold)) 35%, transparent);
+    font-family: var(--font-han);
+  }
+  .ptile-en { font-size: 0.64rem; color: var(--bone-dim); font-weight: 600; }
+  .ptile-label { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bone-faint); }
+  @keyframes steleIn { from { opacity: 0; transform: translateY(12px); } }
+
+  /* Section headers */
+  .cc-section {
+    margin-bottom: 1.6rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line-soft);
+  }
+  .cc-section-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .cc-section-head .han { font-size: 0.85rem; color: var(--gold-deep); }
+
+  /* Attributes — element bars (from charts.ts) */
+  .ebars { display: grid; gap: 0.5rem; margin-bottom: 1.2rem; }
+  .ebar-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; }
+  .ebar-han { font-family: var(--font-han); width: 1.2rem; text-align: center; font-size: 1rem; }
+  .ebar-name { width: 3.8rem; color: var(--bone-dim); font-weight: 500; }
+  .ebar-track { flex: 1; height: 8px; background: var(--ink-2); border-radius: 4px; overflow: hidden; border: 1px solid var(--line-soft); }
+  .ebar-fill { display: block; height: 100%; border-radius: 4px; transition: width 1s var(--ease-out); }
+  .ebar-fill.dom { box-shadow: 0 0 10px currentColor; }
+  .ebar-count { width: 2.2rem; text-align: right; color: var(--bone-faint); font-size: 0.78rem; }
+
+  /* Attributes — keep old grid for compat */
+  .cc-attrs-bars { display: grid; gap: 0.55rem; margin-bottom: 1rem; }
+  .attr-row {
+    display: grid;
+    grid-template-columns: 2rem 1fr auto 3rem;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: var(--radius-s);
+    background: var(--ink-1);
+    border: 1px solid var(--line-soft);
+    transition: border-color 0.35s, box-shadow 0.35s;
+  }
+  .attr-row.dominant {
+    border-color: color-mix(in srgb, var(--dm-color, var(--gold)) 30%, transparent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--dm-color, var(--gold)) 10%, transparent);
+  }
+  .attr-row.deficient { border-color: rgba(224,87,74,0.2); }
+  .attr-icon {
+    font-size: 1.2rem;
+    font-family: var(--font-han);
+    text-align: center;
+  }
+  .attr-icon { color: var(--bone-dim); }
+  .attr-row.dominant .attr-icon { color: var(--dm-color, var(--gold-bright)); }
+  .attr-info { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+  .attr-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--bone);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .attr-name small {
+    font-size: 0.66rem;
+    font-weight: 400;
+    color: var(--bone-faint);
+    margin-left: 0.3rem;
+  }
+  .attr-status {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .attr-row.deficient .attr-status { color: var(--cinnabar); }
+  .attr-bar-wrap {
+    height: 6px;
+    background: var(--ink-2);
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid var(--line-soft);
+  }
+  .attr-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s var(--ease-out);
+  }
+  .attr-val {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--bone-dim);
+    text-align: right;
+  }
+  .attr-row.dominant .attr-val { color: var(--gold-bright); }
+  .cc-attrs-summary {
+    padding: 0.9rem 1rem;
+    border-radius: var(--radius-s);
+    background: var(--ink-1);
+    border: 1px solid var(--line-soft);
+    font-size: 0.85rem;
+    color: var(--bone-dim);
+    line-height: 1.7;
+  }
+
+  /* Traits */
+  .trait-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+  }
+  .trait-tag {
+    font-size: 0.78rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--gold-bright);
+    background: rgba(212,175,106,0.06);
+    font-weight: 500;
+  }
+  .trait-notes { display: grid; gap: 0.6rem; }
+  .trait-note {
+    display: flex;
+    gap: 0.65rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: var(--radius-s);
+    background: var(--ink-1);
+    border: 1px solid var(--line-soft);
+    font-size: 0.84rem;
+    color: var(--bone-dim);
+  }
+  .trait-icon {
+    font-size: 1rem;
+    flex: none;
+    width: 1.4rem;
+    text-align: center;
+  }
+  .trait-note strong { display: block; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-faint); margin-bottom: 0.15rem; }
+
+  /* Environment */
+  .cc-env { display: grid; gap: 0.65rem; }
+  .env-item {
+    display: flex;
+    gap: 0.7rem;
+    padding: 0.8rem 0.9rem;
+    border-radius: var(--radius-s);
+    background: var(--ink-1);
+    border: 1px solid var(--line-soft);
+  }
+  .env-icon { font-size: 1.2rem; flex: none; }
+  .env-item strong { display: block; font-size: 0.82rem; color: var(--bone); margin-bottom: 0.1rem; }
+  .env-item span { font-size: 0.88rem; color: var(--gold-bright); font-weight: 600; }
+  .env-item small { display: block; font-size: 0.72rem; color: var(--bone-faint); margin-top: 0.3rem; }
+
+  /* Paywall */
+  .cc-paywall {
+    margin-top: 1rem;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border: 1px dashed rgba(212,175,106,0.3);
+    border-radius: var(--radius);
+    background: linear-gradient(170deg, rgba(212,175,106,0.05), transparent 50%), var(--ink-1);
+  }
+  .cc-paywall-lock { font-size: 2rem; margin-bottom: 0.5rem; }
+  .cc-paywall h4 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+  .cc-paywall p { color: var(--bone-dim); font-size: 0.88rem; max-width: 44ch; margin: 0 auto 1.2rem; }
+  .cc-paywall-btns { display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap; }
+
+  /* Pro — lifestyle guide */
+  .cc-pro { margin: 1.4rem 0; }
+  .cc-pro[hidden] { display: none; }
+  .cc-pro-head {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .cc-pro-head .han { font-size: 0.85rem; color: var(--gold-deep); }
+  .cc-pro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+  @media (max-width: 600px) { .cc-pro-grid { grid-template-columns: 1fr; } }
+  .cc-ls-card {
+    background: var(--ink-1);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.3rem;
+  }
+  .cc-ls-icon { font-size: 1.4rem; display: block; margin-bottom: 0.5rem; }
+  .cc-ls-card h5 { font-family: var(--font-display); font-size: 1.05rem; margin-bottom: 0.7rem; color: var(--gold-bright); }
+  .cc-ls-card ul { list-style: none; padding: 0; display: grid; gap: 0.45rem; }
+  .cc-ls-card li {
+    font-size: 0.82rem; color: var(--bone-dim); line-height: 1.65;
+    padding-left: 1rem; position: relative;
+  }
+    .cc-lucky {
+    background: linear-gradient(135deg, rgba(212,175,106,0.08), rgba(212,175,106,0.03));
+    border: 1px solid rgba(212,175,106,0.25);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.4rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .cc-lucky-icon { font-size: 1.8rem; flex: none; }
+  .cc-lucky-content { flex: 1; }
+  .cc-lucky h5 { font-family: var(--font-display); font-size: 1.05rem; margin-bottom: 0.8rem; color: var(--gold-bright); }
+  .cc-lucky-items { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .cc-lucky-stat { display: flex; flex-direction: column; gap: 0.3rem; }
+  .cc-lucky-label { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-faint); }
+  .cc-lucky-value { font-family: var(--font-display); font-size: 1.3rem; color: var(--gold-bright); font-weight: 700; }
+  .cc-lucky-colors { display: flex; gap: 0.35rem; }
+  .cc-lucky-colors span { width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); }
+
+  .cc-ls-card li::before {
+    content: '·'; position: absolute; left: 0; color: var(--gold);
+  }
+
+
+  /* Actions */
+  .results-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+    margin-top: 1.6rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line-soft);
+  }
+  /* Print */
+  @media print {
+    .site-header, .site-footer, #starfield, body::before,
+    .sc-progress, .results-actions, .cc-paywall,
+    .btn, .sc-shell { box-shadow: none !important; }
+    body { background: #fff; color: #111; }
+    main > *:not(#calculator) { display: none; }
+    .panel, .cc-section, .cc-attrs-summary, .cc-ls-card, .cc-lucky,
+    .ptile, .attr-row, .trait-note, .env-item {
+      border-color: #ddd; background: #fff; color: #222;
+      box-shadow: none; break-inside: avoid;
+    }
+    .cc-header h3, .cc-header p, .cc-section-head, .cc-module-label,
+    .attr-name, .env-item strong, .cc-ls-card h5, .cc-lucky h5,
+    .trait-tag { color: #111; }
+    .ptile-han { color: #333; text-shadow: none; }
+    .attr-bar { border: 1px solid #999; }
+    .cc-paywall, .results-actions { display: none !important; }
+    .cc-badge { border-color: #999; }
+    .calc-results { animation: none; }
+  }
+
+</style>
+
+<script>
+  import { CITIES, searchCities, solarTimeCorrection } from '../data/cities';
+  import BaZiEngine from '../lib/bazi/engine';
+  import Readings from '../lib/bazi/readings';
+  import { elementsDonut, elementBars, ELEM_EN, ELEM_COLOR, STEM_EN, BRANCH_EN, ZODIAC_EMOJI } from '../lib/charts';
+  import { resolveUnlock, isUnlocked } from '../lib/paypal';
+  import { getLifestyleGuide } from '../lib/bazi/lifestyle';
+
+  const LS_KEY = 'bazi_stepcalc_data';
+
+  const $ = (id: string) => document.getElementById(id);
+
+  // ── State ──
+  interface CalcState {
+    date: string;
+    hour: string;       // '' | '23'|'1'|...|'unknown'
+    cityName: string;
+    cityLon: number;
+    cityLat: number;
+    cityTimezone: number;
+    useSolarTime: boolean;
+  }
+
+  const state: CalcState = {
+    date: '',
+    hour: '',
+    cityName: '',
+    cityLon: 0,
+    cityLat: 0,
+    cityTimezone: 8,
+    useSolarTime: false,
+  };
+
+  let currentStep = 0;
+  let currentData: any = null;
+
+  // ── localStorage ──
+  function saveState() {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
+  }
+  function loadState(): boolean {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return false;
+      const saved = JSON.parse(raw);
+      if (saved.date) {
+        state.date = saved.date;
+        state.hour = saved.hour || '';
+        state.cityName = saved.cityName || '';
+        state.cityLon = saved.cityLon || 0;
+        state.cityLat = saved.cityLat || 0;
+        state.cityTimezone = saved.cityTimezone || 8;
+        state.useSolarTime = saved.useSolarTime || false;
+        return true;
+      }
+    } catch {}
+    return false;
+  }
+
+  // ── Progress ──
+  function updateProgress() {
+    const fill = $('scProgressFill');
+    const dots = $('scProgressSteps')?.querySelectorAll('.sc-step-dot');
+    if (fill) fill.style.width = `${(currentStep / 2) * 100}%`;
+    dots?.forEach((d, i) => {
+      const btn = d as HTMLButtonElement;
+      btn.classList.remove('active', 'done');
+      if (i < currentStep) btn.classList.add('done');
+      if (i === currentStep) btn.classList.add('active');
+      btn.disabled = i > currentStep;
+    });
+  }
+
+  function goToStep(n: number) {
+    if (n < 0 || n > 2) return;
+    // Only allow 1 step forward at a time, but any step back
+    if (n > currentStep + 1) return;
+    currentStep = n;
+    for (let i = 0; i <= 2; i++) {
+      const el = $(`scStep${i}`);
+      if (el) el.hidden = i !== n;
+    }
+    updateProgress();
+    if (n === 0) setTimeout(() => $('scDate')?.focus(), 100);
+    if (n === 2) setTimeout(() => $('scCityInput')?.focus(), 100);
+  }
+
+  // ── Step 1: Date ──
+  const dateInput = $('scDate') as HTMLInputElement;
+  const next0 = $('scNext0') as HTMLButtonElement;
+
+  dateInput?.addEventListener('input', () => {
+    const v = dateInput.value;
+    state.date = v;
+    next0.disabled = !v;
+    saveState();
+  });
+
+  dateInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && dateInput.value) goToStep(1);
+  });
+
+  next0?.addEventListener('click', () => goToStep(1));
+
+  // ── Step 2: Hour ──
+  const hourBtns = $('scHourGrid')?.querySelectorAll('.sc-hour-btn');
+  const unknownBtn = $('scUnknownHour');
+  const solarToggle = $('scSolarToggle') as HTMLInputElement;
+  const next1 = $('scNext1') as HTMLButtonElement;
+
+  function selectHour(val: string) {
+    state.hour = val;
+    hourBtns?.forEach((b) => b.classList.toggle('selected', (b as HTMLElement).dataset.hour === val));
+    unknownBtn?.classList.toggle('active', val === 'unknown');
+    next1.disabled = !val;
+    saveState();
+  }
+
+  hourBtns?.forEach((b) => b.addEventListener('click', () => {
+    selectHour((b as HTMLElement).dataset.hour!);
+    solarToggle.checked = false;
+    state.useSolarTime = false;
+    saveState();
+  }));
+
+  unknownBtn?.addEventListener('click', () => selectHour('unknown'));
+  solarToggle?.addEventListener('change', () => {
+    state.useSolarTime = solarToggle.checked;
+    saveState();
+  });
+  next1?.addEventListener('click', () => goToStep(2));
+
+  // ── Step 3: City ──
+  const cityInput = $('scCityInput') as HTMLInputElement;
+  const cityList = $('scCityList') as HTMLUListElement;
+  const cityClear = $('scCityClear');
+  const citySelected = $('scCitySelected');
+  const cityChipName = $('scCityChipName');
+  const cityChipCountry = $('scCityChipCountry');
+  const cityChipRemove = $('scCityChipRemove');
+  const citySolar = $('scCitySolar');
+  const skipCity = $('scSkipCity');
+  const next2 = $('scNext2') as HTMLButtonElement;
+
+  let cityResults: typeof CITIES = [];
+  let cityHighlightIdx = -1;
+
+  function showCityList() {
+    cityList.hidden = false;
+    cityInput.setAttribute('aria-expanded', 'true');
+  }
+  function hideCityList() {
+    cityList.hidden = true;
+    cityInput.setAttribute('aria-expanded', 'false');
+    cityHighlightIdx = -1;
+  }
+
+  function renderCityList(query: string) {
+    cityResults = searchCities(query);
+    cityHighlightIdx = -1;
+    cityList.innerHTML = cityResults.map((c, i) => `
+      <li class="sc-city-item" role="option" data-idx="${i}">
+        <span class="sc-city-item-flag">${getFlag(c.country)}</span>
+        <span class="sc-city-item-name">${c.name} <span class="han" style="font-size:.78rem;color:var(--bone-faint)">${c.nameCN}</span></span>
+        <span class="sc-city-item-country">${c.country}</span>
+        <span class="sc-city-item-tz">UTC${c.timezone >= 0 ? '+' : ''}${c.timezone}</span>
+      </li>
+    `).join('');
+    if (cityResults.length > 0) showCityList();
+    else hideCityList();
+  }
+
+  function getFlag(country: string): string {
+    const flags: Record<string, string> = {
+      'China': '🇨🇳', 'Japan': '🇯🇵', 'South Korea': '🇰🇷', 'Mongolia': '🇲🇳',
+      'Singapore': '🇸🇬', 'Malaysia': '🇲🇾', 'Thailand': '🇹🇭', 'Indonesia': '🇮🇩',
+      'Philippines': '🇵🇭', 'Vietnam': '🇻🇳', 'Myanmar': '🇲🇲',
+      'India': '🇮🇳', 'Pakistan': '🇵🇰', 'Bangladesh': '🇧🇩', 'Sri Lanka': '🇱🇰', 'Nepal': '🇳🇵',
+      'UAE': '🇦🇪', 'Qatar': '🇶🇦', 'Saudi Arabia': '🇸🇦', 'Turkey': '🇹🇷', 'Israel': '🇮🇱', 'Iran': '🇮🇷',
+      'United Kingdom': '🇬🇧', 'France': '🇫🇷', 'Germany': '🇩🇪', 'Italy': '🇮🇹', 'Spain': '🇪🇸',
+      'Netherlands': '🇳🇱', 'Belgium': '🇧🇪', 'Switzerland': '🇨🇭', 'Austria': '🇦🇹',
+      'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Denmark': '🇩🇰', 'Poland': '🇵🇱',
+      'Russia': '🇷🇺', 'Czech Republic': '🇨🇿', 'Hungary': '🇭🇺', 'Portugal': '🇵🇹',
+      'Ireland': '🇮🇪', 'Greece': '🇬🇷',
+      'United States': '🇺🇸', 'Canada': '🇨🇦', 'Mexico': '🇲🇽',
+      'Brazil': '🇧🇷', 'Argentina': '🇦🇷', 'Chile': '🇨🇱', 'Peru': '🇵🇪', 'Colombia': '🇨🇴',
+      'Australia': '🇦🇺', 'New Zealand': '🇳🇿',
+      'Egypt': '🇪🇬', 'Nigeria': '🇳🇬', 'Kenya': '🇰🇪', 'South Africa': '🇿🇦', 'Morocco': '🇲🇦', 'Ethiopia': '🇪🇹',
+      'Taiwan, China': '🇨🇳', 'Hong Kong, China': '🇨🇳', 'Macao, China': '🇨🇳',
+    };
+    return flags[country] || '🌐';
+  }
+
+  function selectCity(city: typeof CITIES[0]) {
+    state.cityName = city.name;
+    state.cityLon = city.lon;
+    state.cityLat = city.lat;
+    state.cityTimezone = city.timezone;
+    cityInput.value = '';
+    hideCityList();
+    cityClear!.hidden = true;
+
+    cityChipName!.textContent = city.name;
+    cityChipCountry!.textContent = `· ${city.nameCN} · ${city.country}`;
+    citySelected!.hidden = false;
+    next2.disabled = false;
+
+    if (state.useSolarTime && solarToggle?.checked) {
+      const corr = solarTimeCorrection(city);
+      const sign = corr >= 0 ? '+' : '';
+      const absMin = Math.abs(Math.round(corr));
+      citySolar!.hidden = false;
+      citySolar!.textContent = `☀ True Solar Time correction: ${sign}${absMin} min${city.name !== 'Beijing' ? ` (at ${city.lon.toFixed(1)}° longitude)` : ''}`;
+    } else {
+      citySolar!.hidden = true;
+    }
+    saveState();
+  }
+
+  cityInput?.addEventListener('input', () => {
+    const q = cityInput.value;
+    cityClear!.hidden = !q;
+    if (q.trim()) renderCityList(q);
+    else hideCityList();
+  });
+
+  cityInput?.addEventListener('keydown', (e) => {
+    if (!cityResults.length) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      cityHighlightIdx = Math.min(cityHighlightIdx + 1, cityResults.length - 1);
+      updateHighlight();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      cityHighlightIdx = Math.max(cityHighlightIdx - 1, 0);
+      updateHighlight();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (cityHighlightIdx >= 0 && cityHighlightIdx < cityResults.length) {
+        selectCity(cityResults[cityHighlightIdx]);
+      } else if (cityResults.length === 1) {
+        selectCity(cityResults[0]);
+      }
+    } else if (e.key === 'Escape') {
+      hideCityList();
+      cityInput.blur();
+    }
+  });
+
+  function updateHighlight() {
+    cityList.querySelectorAll('.sc-city-item').forEach((el, i) => {
+      el.classList.toggle('highlight', i === cityHighlightIdx);
+    });
+    const highlighted = cityList.querySelector('.highlight');
+    highlighted?.scrollIntoView({ block: 'nearest' });
+  }
+
+  cityList?.addEventListener('click', (e) => {
+    const item = (e.target as HTMLElement).closest('.sc-city-item');
+    if (!item) return;
+    const idx = parseInt((item as HTMLElement).dataset.idx || '');
+    if (!isNaN(idx) && cityResults[idx]) selectCity(cityResults[idx]);
+  });
+
+  cityClear?.addEventListener('click', () => {
+    cityInput.value = '';
+    cityClear!.hidden = true;
+    hideCityList();
+    cityInput.focus();
+  });
+
+  cityChipRemove?.addEventListener('click', () => {
+    state.cityName = '';
+    state.cityLon = 0;
+    state.cityLat = 0;
+    citySelected!.hidden = true;
+    next2.disabled = true;
+    saveState();
+    cityInput.focus();
+  });
+
+  document.addEventListener('click', (e) => {
+    const search = $('scCitySearch');
+    if (search && !search.contains(e.target as Node)) hideCityList();
+  });
+
+  skipCity?.addEventListener('click', () => {
+    state.cityName = '';
+    state.cityLon = 0;
+    state.cityLat = 0;
+    next2.disabled = false;
+    if (citySelected) citySelected.hidden = true;
+    saveState();
+    doCalculate();
+  });
+
+  next2?.addEventListener('click', () => doCalculate());
+
+  // ── Progress dots click to go back ──
+  $('scProgressSteps')?.addEventListener('click', (e) => {
+    const dot = (e.target as HTMLElement).closest('.sc-step-dot');
+    if (!dot || (dot as HTMLButtonElement).disabled) return;
+    const step = parseInt((dot as HTMLElement).dataset.step || '');
+    if (!isNaN(step)) goToStep(step);
+  });
+
+  // ── Calculate ──
+  function doCalculate() {
+    const { date, hour, cityName, cityLat, cityLon, cityTimezone, useSolarTime } = state;
+    if (!date) return;
+
+    const d = new Date(date + 'T00:00:00');
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const day = d.getDate();
+
+    let hourNum = parseInt(hour, 10);
+    if (isNaN(hourNum)) hourNum = 12; // unknown → default noon
+
+    // True Solar Time correction
+    if (useSolarTime && cityName) {
+      const city = CITIES.find((c) => c.name === cityName);
+      if (city) {
+        const corr = solarTimeCorrection(city);
+        hourNum = hourNum + corr / 60;
+        // wrap around
+        if (hourNum >= 24) hourNum -= 24;
+        if (hourNum < 0) hourNum += 24;
+      }
+    }
+
+    // Hide steps, show loading
+    for (let i = 0; i <= 2; i++) {
+      const el = $(`scStep${i}`);
+      if (el) el.hidden = true;
+    }
+    $('scWelcome')!.hidden = true;
+    $('scLoading')!.hidden = false;
+
+    const steps = $('scLoading')!.querySelectorAll('.sc-cast-steps li');
+    steps.forEach((s) => s.classList.remove('active', 'done'));
+    let idx = 0;
+    const timer = setInterval(() => {
+      if (idx > 0) { steps[idx - 1]?.classList.remove('active'); steps[idx - 1]?.classList.add('done'); }
+      if (idx < steps.length) steps[idx]?.classList.add('active');
+      idx++;
+      if (idx > steps.length) clearInterval(timer);
+    }, 550);
+
+    setTimeout(() => {
+      const useFourPillars = hour !== 'unknown';
+      let data: any;
+
+      if (useFourPillars) {
+        data = BaZiEngine.calculate(date, Math.round(hourNum));
+      } else {
+        // Three-pillar fallback: calculate with noon hour, then mark as 3-pillar
+        data = BaZiEngine.calculate(date, 12);
+        data.isThreePillar = true;
+        data.hourUnknown = true;
+      }
+
+      currentData = {
+        ...data,
+        name: 'Friend',
+        date,
+        hour,
+        cityName,
+        useSolarTime,
+        isThreePillar: !useFourPillars,
+      };
+      (window as any).currentReading = currentData;
+
+      $('scLoading')!.hidden = true;
+      $('calcResults')!.hidden = false;
+      renderResults(currentData);
+      $('calcResults')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 2400);
+  }
+
+  // ── RPG Character Card Render ──
+  function pillarTile(label: string, pillar: any, isCore: boolean, idx: number): string {
+    const color = ELEM_COLOR[pillar?.element] || 'var(--gold)';
+    const tag = isCore ? 'Core' : '';
+    return `<div class="ptile${isCore ? ' core' : ''}" style="--d:${idx * 0.09}s;--c:${color}">
+      <span class="ptile-tag">${tag}</span>
+      <span class="ptile-han han">${pillar?.stem || '—'}${pillar?.branch || '—'}</span>
+      <span class="ptile-en">${STEM_EN[pillar?.stem] || '?'}</span>
+      <span class="ptile-label">${label}</span>
+    </div>`;
+  }
+
+  function renderResults(data: any) {
+    const p = data.pillars;
+    const yearAnimal = p.year ? BRANCH_EN[p.year.branch] : 'Unknown';
+    const domEn = ELEM_EN[data.elements.dominant];
+    const defEn = ELEM_EN[data.elements.deficient];
+    const domColor = ELEM_COLOR[data.elements.dominant] || 'var(--gold)';
+    const defColor = ELEM_COLOR[data.elements.deficient] || 'var(--bone-dim)';
+    const birthYear = new Date(data.date + 'T00:00:00').getFullYear();
+    const genderText = data.gender === 'male' ? 'he/him' : data.gender === 'female' ? 'she/her' : 'they/them';
+
+    // Header
+    $('ccDayMaster')!.textContent = `${p.day?.stem || '?'}${p.day?.branch || '?'}`;
+    $('ccBadge')!.setAttribute('style', `--dm-color:${domColor}`);
+    $('ccName')!.textContent = `${data.name || 'Seeker'} · ${yearAnimal} ${ZODIAC_EMOJI[yearAnimal] || '✦'}`;
+    $('ccSubtitle')!.textContent = data.isThreePillar
+      ? `Born ${birthYear} · Core Engine: ${STEM_EN[p.day.stem]} · Primary Attribute: ${domEn}`
+      : `Born ${birthYear} · Core Engine: ${STEM_EN[p.day.stem]} · Primary Attribute: ${domEn}`;
+
+    // Modules
+    $('pillarsGrid')!.innerHTML =
+      pillarTile('Origin', p.year, false, 0) +
+      pillarTile('Nature', p.month, false, 1) +
+      pillarTile('Identity', p.day, true, 2) +
+      (data.isThreePillar
+        ? `<div class="ptile locked" style="--d:0.27s"><span class="ptile-han han">?</span><span class="ptile-en">Unknown</span><span class="ptile-label">Potential</span></div>`
+        : pillarTile('Potential', p.hour, false, 3));
+
+    // Attributes
+    const elemMap: Record<string, { en: string; cn: string; desc: string }> = {
+      '木': { en: 'Wood', cn: '木', desc: 'Growth & creativity' },
+      '火': { en: 'Fire', cn: '火', desc: 'Passion & energy' },
+      '土': { en: 'Earth', cn: '土', desc: 'Stability & grounding' },
+      '金': { en: 'Metal', cn: '金', desc: 'Precision & clarity' },
+      '水': { en: 'Water', cn: '水', desc: 'Wisdom & adaptability' },
+    };
+    // Use proven elementBars function from charts.ts
+    const el = $('attrBars');
+    if (el) el.innerHTML = elementBars(data.elements);
+
+    $('attrSummary')!.innerHTML = `
+      <p style="margin-top:0.5rem"><strong style="color:${defColor}">Growth area: ${defEn}</strong> — weaving small ${defEn}-element habits into your day brings balance and unlocks latent potential.</p>`;
+
+    // Traits
+    const persona = Readings.getPersonality(p.day.stem, data.elements.dominant);
+    const traits: string[] = persona?.traits || ['Adaptable', 'Curious', 'Reflective'];
+    const strength = persona?.strength || 'Natural resilience and adaptability';
+    const weakness = persona?.weakness || 'May overthink under pressure';
+
+    $('ccTraits')!.innerHTML = `
+      <div class="trait-tags">
+        ${traits.map((t: string) => `<span class="trait-tag">${t}</span>`).join('')}
+      </div>
+      <div class="trait-notes">
+        <div class="trait-note"><span class="trait-icon">✓</span><div><strong>Strength</strong><span>${strength}</span></div></div>
+        <div class="trait-note"><span class="trait-icon">⚡</span><div><strong>Watch for</strong><span>${weakness}</span></div></div>
+      </div>`;
+
+    // Environment
+    const d = data.directions;
+    $('ccEnv')!.innerHTML = `
+      <div class="env-item">
+        <span class="env-icon">🧭</span>
+        <div>
+          <strong>Best facing</strong>
+          <span>${d.auspicious?.join(' · ') || 'East · South'}</span>
+          <small>Face these when working, negotiating, or placing your desk.</small>
+        </div>
+      </div>
+      <div class="env-item">
+        <span class="env-icon">⚠️</span>
+        <div>
+          <strong>Drain zones</strong>
+          <span>${d.inauspicious?.join(' · ') || 'West'}</span>
+          <small>Long exposure drains your ${domEn} energy — minimize facing these directions.</small>
+        </div>
+      </div>`;
+  }
+
+
+  function renderProLifestyle() {
+    if (!currentData) return;
+    const guide = getLifestyleGuide(currentData.elements.dominant, currentData.pillars.day.stem);
+    const sections: Array<{ key: string; icon: string; title: string; items: string[] }> = [
+      { key: 'wear', icon: '👗', title: 'What to Wear', items: guide.wear },
+      { key: 'carry', icon: '🎒', title: 'What to Carry', items: guide.carry },
+      { key: 'routine', icon: '⏰', title: 'Daily Routine', items: guide.routine },
+      { key: 'diet', icon: '🍽️', title: 'Diet', items: guide.diet },
+      { key: 'conduct', icon: '💬', title: 'Conduct & Speech', items: guide.conduct },
+    ];
+
+    // Lucky numbers & colors from engine
+    const lucky = currentData.lucky || {};
+    const luckyHTML = lucky.colors ? `
+      <div class="cc-lucky" style="grid-column: 1 / -1;">
+        <span class="cc-lucky-icon">🍀</span>
+        <div class="cc-lucky-content">
+          <h5>Lucky Numbers & Colors</h5>
+          <div class="cc-lucky-items">
+            <div class="cc-lucky-stat">
+              <span class="cc-lucky-label">Numbers</span>
+              <span class="cc-lucky-value">${(lucky.numbers || [7, 8]).join(' · ')}</span>
+            </div>
+            <div class="cc-lucky-stat">
+              <span class="cc-lucky-label">Colors</span>
+              <div class="cc-lucky-colors">${(lucky.colors || ['#d4af6a']).map((c, i) => `<span style="background:${c}" title="${lucky.colorNames?.[i] || ''}"></span>`).join('')}</div>
+            </div>
+            <div class="cc-lucky-stat">
+              <span class="cc-lucky-label">Boost Element</span>
+              <span class="cc-lucky-value">${lucky.element || currentData.elements.dominant}${lucky.tones ? ' · ' + lucky.tones : ''}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    ` : '';
+
+    $('ccProGrid')!.innerHTML = luckyHTML + sections.map((s) => `
+      <div class="cc-ls-card">
+        <span class="cc-ls-icon">${s.icon}</span>
+        <h5>${s.title}</h5>
+        <ul>${s.items.map((item) => `<li>${item}</li>`).join('')}</ul>
+      </div>
+    `).join('');
+
+    $('ccPro')!.hidden = false;
+  }
+
+  // ── Share & Recast ──
+  $('pdfBtn')?.addEventListener('click', () => {
+    if (!currentData) return;
+    const resultsHTML = document.getElementById('calcResults')!.cloneNode(true) as HTMLElement;
+    // Strip action buttons and paywall from clone
+    resultsHTML.querySelector('.results-actions')?.remove();
+    resultsHTML.querySelector('.cc-paywall')?.remove();
+    const html = `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Life Blueprint — BaZi Destiny</title>
+<style>
+  body { font-family: Georgia, serif; color: #222; line-height: 1.7; max-width: 700px; margin: 2rem auto; padding: 0 1rem; }
+  .cc-header { text-align: center; margin-bottom: 2rem; }
+  .cc-badge { display: inline-block; padding: 0.5rem 1.2rem; border: 2px solid #999; border-radius: 8px; margin-bottom: 1rem; }
+  .cc-badge-han { font-size: 1.8rem; display: block; }
+  .cc-badge-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: #666; }
+  .cc-name { font-size: 1.6rem; margin: 0.5rem 0; }
+  .cc-subtitle { color: #555; font-size: 0.9rem; }
+  .cc-module-label, .cc-section-head { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: #888; margin: 1.5rem 0 0.8rem; border-bottom: 1px solid #ddd; padding-bottom: 0.4rem; }
+  .pillars-grid { display: flex; gap: 0.5rem; }
+  .ptile { flex: 1; text-align: center; padding: 0.6rem; border: 1px solid #ccc; border-radius: 6px; }
+  .ptile.core { border-color: #333; border-width: 2px; }
+  .ptile-han { font-size: 1.6rem; display: block; }
+  .ptile-en { font-size: 0.7rem; color: #555; display: block; }
+  .ptile-label { font-size: 0.6rem; text-transform: uppercase; color: #999; display: block; }
+  .ptile.locked { opacity: 0.4; }
+  .ptile-tag { font-size: 0.6rem; background: #333; color: #fff; padding: 0.1rem 0.4rem; border-radius: 10px; }
+  .attr-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0; border-bottom: 1px solid #eee; }
+  .attr-icon { font-size: 1.2rem; width: 2rem; }
+  .attr-name { font-weight: 600; min-width: 5rem; }
+  .attr-status { font-size: 0.7rem; color: #888; margin-left: auto; }
+  .attr-bar-wrap { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
+  .attr-bar { height: 100%; border-radius: 3px; }
+  .attr-val { font-weight: 700; min-width: 2rem; text-align: right; }
+  .cc-attrs-summary { margin: 1rem 0; padding: 0.8rem; background: #f9f9f9; border-radius: 6px; font-size: 0.85rem; }
+  .trait-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0; }
+  .trait-tag { font-size: 0.8rem; padding: 0.2rem 0.6rem; border: 1px solid #ccc; border-radius: 20px; }
+  .trait-note { display: flex; gap: 0.5rem; padding: 0.5rem; margin-bottom: 0.4rem; background: #f9f9f9; border-radius: 6px; font-size: 0.85rem; }
+  .env-item { display: flex; gap: 0.5rem; padding: 0.5rem; margin-bottom: 0.4rem; background: #f9f9f9; border-radius: 6px; font-size: 0.85rem; }
+  .cc-lucky { background: #fdf8e8; border: 1px solid #d4af6a; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+  .cc-lucky h5 { margin: 0 0 0.5rem; }
+  .cc-lucky-items { display: flex; gap: 1.5rem; }
+  .cc-lucky-colors span { display: inline-block; width: 20px; height: 20px; border-radius: 50%; margin-right: 3px; border: 1px solid #ccc; }
+  .cc-ls-card { margin-bottom: 1rem; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; }
+  .cc-ls-card h5 { margin: 0 0 0.5rem; }
+  .cc-ls-card ul { margin: 0; padding-left: 1rem; }
+  .cc-ls-card li { margin-bottom: 0.3rem; font-size: 0.85rem; }
+  .cc-pro-head { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: #888; border-bottom: 1px solid #ddd; padding-bottom: 0.4rem; margin: 1.5rem 0 0.8rem; }
+  .footer-note { text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 0.75rem; color: #999; }
+  @media print { body { max-width: none; } }
+</style></head><body>
+  ${resultsHTML.outerHTML}
+  <div class="footer-note">Generated by mybazidestiny.com — Your Life Blueprint</div>
+</body></html>`;
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'my-life-blueprint.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+  $('shareBtn')?.addEventListener('click', () => {
+    const elem = currentData ? ELEM_EN[currentData.elements.dominant] : '';
+    const dm = currentData ? STEM_EN[currentData.pillars.day.stem] : '';
+    const text = `My Life Blueprint: Core Engine ${dm} · Primary ${elem} · Discover yours: https://mybazidestiny.com/calculator.html`;
+    if (navigator.share) navigator.share({ title: 'My Life Blueprint', text }).catch(() => {});
+    else navigator.clipboard?.writeText(text).then(() => alert('Card link copied!'));
+  });
+
+  $('recastBtn')?.addEventListener('click', () => {
+    $('calcResults')!.hidden = true;
+    currentData = null;
+    try { localStorage.removeItem(LS_KEY); } catch {}
+    currentStep = 0;
+    for (let i = 0; i <= 2; i++) {
+      const el = $(`scStep${i}`);
+      if (el) el.hidden = i !== 0;
+    }
+    state.date = ''; state.hour = ''; state.cityName = '';
+    (dateInput as HTMLInputElement).value = '';
+    next0.disabled = true;
+    selectHour('');
+    if (citySelected) citySelected.hidden = true;
+    next2.disabled = true;
+    updateProgress();
+    setTimeout(() => dateInput?.focus(), 200);
+  });
+
+  // ── PayPal Unlock ──
+  $('unlockProBtn')?.addEventListener('click', () => { (window as any).__baziUpgrade?.('pro', currentData); if (isUnlocked()) { $('ccPaywall')!.style.display = 'none'; renderProLifestyle(); } });
+  
+  // Check if already unlocked from PayPal return
+  const unlock = resolveUnlock();
+  if (unlock.unlocked) {
+    currentData = unlock.pending;
+    (window as any).currentReading = currentData;
+    if (currentData?.date) {
+      for (let i = 0; i <= 2; i++) { const el = $(`scStep${i}`); if (el) el.hidden = true; }
+      $('scWelcome')!.hidden = true;
+      $('calcResults')!.hidden = false;
+      renderResults(currentData);
+    }
+  }
+
+
+  // Debug mode — add ?debug=1 to URL to skip paywall
+  if (typeof window !== 'undefined' && window.location.search.includes('debug=1')) {
+    setTimeout(() => {
+      const pw = $('ccPaywall');
+      if (pw) pw.style.display = 'none';
+      if (currentData) {
+        renderProLifestyle();
+      } else {
+        // Auto-fill some data for quick preview
+        const d = new Date('1990-06-15T00:00:00');
+        const data = BaZiEngine.calculate('1990-06-15', 9);
+        currentData = { ...data, name: 'Debug', date: '1990-06-15', hour: '9', isThreePillar: false };
+        (window as any).currentReading = currentData;
+        for (let i = 0; i <= 2; i++) { const el = $(`scStep${i}`); if (el) el.hidden = true; }
+        $('scWelcome')!.hidden = true;
+        $('calcResults')!.hidden = false;
+        renderResults(currentData);
+        if (pw) pw.style.display = 'none';
+        renderProLifestyle();
+      }
+    }, 500);
+  }
+
+  // ── Init ──
+  const hasSaved = loadState();
+  if (hasSaved) {
+    $('scWelcome')!.hidden = false;
+    $('scWelcomeContinue')?.addEventListener('click', () => {
+      $('scWelcome')!.hidden = true;
+      // Restore state
+      if (state.date) {
+        (dateInput as HTMLInputElement).value = state.date;
+        next0.disabled = false;
+        currentStep = state.hour ? (state.cityName ? 2 : 1) : 0;
+      }
+      if (state.hour) selectHour(state.hour);
+      if (state.cityName) {
+        const city = CITIES.find((c) => c.name === state.cityName);
+        if (city) selectCity(city);
+      }
+      if (state.useSolarTime && solarToggle) solarToggle.checked = true;
+      goToStep(currentStep);
+    });
+  }
+
+  // Explicit initial state
+  $('scStep1')!.hidden = true;
+  $('scStep2')!.hidden = true;
+  $('scLoading')!.hidden = true;
+  $('calcResults')!.hidden = true;
+  updateProgress();
+</script>

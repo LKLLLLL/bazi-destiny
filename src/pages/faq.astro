@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro';
+import groups from '../data/faq.json';
+
+const allQs = groups.flatMap((g) => g.items);
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: allQs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<Base
+  title="BaZi FAQ — Four Pillars of Destiny Questions Answered | BaZi Destiny"
+  description="Frequently asked questions about BaZi (Four Pillars of Destiny) Chinese astrology readings. Learn how BaZi works, accuracy, privacy, and more."
+  path="/faq.html"
+  jsonLd={jsonLd}
+>
+  <header class="faq-hero">
+    <div class="wrap-narrow center">
+      <p class="eyebrow center"><span class="han">解惑</span> FAQ</p>
+      <h1>Frequently asked <em>questions</em></h1>
+    </div>
+  </header>
+
+  <div class="wrap-narrow faq-body">
+    {groups.map((g) => (
+      <section class="faq-group">
+        <h2>{g.name}</h2>
+        <div class="faq-list">
+          {g.items.map((f) => (
+            <details class="faq-item">
+              <summary>
+                {f.q}
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 1v12M1 7h12"/></svg>
+              </summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <div class="faq-cta panel" data-reveal>
+      <h2>Still curious?</h2>
+      <p>The fastest answer is your own chart — thirty seconds, free, no sign-up.</p>
+      <a href="/calculator.html" class="btn btn-gold btn-lg">Cast My Chart</a>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .faq-hero { padding: calc(68px + clamp(2.5rem, 6vh, 4.5rem)) 0 clamp(1.4rem, 3vh, 2.2rem); text-align: center; }
+  .faq-hero h1 { font-size: clamp(2rem, 4.4vw, 3rem); }
+  .faq-hero h1 em { font-style: italic; color: var(--gold); }
+  .center { text-align: center; }
+  .faq-body { display: grid; gap: 2.2rem; }
+  .faq-group h2 { font-size: 1.45rem; margin-bottom: 1rem; color: var(--gold-bright); }
+  .faq-list { display: grid; gap: 0.7rem; }
+  .faq-item {
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    background: linear-gradient(172deg, var(--ink-2), var(--ink-1));
+    overflow: hidden;
+  }
+  .faq-item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.05rem 1.25rem;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.97rem;
+    list-style: none;
+    transition: color 0.25s;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary:hover { color: var(--gold-bright); }
+  .faq-item summary svg { flex: none; color: var(--gold); transition: transform 0.3s var(--ease-out); }
+  .faq-item[open] summary svg { transform: rotate(45deg); }
+  .faq-item p { padding: 0 1.25rem 1.15rem; color: var(--bone-dim); font-size: 0.9rem; line-height: 1.8; }
+  .faq-cta { text-align: center; padding: 2.2rem 1.6rem; }
+  .faq-cta h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .faq-cta p { color: var(--bone-dim); font-size: 0.92rem; margin-bottom: 1.4rem; }
+</style>

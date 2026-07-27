@@ -1,0 +1,189 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Love Compatibility Leaderboard — Top BaZi Matches Worldwide | BaZi Destiny"
+  description="See the world's highest BaZi love compatibility scores. Test your match and join couples from 40+ countries on the global leaderboard."
+  path="/leaderboard.html"
+>
+  <header class="lb-hero">
+    <div class="wrap-narrow center">
+      <p class="eyebrow center"><span class="han">榜</span> Couples Worldwide</p>
+      <h1>Love Compatibility <em>Leaderboard</em></h1>
+      <p class="lb-lead">The world's top BaZi love matches. Test your compatibility and see if your score makes the list.</p>
+      <div class="lb-cta">
+        <a href="/love-match.html" class="btn btn-love btn-lg">💕 Test My Score</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap-narrow">
+    <div class="lb-stats" id="lbStats" hidden>
+      <div class="lb-stat panel"><span class="lb-stat-v" id="statTotal">—</span><span class="lb-stat-k">Total Entries</span></div>
+      <div class="lb-stat panel"><span class="lb-stat-v" id="statAvg">—</span><span class="lb-stat-k">Average Score</span></div>
+      <div class="lb-stat panel"><span class="lb-stat-v" id="statTop">—</span><span class="lb-stat-k">Highest Score</span></div>
+      <div class="lb-stat panel mine" id="statMineWrap" hidden><span class="lb-stat-v" id="statMine">—</span><span class="lb-stat-k">🎯 My Rank</span></div>
+    </div>
+
+    <div class="lb-table panel" id="lbPanel">
+      <div class="lb-loading" id="lbLoading">
+        <svg class="lb-spin" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(212,175,106,0.15)" stroke-width="2"/>
+          <path d="M50 10a40 40 0 0 1 40 40" fill="none" stroke="#d4af6a" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <p>Reading the stars…</p>
+      </div>
+      <table id="lbTable" hidden>
+        <thead>
+          <tr><th>#</th><th>Couple</th><th>Score</th><th>Tier</th><th>Elements</th></tr>
+        </thead>
+        <tbody id="lbBody"></tbody>
+      </table>
+      <div class="lb-empty" id="lbEmpty" hidden>
+        <p>🌌 The board is quiet for now — be the first couple written in the stars.</p>
+        <a href="/love-match.html" class="btn btn-gold">Get Our Score</a>
+      </div>
+    </div>
+
+    <section class="lb-how">
+      <h2 class="section-title">How to join the <em>board</em></h2>
+      <div class="lb-steps">
+        <div class="lb-step card" data-reveal>
+          <span class="lb-step-n">1</span>
+          <h3>Enter your BaZi</h3>
+          <p>Fill in both birth details on the free Love Match calculator.</p>
+        </div>
+        <div class="lb-step card" data-reveal style="--reveal-delay:.08s">
+          <span class="lb-step-n">2</span>
+          <h3>See your score</h3>
+          <p>Get the full compatibility analysis — score, tier, and elemental insights.</p>
+        </div>
+        <div class="lb-step card" data-reveal style="--reveal-delay:.16s">
+          <span class="lb-step-n">3</span>
+          <h3>Join the board</h3>
+          <p>Submit your score and see where you rank among couples worldwide.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .lb-hero { padding: calc(68px + clamp(2.5rem, 6vh, 4.5rem)) 0 clamp(1.6rem, 3vh, 2.4rem); text-align: center; }
+  .lb-hero h1 { font-size: clamp(2rem, 4.4vw, 3.1rem); }
+  .lb-hero h1 em { font-style: italic; color: var(--cinnabar); }
+  .lb-lead { margin-top: 1rem; color: var(--bone-dim); max-width: 52ch; margin-inline: auto; }
+  .lb-cta { margin-top: 1.6rem; }
+  .center { text-align: center; }
+
+  .lb-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.9rem; margin: 1.4rem 0; }
+  .lb-stat { padding: 1.1rem; text-align: center; display: grid; gap: 0.2rem; flex: 1 1 200px; max-width: 260px; }
+  .lb-stat.mine { border-color: var(--cinnabar); }
+  .lb-stat-v { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--gold-bright); }
+  .lb-stat-k { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-faint); }
+
+  .lb-table { padding: 0.6rem; overflow: hidden; }
+  .lb-loading { display: grid; place-items: center; gap: 0.9rem; padding: 3rem 1rem; color: var(--bone-faint); font-size: 0.9rem; }
+  .lb-spin { width: 44px; height: 44px; animation: lbspin 1.2s linear infinite; }
+  @keyframes lbspin { to { transform: rotate(360deg); } }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th {
+    text-align: left;
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    padding: 0.9rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+  td { padding: 0.75rem 0.9rem; border-bottom: 1px solid var(--line-soft); color: var(--bone-dim); }
+  tr:last-child td { border-bottom: 0; }
+  tr.me td { background: rgba(224, 87, 74, 0.06); }
+  td.rank { font-family: var(--font-display); font-weight: 700; color: var(--bone); width: 3rem; }
+  td.rank.top { color: var(--gold-bright); }
+  td.couple { color: var(--bone); font-weight: 500; }
+  td.score { font-weight: 700; }
+  td .tier-pill { font-size: 0.72rem; border: 1px solid var(--line-strong); border-radius: 999px; padding: 0.15rem 0.6rem; color: var(--gold-bright); white-space: nowrap; }
+  td .elems { font-size: 0.78rem; color: var(--bone-faint); white-space: nowrap; }
+  @media (max-width: 620px) {
+    th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5) { display: none; }
+  }
+
+  .lb-empty { text-align: center; padding: 3rem 1.4rem; display: grid; gap: 1.2rem; justify-items: center; color: var(--bone-dim); }
+
+  .lb-how { margin-top: 3rem; }
+  .lb-how h2 { margin-bottom: 1.4rem; }
+  .lb-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; justify-items: center; }
+  @media (max-width: 720px) { .lb-steps { grid-template-columns: 1fr; } }
+  .lb-step { padding: 1.4rem; position: relative; text-align: center; width: 100%; }
+  .lb-step-n {
+    position: absolute; top: 0.9rem; right: 1.1rem;
+    font-family: var(--font-display); font-style: italic; font-size: 1.4rem; color: rgba(212,175,106,0.35);
+  }
+  .lb-step h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
+  .lb-step p { font-size: 0.86rem; color: var(--bone-dim); }
+</style>
+
+<script>
+  const body = document.getElementById('lbBody');
+  const table = document.getElementById('lbTable');
+  const loading = document.getElementById('lbLoading');
+  const empty = document.getElementById('lbEmpty');
+  const stats = document.getElementById('lbStats');
+
+  const tierColor = (score: number) =>
+    score >= 90 ? '#eed9a4' : score >= 75 ? '#7cc282' : score >= 60 ? '#63a8d8' : '#b6b1a2';
+
+  fetch('/api/leaderboard')
+    .then((r) => r.json())
+    .then((data) => {
+      loading!.style.display = 'none';
+      const entries: any[] = Array.isArray(data.entries) ? data.entries : [];
+      let mine: any = null;
+      try { mine = JSON.parse(localStorage.getItem('bazi_myleaderboard') || 'null'); } catch {}
+      if (!entries.length) {
+        empty!.hidden = false;
+        return;
+      }
+      stats!.hidden = false;
+      document.getElementById('statTotal')!.textContent = String(entries.length);
+      const avg = Math.round(entries.reduce((s, e) => s + (e.score || 0), 0) / entries.length);
+      document.getElementById('statAvg')!.textContent = String(avg);
+      document.getElementById('statTop')!.textContent = String(entries[0]?.score ?? '—');
+      if (mine) {
+        const rank = entries.findIndex(
+          (e) => e.name1 === mine.name1 && e.name2 === mine.name2 && e.score === mine.score
+        );
+        if (rank > -1) {
+          (document.getElementById('statMineWrap') as HTMLElement).hidden = false;
+          document.getElementById('statMine')!.textContent = `#${rank + 1}`;
+        }
+      }
+      table!.hidden = false;
+      body!.innerHTML = entries
+        .slice(0, 50)
+        .map((e, i) => {
+          const isMe = mine && e.name1 === mine.name1 && e.name2 === mine.name2 && e.score === mine.score;
+          const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`;
+          return `<tr${isMe ? ' class="me"' : ''}>
+            <td class="rank${i < 3 ? ' top' : ''}">${medal}</td>
+            <td class="couple">${esc(e.name1)} &amp; ${esc(e.name2)}${isMe ? ' <span style="color:var(--cinnabar);font-size:.72rem">· you</span>' : ''}</td>
+            <td class="score" style="color:${tierColor(e.score)}">${e.score}</td>
+            <td><span class="tier-pill">${esc(e.tier || '—')}</span></td>
+            <td><span class="elems">${esc(e.elem1 || '')} × ${esc(e.elem2 || '')}</span></td>
+          </tr>`;
+        })
+        .join('');
+    })
+    .catch(() => {
+      loading!.style.display = 'none';
+      empty!.hidden = false;
+    });
+
+  function esc(s: string): string {
+    return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] as string));
+  }
+</script>

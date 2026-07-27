@@ -1,0 +1,145 @@
+---
+import '../styles/global.css';
+import Starfield from '../components/Starfield.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import BackToTop from '../components/BackToTop.astro';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: Lang;
+  /** absolute-path canonical, e.g. /blog.html */
+  path: string;
+  /** path of the same page in the other language, if it exists */
+  altPath?: string;
+  ogType?: string;
+  keywords?: string;
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  lang = 'en',
+  path,
+  altPath,
+  ogType = 'website',
+  keywords,
+  jsonLd = [],
+  noindex = false,
+} = Astro.props;
+
+const site = 'https://mybazidestiny.com';
+const canonical = `${site}${path}`;
+const enPath = lang === 'en' ? path : altPath;
+const zhPath = lang === 'zh' ? path : altPath;
+const ogImage = `${site}/og-image.png`;
+---
+
+<!doctype html>
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {keywords && <meta name="keywords" content={keywords} />}
+    <meta name="author" content="BaZi Destiny" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+    <meta name="google-site-verification" content="g6oawvTSoW8nR5IzkHpM0JGUjzQjuPg_irgs74iBXmY" />
+    <link rel="canonical" href={canonical} />
+    {enPath && <link rel="alternate" hreflang="en" href={`${site}${enPath}`} />}
+    {zhPath && <link rel="alternate" hreflang="zh" href={`${site}${zhPath}`} />}
+    {enPath && <link rel="alternate" hreflang="x-default" href={`${site}${enPath}`} />}
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="BaZi Destiny" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M4LN686J2S"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-M4LN686J2S');
+    </script>
+
+    {jsonLd.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <div class="reading-progress" id="readingProgress" hidden aria-hidden="true">
+      <div class="reading-progress-bar" id="readingProgressBar"></div>
+    </div>
+    <Starfield />
+    <SiteHeader lang={lang} altUrl={altPath} />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter lang={lang} />
+    <BackToTop />
+
+    <script>
+      // Scroll-reveal
+      const els = document.querySelectorAll('[data-reveal]');
+      if (els.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }
+        );
+        els.forEach((el) => io.observe(el));
+      }
+
+      // Reading progress bar — activates only on article pages
+      const artBody = document.querySelector('.art-body');
+      const progressBar = document.getElementById('readingProgressBar');
+      const progressWrap = document.getElementById('readingProgress');
+      if (artBody && progressBar && progressWrap) {
+        progressWrap.hidden = false;
+        let ticking = false;
+        const onProgress = () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            const articleTop = artBody.getBoundingClientRect().top + window.scrollY;
+            const articleHeight = artBody.offsetHeight;
+            const scrollPos = window.scrollY + window.innerHeight;
+            const read = scrollPos - articleTop;
+            const pct = Math.min(Math.max(read / articleHeight, 0), 1) * 100;
+            progressBar.style.width = `${pct}%`;
+            ticking = false;
+          });
+        };
+        window.addEventListener('scroll', onProgress, { passive: true });
+        onProgress();
+      }
+    </script>
+  </body>
+</html>

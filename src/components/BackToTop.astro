@@ -1,0 +1,195 @@
+---
+// Back to Top button with scroll progress indicator
+// Floating, animated, accessible — appears after scrolling past hero
+---
+<button
+  class="btt"
+  id="backToTop"
+  aria-label="Back to top"
+  title="Back to top"
+  hidden
+>
+  <svg class="btt-ring" viewBox="0 0 44 44" aria-hidden="true">
+    <circle
+      cx="22" cy="22" r="20"
+      fill="none"
+      stroke="rgba(212,175,106,0.16)"
+      stroke-width="2"
+    />
+    <circle
+      id="bttProgress"
+      cx="22" cy="22" r="20"
+      fill="none"
+      stroke="var(--gold)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-dasharray="125.66"
+      stroke-dashoffset="125.66"
+      transform="rotate(-90 22 22)"
+    />
+  </svg>
+  <svg
+    class="btt-arrow"
+    width="16" height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    aria-hidden="true"
+  >
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</button>
+
+<style>
+  .btt {
+    position: fixed;
+    right: clamp(1rem, 3vw, 2rem);
+    bottom: clamp(1.5rem, 4vw, 2.5rem);
+    z-index: 40;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 0;
+    background: var(--ink-2);
+    box-shadow:
+      0 8px 32px -8px rgba(0, 0, 0, 0.7),
+      0 0 0 1px var(--line-soft);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: var(--gold);
+    transition:
+      opacity 0.35s var(--ease-out),
+      transform 0.35s var(--ease-out),
+      box-shadow 0.35s var(--ease-out),
+      background 0.35s var(--ease-out);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btt[hidden] {
+    display: grid;   /* override the native [hidden] display:none so we can animate */
+    opacity: 0;
+    transform: translateY(16px) scale(0.85);
+    pointer-events: none;
+  }
+
+  .btt.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .btt:hover {
+    box-shadow:
+      0 12px 36px -8px rgba(0, 0, 0, 0.8),
+      0 0 0 1px var(--gold);
+    background: var(--ink-3);
+  }
+
+  .btt:active {
+    transform: scale(0.94);
+    transition: transform 0.15s var(--ease-out);
+  }
+
+  /* Focus-visible: gold ring */
+  .btt:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  .btt-arrow {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .btt:hover .btt-arrow {
+    transform: translateY(-2px);
+  }
+
+  /* Larger touch target on mobile */
+  @media (max-width: 640px) {
+    .btt {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btt, .btt[hidden], .btt.is-visible, .btt-arrow {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const CIRCUMFERENCE = 2 * Math.PI * 20; // r=20
+
+  const btn = document.getElementById('backToTop') as HTMLButtonElement | null;
+  const ring = document.getElementById('bttProgress') as SVGCircleElement | null;
+
+  if (!btn || !ring) throw new Error('BackToTop: DOM elements not found');
+
+  // Derive hero height dynamically: use first <section> or navbar + 300px fallback
+  function getThreshold(): number {
+    const hero = document.querySelector('.hero') as HTMLElement | null;
+    if (hero) return hero.offsetHeight * 0.6;
+    return window.innerHeight * 0.7;
+  }
+
+  // Throttled scroll handler
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const scrollY = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const threshold = getThreshold();
+
+      // Toggle visibility
+      const shouldShow = scrollY > threshold;
+      const isVisible = btn.classList.contains('is-visible');
+      if (shouldShow !== isVisible) {
+        if (shouldShow) {
+          btn.hidden = false;
+          // Force reflow then animate in
+          void btn.offsetWidth;
+          btn.classList.add('is-visible');
+        } else {
+          btn.classList.remove('is-visible');
+          // Wait for transition then truly hide
+          btn.addEventListener('transitionend', function handler() {
+            btn.removeEventListener('transitionend', handler);
+            btn.hidden = true;
+          });
+        }
+      }
+
+      // Update progress ring
+      if (docHeight > 0) {
+        const progress = Math.min(scrollY / docHeight, 1);
+        const offset = CIRCUMFERENCE * (1 - progress);
+        ring.setAttribute('stroke-dashoffset', String(offset));
+      }
+
+      ticking = false;
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  // Initial check
+  onScroll();
+
+  // Click — smooth scroll to top
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Set keyboard focus to the skip link or first meaningful element
+    const skip = document.querySelector('.skip-link') as HTMLElement | null;
+    if (skip) skip.focus({ preventScroll: true });
+    else document.body.focus({ preventScroll: true });
+  });
+</script>

@@ -1,0 +1,65 @@
+---
+// 五行 pentagon — generating cycle (outer arrows) + controlling cycle (inner star)
+const NODES = [
+  { han: '木', en: 'Wood', color: 'var(--wood)' },
+  { han: '火', en: 'Fire', color: 'var(--fire)' },
+  { han: '土', en: 'Earth', color: 'var(--earth)' },
+  { han: '金', en: 'Metal', color: 'var(--metal)' },
+  { han: '水', en: 'Water', color: 'var(--water)' },
+];
+const cx = 170, cy = 170, R = 118, NR = 34;
+const pts = NODES.map((_, i) => {
+  const a = ((-90 + i * 72) * Math.PI) / 180;
+  return { x: cx + R * Math.cos(a), y: cy + R * Math.sin(a) };
+});
+// edge point of node circle toward another point
+const edge = (from: number, to: number, r = NR + 6) => {
+  const dx = pts[to].x - pts[from].x;
+  const dy = pts[to].y - pts[from].y;
+  const len = Math.hypot(dx, dy);
+  return { x: pts[from].x + (dx / len) * r, y: pts[from].y + (dy / len) * r };
+};
+const gen = [0, 1, 2, 3, 4].map((i) => ({ a: edge(i, (i + 1) % 5), b: edge((i + 1) % 5, i) }));
+const ctrl = [0, 2, 4, 1, 3].map((i) => pts[i]);
+---
+
+<svg viewBox="0 0 340 340" class="wuxing" role="img" aria-label="Five elements generating and controlling cycles">
+  <defs>
+    <marker id="wx-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="rgba(212,175,106,0.55)" />
+    </marker>
+  </defs>
+
+  <!-- controlling star (inner pentagram) -->
+  <polygon
+    points={ctrl.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')}
+    fill="none"
+    stroke="rgba(212,175,106,0.14)"
+    stroke-dasharray="3 5"
+  />
+  <!-- generating cycle -->
+  {gen.map(({ a, b }) => (
+    <line x1={a.x.toFixed(1)} y1={a.y.toFixed(1)} x2={b.x.toFixed(1)} y2={b.y.toFixed(1)}
+      stroke="rgba(212,175,106,0.4)" stroke-width="1.2" marker-end="url(#wx-arrow)" />
+  ))}
+
+  <text x={cx} y={cy - 6} text-anchor="middle" font-size="15" fill="var(--bone)" font-family="'Noto Serif SC',serif">五行</text>
+  <text x={cx} y={cy + 14} text-anchor="middle" font-size="8" letter-spacing="2" fill="var(--bone-faint)">WU XING</text>
+
+  {NODES.map((n, i) => (
+    <g class="wx-node" style={`--d:${i * 0.12}s`}>
+      <circle cx={pts[i].x} cy={pts[i].y} r={NR} fill="var(--ink-1)" stroke={n.color} stroke-width="1.4" />
+      <circle cx={pts[i].x} cy={pts[i].y} r={NR + 5} fill="none" stroke={n.color} opacity="0.18" />
+      <text x={pts[i].x} y={pts[i].y + 1} text-anchor="middle" dominant-baseline="middle"
+        font-size="22" fill={n.color} font-family="'Noto Serif SC',serif">{n.han}</text>
+      <text x={pts[i].x} y={pts[i].y + NR + 18} text-anchor="middle" font-size="10.5"
+        fill="var(--bone-dim)" font-family="Inter,sans-serif" font-weight="600">{n.en}</text>
+    </g>
+  ))}
+</svg>
+
+<style>
+  .wuxing { width: 100%; max-width: 380px; margin-inline: auto; overflow: visible; }
+  .wx-node { animation: wxIn 0.8s var(--ease-out) both; animation-delay: var(--d); }
+  @keyframes wxIn { from { opacity: 0; transform: scale(0.6); transform-origin: center; transform-box: fill-box; } }
+</style>

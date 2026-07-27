@@ -1,0 +1,176 @@
+---
+// Shared upgrade modal — opened via window.__baziUpgrade('pro' | 'ultimate')
+---
+
+<div class="pay-modal" id="paymentModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="pay-modal-card">
+    <button class="pay-modal-close" id="modalClose" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l12 12M14 2L2 14"/></svg>
+    </button>
+    <div class="pay-modal-seal" aria-hidden="true">印</div>
+    <h3 id="modalTitle">Unlock Destiny Master</h3>
+    <p id="modalDesc" class="pay-modal-desc"></p>
+    <div id="modalPrice" class="pay-modal-price"></div>
+    <div id="modalFeatures" class="pay-modal-features"></div>
+    <button class="btn btn-gold btn-lg btn-full" id="checkoutBtn">Pay &amp; Unlock</button>
+    <p class="pay-modal-note">Secure checkout via PayPal · One-time payment, yours forever</p>
+  </div>
+</div>
+
+<style>
+  .pay-modal:not([hidden]) {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
+    background: rgba(4, 5, 10, 0.78);
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.25s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } }
+  .pay-modal-card {
+    position: relative;
+    width: min(430px, 100%);
+    max-height: 85vh;
+    overflow-y: auto;
+    background: linear-gradient(170deg, var(--ink-2), var(--ink-1));
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    padding: 2.2rem 1.8rem 1.8rem;
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.9), var(--glow-gold);
+    animation: riseIn 0.35s var(--ease-out);
+    text-align: center;
+  }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(18px) scale(0.98); } }
+  .pay-modal-close {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--bone-faint);
+    border: 1px solid var(--line-soft);
+    transition: color 0.25s, border-color 0.25s;
+  }
+  .pay-modal-close:hover { color: var(--bone); border-color: var(--line-strong); }
+  .pay-modal-seal {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 1.1rem;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: linear-gradient(155deg, #e86050, var(--cinnabar) 45%, var(--cinnabar-deep));
+    color: #fdf6ec;
+    font-family: var(--font-han);
+    font-size: 1.5rem;
+    transform: rotate(-3deg);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.14), 0 10px 24px -8px rgba(224, 87, 74, 0.6);
+  }
+  .pay-modal-card h3 { font-size: 1.7rem; margin-bottom: 0.6rem; }
+  .pay-modal-desc { color: var(--bone-dim); font-size: 0.95rem; margin-bottom: 1.2rem; }
+  .pay-modal-price {
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--gold-bright);
+    margin-bottom: 1.2rem;
+  }
+  .pay-modal-price small { font-size: 1rem; color: var(--bone-faint); font-weight: 400; font-family: var(--font-body); }
+  .pay-modal-features {
+    text-align: left;
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.2rem;
+    background: var(--ink-1);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-s);
+    font-size: 0.9rem;
+    color: var(--bone-dim);
+  }
+  .pay-modal-note { margin-top: 0.9rem; font-size: 0.78rem; color: var(--bone-faint); }
+</style>
+
+<script>
+  import { startCheckout, type Tier } from '../lib/paypal';
+  // Extend Tier locally for synergy
+  type ExtendedTier = Tier | 'synergy';
+
+  const modal = document.getElementById('paymentModal');
+  const title = document.getElementById('modalTitle');
+  const desc = document.getElementById('modalDesc');
+  const price = document.getElementById('modalPrice');
+  const features = document.getElementById('modalFeatures');
+  const checkoutBtn = document.getElementById('checkoutBtn') as HTMLButtonElement | null;
+  let selectedTier: ExtendedTier = 'pro';
+  let pendingReading: unknown = null;
+
+  const COPY: Record<ExtendedTier, { title: string; desc: string; price: string; features: string[]; btn: string }> = {
+    pro: {
+      title: 'Unlock Destiny Master',
+      desc: 'The complete BaZi reading — Career, Wealth, Relationships, Health, personalized Feng Shui guidance, and PDF report.',
+      price: '$9.90 <small>one-time</small>',
+      features: [
+        '✓ Full 12-section BaZi reading',
+        '✓ Personalized Feng Shui analysis',
+        '✓ Lucky numbers, colors & directions',
+        '✓ PDF report download',
+      ],
+      btn: 'Pay $9.90 — Unlock Now',
+    },
+    ultimate: {
+      title: 'Upgrade to Soul Guide',
+      desc: 'Everything in Destiny Master plus 1:1 follow-up Q&A, a 30-minute Feng Shui room consultation, and 3 months of monthly horoscopes.',
+      price: '$29.90 <small>one-time</small>',
+      features: [
+        '✓ Everything in Destiny Master',
+        '✓ 1:1 Follow-up Q&A session',
+        '✓ 30-min Feng Shui room consultation',
+        '✓ 3 months of monthly horoscopes',
+      ],
+      btn: 'Pay $29.90 — Unlock Now',
+    },
+    synergy: {
+      title: 'Unlock Synergy Boost Guide',
+      desc: '',
+      price: '',
+      features: [
+        '✓ Morning Ritual — daily sync practice',
+        '✓ Communication Style — speak each other\'s language',
+        '✓ Shared Activities — co-create and bond deeper',
+        '✓ Home Energy — optimize your shared space',
+        '✓ Conflict Resolution — cool down and reconnect',
+      ],
+      btn: 'Pay $4.90 — Unlock Now',
+    },
+  };
+
+  function open(tier: ExtendedTier, reading?: unknown) {
+    selectedTier = tier;
+    if (reading) pendingReading = reading;
+    const c = COPY[tier];
+    if (title) title.textContent = c.title;
+    if (desc) { desc.style.display = c.desc ? '' : 'none'; desc.textContent = c.desc; }
+    if (price) { price.style.display = c.price ? '' : 'none'; price.innerHTML = c.price; }
+    if (features) features.innerHTML = c.features.map((f) => `<div>${f}</div>`).join('');
+    if (checkoutBtn) checkoutBtn.innerHTML = `💳 ${c.btn}`;
+    if (modal) modal.hidden = false;
+  }
+  function close() {
+    if (modal) modal.hidden = true;
+  }
+
+  (window as any).__baziUpgrade = (tier: Tier, reading?: unknown) => open(tier, reading);
+  (window as any).__baziSetPendingReading = (reading: unknown) => { pendingReading = reading; };
+
+  checkoutBtn?.addEventListener('click', () => startCheckout(selectedTier, pendingReading));
+  document.getElementById('modalClose')?.addEventListener('click', close);
+  modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+</script>

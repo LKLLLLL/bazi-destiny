@@ -1,0 +1,107 @@
+---
+import Seal from './Seal.astro';
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="rule" aria-hidden="true">✦</div>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href={lang === 'zh' ? '/zh/' : '/'} class="brand">
+          <Seal size={30} />
+          <span class="brand-word">BaZi <em>Destiny</em></span>
+        </a>
+        <p class="footer-tag">{t(lang, 'footer.tagline')}</p>
+        <p class="footer-han han">四柱推命 · 五行生克 · 观象授时</p>
+      </div>
+      <nav class="footer-col" aria-label="Tools">
+        <h4>{t(lang, 'footer.tools')}</h4>
+        <a href="/calculator.html">{t(lang, 'footer.calculator')}</a>
+        <a href="/love-match.html">{t(lang, 'footer.loveMatch')}</a>
+        <a href="/leaderboard.html">{t(lang, 'footer.leaderboard')}</a>
+      </nav>
+      <nav class="footer-col" aria-label="Learn">
+        <h4>{t(lang, 'footer.learn')}</h4>
+        <a href="/blog.html">{t(lang, 'footer.blog')}</a>
+        <a href="/faq.html">{t(lang, 'footer.faq')}</a>
+        <a href="/about.html">{t(lang, 'footer.about')}</a>
+      </nav>
+      <nav class="footer-col" aria-label="Legal">
+        <h4>{t(lang, 'footer.legal')}</h4>
+        <a href="/privacy-policy.html">{t(lang, 'footer.privacy')}</a>
+        <a href="/terms-of-service.html">{t(lang, 'footer.terms')}</a>
+        <a href="/editorial-policy.html">{t(lang, 'footer.editorial')}</a>
+        <a href="mailto:contact@bazidestiny.com">{t(lang, 'footer.contact')}</a>
+      </nav>
+    </div>
+    <div class="footer-base">
+      <span>{t(lang, 'footer.rights')}</span>
+      <span class="footer-domain">mybazidestiny.com</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--section-y);
+    padding-bottom: 2.2rem;
+  }
+  .rule { margin-bottom: 3rem; }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 2.5rem;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--bone);
+  }
+  .brand-word { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
+  .brand-word em { font-style: italic; color: var(--gold); }
+  .footer-tag { margin-top: 1rem; color: var(--bone-dim); font-size: 0.95rem; max-width: 26ch; }
+  .footer-han { margin-top: 1rem; font-size: 0.8rem; letter-spacing: 0.24em; color: var(--gold-deep); }
+  .footer-col { display: flex; flex-direction: column; gap: 0.55rem; }
+  .footer-col h4 {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .footer-col a { color: var(--bone-dim); font-size: 0.92rem; }
+  .footer-col a:hover { color: var(--gold-bright); }
+  .footer-base {
+    margin-top: 3rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line-soft);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    color: var(--bone-faint);
+    font-size: 0.82rem;
+  }
+  @media (max-width: 1024px) {
+    .footer-grid { grid-template-columns: 1.3fr 1fr 1fr; gap: 2rem; }
+    .footer-col:last-child { grid-column: span 3; display: grid; grid-template-columns: repeat(4, auto); gap: 1rem; justify-content: start; }
+  }
+  @media (max-width: 768px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .footer-brand { grid-column: 1 / -1; }
+    .footer-col:last-child { grid-column: auto; display: flex; flex-direction: column; gap: 0.55rem; }
+  }
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 1.8rem; }
+    .footer-brand { grid-column: auto; }
+  }
+</style>

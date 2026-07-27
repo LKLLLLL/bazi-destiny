@@ -1,0 +1,48 @@
+---
+// Armillary sphere — rotating ring of the twelve Earthly Branches
+const BRANCHES = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+const cx = 200, cy = 200;
+const pos = (r: number, deg: number) => {
+  const a = ((deg - 90) * Math.PI) / 180;
+  return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
+};
+---
+
+<svg viewBox="0 0 400 400" class="armillary" aria-hidden="true">
+  <circle cx={cx} cy={cy} r="188" fill="none" stroke="rgba(212,175,106,0.12)" />
+  <circle cx={cx} cy={cy} r="150" fill="none" stroke="rgba(212,175,106,0.2)" stroke-dasharray="1 6" />
+  <g class="arm-spin-slow">
+    {BRANCHES.map((b, i) => {
+      const p = pos(169, i * 30);
+      return (
+        <text x={p.x.toFixed(1)} y={(p.y + 5).toFixed(1)} text-anchor="middle"
+          font-size="15" fill="rgba(212,175,106,0.5)" font-family="'Noto Serif SC',serif"
+          transform={`rotate(${i * 30} ${p.x.toFixed(1)} ${p.y.toFixed(1)})`}>{b}</text>
+      );
+    })}
+  </g>
+  <g class="arm-spin-rev">
+    {Array.from({ length: 60 }).map((_, i) => {
+      const p1 = pos(120, i * 6);
+      const p2 = pos(i % 5 === 0 ? 112 : 116, i * 6);
+      return <line x1={p1.x.toFixed(1)} y1={p1.y.toFixed(1)} x2={p2.x.toFixed(1)} y2={p2.y.toFixed(1)}
+        stroke="rgba(212,175,106,0.3)" stroke-width="1" />;
+    })}
+    <circle cx={cx} cy={cy} r="120" fill="none" stroke="rgba(212,175,106,0.22)" />
+  </g>
+  <g class="arm-taiji">
+    <circle cx={cx} cy={cy} r="34" fill="none" stroke="rgba(212,175,106,0.5)" stroke-width="1.2" />
+    <path d="M200 166a34 34 0 0 1 0 68 17 17 0 0 1 0-34 17 17 0 0 0 0-34z" fill="rgba(212,175,106,0.55)" />
+    <circle cx={cx} cy={cy - 17} r="5" fill="#0b0d17" />
+    <circle cx={cx} cy={cy + 17} r="5" fill="rgba(212,175,106,0.7)" />
+  </g>
+</svg>
+
+<style>
+  .armillary { width: 100%; height: auto; }
+  .arm-spin-slow { transform-origin: 200px 200px; animation: armSpin 140s linear infinite; }
+  .arm-spin-rev { transform-origin: 200px 200px; animation: armSpinRev 200s linear infinite; }
+  .arm-taiji { transform-origin: 200px 200px; animation: armSpin 60s linear infinite; }
+  @keyframes armSpin { to { transform: rotate(360deg); } }
+  @keyframes armSpinRev { to { transform: rotate(-360deg); } }
+</style>

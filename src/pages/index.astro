@@ -1,0 +1,420 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Pricing from '../components/Pricing.astro';
+import PaymentModal from '../components/PaymentModal.astro';
+import Armillary from '../components/Armillary.astro';
+import WuxingPentagon from '../components/WuxingPentagon.astro';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'BaZi Destiny',
+    url: 'https://mybazidestiny.com/',
+    description:
+      'Discover your destiny through BaZi (Four Pillars of Destiny) Chinese astrology. Free personalized readings for career, love, wealth, and life path.',
+    publisher: { '@type': 'Organization', name: 'BaZi Destiny', url: 'https://mybazidestiny.com/' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'BaZi Destiny',
+    url: 'https://mybazidestiny.com/',
+    logo: 'https://mybazidestiny.com/og-image.png',
+    description:
+      'Free BaZi (Four Pillars of Destiny) Chinese astrology readings — personality, career, love compatibility, and Feng Shui guidance.',
+    email: 'contact@bazidestiny.com',
+  },
+];
+
+const elements = [
+  { han: '木', en: 'Wood', desc: 'Growth, creativity, flexibility. Your vision takes root and flourishes.', color: 'var(--wood)' },
+  { han: '火', en: 'Fire', desc: 'Passion, energy, transformation. Your spark lights up every room.', color: 'var(--fire)' },
+  { han: '土', en: 'Earth', desc: 'Stability, nourishment, grounding. The foundation everything rests upon.', color: 'var(--earth)' },
+  { han: '金', en: 'Metal', desc: 'Strength, precision, clarity. You cut through to what matters most.', color: 'var(--metal)' },
+  { han: '水', en: 'Water', desc: 'Wisdom, flow, adaptability. You navigate life’s currents with grace.', color: 'var(--water)' },
+];
+
+const steps = [
+  { han: '测', title: 'Enter Your Details', desc: 'Birth date, time, and city. Your Four Pillars chart is calculated with classical Chinese calendrical astronomy.' },
+  { han: '析', title: 'Your Five Elements', desc: 'See your elemental composition — Wood, Fire, Earth, Metal, Water — and how each shapes your personality and path.' },
+  { han: '解', title: 'Deep Reading', desc: 'A comprehensive English reading of Career, Wealth, Relationships, and Health through the lens of Feng Shui.' },
+  { han: '调', title: 'Feng Shui Guidance', desc: 'Auspicious directions, lucky colors, and living-space tips tailored to harmonize your environment with your energy.' },
+];
+
+const faqs = [
+  {
+    q: 'What exactly is BaZi?',
+    a: 'BaZi (八字), the Four Pillars of Destiny, is a classical Chinese system that maps the year, month, day and hour of your birth into eight characters. Those characters reveal your elemental makeup — and with it, your strengths, timing and tendencies.',
+  },
+  {
+    q: 'Do I need to know my exact birth time?',
+    a: 'The birth hour sets your fourth pillar, so it sharpens the reading considerably. If you only know it roughly, choose the closest two-hour window — your year, month and day pillars remain fully accurate either way.',
+  },
+  {
+    q: 'Is my birth data stored anywhere?',
+    a: 'No. Every calculation runs locally in your browser. Your date, time and place of birth never leave your device.',
+  },
+  {
+    q: 'How is BaZi different from Western astrology?',
+    a: 'Western astrology tracks planets against constellations; BaZi tracks the flow of the Five Elements through the Chinese solar calendar. They are independent systems — many people find BaZi more concrete about timing and practical decisions.',
+  },
+];
+---
+
+<Base
+  title="Free BaZi Calculator: Get Your Four Pillars of Destiny Reading Online | BaZi Destiny"
+  description="Free BaZi (Four Pillars of Destiny) calculator. Get your personalized Chinese astrology reading instantly — personality, career, love compatibility, lucky numbers & 2026 fortune."
+  keywords="BaZi, Chinese astrology, Four Pillars of Destiny, Feng Shui, Chinese horoscope, bazi reading, fortune telling, destiny, Chinese zodiac"
+  path="/"
+  altPath="/zh/"
+  jsonLd={jsonLd}
+>
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="hero-armillary" aria-hidden="true"><Armillary /></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="hero-eyebrow" data-reveal>
+          <span class="pulse-dot" aria-hidden="true"></span>
+          Free BaZi Calculator · <span class="han">免费排盘</span>
+        </p>
+        <h1 data-reveal style="--reveal-delay:.08s">
+          Discover your<br /><em>BaZi</em> destiny
+        </h1>
+        <p class="hero-lead" data-reveal style="--reveal-delay:.16s">
+          The ancient Chinese Four Pillars of Destiny — translated into clear, powerful English.
+          Your birth chart, Five Elements reading, and love compatibility in seconds.
+        </p>
+        <div class="hero-ctas" data-reveal style="--reveal-delay:.24s">
+          <a href="/calculator.html" class="btn btn-gold btn-lg">
+            Get My Free Reading
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="/love-match.html" class="btn btn-love btn-lg">
+            <svg width="17" height="17" viewBox="0 0 32 30" fill="currentColor"><path d="M16 28S2 19.6 2 10.3C2 5 6 2 10 2c2.6 0 4.7 1.3 6 3.3C17.3 3.3 19.4 2 22 2c4 0 8 3 8 8.3C30 19.6 16 28 16 28z"/></svg>
+            Try Love Match
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scrollhint" aria-hidden="true">
+      <span class="vertical-han">观象授时</span>
+    </div>
+  </section>
+
+  <!-- ================= HOW IT WORKS ================= -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow"><span class="han">古法今译</span> The Process</p>
+        <h2 class="section-title">Ancient science, <em>modern clarity</em></h2>
+      </div>
+      <div class="steps-grid">
+        {steps.map((s, i) => (
+          <article class="step-card card" data-reveal style={`--reveal-delay:${i * 0.09}s`}>
+            <span class="step-num">0{i + 1}</span>
+            <span class="step-han" aria-hidden="true">{s.han}</span>
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FIVE ELEMENTS ================= -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow center"><span class="han">五行</span> The Five Elements</p>
+        <h2 class="section-title">Your element <em>shapes your world</em></h2>
+        <p class="section-sub">Every chart is a unique balance of five energies, forever generating and tempering one another. Which one leads yours?</p>
+      </div>
+      <div class="elements-grid">
+        <div class="elements-viz" data-reveal>
+          <WuxingPentagon />
+          <p class="cycle-note">
+            Outer arrows — the generating cycle 相生. Inner star — the tempering cycle 相克.
+          </p>
+        </div>
+        <div class="elements-cards">
+          {elements.map((el, i) => (
+            <article class="element-card card" data-reveal style={`--reveal-delay:${i * 0.07}s;--ec:${el.color}`}>
+              <span class="element-han han">{el.han}</span>
+              <div>
+                <h3>{el.en}</h3>
+                <p>{el.desc}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRICING ================= -->
+  <Pricing />
+
+  <!-- ================= BLOG TEASER ================= -->
+  {posts.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head row" data-reveal>
+          <div>
+            <p class="eyebrow"><span class="han">博文</span> From the Blog</p>
+            <h2 class="section-title">Learn the <em>craft</em></h2>
+          </div>
+          <a href="/blog.html" class="btn btn-ghost">All articles →</a>
+        </div>
+        <div class="posts-grid">
+          {posts.map((post, i) => (
+            <a class="post-card card" href={`/${post.id}.html`} data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+              <span class="post-emoji" aria-hidden="true">{post.data.emoji}</span>
+              <h3>{post.data.title}</h3>
+              <p>{post.data.description}</p>
+              <span class="post-meta">Read more →</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ================= FAQ TEASER ================= -->
+  <section class="section">
+    <div class="wrap-narrow">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow center"><span class="han">解惑</span> Questions</p>
+        <h2 class="section-title">Before you <em>ask</em></h2>
+      </div>
+      <div class="faq-list" data-reveal>
+        {faqs.map((f) => (
+          <details class="faq-item">
+            <summary>
+              {f.q}
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 1v12M1 7h12"/></svg>
+            </summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+      <p class="faq-more" data-reveal><a href="/faq.html">All questions →</a></p>
+    </div>
+  </section>
+
+  <!-- ================= FINAL CTA ================= -->
+  <section class="section final-cta">
+    <div class="wrap-narrow center" data-reveal>
+      <span class="final-han han" aria-hidden="true">知命者不怨人</span>
+      <h2 class="section-title">Your chart was written<br />the moment you were <em>born</em></h2>
+      <p class="section-sub">Read it in the next thirty seconds.</p>
+      <div class="hero-ctas center">
+        <a href="/calculator.html" class="btn btn-gold btn-lg">Cast My Chart — Free</a>
+      </div>
+    </div>
+  </section>
+
+  <PaymentModal />
+</Base>
+
+<style>
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    padding-top: calc(68px + clamp(3rem, 8vh, 6rem));
+    padding-bottom: clamp(3rem, 7vh, 5.5rem);
+    overflow: hidden;
+  }
+  .hero-armillary {
+    position: absolute;
+    top: 50%;
+    right: -6%;
+    width: clamp(26rem, 44vw, 40rem);
+    transform: translateY(-52%);
+    opacity: 0.85;
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.45rem 1.05rem;
+    background: rgba(212, 175, 106, 0.06);
+    margin-bottom: 1.6rem;
+  }
+  .hero-eyebrow .han { letter-spacing: 0.3em; }
+  .pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 10px var(--gold);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { opacity: 0.35; } }
+  .hero h1 {
+    font-size: clamp(2.7rem, 5.6vw, 4.6rem);
+    line-height: 1.04;
+    font-weight: 600;
+  }
+  .hero h1 em {
+    font-style: italic;
+    background: linear-gradient(115deg, var(--gold-bright) 20%, var(--gold) 60%, var(--gold-deep));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero-lead {
+    margin-top: 1.4rem;
+    font-size: 1.08rem;
+    color: var(--bone-dim);
+    max-width: 46ch;
+  }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 2.2rem; }
+  .hero-ctas.center { justify-content: center; }
+  .hero-scrollhint {
+    position: absolute;
+    left: clamp(0.8rem, 3vw, 2.2rem);
+    bottom: 1.2rem;
+    font-size: 0.8rem;
+    opacity: 0.75;
+  }
+
+  @media (max-width: 1024px) {
+    .hero-armillary { width: clamp(20rem, 36vw, 30rem); right: -4%; }
+  }
+  @media (max-width: 900px) {
+    .hero-armillary { right: 50%; transform: translate(50%, -52%); opacity: 0.3; width: 90%; max-width: 32rem; }
+    .hero-scrollhint { display: none; }
+  }
+
+  /* ---------- steps ---------- */
+  .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+  @media (max-width: 1024px) { .steps-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .steps-grid { grid-template-columns: 1fr; } }
+  .step-card { padding: 1.7rem 1.5rem; position: relative; overflow: hidden; }
+  .step-num {
+    position: absolute;
+    top: 0.9rem;
+    right: 1.1rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.5rem;
+    color: rgba(212, 175, 106, 0.35);
+  }
+  .step-han {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-s);
+    border: 1px solid var(--line);
+    background: rgba(212, 175, 106, 0.07);
+    color: var(--gold-bright);
+    font-family: var(--font-han);
+    font-size: 1.35rem;
+    margin-bottom: 1.15rem;
+  }
+  .step-card h3 { font-size: 1.22rem; margin-bottom: 0.5rem; }
+  .step-card p { font-size: 0.87rem; color: var(--bone-dim); }
+
+  /* ---------- elements ---------- */
+  .elements-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  @media (max-width: 900px) { .elements-grid { grid-template-columns: 1fr; } }
+  .cycle-note { text-align: center; margin-top: 1rem; font-size: 0.78rem; color: var(--bone-faint); }
+  .elements-cards { display: grid; gap: 0.75rem; }
+  .element-card {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 1.05rem 1.3rem;
+    border-left: 2px solid var(--ec, var(--line));
+  }
+  .element-han { font-size: 1.9rem; color: var(--ec); text-shadow: 0 0 18px color-mix(in srgb, var(--ec) 45%, transparent); width: 2.2rem; text-align: center; }
+  .element-card h3 { font-size: 1.1rem; margin-bottom: 0.15rem; }
+  .element-card p { font-size: 0.85rem; color: var(--bone-dim); }
+
+  /* ---------- blog ---------- */
+  .section-head.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1.5rem;
+    max-width: none;
+    flex-wrap: wrap;
+  }
+  .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  @media (max-width: 860px) { .posts-grid { grid-template-columns: 1fr; } }
+  .post-card { display: flex; flex-direction: column; gap: 0.6rem; padding: 1.6rem; color: var(--bone); }
+  .post-card:hover { color: var(--bone); }
+  .post-emoji { font-size: 1.6rem; }
+  .post-card h3 { font-size: 1.18rem; line-height: 1.3; }
+  .post-card p { font-size: 0.85rem; color: var(--bone-dim); flex: 1; }
+  .post-meta { font-size: 0.8rem; color: var(--gold); font-weight: 600; }
+
+  /* ---------- faq ---------- */
+  .faq-list { display: grid; gap: 0.7rem; }
+  .faq-item {
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    background: linear-gradient(172deg, var(--ink-2), var(--ink-1));
+    overflow: hidden;
+  }
+  .faq-item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.3rem;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.98rem;
+    list-style: none;
+    transition: color 0.25s;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary:hover { color: var(--gold-bright); }
+  .faq-item summary svg { flex: none; color: var(--gold); transition: transform 0.3s var(--ease-out); }
+  .faq-item[open] summary svg { transform: rotate(45deg); }
+  .faq-item p { padding: 0 1.3rem 1.2rem; color: var(--bone-dim); font-size: 0.9rem; }
+  .faq-more { text-align: center; margin-top: 1.4rem; font-size: 0.9rem; }
+
+  /* ---------- final ---------- */
+  .final-cta { text-align: center; }
+  .final-cta .center { text-align: center; }
+  .final-han {
+    display: block;
+    font-size: 0.95rem;
+    letter-spacing: 0.5em;
+    color: var(--gold-deep);
+    margin-bottom: 1.4rem;
+  }
+  .final-cta .section-sub { margin-bottom: 2rem; }
+</style>
+
+</script>

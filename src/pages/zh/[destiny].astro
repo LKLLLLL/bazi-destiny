@@ -1,0 +1,15 @@
+---
+import DestinyPage from '../../components/DestinyPage.astro';
+import destinyZh from '../../data/destiny-zh.json';
+
+export function getStaticPaths() {
+  return destinyZh.map((rec) => ({
+    params: { destiny: rec.slug },
+    props: { rec },
+  }));
+}
+
+const { rec } = Astro.props as any;
+---
+
+<DestinyPage rec={rec} lang="zh" />

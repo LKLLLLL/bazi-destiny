@@ -1,0 +1,175 @@
+---
+import Base from '../layouts/Base.astro';
+import PaymentModal from '../components/PaymentModal.astro';
+---
+
+<Base
+  title="Love Match Result | BaZi Destiny"
+  description="See your BaZi compatibility score and synergy boost tips."
+  path="/love-match-result.html"
+  noindex={true}
+>
+  <div class="lmr-wrap">
+    <header class="lmr-hero">
+      <a href="/love-match.html" class="lmr-back">← New Match</a>
+      <p class="eyebrow center"><span class="han">合婚结果</span> Match Result</p>
+      <h1 id="lmrTitle">Love Match</h1>
+    </header>
+
+    <div class="lmr-card panel" id="lmrContent">
+      <div class="lmr-loading" id="lmrLoading">
+        <svg viewBox="0 0 100 100" width="60" height="60"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(212,175,106,0.2)" stroke-width="2"/><path d="M50 10a40 40 0 0 1 40 40" fill="none" stroke="#d4af6a" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1.2s" repeatCount="indefinite"/></path></svg>
+        <p>Loading your match...</p>
+      </div>
+      <div id="lmrResults" hidden>
+        <div id="lmrScore"></div>
+        <div id="lmrTips"></div>
+      </div>
+    </div>
+
+    <div id="lmrExtras"></div>
+  </div>
+  <PaymentModal />
+</Base>
+
+<style>
+  .lmr-wrap { padding: calc(68px + clamp(2rem, 5vh, 3.5rem)) 1.25rem 4rem; }
+  .lmr-hero { text-align: center; margin-bottom: 2rem; padding: 0 1rem; }
+  .lmr-back { display: inline-block; margin-bottom: 1rem; font-size: 0.82rem; color: var(--bone-dim); }
+  .lmr-back:hover { color: var(--gold-bright); }
+  .lmr-hero h1 { font-family: var(--font-display); font-size: 3rem !important; font-weight: 600; line-height: 1.1; }
+  @media (max-width: 600px) { .lmr-hero h1 { font-size: 2rem !important; } }
+  .lmr-card { max-width: 640px; margin: 0 auto; padding: clamp(1.8rem, 4vw, 3rem); }
+  .lmr-loading { text-align: center; padding: 3rem; color: var(--bone-dim); font-size: 0.95rem; }
+  #lmrResults[hidden] { display: none; }
+  #lmrExtras { max-width: 720px; margin: 0 auto; }
+
+  .lmr-extras-grid { display: grid; grid-template-columns: 1fr; gap: 1.2rem; margin-top: 2rem; }
+  .lmr-wall {
+    padding: 2rem 1.6rem;
+    background: linear-gradient(172deg, var(--ink-2), var(--ink-1));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .lmr-wall-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(212,175,106,0.07); margin-bottom: 1rem; font-size: 1.4rem; }
+  .lmr-wall-label { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; margin-bottom: 0.6rem; color: var(--bone); }
+  .lmr-wall-desc { color: var(--bone-dim); font-size: 0.84rem; max-width: 42ch; margin: 0 auto 1.2rem; line-height: 1.7; }
+  .lmr-wall-desc strong { color: var(--gold-bright); }
+  .lmr-wall-btn { margin-top: 0.3rem; }
+</style>
+
+<script>
+  import BaZiEngine from '../lib/bazi/engine';
+  import Compatibility from '../lib/bazi/compatibility';
+  import { scoreRing, ELEM_EN, ELEM_COLOR } from '../lib/charts';
+
+  var p = new URLSearchParams(window.location.search);
+  var n1 = p.get('n1') || 'Person 1';
+  var n2 = p.get('n2') || 'Person 2';
+  var d1 = p.get('d1') || '';
+  var h1 = p.get('h1') || '';
+  var d2 = p.get('d2') || '';
+  var h2 = p.get('h2') || '';
+
+  document.getElementById('lmrTitle').textContent = n1 + ' & ' + n2;
+  document.title = n1 + ' & ' + n2 + ' \u2014 Love Match | BaZi Destiny';
+
+  if (!d1 || !h1 || !d2 || !h2) {
+    document.getElementById('lmrLoading').innerHTML = '<div style="text-align:center;padding:3rem"><span style="font-size:3rem">\uD83D\uDC95</span><h2>No match data</h2><p style="color:var(--bone-dim)">Go back and enter both birth details.</p><a href="/love-match.html" class="btn btn-love btn-lg">Try Love Match</a></div>';
+  } else {
+    setTimeout(compute, 600);
+  }
+
+  function compute() {
+    try {
+      var parts1 = d1.split('-').map(Number);
+      var parts2 = d2.split('-').map(Number);
+      var data1 = BaZiEngine.calculateFourPillars(parts1[0], parts1[1], parts1[2], parseInt(h1, 10));
+      var data2 = BaZiEngine.calculateFourPillars(parts2[0], parts2[1], parts2[2], parseInt(h2, 10));
+      var r = Compatibility.analyzeCompatibility(data1, data2);
+      var color = r.tier.color;
+
+      var e1 = ELEM_EN[data1.pillars.day.element] || 'Wood';
+      var e2 = ELEM_EN[data2.pillars.day.element] || 'Fire';
+
+      document.getElementById('lmrLoading').style.display = 'none';
+      document.getElementById('lmrResults').hidden = false;
+
+      renderScore(n1, n2, r, color);
+      renderGuidance(r, e1, e2);
+      renderExtras(r, e1, e2, n1, n2, data1, data2);
+    } catch(e) {
+      document.getElementById('lmrLoading').innerHTML = '<p style="color:var(--cinnabar);text-align:center;padding:2rem">Error calculating. Please try again.</p>';
+    }
+  }
+
+  function renderScore(n1, n2, r, color) {
+    document.getElementById('lmrScore').innerHTML =
+      '<div style="text-align:center;padding:0.5rem 0 1.4rem;border-bottom:1px solid var(--line-soft);margin-bottom:0.5rem">' +
+      scoreRing(r.overall, color) +
+      '<div style="font-family:var(--font-display);font-size:clamp(1.5rem,3vw,1.8rem);font-weight:600;margin-top:0.8rem;letter-spacing:0.02em">' + n1 + ' &amp; ' + n2 + '</div>' +
+      '<div style="font-family:var(--font-display);font-size:clamp(1.1rem,2.5vw,1.4rem);font-style:italic;color:' + color + '">' + r.tier.label + '</div>' +
+      '</div>';
+  }
+
+  function renderGuidance(r, e1, e2) {
+    var html =
+      '<div style="margin-top:2rem;padding-bottom:2rem;border-bottom:1px solid var(--line-soft)">' +
+      '<div style="text-align:center;margin-bottom:1.4rem">' +
+      '<h3 style="font-family:var(--font-display);font-size:1.45rem;font-weight:600;margin:0;letter-spacing:0.02em">Relationship Guidance</h3>' +
+      '<p style="color:var(--bone-dim);font-size:0.85rem;margin-top:0.5rem;line-height:1.6;max-width:44ch;margin-inline:auto">' +
+      'Your Day Pillar reveals how you love \u2014 how you attach, argue, and reconcile. ' + e1 + ' meets ' + e2 + ': two elemental fields resonating and refracting each other.' +
+      '</p></div>';
+
+    var icons = ['\uD83D\uDCAB','\uD83C\uDF3F','\uD83C\uDFAF','\uD83D\uDCAD','\uD83C\uDF1F','\uD83E\uDD1D','\uD83C\uDFB5','\uD83D\uDEE4\uFE0F'];
+    (r.tips || []).forEach(function(t, i) {
+      html += '<div style="display:flex;gap:1rem;align-items:flex-start;padding:1.1rem 1rem;background:var(--ink-1);border-radius:var(--radius-s);margin-bottom:0.8rem">' +
+        '<span style="font-size:1.3rem;padding-top:0.15rem;width:2rem;text-align:center">' + (icons[i % 8]) + '</span>' +
+        '<span style="flex:1;font-size:0.92rem;color:var(--bone);line-height:1.8">' + t + '</span>' +
+        '</div>';
+    });
+    html += '</div>';
+    document.getElementById('lmrTips').innerHTML = html;
+  }
+
+  function renderExtras(r, e1, e2, n1, n2, data1, data2) {
+    var extras = document.getElementById('lmrExtras');
+    if (!extras) return;
+
+    extras.innerHTML =
+      '<div class="lmr-extras-grid">' +
+      '<div class="lmr-wall"><div class="lmr-wall-icon"></div><div class="lmr-wall-label">World Leaderboard</div><p class="lmr-wall-desc">Your <strong>' + r.overall + '/100</strong> score outranks most couples. Add your match to the global board.</p><button class="btn btn-gold lmr-wall-btn" id="lmrBoardBtn">Add to Leaderboard</button></div>' +
+      '<div class="lmr-wall"><div class="lmr-wall-icon"></div><div class="lmr-wall-label">Synergy Boost Guide</div><p class="lmr-wall-desc">Unlock your personalized aura alignment guide for ' + e1 + ' \u00D7 ' + e2 + ' \u2014 morning rituals, communication, shared activities, home energy &amp; conflict resolution.</p><button class="btn btn-gold lmr-wall-btn" id="lmrUpgradeBtn">Unlock Guide \u2014 $4.90</button></div>' +
+      '</div>';
+
+    setTimeout(function() {
+      var bb = document.getElementById('lmrBoardBtn');
+      if (bb) {
+        bb.onclick = function() {
+          try {
+            localStorage.setItem('bazi_myleaderboard', JSON.stringify({ name1: n1, name2: n2, score: r.overall }));
+          } catch(e) {}
+          bb.innerHTML = 'Added to Leaderboard!';
+          bb.disabled = true;
+          bb.style.opacity = '0.7';
+        };
+      }
+
+      var ub = document.getElementById('lmrUpgradeBtn');
+      if (ub) {
+        ub.onclick = function() {
+          if (window.location.search.includes('debug=1')) {
+            window.location.href = '/synergy-guide.html?n1=' + encodeURIComponent(n1) + '&n2=' + encodeURIComponent(n2) + '&e1=' + encodeURIComponent(e1) + '&e2=' + encodeURIComponent(e2);
+            return;
+          }
+          if (window.__baziUpgrade) {
+            window.__baziUpgrade('synergy', { n1: n1, n2: n2, e1: e1, e2: e2 });
+          }
+        };
+      }
+    }, 200);
+  }
+</script>

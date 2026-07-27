@@ -1,0 +1,20 @@
+{
+  "name": "mybazidestiny",
+  "type": "module",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/fileformat.mjs && node scripts/verify-dist.mjs",
+    "preview": "astro preview",
+    "postbuild": "echo done"
+  },
+  "dependencies": {
+    "astro": "^5.12.0",
+    "@astrojs/vercel": "^8.2.0",
+    "@vercel/kv": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0"
+  }
+}

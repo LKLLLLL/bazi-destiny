@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import LoveMatch from '../components/LoveMatch.astro';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'BaZi Love Match — Chinese Zodiac Compatibility Calculator',
+    url: 'https://mybazidestiny.com/love-match.html',
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'Web',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description:
+      'Free BaZi love compatibility calculator. Compare two birth charts for elemental harmony, day pillar bond, and relationship guidance.',
+  },
+];
+---
+
+<Base
+  title="Free BaZi Love Match — Chinese Zodiac Compatibility Calculator | BaZi Destiny"
+  description="How compatible are you? Free BaZi love match calculator compares both birth charts — elemental harmony, day pillar bond, strengths & challenges. Instant results, no sign-up."
+  keywords="bazi love match, chinese zodiac compatibility, bazi compatibility, love calculator, four pillars compatibility, 八字合婚"
+  path="/love-match.html"
+  jsonLd={jsonLd}
+>
+  <header class="lm-hero">
+    <div class="wrap-narrow center">
+      <p class="eyebrow center"><span class="han">合婚</span> Love Match</p>
+      <h1>How compatible <em>are you?</em></h1>
+      <p class="lm-lead">
+        In classical China, families compared the couple's Eight Characters before a wedding — 合婚.
+        Enter both birthdays and let the Five Elements tell the story of the two of you.
+      </p>
+    </div>
+  </header>
+
+  <div class="wrap-narrow lm-tool">
+    <LoveMatch />
+  </div>
+</Base>
+
+<style>
+  .lm-hero {
+    padding: calc(68px + clamp(2.5rem, 6vh, 4.5rem)) 0 clamp(1.6rem, 3vh, 2.4rem);
+    text-align: center;
+  }
+  .lm-hero h1 { font-size: clamp(2.1rem, 4.6vw, 3.3rem); }
+  .lm-hero h1 em { font-style: italic; color: var(--cinnabar); }
+  .lm-lead { margin-top: 1.1rem; color: var(--bone-dim); max-width: 54ch; margin-inline: auto; }
+  .center { text-align: center; }
+  .lm-tool { margin-top: 1rem; }
+</style>

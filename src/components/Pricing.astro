@@ -1,0 +1,170 @@
+---
+const tiers = [
+  {
+    name: 'Basic Scan',
+    han: '初识',
+    price: 'Free',
+    per: '',
+    desc: 'Your character card — core engine, attributes, traits, and environment buffs.',
+    cta: 'Scan Free',
+    action: 'calc',
+    features: [
+      [true, 'Core Engine (Day Master)'],
+      [true, 'Elemental Attributes'],
+      [true, 'Personality Traits'],
+      [true, 'Environment Alignment'],
+      [true, 'PDF download'],
+      [false, 'Full Life Alignment Guide'],
+      [false, 'Lucky numbers & colors'],
+      [false, 'Wear · Carry · Routine · Diet · Conduct'],
+    ],
+  },
+  {
+    name: 'Life Blueprint',
+    han: '知命',
+    price: '$9.90',
+    per: 'one-time',
+    desc: 'Complete alignment guide across five dimensions — your personal operating manual.',
+    cta: 'Unlock Blueprint — $9.90',
+    action: 'pro',
+    popular: true,
+    features: [
+      [true, 'Everything in Basic Scan'],
+      [true, 'Full Life Alignment Guide'],
+      [true, 'Lucky numbers & colors'],
+      [true, 'What to Wear guide'],
+      [true, 'What to Carry guide'],
+      [true, 'Daily Routine guide'],
+      [true, 'Diet recommendations'],
+      [true, 'Conduct & Speech guide'],
+      [true, 'PDF download'],
+    ],
+  },
+] as const;
+---
+
+<section class="section pricing-section" id="pricing">
+  <div class="wrap">
+    <div class="section-head center" data-reveal>
+      <p class="eyebrow center"><span class="han">结缘</span> Pricing</p>
+      <h2 class="section-title">Your Journey <em>Starts Here</em></h2>
+      <p class="section-sub">One-time payment. No subscription, no hidden fees — your reading is yours forever.</p>
+    </div>
+
+    <div class="pricing-grid">
+      {tiers.map((tier, i) => (
+        <article class={`price-card${'popular' in tier && tier.popular ? ' popular' : ''}`} data-reveal style={`--reveal-delay:${i * 0.1}s`}>
+          {'popular' in tier && tier.popular && <span class="pop-badge">Most Popular</span>}
+          <span class="price-han" aria-hidden="true">{tier.han}</span>
+          <h3>{tier.name}</h3>
+          <div class="price-line">
+            <span class="price">{tier.price}</span>
+            {tier.per && <span class="per">/ {tier.per}</span>}
+          </div>
+          <p class="price-desc">{tier.desc}</p>
+          <ul>
+            {tier.features.map(([on, text]) => (
+              <li class={on ? 'on' : 'off'}>
+                <span class="tick" aria-hidden="true">{on ? '✓' : '✕'}</span>
+                {text}
+              </li>
+            ))}
+          </ul>
+          {tier.action === 'calc' ? (
+            <a href="/calculator.html" class="btn btn-ghost btn-full">{tier.cta}</a>
+          ) : (
+            <button class={`btn btn-full ${'popular' in tier && tier.popular ? 'btn-gold' : 'btn-ghost'}`} data-upgrade={tier.action}>
+              {tier.cta}
+            </button>
+          )}
+        </article>
+      ))}
+    </div>
+
+    <p class="pricing-note" data-reveal>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      Secure checkout via PayPal · 30-day happiness guarantee — write to us anytime.
+    </p>
+  </div>
+</section>
+
+<style>
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    align-items: stretch;
+  }
+  @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; } }
+
+  .price-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.7rem 1.7rem;
+    background: linear-gradient(172deg, var(--ink-2), var(--ink-1));
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.35s var(--ease-out), border-color 0.35s, box-shadow 0.35s;
+  }
+  .price-card:hover { transform: translateY(-4px); border-color: var(--line); box-shadow: var(--shadow-card); }
+  .price-card.popular {
+    border-color: var(--gold);
+    box-shadow: var(--glow-gold), var(--shadow-card);
+  }
+  .pop-badge {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.1rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #0f0b02;
+    background: linear-gradient(160deg, var(--gold-bright), var(--gold));
+    padding: 0.28rem 0.7rem;
+    border-radius: 999px;
+  }
+  .price-han {
+    position: absolute;
+    bottom: 0.4rem;
+    right: 0.8rem;
+    font-family: var(--font-han);
+    font-size: 4.2rem;
+    color: rgba(212, 175, 106, 0.07);
+    writing-mode: vertical-rl;
+    pointer-events: none;
+  }
+  .price-card h3 { font-size: 1.45rem; margin-bottom: 0.8rem; }
+  .price-line { display: flex; align-items: baseline; gap: 0.5rem; }
+  .price { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: var(--gold-bright); }
+  .per { color: var(--bone-faint); font-size: 0.85rem; }
+  .price-desc { color: var(--bone-dim); font-size: 0.88rem; margin: 0.7rem 0 1.3rem; min-height: 2.6em; }
+  .price-card ul { list-style: none; padding: 1.2rem 0 1.4rem; margin: 0 0 1.2rem; border-top: 1px solid var(--line-soft); display: grid; gap: 0.5rem; flex: 1; }
+  .price-card li { display: flex; gap: 0.6rem; align-items: baseline; font-size: 0.87rem; }
+  .price-card li.on { color: var(--bone-dim); }
+  .price-card li.off { color: var(--bone-faint); opacity: 0.65; }
+  .tick { font-weight: 700; font-size: 0.8rem; }
+  li.on .tick { color: var(--gold); }
+  li.off .tick { color: var(--bone-faint); }
+
+  .pricing-note {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    color: var(--bone-faint);
+    font-size: 0.82rem;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-upgrade]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tier = btn.getAttribute('data-upgrade') as 'pro' | 'ultimate';
+      (window as any).__baziUpgrade?.(tier, (window as any).currentReading ?? undefined);
+    });
+  });
+</script>

@@ -1,0 +1,233 @@
+---
+import Base from '../layouts/Base.astro';
+import type { Lang } from '../i18n/ui';
+
+interface Section {
+  h2: string;
+  html: string;
+}
+interface DestinyRec {
+  slug: string;
+  year: number;
+  animal: string;
+  emoji: string;
+  title: string;
+  description: string;
+  keywords: string;
+  h1: string;
+  subs: string[];
+  sections: Section[];
+  faqs: { q: string; a: string }[];
+  prev: string | null;
+  next: string | null;
+}
+
+interface Props {
+  rec: DestinyRec;
+  lang: Lang;
+}
+const { rec, lang } = Astro.props;
+const isZh = lang === 'zh';
+const path = isZh ? `/zh/${rec.slug}.html` : `/${rec.slug}.html`;
+const altPath = isZh ? `/${rec.slug}.html` : `/zh/${rec.slug}.html`;
+
+const jsonLd: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: rec.title,
+    description: rec.description,
+    url: `https://mybazidestiny.com${path}`,
+    author: { '@type': 'Organization', name: 'BaZi Destiny' },
+    publisher: { '@type': 'Organization', name: 'BaZi Destiny', url: 'https://mybazidestiny.com' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: isZh ? '首页' : 'Home', item: `https://mybazidestiny.com${isZh ? '/zh/' : '/'}` },
+      { '@type': 'ListItem', position: 2, name: rec.h1 },
+    ],
+  },
+];
+if (rec.faqs.length) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: rec.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  });
+}
+---
+
+<Base title={rec.title} description={rec.description} keywords={rec.keywords} lang={lang} path={path} altPath={altPath} ogType="article" jsonLd={jsonLd}>
+  <div class="dest-hero">
+    <div class="wrap-narrow center">
+      <div class="dest-emoji" aria-hidden="true">{rec.emoji}</div>
+      <h1>{rec.h1}</h1>
+      {rec.subs.map((s) => <p class="dest-sub">{s}</p>)}
+      <div class="dest-badge">{isZh ? '八字命运 · 免费详解' : 'BaZi Destiny · Free Analysis'}</div>
+    </div>
+  </div>
+
+  <div class="wrap-narrow dest-body">
+    {rec.sections.map((sec, i) => (
+      <section class="dest-card" data-reveal style={`--reveal-delay:${Math.min(i, 4) * 0.06}s`}>
+        <h2>{sec.h2}</h2>
+        <div class="dest-content" set:html={sec.html} />
+      </section>
+    ))}
+
+    <div class="dest-cta" data-reveal>
+      <span class="dest-cta-han han" aria-hidden="true">知命</span>
+      <h2>{isZh ? '获取完整八字命盘' : 'Get Your Complete BaZi Chart'}</h2>
+      <p>
+        {isZh
+          ? '出生年份只是四柱之一。输入完整出生信息，获取包含日主、十神、大运的完整个性解读。'
+          : 'Your birth year reveals only one pillar. For a complete picture — Day Master, Ten Gods, and 10-year luck cycles — generate your full personalized report.'}
+      </p>
+      <a href={isZh ? '/calculator.html' : '/calculator.html'} class="btn btn-gold btn-lg">
+        {isZh ? '免费排盘 →' : 'Generate My Free BaZi Chart →'}
+      </a>
+    </div>
+
+    <nav class="dest-nav" aria-label="More years">
+      {rec.prev && (
+        <a href={isZh ? `/zh/${rec.prev}.html` : `/${rec.prev}.html`} class="dest-nav-link">
+          <span>{isZh ? '← 上一年' : '← Previous Year'}</span>
+          {rec.prev.replace('-destiny', '').replace(/-/g, ' ')}
+        </a>
+      )}
+      <span class="dest-nav-sep" aria-hidden="true">✦</span>
+      {rec.next && (
+        <a href={isZh ? `/zh/${rec.next}.html` : `/${rec.next}.html`} class="dest-nav-link right">
+          <span>{isZh ? '下一年 →' : 'Next Year →'}</span>
+          {rec.next.replace('-destiny', '').replace(/-/g, ' ')}
+        </a>
+      )}
+    </nav>
+  </div>
+</Base>
+
+<style>
+  .dest-hero {
+    padding: calc(68px + clamp(2.5rem, 6vh, 4.5rem)) 0 clamp(2rem, 4vh, 3rem);
+    text-align: center;
+    border-bottom: 1px solid var(--line-soft);
+    position: relative;
+  }
+  .dest-emoji { font-size: 3.6rem; margin-bottom: 0.8rem; filter: drop-shadow(0 6px 24px rgba(212, 175, 106, 0.35)); }
+  .dest-hero h1 { font-size: clamp(1.9rem, 4vw, 2.9rem); max-width: 22ch; margin-inline: auto; }
+  .dest-sub { color: var(--bone-dim); margin-top: 0.5rem; font-size: 0.98rem; }
+  .dest-badge {
+    display: inline-block;
+    margin-top: 1.2rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--line-strong);
+    padding: 0.4rem 1.1rem;
+    border-radius: 999px;
+    background: rgba(212, 175, 106, 0.06);
+  }
+  .center { text-align: center; }
+
+  .dest-body { padding-top: clamp(2rem, 4vh, 3rem); display: grid; gap: 1.1rem; }
+  .dest-card {
+    background: linear-gradient(172deg, var(--ink-2), var(--ink-1));
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    padding: clamp(1.3rem, 3vw, 1.9rem);
+  }
+  .dest-card h2 {
+    font-size: 1.32rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--line-soft);
+    color: var(--gold-bright);
+  }
+  .dest-content { color: var(--bone-dim); font-size: 0.95rem; }
+  .dest-content p { line-height: 1.85; margin-bottom: 0.85rem; }
+  .dest-content ul { padding-left: 1.2rem; margin-bottom: 0.85rem; }
+  .dest-content li { line-height: 1.85; margin-bottom: 0.25rem; }
+  .dest-content strong { color: var(--bone); }
+
+  /* ported blocks from live destiny pages */
+  .dest-content :global(.stats-grid) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.7rem;
+    margin: 1rem 0;
+  }
+  .dest-content :global(.stat-box) {
+    background: var(--ink-1);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-s);
+    padding: 0.85rem 0.6rem;
+    text-align: center;
+  }
+  .dest-content :global(.stat-box .label) {
+    font-size: 0.64rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--bone-faint);
+    margin-bottom: 0.35rem;
+  }
+  .dest-content :global(.stat-box .value) { font-size: 0.98rem; font-weight: 600; color: var(--gold-bright); }
+  .dest-content :global(.highlight-box) {
+    border-left: 3px solid var(--gold);
+    background: rgba(212, 175, 106, 0.06);
+    padding: 0.9rem 1.1rem;
+    border-radius: 0 var(--radius-s) var(--radius-s) 0;
+    margin: 1rem 0;
+  }
+  .dest-content :global(.highlight-box p) { margin: 0; font-style: italic; color: var(--bone); font-family: var(--font-display); font-size: 1.05rem; }
+  .dest-content :global(.element-bar) { margin-top: 0.8rem; }
+  .dest-content :global(.bar-row) { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
+  .dest-content :global(.bar-label) { width: 3.4rem; text-align: right; font-size: 0.78rem; color: var(--bone-faint); }
+  .dest-content :global(.bar-track) { flex: 1; height: 7px; background: var(--ink-1); border-radius: 4px; overflow: hidden; border: 1px solid var(--line-soft); }
+  .dest-content :global(.bar-fill) { display: block; height: 100%; border-radius: 4px; opacity: 0.9; }
+
+  .dest-cta {
+    margin-top: 0.6rem;
+    text-align: center;
+    padding: clamp(1.8rem, 4vw, 2.6rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background:
+      linear-gradient(170deg, rgba(212, 175, 106, 0.08), transparent 55%),
+      linear-gradient(172deg, var(--ink-2), var(--ink-1));
+    position: relative;
+    overflow: hidden;
+  }
+  .dest-cta-han {
+    position: absolute;
+    right: 0.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    font-size: 3.4rem;
+    color: rgba(212, 175, 106, 0.08);
+  }
+  .dest-cta h2 { font-size: 1.5rem; margin-bottom: 0.6rem; }
+  .dest-cta p { color: var(--bone-dim); font-size: 0.92rem; max-width: 48ch; margin: 0 auto 1.4rem; }
+
+  .dest-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 0 0.5rem;
+    border-top: 1px solid var(--line-soft);
+    margin-top: 0.8rem;
+  }
+  .dest-nav-link { font-weight: 600; text-transform: capitalize; }
+  .dest-nav-link span { display: block; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bone-faint); margin-bottom: 0.2rem; font-weight: 500; }
+  .dest-nav-link.right { text-align: right; }
+  .dest-nav-sep { color: var(--gold-deep); font-size: 0.65rem; }
+</style>

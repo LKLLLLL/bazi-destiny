@@ -1,0 +1,108 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const [featured, ...rest] = posts;
+const tags = [...new Set(posts.map((p) => p.data.tag))];
+---
+
+<Base
+  title="BaZi Blog — Chinese Astrology Guides & Insights | BaZi Destiny"
+  description="Explore BaZi (Four Pillars of Destiny) through expert guides. Learn how Chinese astrology birth charts work, discover your element, and read your destiny."
+  path="/blog.html"
+>
+  <header class="blog-hero">
+    <div class="wrap">
+      <p class="eyebrow"><span class="han">博文</span> The Blog</p>
+      <h1>Unlock the secrets of<br />your <em>BaZi destiny</em></h1>
+      <p class="blog-lead">Guides on the Four Pillars, the Five Elements, compatibility and timing — written for the modern West, faithful to the classical craft.</p>
+      <div class="blog-tags">
+        {tags.map((t) => <span class="blog-tag">{t}</span>)}
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap blog-body">
+    {featured && (
+      <a href={`/${featured.id}.html`} class="featured panel" data-reveal>
+        <span class="f-emoji" aria-hidden="true">{featured.data.emoji}</span>
+        <div class="f-main">
+          <span class="f-tag">{featured.data.tag} · Featured</span>
+          <h2>{featured.data.title}</h2>
+          <p>{featured.data.description}</p>
+          <span class="f-meta">
+            {featured.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            {' · '}{featured.data.readTime} →
+          </span>
+        </div>
+      </a>
+    )}
+
+    <div class="blog-grid">
+      {rest.map((post, i) => (
+        <a href={`/${post.id}.html`} class="b-card card" data-reveal style={`--reveal-delay:${(i % 3) * 0.07}s`}>
+          <div class="b-top">
+            <span class="b-emoji" aria-hidden="true">{post.data.emoji}</span>
+            <span class="b-tag">{post.data.tag}</span>
+          </div>
+          <h2>{post.data.title}</h2>
+          <p>{post.data.description}</p>
+          <span class="b-meta">
+            {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            {' · '}{post.data.readTime}
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .blog-hero { padding: calc(68px + clamp(2.5rem, 6vh, 4.5rem)) 0 clamp(1.6rem, 3vh, 2.4rem); }
+  .blog-hero h1 { font-size: clamp(2rem, 4.4vw, 3.2rem); }
+  .blog-hero h1 em { font-style: italic; color: var(--gold); }
+  .blog-lead { margin-top: 1rem; color: var(--bone-dim); max-width: 58ch; }
+  .blog-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
+  .blog-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    background: rgba(212, 175, 106, 0.05);
+  }
+
+  .featured {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.6rem;
+    align-items: center;
+    padding: clamp(1.4rem, 3.4vw, 2.2rem);
+    margin-bottom: 1.4rem;
+    color: var(--bone);
+    transition: transform 0.35s var(--ease-out), border-color 0.35s;
+  }
+  .featured:hover { transform: translateY(-3px); border-color: var(--gold); color: var(--bone); }
+  .f-emoji { font-size: 3rem; filter: drop-shadow(0 6px 20px rgba(212, 175, 106, 0.35)); }
+  .f-tag { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  .featured h2 { font-size: clamp(1.4rem, 2.6vw, 1.9rem); margin: 0.5rem 0; }
+  .featured p { color: var(--bone-dim); font-size: 0.92rem; max-width: 64ch; }
+  .f-meta { display: inline-block; margin-top: 0.8rem; font-size: 0.8rem; color: var(--gold); font-weight: 600; }
+  @media (max-width: 640px) { .featured { grid-template-columns: 1fr; gap: 0.8rem; } }
+
+  .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  @media (max-width: 1024px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .blog-grid { grid-template-columns: 1fr; } }
+  .b-card { display: flex; flex-direction: column; gap: 0.6rem; padding: 1.5rem; color: var(--bone); }
+  .b-card:hover { color: var(--bone); }
+  .b-top { display: flex; justify-content: space-between; align-items: center; }
+  .b-emoji { font-size: 1.5rem; }
+  .b-tag { font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--line-soft); border-radius: 999px; padding: 0.2rem 0.6rem; }
+  .b-card h2 { font-size: 1.16rem; line-height: 1.35; }
+  .b-card p { font-size: 0.84rem; color: var(--bone-dim); flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .b-meta { font-size: 0.75rem; color: var(--bone-faint); }
+</style>

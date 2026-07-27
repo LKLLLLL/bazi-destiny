@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import StepCalculator from '../components/StepCalculator.astro';
+import PaymentModal from '../components/PaymentModal.astro';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'BaZi Destiny Calculator',
+    url: 'https://mybazidestiny.com/calculator.html',
+    description:
+      'Free BaZi (Four Pillars of Destiny) calculator. Get your personalized Chinese astrology reading instantly.',
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'All',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  },
+];
+---
+
+<Base
+  title="Free BaZi Calculator — Get Your Four Pillars of Destiny Reading | BaZi Destiny"
+  description="Free BaZi (Four Pillars of Destiny) calculator. Enter your birth date to get your personalized Chinese astrology reading — personality, elements, lucky directions in seconds."
+  keywords="BaZi calculator, Chinese astrology, Four Pillars, free reading, destiny chart"
+  path="/calculator.html"
+  ogType="website"
+  jsonLd={jsonLd}
+>
+  <div class="calc-page-wrap">
+    <StepCalculator />
+  </div>
+  <PaymentModal />
+</Base>
+
+<style>
+  .calc-page-wrap {
+    padding-top: calc(68px + clamp(2rem, 5vh, 3.5rem));
+  }
+</style>
