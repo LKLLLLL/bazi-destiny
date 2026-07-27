@@ -112,3 +112,7 @@ Western astrology has a steeper initial curve. Memorizing 12 signs, 10 planets, 
 1. **Add Western astrology** — Examine your Sun, Moon, and Rising signs for personality insights.
 1. **For timing decisions** — Use BaZi Luck Cycles for major life timing, Western transits for short-term influences.
 1. **For relationships** — Check BaZi compatibility for long-term potential, Western synastry for day-to-day dynamics.
+---
+
+**Compare & Contrast:**
+[What is BaZi?](/what-is-bazi.html) · [Complete Guide to BaZi](/complete-guide-bazi.html) · [Water Element Personality](/water-element-personality.html)

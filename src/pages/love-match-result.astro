@@ -149,10 +149,25 @@ import PaymentModal from '../components/PaymentModal.astro';
       const bb = document.getElementById('lmrBoardBtn');
       if (bb) {
         bb.onclick = function() {
+          const entry = { name1: n1, name2: n2, score: r.overall, tier: r.tier.label, elem1: e1, elem2: e2 };
           try {
-            localStorage.setItem('bazi_myleaderboard', JSON.stringify({ name1: n1, name2: n2, score: r.overall }));
+            localStorage.setItem('bazi_myleaderboard', JSON.stringify(entry));
           } catch(e) {}
-          bb.innerHTML = 'Added to Leaderboard!';
+          // Submit to global leaderboard API
+          fetch('/api/leaderboard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(entry),
+          })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+              bb.innerHTML = data.success
+                ? 'Ranked #' + data.entry.rank + ' worldwide!'
+                : 'Added to Leaderboard!';
+            })
+            .catch(function() {
+              bb.innerHTML = 'Added to Leaderboard!';
+            });
           bb.disabled = true;
           bb.style.opacity = '0.7';
         };

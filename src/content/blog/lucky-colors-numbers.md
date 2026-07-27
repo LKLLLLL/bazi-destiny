@@ -117,3 +117,7 @@ Each element has natural conflicts. Understanding what to avoid is as important 
 - **Earth:** Avoid too much Wood (wood pierces earth) — avoid large green plants in the southwest area of your home
 - **Metal:** Avoid too much Fire (fire melts metal) — avoid dominant red/orange lighting in your office
 - **Water:** Avoid too much Earth (earth blocks water) — avoid excessive brown/yellow in the north area of your home
+---
+
+**Related Guides:**
+[The Five Elements](/bazi-elements.html) · [Earth Element Guide](/earth-element-personality.html) · [Fire Element Guide](/fire-element-personality.html)

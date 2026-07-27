@@ -56,3 +56,8 @@ Wood element governs the liver and gallbladder in Traditional Chinese Medicine. 
 
 Discover your Day Master, Five Element balance, and complete destiny chart.
  [Generate My BaZi Chart →](/)
+
+---
+
+**Element Mastery:**
+[The Five Elements](/bazi-elements.html) · [Wood Element](/wood-element-personality.html) · [Personality by Elements](/personality-elements.html)

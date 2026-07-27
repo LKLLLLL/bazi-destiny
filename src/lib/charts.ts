@@ -198,13 +198,12 @@ export function pillarStrengthCards(pillars: {
     .map(
       (p, i) => `
     <div class="ps-card${p.isDay ? ' ps-core' : ''}" style="--d:${i * 0.1}s;--pc:${ELEM_COLOR[p.element] || 'var(--gold)'}">
-      <span class="ps-label">${p.label}${p.isDay ? ' <span class="ps-badge">Core</span>' : ''}</span>
-      <span class="ps-han" style="color:var(--pc)">${p.stem}${p.branch}</span>
-      <span class="ps-en">${p.stemEn}${p.branchEn ? ' · ' + p.branchEn : ''}</span>
+      <span class="ps-label">${p.label}</span>
       <div class="ps-bar-track">
         <span class="ps-bar-fill" style="width:${p.strength}%;background:var(--pc)"></span>
       </div>
       <span class="ps-strength">${p.strength}%</span>
+      ${p.isDay ? '<span class="ps-badge">Core</span>' : ''}
     </div>`
     )
     .join('');

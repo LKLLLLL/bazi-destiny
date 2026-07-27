@@ -54,3 +54,8 @@ You need your birth date and ideally your birth time. The more precise your birt
 
 Discover your Day Master, Five Element balance, and complete destiny chart.
  [Generate My BaZi Chart →](/)
+
+---
+
+**Explore BaZi Fundamentals:**
+[What is BaZi?](/what-is-bazi.html) · [Complete Guide to BaZi](/complete-guide-bazi.html) · [How to Read Your Chart](/how-to-read-bazi-chart.html)

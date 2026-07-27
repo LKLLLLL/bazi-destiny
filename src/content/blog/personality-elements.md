@@ -58,3 +58,7 @@ Signs of elemental imbalance in your BaZi chart:
 - **Too much Earth** — Stuck, overweight, resistant to any change
 - **Too much Metal** — Cold, overly critical, isolated from others
 - **Too much Water** — Directionless, manipulative, afraid of commitment
+---
+
+**Your Element Deep Dive:**
+[Wood](/wood-element-personality.html) · [Fire](/fire-element-personality.html) · [Earth](/earth-element-personality.html) · [Metal](/metal-element-personality.html) · [Water](/water-element-personality.html)

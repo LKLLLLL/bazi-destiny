@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/fileformat.mjs && node scripts/verify-dist.mjs",
+    "build": "node scripts/generate-og-images.mjs 2>/dev/null; astro build && node scripts/fileformat.mjs && node scripts/verify-dist.mjs",
     "preview": "astro preview",
     "postbuild": "echo done"
   },

@@ -55,3 +55,8 @@ While general zodiac forecasts apply to everyone born under a sign, **BaZi goes 
 For example: if your BaZi chart is Water-dominant, the Wood Snake year will be especially transformative (Wood feeds Water). If you're Fire-dominant, the year may feel more challenging as Wood adds more fire energy to your already strong heat.
 
 Get your personalized 2025 BaZi forecast to know exactly which months to act, which to rest, and what to focus on.
+
+---
+
+**Zodiac & Destiny:**
+[2026 Year of the Fire Horse](/chinese-zodiac-2026-predictions.html) · [What is BaZi?](/what-is-bazi.html) · [Love Compatibility Guide](/love-compatibility.html)

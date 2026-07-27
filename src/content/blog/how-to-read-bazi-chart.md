@@ -126,3 +126,7 @@ Here's how to synthesize everything into a complete reading:
 1. **Missing Element:** "No Metal in my chart — I might find structure and discipline challenging."
 1. **Luck Cycle:** "I'm in an Earth cycle. Earth drains Fire (I'm a Fire person), so this decade requires more effort but builds lasting foundations."
 1. **Practical Advice:** "Focus on systems, routines, and patience. Success comes through steady work, not flashy moves."
+---
+
+**Master Your Chart:**
+[Complete Guide to BaZi](/complete-guide-bazi.html) · [The Five Elements](/bazi-elements.html) · [BaZi Day Master Guide](/bazi-day-master-guide.html)

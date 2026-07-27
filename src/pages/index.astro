@@ -19,6 +19,11 @@ const jsonLd = [
     description:
       'Discover your destiny through BaZi (Four Pillars of Destiny) Chinese astrology. Free personalized readings for career, love, wealth, and life path.',
     publisher: { '@type': 'Organization', name: 'BaZi Destiny', url: 'https://mybazidestiny.com/' },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://mybazidestiny.com/search?q={search_term_string}',
+      'query-input': 'required name=search_term_string',
+    },
   },
   {
     '@context': 'https://schema.org',

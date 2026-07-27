@@ -45,3 +45,8 @@ As friends, Rat and Dragon enjoy a stimulating and loyal bond. They inspire each
 
 Discover your Day Master, Five Element balance, and complete destiny chart.
  [Generate My BaZi Chart →](/)
+
+---
+
+**Love & Compatibility:**
+[BaZi Love Compatibility](/love-compatibility.html) · [2026 Zodiac Predictions](/chinese-zodiac-2026-predictions.html) · [Personality by Elements](/personality-elements.html)

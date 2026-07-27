@@ -109,6 +109,7 @@
         </div>
 
         <div class="pillars-grid" id="pillarsGrid"></div>
+        <div class="pillar-strength" id="pillarStrength"></div>
 
         <div class="results-duo">
           <div class="panel inset chart-panel">
@@ -519,7 +520,7 @@
 <script>
   import BaZiEngine from '../lib/bazi/engine';
   import Readings from '../lib/bazi/readings';
-  import { elementsDonut, elementBars, compass, ELEM_EN, ELEM_COLOR, BRANCH_EN, STEM_EN, ZODIAC_EMOJI } from '../lib/charts';
+  import { elementsDonut, elementBars, compass, pillarStrengthCards, ELEM_EN, ELEM_COLOR, BRANCH_EN, STEM_EN, ZODIAC_EMOJI } from '../lib/charts';
   import { resolveUnlock, isUnlocked } from '../lib/paypal';
   import { showToast } from '../lib/toast';
 
@@ -619,6 +620,9 @@
       pillarStele('Month · 月柱', p.month, 'Inner nature', false, 1) +
       pillarStele('Day · 日柱', p.day, 'True self', true, 2) +
       pillarStele('Hour · 时柱', p.hour, 'Hidden potential', false, 3);
+
+    // Pillar Strength gauges
+    $('pillarStrength')!.innerHTML = pillarStrengthCards(p);
 
     $('elemDonut')!.innerHTML = elementsDonut(data.elements);
     $('elemBars')!.innerHTML = elementBars(data.elements);

@@ -248,3 +248,7 @@ After a challenging Snake year in 2025, the Pig gets a breather in 2026. The Hor
    🌳 Wood Born Water → Growth   🔥 Fire Born Wood → Fuel   ⛰️ Earth Born Fire → Generate   ⚔️ Metal Born Earth → Produce   🌊 Water Born Metal → Condense
 
 Find your Day Master in your BaZi chart. Your nourishing element is your biggest 2026 ally.
+---
+
+**More Zodiac Insights:**
+[2025 Year of the Wood Snake](/snake-year-2025.html) · [Rat & Dragon Compatibility](/rat-and-dragon-compatibility.html) · [What is BaZi?](/what-is-bazi.html)

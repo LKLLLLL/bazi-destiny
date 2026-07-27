@@ -50,6 +50,7 @@ const articleLd =
           '@type': 'Article',
           headline: post.data.title,
           description: post.data.description,
+          image: 'https://mybazidestiny.com/og-image.png',
           url: `https://mybazidestiny.com/${post.id}.html`,
           datePublished: post.data.pubDate.toISOString().slice(0, 10),
           author: { '@type': 'Organization', name: 'BaZi Destiny' },
@@ -86,6 +87,7 @@ const PAGE_ICONS: Record<string, string> = {
     description={post.data.description}
     path={`/${post.id}.html`}
     ogType="article"
+    ogImageOverride={`https://mybazidestiny.com/og/${post.id}.png`}
     jsonLd={articleLd}
   >
     <header class="art-hero">

@@ -88,7 +88,7 @@
 
   /* Input contrast */
   .input, .select { color-scheme: light; }
-  input[type='date'].input { color-scheme: light; }
+  input[type='date'].input { color-scheme: light; -webkit-appearance: none; max-width: 100%; }
 
   /* Adjust gradient panels for light bg */
   .panel {
@@ -306,6 +306,8 @@ button { cursor: pointer; background: none; border: 0; }
 
 .input, .select {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   min-height: 50px;
   padding: 0.75rem 1rem;
   background: var(--ink-1);
@@ -329,7 +331,7 @@ button { cursor: pointer; background: none; border: 0; }
   background-position: right 1rem center;
   padding-right: 2.6rem;
 }
-input[type='date'].input { color-scheme: dark; }
+input[type='date'].input { color-scheme: dark; -webkit-appearance: none; box-sizing: border-box; max-width: 100%; }
 
 /* ---------- form validation states ---------- */
 .input.error, .select.error {
@@ -615,4 +617,21 @@ a:focus-visible,
 .sg-card-body p { margin: 0 0 1rem; }
 .sg-card-body p:last-child { margin-bottom: 0; }
 .sg-card-body strong { color: var(--bone); font-weight: 600; }
+
+/* ---------- Pillar Strength (dynamic innerHTML - must be global) ---------- */
+.pillar-strength { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.55rem; margin-top: 0.65rem; margin-bottom: 1rem; }
+@media (max-width: 620px) { .pillar-strength { grid-template-columns: repeat(2, 1fr); } }
+.ps-card {
+  display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+  padding: 0.85rem 0.5rem 0.7rem; border: 1px solid var(--line-soft);
+  border-radius: var(--radius-s); background: var(--ink-1);
+  animation: psIn 0.5s var(--ease-out) both; animation-delay: var(--d, 0s);
+}
+.ps-card.ps-core { border-color: var(--gold); box-shadow: var(--glow-gold); }
+@keyframes psIn { from { opacity: 0; transform: translateY(10px); } }
+.ps-label { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-faint); }
+.ps-badge { display: inline-block; font-size: 0.55rem; background: var(--gold); color: #0f0b02; padding: 0.1rem 0.45rem; border-radius: 999px; font-weight: 700; }
+.ps-bar-track { width: 100%; height: 8px; background: var(--ink-2); border-radius: 4px; overflow: hidden; border: 1px solid var(--line-soft); }
+.ps-bar-fill { display: block; height: 100%; border-radius: 4px; transition: width 1s var(--ease-out); }
+.ps-strength { font-size: 0.68rem; color: var(--bone-faint); font-weight: 700; }
 .sg-card-body em { font-style: italic; color: var(--gold-bright); }

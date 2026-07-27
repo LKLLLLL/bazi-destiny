@@ -50,6 +50,7 @@
           <h3 class="sc-step-title">When did you spawn?</h3>
           <p class="sc-step-sub">Your birth date anchors everything. Accuracy here = accuracy everywhere.</p>
           <div class="sc-date-wrap">
+            <span class="sc-date-label">Date of Birth · 出生日期</span>
             <input
               class="sc-date-input"
               type="date"
@@ -395,20 +396,38 @@
   .sc-step-sub { color: var(--bone-dim); font-size: 0.92rem; max-width: 42ch; margin-bottom: 1.8rem; }
 
   /* Step 1 — Date */
-  .sc-date-wrap { margin-bottom: 1.8rem; }
+  .sc-date-wrap { position: relative; margin-bottom: 1.8rem; }
   .sc-date-input {
     background: var(--ink-1);
     border: 1px solid var(--line-soft);
     border-radius: var(--radius);
     color: var(--bone);
     font-family: var(--font-display);
-    font-size: 2.2rem;
-    padding: 1rem 1.6rem;
+    font-size: clamp(1.3rem, 5vw, 2.2rem);
+    padding: 1rem 1rem;
     text-align: center;
     width: 100%;
     max-width: 340px;
+    box-sizing: border-box;
     color-scheme: dark;
     transition: border-color 0.3s, box-shadow 0.3s;
+    -webkit-appearance: none;
+  }
+  .sc-date-input::-webkit-datetime-edit { padding: 0; text-align: center; }
+  .sc-date-input::-webkit-datetime-edit-fields-wrapper { text-align: center; }
+  .sc-date-input::-webkit-datetime-edit-text { color: var(--bone-dim); opacity: 0.6; }
+  /* Show dd / mm / yyyy placeholder when empty */
+  .sc-date-input:not(:valid)::-webkit-datetime-edit-year-field,
+  .sc-date-input:not(:valid)::-webkit-datetime-edit-month-field,
+  .sc-date-input:not(:valid)::-webkit-datetime-edit-day-field { color: var(--bone-dim); }
+  .sc-date-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--bone-dim);
+    text-align: center;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
   .sc-date-input:focus {
     outline: none;
@@ -755,31 +774,6 @@
     gap: 0.55rem;
   }
   @media (max-width: 500px) { .pillars-grid { grid-template-columns: repeat(2, 1fr); } }
-
-  /* Pillar Strength Gauges */
-  .pillar-strength { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.55rem; margin-top: 0.65rem; }
-  @media (max-width: 500px) { .pillar-strength { grid-template-columns: repeat(2, 1fr); } }
-  .ps-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.85rem 0.5rem 0.7rem;
-    border: 1px solid var(--line-soft);
-    border-radius: var(--radius-s);
-    background: var(--ink-1);
-    animation: psIn 0.5s var(--ease-out) both;
-    animation-delay: var(--d, 0s);
-  }
-  .ps-card.ps-core{border-color:var(--gold);box-shadow:var(--glow-gold)}
-  @keyframes psIn { from { opacity: 0; transform: translateY(10px); } }
-  .ps-label { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-faint); }
-  .ps-badge { display: inline-block; font-size: 0.55rem; background: var(--gold); color: #0f0b02; padding: 0.1rem 0.45rem; border-radius: 999px; font-weight: 700; margin-left: 0.25rem; vertical-align: middle; }
-  .ps-han { font-family: var(--font-han); font-size: 1.7rem; line-height: 1.15; text-shadow: 0 0 14px color-mix(in srgb, var(--pc, #d4af6a) 35%, transparent); }
-  .ps-en { font-size: 0.65rem; color: var(--bone-dim); font-weight: 600; }
-  .ps-bar-track { width: 100%; height: 5px; background: var(--ink-2); border-radius: 3px; overflow: hidden; border: 1px solid var(--line-soft); }
-  .ps-bar-fill { display: block; height: 100%; border-radius: 3px; transition: width 1s var(--ease-out); }
-  .ps-strength { font-size: 0.62rem; color: var(--bone-faint); font-weight: 700; }
   .ptile {
     position: relative;
     display: flex;

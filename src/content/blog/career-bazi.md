@@ -151,3 +151,7 @@ Wisdom and strategy prevail. Great time for research, planning, education, and b
 1. **Check your current Luck Cycle** — What element are you in right now?
 1. **Align your career with your natural energy** — Choose industries that match your dominant element
 1. **Time your moves** — Make major career changes during favorable cycles
+---
+
+**More Career Insights:**
+[BaZi Day Master Guide](/bazi-day-master-guide.html) · [The Five Elements](/bazi-elements.html) · [Lucky Colors & Numbers](/lucky-colors-numbers.html)

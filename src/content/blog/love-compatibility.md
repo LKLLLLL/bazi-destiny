@@ -84,3 +84,7 @@ Our BaZi Love Compatibility calculator analyzes both birth charts and generates:
 - Elemental balance comparison
 - Polarity connection assessment
 - Personalized relationship tips
+---
+
+**Relationship Insights:**
+[Personality by Elements](/personality-elements.html) · [Rat & Dragon Compatibility](/rat-and-dragon-compatibility.html) · [Complete BaZi Guide](/complete-guide-bazi.html)

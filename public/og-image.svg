@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0a0f"/>
+      <stop offset="40%" stop-color="#120f16"/>
+      <stop offset="100%" stop-color="#1a130a"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#d4af6a"/>
+      <stop offset="50%" stop-color="#f0d89d"/>
+      <stop offset="100%" stop-color="#d4af6a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="rgba(212,175,106,0.08)"/>
+      <stop offset="100%" stop-color="rgba(212,175,106,0)"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Decorative ba gua / compass circle -->
+  <circle cx="600" cy="280" r="180" fill="none" stroke="rgba(212,175,106,0.12)" stroke-width="1"/>
+  <circle cx="600" cy="280" r="140" fill="none" stroke="rgba(212,175,106,0.08)" stroke-width="0.5"/>
+  <circle cx="600" cy="280" r="100" fill="none" stroke="rgba(212,175,106,0.05)" stroke-width="0.5"/>
+
+  <!-- Central trigram symbol (☰ for heaven / creativity) -->
+  <text x="600" y="286" text-anchor="middle" font-family="serif" font-size="64" fill="rgba(212,175,106,0.25)" dominant-baseline="middle">☰</text>
+
+  <!-- Four pillar dots -->
+  <circle cx="350" cy="280" r="3" fill="rgba(212,175,106,0.3)"/>
+  <circle cx="850" cy="280" r="3" fill="rgba(212,175,106,0.3)"/>
+  <circle cx="600" cy="440" r="3" fill="rgba(212,175,106,0.3)"/>
+  <circle cx="600" cy="120" r="3" fill="rgba(212,175,106,0.3)"/>
+
+  <!-- Title -->
+  <text x="600" y="330" text-anchor="middle" font-family="serif" font-size="72" font-weight="700" fill="url(#gold)" letter-spacing="4">
+    BaZi Destiny
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="390" text-anchor="middle" font-family="sans-serif" font-size="24" fill="rgba(200,195,180,0.5)" letter-spacing="6">
+    八字算命 · 四柱推命
+  </text>
+
+  <!-- Tagline -->
+  <text x="600" y="440" text-anchor="middle" font-family="sans-serif" font-size="18" fill="rgba(200,195,180,0.3)" letter-spacing="2">
+    Discover Your Destiny Through Chinese Astrology
+  </text>
+
+  <!-- Bottom tag -->
+  <text x="600" y="580" text-anchor="middle" font-family="sans-serif" font-size="14" fill="rgba(200,195,180,0.15)" letter-spacing="3">
+    mybazidestiny.com
+  </text>
+</svg>
