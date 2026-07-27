@@ -132,3 +132,80 @@ export function scoreRing(score: number, color: string, size = 180): string {
     <text x="100" y="122" text-anchor="middle" font-size="10.5" letter-spacing="2" fill="#84806f">OUT OF 100</text>
   </svg>`;
 }
+
+export interface PillarStrengthData {
+  label: string;
+  stem: string;
+  branch: string;
+  stemEn: string;
+  branchEn: string;
+  element: string;
+  strength: number; // 0-100
+  isDay: boolean;
+}
+
+/** Four Pillars strength cards — visual gauge for each pillar. */
+export function pillarStrengthCards(pillars: {
+  year: { stem: string; branch: string; stemIdx: number; element: string };
+  month: { stem: string; branch: string; stemIdx: number; element: string };
+  day: { stem: string; branch: string; stemIdx: number; element: string };
+  hour: { stem: string; branch: string; stemIdx: number; element: string };
+}): string {
+  const data: PillarStrengthData[] = [
+    {
+      label: 'Year Pillar · 年柱',
+      stem: pillars.year.stem,
+      branch: pillars.year.branch,
+      stemEn: STEM_EN[pillars.year.stem] || pillars.year.stem,
+      branchEn: BRANCH_EN[pillars.year.branch] || '',
+      element: pillars.year.element,
+      strength: Math.round(((pillars.year.stemIdx % 10) / 9) * 90 + 10),
+      isDay: false,
+    },
+    {
+      label: 'Month Pillar · 月柱',
+      stem: pillars.month.stem,
+      branch: pillars.month.branch,
+      stemEn: STEM_EN[pillars.month.stem] || pillars.month.stem,
+      branchEn: BRANCH_EN[pillars.month.branch] || '',
+      element: pillars.month.element,
+      strength: Math.round(((pillars.month.stemIdx % 10) / 9) * 90 + 10),
+      isDay: false,
+    },
+    {
+      label: 'Day Pillar · 日柱',
+      stem: pillars.day.stem,
+      branch: pillars.day.branch,
+      stemEn: STEM_EN[pillars.day.stem] || pillars.day.stem,
+      branchEn: BRANCH_EN[pillars.day.branch] || '',
+      element: pillars.day.element,
+      strength: Math.round(((pillars.day.stemIdx % 10) / 9) * 90 + 10),
+      isDay: true,
+    },
+    {
+      label: 'Hour Pillar · 时柱',
+      stem: pillars.hour.stem,
+      branch: pillars.hour.branch,
+      stemEn: STEM_EN[pillars.hour.stem] || pillars.hour.stem,
+      branchEn: BRANCH_EN[pillars.hour.branch] || '',
+      element: pillars.hour.element,
+      strength: Math.round(((pillars.hour.stemIdx % 10) / 9) * 90 + 10),
+      isDay: false,
+    },
+  ];
+
+  return data
+    .map(
+      (p, i) => `
+    <div class="ps-card${p.isDay ? ' ps-core' : ''}" style="--d:${i * 0.1}s;--pc:${ELEM_COLOR[p.element] || 'var(--gold)'}">
+      <span class="ps-label">${p.label}${p.isDay ? ' <span class="ps-badge">Core</span>' : ''}</span>
+      <span class="ps-han" style="color:var(--pc)">${p.stem}${p.branch}</span>
+      <span class="ps-en">${p.stemEn}${p.branchEn ? ' · ' + p.branchEn : ''}</span>
+      <div class="ps-bar-track">
+        <span class="ps-bar-fill" style="width:${p.strength}%;background:var(--pc)"></span>
+      </div>
+      <span class="ps-strength">${p.strength}%</span>
+    </div>`
+    )
+    .join('');
+}

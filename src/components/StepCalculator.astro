@@ -217,6 +217,7 @@
             <span class="han">四柱</span> Modules
           </div>
           <div class="pillars-grid" id="pillarsGrid"></div>
+          <div class="pillar-strength" id="pillarStrength"></div>
         </div>
 
         <!-- ===== ATTRIBUTES PANEL ===== -->
@@ -754,6 +755,31 @@
     gap: 0.55rem;
   }
   @media (max-width: 500px) { .pillars-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  /* Pillar Strength Gauges */
+  .pillar-strength { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.55rem; margin-top: 0.65rem; }
+  @media (max-width: 500px) { .pillar-strength { grid-template-columns: repeat(2, 1fr); } }
+  .ps-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.85rem 0.5rem 0.7rem;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-s);
+    background: var(--ink-1);
+    animation: psIn 0.5s var(--ease-out) both;
+    animation-delay: var(--d, 0s);
+  }
+  .ps-card.ps-core{border-color:var(--gold);box-shadow:var(--glow-gold)}
+  @keyframes psIn { from { opacity: 0; transform: translateY(10px); } }
+  .ps-label { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-faint); }
+  .ps-badge { display: inline-block; font-size: 0.55rem; background: var(--gold); color: #0f0b02; padding: 0.1rem 0.45rem; border-radius: 999px; font-weight: 700; margin-left: 0.25rem; vertical-align: middle; }
+  .ps-han { font-family: var(--font-han); font-size: 1.7rem; line-height: 1.15; text-shadow: 0 0 14px color-mix(in srgb, var(--pc, #d4af6a) 35%, transparent); }
+  .ps-en { font-size: 0.65rem; color: var(--bone-dim); font-weight: 600; }
+  .ps-bar-track { width: 100%; height: 5px; background: var(--ink-2); border-radius: 3px; overflow: hidden; border: 1px solid var(--line-soft); }
+  .ps-bar-fill { display: block; height: 100%; border-radius: 3px; transition: width 1s var(--ease-out); }
+  .ps-strength { font-size: 0.62rem; color: var(--bone-faint); font-weight: 700; }
   .ptile {
     position: relative;
     display: flex;
@@ -1048,7 +1074,7 @@
   import { CITIES, searchCities, solarTimeCorrection } from '../data/cities';
   import BaZiEngine from '../lib/bazi/engine';
   import Readings from '../lib/bazi/readings';
-  import { elementsDonut, elementBars, ELEM_EN, ELEM_COLOR, STEM_EN, BRANCH_EN, ZODIAC_EMOJI } from '../lib/charts';
+  import { elementsDonut, elementBars, compass, pillarStrengthCards, ELEM_EN, ELEM_COLOR, STEM_EN, BRANCH_EN, ZODIAC_EMOJI } from '../lib/charts';
   import { resolveUnlock, isUnlocked } from '../lib/paypal';
   import { getLifestyleGuide } from '../lib/bazi/lifestyle';
 
@@ -1065,6 +1091,7 @@
     cityLat: number;
     cityTimezone: number;
     useSolarTime: boolean;
+    cityData?: typeof CITIES[0]; // cached full city object to avoid re-lookup
   }
 
   const state: CalcState = {
@@ -1079,10 +1106,15 @@
 
   let currentStep = 0;
   let currentData: any = null;
+  let loadTimer: ReturnType<typeof setInterval> | null = null;
+  let loadTimeout: ReturnType<typeof setTimeout> | null = null;
 
   // ── localStorage ──
   function saveState() {
-    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
+    try {
+      const { cityData, ...rest } = state;
+      localStorage.setItem(LS_KEY, JSON.stringify(rest));
+    } catch {}
   }
   function loadState(): boolean {
     try {
@@ -1216,32 +1248,34 @@
     else hideCityList();
   }
 
+  const COUNTRY_FLAGS: Record<string, string> = {
+    'China': '🇨🇳', 'Japan': '🇯🇵', 'South Korea': '🇰🇷', 'Mongolia': '🇲🇳',
+    'Singapore': '🇸🇬', 'Malaysia': '🇲🇾', 'Thailand': '🇹🇭', 'Indonesia': '🇮🇩',
+    'Philippines': '🇵🇭', 'Vietnam': '🇻🇳', 'Myanmar': '🇲🇲',
+    'India': '🇮🇳', 'Pakistan': '🇵🇰', 'Bangladesh': '🇧🇩', 'Sri Lanka': '🇱🇰', 'Nepal': '🇳🇵',
+    'UAE': '🇦🇪', 'Qatar': '🇶🇦', 'Saudi Arabia': '🇸🇦', 'Turkey': '🇹🇷', 'Israel': '🇮🇱', 'Iran': '🇮🇷',
+    'United Kingdom': '🇬🇧', 'France': '🇫🇷', 'Germany': '🇩🇪', 'Italy': '🇮🇹', 'Spain': '🇪🇸',
+    'Netherlands': '🇳🇱', 'Belgium': '🇧🇪', 'Switzerland': '🇨🇭', 'Austria': '🇦🇹',
+    'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Denmark': '🇩🇰', 'Poland': '🇵🇱',
+    'Russia': '🇷🇺', 'Czech Republic': '🇨🇿', 'Hungary': '🇭🇺', 'Portugal': '🇵🇹',
+    'Ireland': '🇮🇪', 'Greece': '🇬🇷',
+    'United States': '🇺🇸', 'Canada': '🇨🇦', 'Mexico': '🇲🇽',
+    'Brazil': '🇧🇷', 'Argentina': '🇦🇷', 'Chile': '🇨🇱', 'Peru': '🇵🇪', 'Colombia': '🇨🇴',
+    'Australia': '🇦🇺', 'New Zealand': '🇳🇿',
+    'Egypt': '🇪🇬', 'Nigeria': '🇳🇬', 'Kenya': '🇰🇪', 'South Africa': '🇿🇦', 'Morocco': '🇲🇦', 'Ethiopia': '🇪🇹',
+    'Taiwan, China': '🇨🇳', 'Hong Kong, China': '🇨🇳', 'Macao, China': '🇨🇳',
+  };
+
   function getFlag(country: string): string {
-    const flags: Record<string, string> = {
-      'China': '🇨🇳', 'Japan': '🇯🇵', 'South Korea': '🇰🇷', 'Mongolia': '🇲🇳',
-      'Singapore': '🇸🇬', 'Malaysia': '🇲🇾', 'Thailand': '🇹🇭', 'Indonesia': '🇮🇩',
-      'Philippines': '🇵🇭', 'Vietnam': '🇻🇳', 'Myanmar': '🇲🇲',
-      'India': '🇮🇳', 'Pakistan': '🇵🇰', 'Bangladesh': '🇧🇩', 'Sri Lanka': '🇱🇰', 'Nepal': '🇳🇵',
-      'UAE': '🇦🇪', 'Qatar': '🇶🇦', 'Saudi Arabia': '🇸🇦', 'Turkey': '🇹🇷', 'Israel': '🇮🇱', 'Iran': '🇮🇷',
-      'United Kingdom': '🇬🇧', 'France': '🇫🇷', 'Germany': '🇩🇪', 'Italy': '🇮🇹', 'Spain': '🇪🇸',
-      'Netherlands': '🇳🇱', 'Belgium': '🇧🇪', 'Switzerland': '🇨🇭', 'Austria': '🇦🇹',
-      'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Denmark': '🇩🇰', 'Poland': '🇵🇱',
-      'Russia': '🇷🇺', 'Czech Republic': '🇨🇿', 'Hungary': '🇭🇺', 'Portugal': '🇵🇹',
-      'Ireland': '🇮🇪', 'Greece': '🇬🇷',
-      'United States': '🇺🇸', 'Canada': '🇨🇦', 'Mexico': '🇲🇽',
-      'Brazil': '🇧🇷', 'Argentina': '🇦🇷', 'Chile': '🇨🇱', 'Peru': '🇵🇪', 'Colombia': '🇨🇴',
-      'Australia': '🇦🇺', 'New Zealand': '🇳🇿',
-      'Egypt': '🇪🇬', 'Nigeria': '🇳🇬', 'Kenya': '🇰🇪', 'South Africa': '🇿🇦', 'Morocco': '🇲🇦', 'Ethiopia': '🇪🇹',
-      'Taiwan, China': '🇨🇳', 'Hong Kong, China': '🇨🇳', 'Macao, China': '🇨🇳',
-    };
-    return flags[country] || '🌐';
+    return COUNTRY_FLAGS[country] || '🌐';
   }
 
   function selectCity(city: typeof CITIES[0]) {
     state.cityName = city.name;
-    state.cityLon = city.lon;
     state.cityLat = city.lat;
+    state.cityLon = city.lon;
     state.cityTimezone = city.timezone;
+    state.cityData = city; // cache full object to avoid re-lookup
     cityInput.value = '';
     hideCityList();
     cityClear!.hidden = true;
@@ -1263,11 +1297,17 @@
     saveState();
   }
 
+  let cityDebounceTimer: ReturnType<typeof setTimeout>;
+
   cityInput?.addEventListener('input', () => {
     const q = cityInput.value;
     cityClear!.hidden = !q;
-    if (q.trim()) renderCityList(q);
-    else hideCityList();
+    clearTimeout(cityDebounceTimer);
+    if (q.trim()) {
+      cityDebounceTimer = setTimeout(() => renderCityList(q), 150);
+    } else {
+      hideCityList();
+    }
   });
 
   cityInput?.addEventListener('keydown', (e) => {
@@ -1365,7 +1405,8 @@
 
     // True Solar Time correction
     if (useSolarTime && cityName) {
-      const city = CITIES.find((c) => c.name === cityName);
+      // Use cached city data to avoid O(n) re-lookup
+      const city = state.cityData || CITIES.find((c) => c.name === cityName);
       if (city) {
         const corr = solarTimeCorrection(city);
         hourNum = hourNum + corr / 60;
@@ -1375,7 +1416,9 @@
       }
     }
 
-    // Hide steps, show loading
+    // Hide steps, show loading — clear any previous animation
+    if (loadTimer) clearInterval(loadTimer);
+    if (loadTimeout) clearTimeout(loadTimeout);
     for (let i = 0; i <= 2; i++) {
       const el = $(`scStep${i}`);
       if (el) el.hidden = true;
@@ -1386,42 +1429,51 @@
     const steps = $('scLoading')!.querySelectorAll('.sc-cast-steps li');
     steps.forEach((s) => s.classList.remove('active', 'done'));
     let idx = 0;
-    const timer = setInterval(() => {
+    loadTimer = setInterval(() => {
       if (idx > 0) { steps[idx - 1]?.classList.remove('active'); steps[idx - 1]?.classList.add('done'); }
       if (idx < steps.length) steps[idx]?.classList.add('active');
       idx++;
-      if (idx > steps.length) clearInterval(timer);
+      if (idx > steps.length) { clearInterval(loadTimer!); loadTimer = null; }
     }, 550);
 
-    setTimeout(() => {
-      const useFourPillars = hour !== 'unknown';
-      let data: any;
+    // Compute immediately (synchronous, ~5ms) then show after animation completes
+    const animSteps = steps.length;
+    const animDuration = animSteps * 550; // 4 steps × 550ms = 2200ms
+    const minDisplay = 1200; // minimum loading display time
 
-      if (useFourPillars) {
-        data = BaZiEngine.calculate(date, Math.round(hourNum));
-      } else {
-        // Three-pillar fallback: calculate with noon hour, then mark as 3-pillar
-        data = BaZiEngine.calculate(date, 12);
-        data.isThreePillar = true;
-        data.hourUnknown = true;
-      }
+    const useFourPillars = hour !== 'unknown';
+    let data: any;
 
-      currentData = {
-        ...data,
-        name: 'Friend',
-        date,
-        hour,
-        cityName,
-        useSolarTime,
-        isThreePillar: !useFourPillars,
-      };
-      (window as any).currentReading = currentData;
+    if (useFourPillars) {
+      data = BaZiEngine.calculate(date, Math.round(hourNum));
+    } else {
+      data = BaZiEngine.calculate(date, 12);
+      data.isThreePillar = true;
+      data.hourUnknown = true;
+    }
 
+    currentData = {
+      ...data,
+      name: 'Friend',
+      date,
+      hour,
+      cityName,
+      useSolarTime,
+      isThreePillar: !useFourPillars,
+    };
+    (window as any).currentReading = currentData;
+
+    const showResults = () => {
+      // Prevent double-show on rescan
+      if ($('scLoading')?.hidden) return;
       $('scLoading')!.hidden = true;
       $('calcResults')!.hidden = false;
       renderResults(currentData);
       $('calcResults')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 2400);
+    };
+
+    // Show results after animation completes, with a minimum display time
+    loadTimeout = setTimeout(showResults, Math.max(animDuration, minDisplay));
   }
 
   // ── RPG Character Card Render ──
@@ -1444,7 +1496,6 @@
     const domColor = ELEM_COLOR[data.elements.dominant] || 'var(--gold)';
     const defColor = ELEM_COLOR[data.elements.deficient] || 'var(--bone-dim)';
     const birthYear = new Date(data.date + 'T00:00:00').getFullYear();
-    const genderText = data.gender === 'male' ? 'he/him' : data.gender === 'female' ? 'she/her' : 'they/them';
 
     // Header
     $('ccDayMaster')!.textContent = `${p.day?.stem || '?'}${p.day?.branch || '?'}`;
@@ -1462,6 +1513,10 @@
       (data.isThreePillar
         ? `<div class="ptile locked" style="--d:0.27s"><span class="ptile-han han">?</span><span class="ptile-en">Unknown</span><span class="ptile-label">Potential</span></div>`
         : pillarTile('Potential', p.hour, false, 3));
+
+    // Pillar Strength gauges
+    const ps = $('pillarStrength');
+    if (ps && !data.isThreePillar) ps.innerHTML = pillarStrengthCards(p);
 
     // Attributes
     const elemMap: Record<string, { en: string; cn: string; desc: string }> = {
@@ -1670,8 +1725,8 @@
   }
 
 
-  // Debug mode — add ?debug=1 to URL to skip paywall
-  if (typeof window !== 'undefined' && window.location.search.includes('debug=1')) {
+  // Debug mode — only available in dev environment, add ?debug=1 to URL to skip paywall
+  if (import.meta.env.DEV && typeof window !== 'undefined' && window.location.search.includes('debug=1')) {
     setTimeout(() => {
       const pw = $('ccPaywall');
       if (pw) pw.style.display = 'none';
@@ -1679,7 +1734,6 @@
         renderProLifestyle();
       } else {
         // Auto-fill some data for quick preview
-        const d = new Date('1990-06-15T00:00:00');
         const data = BaZiEngine.calculate('1990-06-15', 9);
         currentData = { ...data, name: 'Debug', date: '1990-06-15', hour: '9', isThreePillar: false };
         (window as any).currentReading = currentData;

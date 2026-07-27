@@ -186,6 +186,7 @@
             Share Reading
           </button>
           <a class="btn btn-ghost" id="twitterShare" target="_blank" rel="noopener">Post on X</a>
+          <a class="btn btn-ghost" id="facebookShare" target="_blank" rel="noopener">Facebook</a>
           <a class="btn btn-ghost" id="whatsappShare" target="_blank" rel="noopener">WhatsApp</a>
           <button class="btn btn-ghost" id="pdfBtn">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
@@ -778,11 +779,17 @@
       if (idx > steps.length) clearInterval(timer);
     }, 550);
 
+    // Compute immediately (synchronous, ~5ms) then show after animation completes
+    const animDuration = steps.length * 550; // 4 steps × 550ms = 2200ms
+    const minDisplay = 1200;
+
+    const data = BaZiEngine.calculate(date, hour);
+    currentData = { ...data, name: name || 'Friend', gender, location, birthDate: date };
+    (window as any).currentReading = currentData;
+    (window as any).__baziSetPendingReading?.(currentData);
+
+    const delay = Math.max(animDuration, minDisplay);
     setTimeout(() => {
-      const data = BaZiEngine.calculate(date, hour);
-      currentData = { ...data, name: name || 'Friend', gender, location, birthDate: date };
-      (window as any).currentReading = currentData;
-      (window as any).__baziSetPendingReading?.(currentData);
       loadingEl!.classList.remove('is-entering');
       loadingEl!.style.opacity = '0';
       loadingEl!.style.transform = 'translateY(-8px)';
@@ -797,7 +804,7 @@
         if (unlocked || isUnlocked()) unlockUI();
         resultsEl!.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 350);
-    }, 2400);
+    }, delay);
   });
 
   /* ---------- paywall / modal ---------- */
@@ -820,8 +827,10 @@
     const text = encodeURIComponent(shareText());
     const url = encodeURIComponent('https://mybazidestiny.com');
     const tw = $('twitterShare') as HTMLAnchorElement | null;
+    const fb = $('facebookShare') as HTMLAnchorElement | null;
     const wa = $('whatsappShare') as HTMLAnchorElement | null;
     if (tw) tw.href = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+    if (fb) fb.href = `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`;
     if (wa) wa.href = `https://wa.me/?text=${text}%20${url}`;
   };
   wireShare();

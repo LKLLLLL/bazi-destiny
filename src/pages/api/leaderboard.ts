@@ -82,11 +82,25 @@ export const GET: APIRoute = async () => {
   }
 };
 
+const VALID_TIERS = ['Soulmate Bond', 'Strong Harmony', 'Growing Bond', 'Gentle Flow', 'Tricky Terrain', 'Cosmic Tension', '—'];
+const VALID_ELEMENTS = ['Wood', 'Fire', 'Earth', 'Metal', 'Water', ''];
+
 function cleanName(v: unknown): string {
   return String(v ?? '')
     .replace(/[<>"'`&]/g, '')
+    .replace(/[\u0000-\u001F\u007F-\u009F\u200B-\u200F\u2028-\u202F\uFEFF]/g, '') // strip control/zero-width chars
     .trim()
     .slice(0, 24);
+}
+
+function sanitizeTier(v: unknown): string {
+  const cleaned = cleanName(v);
+  return VALID_TIERS.includes(cleaned) ? cleaned : '—';
+}
+
+function sanitizeElement(v: unknown): string {
+  const cleaned = cleanName(v);
+  return VALID_ELEMENTS.includes(cleaned) ? cleaned : '';
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -109,9 +123,9 @@ export const POST: APIRoute = async ({ request }) => {
     name1,
     name2,
     score,
-    tier: cleanName(body?.tier) || '—',
-    elem1: cleanName(body?.elem1),
-    elem2: cleanName(body?.elem2),
+    tier: sanitizeTier(body?.tier),
+    elem1: sanitizeElement(body?.elem1),
+    elem2: sanitizeElement(body?.elem2),
     ts: Date.now(),
   };
   if (!HAS_KV) {

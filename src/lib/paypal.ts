@@ -1,4 +1,4 @@
-// PayPal checkout — identical merchant config to the live site.
+// PayPal checkout — tamper-resistant unlock using hashed signature.
 export type Tier = 'pro' | 'ultimate' | 'synergy';
 
 export const PAYPAL_CONFIG = {
@@ -12,6 +12,64 @@ export const PAYPAL_CONFIG = {
   returnUrl: 'https://mybazidestiny.com/success.html',
   cancelUrl: 'https://mybazidestiny.com/?payment=cancel',
 };
+
+// ── Tamper-resistant unlock ──
+// Uses a simple hash to prevent casual localStorage.setItem bypass.
+// Not cryptographically strong — a determined user can still reverse-engineer this.
+// For real security, move unlock verification server-side (Vercel KV + API).
+
+const STORAGE_KEY = '__bazi_v2';
+const SALT = 0x5a3f7b2c;
+
+function djb2(str: string): number {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) + hash + str.charCodeAt(i)) | 0;
+  }
+  return hash >>> 0;
+}
+
+function sign(payload: string): string {
+  const raw = payload + ':' + (djb2(payload) ^ SALT).toString(36);
+  return raw;
+}
+
+function verify(raw: string | null): string | null {
+  if (!raw) return null;
+  const lastColon = raw.lastIndexOf(':');
+  if (lastColon === -1) return null;
+  const payload = raw.substring(0, lastColon);
+  const expected = djb2(payload) ^ SALT;
+  const actual = parseInt(raw.substring(lastColon + 1), 36);
+  if (expected !== actual) return null;
+  return payload;
+}
+
+function storeUnlock(tier: string): void {
+  const now = Date.now();
+  const payload = tier + '|' + now;
+  localStorage.setItem(STORAGE_KEY, sign(payload));
+}
+
+function readUnlock(): string | null {
+  try {
+    // Try new signed format first
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const payload = verify(raw);
+      if (payload) return payload;
+    }
+    // Fallback: migrate legacy proUnlocked key
+    if (localStorage.getItem('proUnlocked') === 'true') {
+      storeUnlock('pro');
+      localStorage.removeItem('proUnlocked');
+      return 'pro|legacy';
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
 
 export function startCheckout(tier: Tier, pendingReading?: unknown): void {
   const product = PAYPAL_CONFIG.products[tier];
@@ -47,8 +105,8 @@ export function resolveUnlock(): { unlocked: boolean; pending: unknown | null } 
       pending = JSON.parse(raw);
       localStorage.removeItem('pendingReading');
     }
-    if (paid) localStorage.setItem('proUnlocked', 'true');
-    const unlocked = paid || localStorage.getItem('proUnlocked') === 'true';
+    if (paid) storeUnlock('pro');
+    const unlocked = paid || readUnlock() !== null;
     if (paid || params.get('payment') === 'cancel') {
       window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
     }
@@ -59,9 +117,5 @@ export function resolveUnlock(): { unlocked: boolean; pending: unknown | null } 
 }
 
 export function isUnlocked(): boolean {
-  try {
-    return localStorage.getItem('proUnlocked') === 'true';
-  } catch {
-    return false;
-  }
+  return readUnlock() !== null;
 }

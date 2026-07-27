@@ -390,7 +390,30 @@ input[type='date'].input { color-scheme: dark; }
 
 /* ---------- toast ---------- */
 .toast-notification {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(11, 13, 23, 0.96);
+  border: 1px solid rgba(212, 175, 106, 0.35);
+  color: #ece7da;
+  padding: 13px 24px;
+  border-radius: 100px;
+  font-size: 14px;
+  z-index: 9999;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.8);
+  animation: toastIn 0.3s ease forwards;
   font-family: var(--font-body);
+}
+.toast-fade-out {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 /* ---------- prose (articles) ---------- */

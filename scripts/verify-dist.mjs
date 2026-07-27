@@ -1,8 +1,16 @@
-// Verify the built output: every legacy URL from the live sitemap must exist.
+// Verify the built output against legacy URL list (optional — skips if url list missing).
 import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 const ROOT = new URL('../.vercel/output/static/', import.meta.url).pathname;
-const urls = readFileSync(new URL('../../live/urls.txt', import.meta.url), 'utf8')
+const URL_FILE = new URL('../../live/urls.txt', import.meta.url);
+
+if (!existsSync(URL_FILE)) {
+  console.log('verify-dist: urls.txt not found — skipping verification');
+  process.exit(0);
+}
+
+const urls = readFileSync(URL_FILE, 'utf8')
   .trim()
   .split('\n')
   .filter(Boolean);
@@ -16,6 +24,5 @@ for (const url of urls) {
     missing++;
   }
 }
-import { join } from 'node:path';
 console.log(missing === 0 ? `✓ all ${urls.length} legacy URLs present` : `✗ ${missing} missing`);
 process.exit(missing === 0 ? 0 : 1);

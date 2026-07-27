@@ -66,13 +66,13 @@ import PaymentModal from '../components/PaymentModal.astro';
   import Compatibility from '../lib/bazi/compatibility';
   import { scoreRing, ELEM_EN, ELEM_COLOR } from '../lib/charts';
 
-  var p = new URLSearchParams(window.location.search);
-  var n1 = p.get('n1') || 'Person 1';
-  var n2 = p.get('n2') || 'Person 2';
-  var d1 = p.get('d1') || '';
-  var h1 = p.get('h1') || '';
-  var d2 = p.get('d2') || '';
-  var h2 = p.get('h2') || '';
+  const p = new URLSearchParams(window.location.search);
+  const n1 = p.get('n1') || 'Person 1';
+  const n2 = p.get('n2') || 'Person 2';
+  const d1 = p.get('d1') || '';
+  const h1 = p.get('h1') || '';
+  const d2 = p.get('d2') || '';
+  const h2 = p.get('h2') || '';
 
   document.getElementById('lmrTitle').textContent = n1 + ' & ' + n2;
   document.title = n1 + ' & ' + n2 + ' \u2014 Love Match | BaZi Destiny';
@@ -85,15 +85,15 @@ import PaymentModal from '../components/PaymentModal.astro';
 
   function compute() {
     try {
-      var parts1 = d1.split('-').map(Number);
-      var parts2 = d2.split('-').map(Number);
-      var data1 = BaZiEngine.calculateFourPillars(parts1[0], parts1[1], parts1[2], parseInt(h1, 10));
-      var data2 = BaZiEngine.calculateFourPillars(parts2[0], parts2[1], parts2[2], parseInt(h2, 10));
-      var r = Compatibility.analyzeCompatibility(data1, data2);
-      var color = r.tier.color;
+      const parts1 = d1.split('-').map(Number);
+      const parts2 = d2.split('-').map(Number);
+      const data1 = BaZiEngine.calculateFourPillars(parts1[0], parts1[1], parts1[2], parseInt(h1, 10));
+      const data2 = BaZiEngine.calculateFourPillars(parts2[0], parts2[1], parts2[2], parseInt(h2, 10));
+      const r = Compatibility.analyzeCompatibility(data1, data2);
+      const color = r.tier.color;
 
-      var e1 = ELEM_EN[data1.pillars.day.element] || 'Wood';
-      var e2 = ELEM_EN[data2.pillars.day.element] || 'Fire';
+      const e1 = ELEM_EN[data1.pillars.day.element] || 'Wood';
+      const e2 = ELEM_EN[data2.pillars.day.element] || 'Fire';
 
       document.getElementById('lmrLoading').style.display = 'none';
       document.getElementById('lmrResults').hidden = false;
@@ -116,7 +116,7 @@ import PaymentModal from '../components/PaymentModal.astro';
   }
 
   function renderGuidance(r, e1, e2) {
-    var html =
+    let html =
       '<div style="margin-top:2rem;padding-bottom:2rem;border-bottom:1px solid var(--line-soft)">' +
       '<div style="text-align:center;margin-bottom:1.4rem">' +
       '<h3 style="font-family:var(--font-display);font-size:1.45rem;font-weight:600;margin:0;letter-spacing:0.02em">Relationship Guidance</h3>' +
@@ -124,7 +124,7 @@ import PaymentModal from '../components/PaymentModal.astro';
       'Your Day Pillar reveals how you love \u2014 how you attach, argue, and reconcile. ' + e1 + ' meets ' + e2 + ': two elemental fields resonating and refracting each other.' +
       '</p></div>';
 
-    var icons = ['\uD83D\uDCAB','\uD83C\uDF3F','\uD83C\uDFAF','\uD83D\uDCAD','\uD83C\uDF1F','\uD83E\uDD1D','\uD83C\uDFB5','\uD83D\uDEE4\uFE0F'];
+    const icons = ['\uD83D\uDCAB','\uD83C\uDF3F','\uD83C\uDFAF','\uD83D\uDCAD','\uD83C\uDF1F','\uD83E\uDD1D','\uD83C\uDFB5','\uD83D\uDEE4\uFE0F'];
     (r.tips || []).forEach(function(t, i) {
       html += '<div style="display:flex;gap:1rem;align-items:flex-start;padding:1.1rem 1rem;background:var(--ink-1);border-radius:var(--radius-s);margin-bottom:0.8rem">' +
         '<span style="font-size:1.3rem;padding-top:0.15rem;width:2rem;text-align:center">' + (icons[i % 8]) + '</span>' +
@@ -136,7 +136,7 @@ import PaymentModal from '../components/PaymentModal.astro';
   }
 
   function renderExtras(r, e1, e2, n1, n2, data1, data2) {
-    var extras = document.getElementById('lmrExtras');
+    const extras = document.getElementById('lmrExtras');
     if (!extras) return;
 
     extras.innerHTML =
@@ -146,7 +146,7 @@ import PaymentModal from '../components/PaymentModal.astro';
       '</div>';
 
     setTimeout(function() {
-      var bb = document.getElementById('lmrBoardBtn');
+      const bb = document.getElementById('lmrBoardBtn');
       if (bb) {
         bb.onclick = function() {
           try {
@@ -158,13 +158,9 @@ import PaymentModal from '../components/PaymentModal.astro';
         };
       }
 
-      var ub = document.getElementById('lmrUpgradeBtn');
+      const ub = document.getElementById('lmrUpgradeBtn');
       if (ub) {
         ub.onclick = function() {
-          if (window.location.search.includes('debug=1')) {
-            window.location.href = '/synergy-guide.html?n1=' + encodeURIComponent(n1) + '&n2=' + encodeURIComponent(n2) + '&e1=' + encodeURIComponent(e1) + '&e2=' + encodeURIComponent(e2);
-            return;
-          }
           if (window.__baziUpgrade) {
             window.__baziUpgrade('synergy', { n1: n1, n2: n2, e1: e1, e2: e2 });
           }
