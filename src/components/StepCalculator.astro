@@ -47,8 +47,8 @@
       <div class="sc-step" id="scStep0">
         <div class="sc-step-content">
           <span class="sc-step-icon" aria-hidden="true">📅</span>
-          <h3 class="sc-step-title">When did you spawn?</h3>
-          <p class="sc-step-sub">Your birth date anchors everything. Accuracy here = accuracy everywhere.</p>
+          <h3 class="sc-step-title">When were you born?</h3>
+          <p class="sc-step-sub">Your birth date forms the foundation of your BaZi chart.</p>
           <div class="sc-date-wrap">
             <span class="sc-date-label">Date of Birth · 出生日期</span>
             <input
@@ -85,8 +85,8 @@
       <div class="sc-step" id="scStep1" hidden>
         <div class="sc-step-content">
           <span class="sc-step-icon" aria-hidden="true">🕐</span>
-          <h3 class="sc-step-title">What hour were you born?</h3>
-          <p class="sc-step-sub">The hour sets your fourth pillar — the most personal part of your chart.</p>
+          <h3 class="sc-step-title">What time were you born?</h3>
+          <p class="sc-step-sub">Your birth time determines the Hour Pillar, the most personal part of your chart.</p>
 
           <div class="sc-hour-grid" id="scHourGrid">
             {[
@@ -141,8 +141,8 @@
       <div class="sc-step" id="scStep2" hidden>
         <div class="sc-step-content">
           <span class="sc-step-icon" aria-hidden="true">🌍</span>
-          <h3 class="sc-step-title">Where's your spawn point?</h3>
-          <p class="sc-step-sub">Your coordinates fine-tune the model. Skip if unsure — defaults work fine.</p>
+          <h3 class="sc-step-title">Where were you born?</h3>
+          <p class="sc-step-sub">Your birthplace allows a more precise solar-time calculation. You may skip this step if unknown.</p>
 
           <div class="sc-city-search" id="scCitySearch">
             <div class="sc-city-input-wrap">
@@ -182,7 +182,7 @@
           </button>
 
           <button class="btn btn-gold btn-lg sc-next" id="scNext2" disabled>
-            Generate Character Card
+            Generate My BaZi Chart
             <span class="han" aria-hidden="true">生成</span>
           </button>
         </div>
@@ -207,37 +207,37 @@
           <circle cx="50" cy="58.5" r="2.6" fill="#d4af6a" />
         </svg>
         <ol class="sc-cast-steps">
-          <li><span class="han">解码</span> Scanning birth data</li>
-          <li><span class="han">建模</span> Calculating attributes</li>
-          <li><span class="han">标识</span> Identifying core engine</li>
-          <li><span class="han">生成</span> Generating character card</li>
+          <li><span class="han">解码</span> Reading birth details</li>
+          <li><span class="han">建模</span> Calculating Four Pillars</li>
+          <li><span class="han">标识</span> Identifying Day Master</li>
+          <li><span class="han">生成</span> Preparing your BaZi reading</li>
         </ol>
       </div>
 
       <div class="calc-results" id="calcResults" hidden aria-live="polite">
-        <!-- ===== CHARACTER CARD HEADER ===== -->
+        <!-- ===== RESULT HEADER ===== -->
         <div class="cc-header">
           <div class="cc-badge" id="ccBadge">
             <span class="cc-badge-han han" id="ccDayMaster"></span>
-            <span class="cc-badge-label">Core Engine</span>
+            <span class="cc-badge-label">Day Master</span>
           </div>
           <h3 class="cc-name" id="ccName"></h3>
           <p class="cc-subtitle" id="ccSubtitle"></p>
         </div>
 
-        <!-- ===== FOUR PILLARS — MODULES ===== -->
+        <!-- ===== FOUR PILLARS ===== -->
         <div class="cc-modules">
           <div class="cc-module-label">
-            <span class="han">四柱</span> Modules
+            <span class="han">四柱</span> Four Pillars
           </div>
           <div class="pillars-grid" id="pillarsGrid"></div>
           <div class="pillar-strength" id="pillarStrength"></div>
         </div>
 
-        <!-- ===== ATTRIBUTES PANEL ===== -->
+        <!-- ===== FIVE ELEMENTS ===== -->
         <div class="cc-section">
           <div class="cc-section-head">
-            <span class="han">属性</span> Attributes
+            <span class="han">五行</span> Five Elements
           </div>
           <div class="cc-attrs">
             <div class="cc-attrs-bars" id="attrBars"></div>
@@ -285,9 +285,9 @@
         </div>
 
         <div class="results-actions">
-          <button class="btn btn-ghost" id="shareBtn">Share Card</button>
+          <button class="btn btn-ghost" id="shareBtn">Share Result</button>
           <button class="btn btn-gold" id="pdfBtn">Download PDF</button>
-          <button class="btn btn-ghost" id="recastBtn">Rescan</button>
+          <button class="btn btn-ghost" id="recastBtn">Start Over</button>
         </div>
       </div>
     </div>
@@ -754,7 +754,7 @@
   .sc-cast-steps li.done { opacity: 0.65; color: var(--bone-dim); }
   .sc-cast-steps li .han { font-size: 0.8rem; color: var(--gold-deep); width: 3.2rem; }
 
-  /* ── Results — RPG Character Card ── */
+  /* ── Results ── */
   .calc-results[hidden] { display: none; }
   .calc-results { animation: resIn 0.5s var(--ease-out); }
   @keyframes resIn { from { opacity: 0; transform: translateY(14px); } }
@@ -1540,7 +1540,7 @@
     loadTimeout = setTimeout(showResults, Math.max(animDuration, minDisplay));
   }
 
-  // ── RPG Character Card Render ──
+  // ── Result rendering ──
   function pillarTile(label: string, pillar: any, isCore: boolean, idx: number): string {
     const color = ELEM_COLOR[pillar?.element] || 'var(--gold)';
     const tag = isCore ? 'Core' : '';
@@ -1567,10 +1567,10 @@
     const genderLabel = data.gender === 'male' ? '♂' : data.gender === 'female' ? '♀' : '';
     $('ccName')!.textContent = `${genderLabel} Your Birth Sign is ${yearAnimal} ${ZODIAC_EMOJI[yearAnimal] || '✦'}`.trim();
     $('ccSubtitle')!.textContent = data.isThreePillar
-      ? `Born ${birthYear} · Core Engine: ${STEM_EN[p.day.stem]} · Primary Attribute: ${domEn}`
-      : `Born ${birthYear} · Core Engine: ${STEM_EN[p.day.stem]} · Primary Attribute: ${domEn}`;
+      ? `Born ${birthYear} · Day Master: ${STEM_EN[p.day.stem]} · Dominant Element: ${domEn}`
+      : `Born ${birthYear} · Day Master: ${STEM_EN[p.day.stem]} · Dominant Element: ${domEn}`;
 
-    // Modules
+    // Four Pillars
     $('pillarsGrid')!.innerHTML =
       pillarTile('Origin', p.year, false, 0) +
       pillarTile('Nature', p.month, false, 1) +
@@ -1583,7 +1583,7 @@
     const ps = $('pillarStrength');
     if (ps && !data.isThreePillar) ps.innerHTML = pillarStrengthCards(p);
 
-    // Attributes
+    // Five Elements
     const elemMap: Record<string, { en: string; cn: string; desc: string }> = {
       '木': { en: 'Wood', cn: '木', desc: 'Growth & creativity' },
       '火': { en: 'Fire', cn: '火', desc: 'Passion & energy' },
@@ -1771,9 +1771,9 @@
   $('shareBtn')?.addEventListener('click', () => {
     const elem = currentData ? ELEM_EN[currentData.elements.dominant] : '';
     const dm = currentData ? STEM_EN[currentData.pillars.day.stem] : '';
-    const text = `My Life Blueprint: Core Engine ${dm} · Primary ${elem} · Discover yours: https://mybazidestiny.com/calculator.html`;
+    const text = `My BaZi chart: Day Master ${dm} · Dominant Element ${elem} · Discover yours: https://mybazidestiny.com/calculator.html`;
     if (navigator.share) navigator.share({ title: 'My Life Blueprint', text }).catch(() => {});
-    else navigator.clipboard?.writeText(text).then(() => alert('Card link copied!'));
+    else navigator.clipboard?.writeText(text).then(() => alert('Result link copied!'));
   });
 
   $('recastBtn')?.addEventListener('click', () => {
