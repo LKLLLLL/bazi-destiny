@@ -28,13 +28,19 @@
     background: rgba(4, 5, 10, 0.78);
     backdrop-filter: blur(8px);
     animation: fadeIn 0.25s ease;
+    overscroll-behavior: contain;
+    touch-action: none;
   }
+  :global(html.pay-modal-open) { overscroll-behavior: none; }
   @keyframes fadeIn { from { opacity: 0; } }
   .pay-modal-card {
     position: relative;
     width: min(430px, 100%);
-    max-height: 85vh;
+    max-height: min(85vh, calc(100dvh - 2.5rem));
     overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
     background: linear-gradient(170deg, var(--ink-2), var(--ink-1));
     border: 1px solid var(--line-strong);
     border-radius: var(--radius);
@@ -110,6 +116,51 @@
   const checkoutBtn = document.getElementById('checkoutBtn') as HTMLButtonElement | null;
   let selectedTier: ExtendedTier = 'pro';
   let pendingReading: unknown = null;
+  let lockedScrollY = 0;
+  let scrollLocked = false;
+  let returnFocus: HTMLElement | null = null;
+  const bodyStyle = {
+    position: '',
+    top: '',
+    left: '',
+    right: '',
+    width: '',
+    overflow: '',
+  };
+
+  function lockPage() {
+    if (scrollLocked) return;
+    const body = document.body;
+    lockedScrollY = window.scrollY;
+    bodyStyle.position = body.style.position;
+    bodyStyle.top = body.style.top;
+    bodyStyle.left = body.style.left;
+    bodyStyle.right = body.style.right;
+    bodyStyle.width = body.style.width;
+    bodyStyle.overflow = body.style.overflow;
+    body.style.position = 'fixed';
+    body.style.top = `-${lockedScrollY}px`;
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+    body.style.overflow = 'hidden';
+    document.documentElement.classList.add('pay-modal-open');
+    scrollLocked = true;
+  }
+
+  function unlockPage() {
+    if (!scrollLocked) return;
+    const body = document.body;
+    body.style.position = bodyStyle.position;
+    body.style.top = bodyStyle.top;
+    body.style.left = bodyStyle.left;
+    body.style.right = bodyStyle.right;
+    body.style.width = bodyStyle.width;
+    body.style.overflow = bodyStyle.overflow;
+    document.documentElement.classList.remove('pay-modal-open');
+    window.scrollTo(0, lockedScrollY);
+    scrollLocked = false;
+  }
 
   const COPY: Record<ExtendedTier, { title: string; desc: string; price: string; features: string[]; btn: string }> = {
     pro: {
@@ -152,6 +203,7 @@
   };
 
   function open(tier: ExtendedTier, reading?: unknown) {
+    returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     selectedTier = tier;
     if (reading) pendingReading = reading;
     const c = COPY[tier];
@@ -160,10 +212,17 @@
     if (price) { price.style.display = c.price ? '' : 'none'; price.innerHTML = c.price; }
     if (features) features.innerHTML = c.features.map((f) => `<div>${f}</div>`).join('');
     if (checkoutBtn) checkoutBtn.innerHTML = `💳 ${c.btn}`;
-    if (modal) modal.hidden = false;
+    if (modal) {
+      lockPage();
+      modal.hidden = false;
+      requestAnimationFrame(() => document.getElementById('modalClose')?.focus());
+    }
   }
   function close() {
     if (modal) modal.hidden = true;
+    unlockPage();
+    returnFocus?.focus();
+    returnFocus = null;
   }
 
   (window as any).__baziUpgrade = (tier: Tier, reading?: unknown) => open(tier, reading);
