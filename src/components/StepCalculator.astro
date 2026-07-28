@@ -1565,7 +1565,7 @@
     $('ccDayMaster')!.textContent = `${p.day?.stem || '?'}${p.day?.branch || '?'}`;
     $('ccBadge')!.setAttribute('style', `--dm-color:${domColor}`);
     const genderLabel = data.gender === 'male' ? '♂' : data.gender === 'female' ? '♀' : '';
-    $('ccName')!.textContent = `${genderLabel} ${yearAnimal} ${ZODIAC_EMOJI[yearAnimal] || '✦'}`;
+    $('ccName')!.textContent = `${genderLabel} Your Birth Sign is ${yearAnimal} ${ZODIAC_EMOJI[yearAnimal] || '✦'}`.trim();
     $('ccSubtitle')!.textContent = data.isThreePillar
       ? `Born ${birthYear} · Core Engine: ${STEM_EN[p.day.stem]} · Primary Attribute: ${domEn}`
       : `Born ${birthYear} · Core Engine: ${STEM_EN[p.day.stem]} · Primary Attribute: ${domEn}`;

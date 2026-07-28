@@ -218,6 +218,8 @@ button { cursor: pointer; background: none; border: 0; }
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
+  min-width: 0;
+  max-width: 100%;
   min-height: 46px;
   padding: 0.72rem 1.6rem;
   border-radius: 999px;
@@ -227,7 +229,10 @@ button { cursor: pointer; background: none; border: 0; }
   letter-spacing: 0.01em;
   transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out),
               background 0.3s var(--ease-out), border-color 0.3s var(--ease-out), color 0.3s;
-  white-space: nowrap;
+  line-height: 1.25;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 .btn:active { transform: translateY(1px) scale(0.99); }
 .btn svg { flex: none; }
@@ -443,7 +448,15 @@ input[type='date'].input { color-scheme: dark; -webkit-appearance: none; box-siz
   font-family: var(--font-display);
   font-size: 1.15rem;
 }
-.prose table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.prose table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  -webkit-overflow-scrolling: touch;
+}
 .prose th, .prose td { border: 1px solid var(--line-soft); padding: 0.6rem 0.8rem; text-align: left; }
 .prose th { color: var(--gold); font-weight: 600; background: rgba(212, 175, 106, 0.05); }
 
