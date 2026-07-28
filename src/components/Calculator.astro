@@ -610,7 +610,9 @@
     const defEn = ELEM_EN[data.elements.deficient];
     const birthYear = new Date(data.birthDate + 'T00:00:00').getFullYear();
 
-    $('resultGreeting')!.textContent = `${data.name}, you are a ${yearAnimal} ${emoji}`;
+    $('resultGreeting')!.textContent = data.name
+      ? `${data.name} · Birth Sign: ${yearAnimal} ${emoji}`
+      : `Birth Sign: ${yearAnimal} ${emoji}`;
     $('resultSubtitle')!.textContent =
       `Born in ${birthYear} — your Four Pillars carry ${data.yearName} year energy. ` +
       `Your Day Master is ${STEM_EN[p.day.stem]}, and ${domEn} leads your chart.`;
@@ -788,7 +790,7 @@
     const minDisplay = 1200;
 
     const data = BaZiEngine.calculate(date, hour);
-    currentData = { ...data, name: name || 'Friend', gender, location, birthDate: date };
+    currentData = { ...data, name: name || '', gender, location, birthDate: date };
     (window as any).currentReading = currentData;
     (window as any).__baziSetPendingReading?.(currentData);
 
