@@ -1,7 +1,7 @@
 ---
 title: "Year of the Fire Horse"
-seoTitle: "2026 Chinese Zodiac: Fire Horse Predictions — All 12 Signs | BaZi Destiny"
-description: "2026 Chinese Zodiac Year of the Fire Horse (丙午). Discover yearly predictions for all 12 zodiac animals, lucky elements, compatible signs, and what to expect in love, career, health, and wealth."
+seoTitle: "2026 Chinese Zodiac: Fire Horse Guide for 12 Signs"
+description: "Explore the 2026 Fire Horse year and traditional themes for all 12 Chinese zodiac signs, with clear limits on general year-sign forecasts."
 emoji: "☯"
 tag: "Zodiac"
 pubDate: 2026-04-14

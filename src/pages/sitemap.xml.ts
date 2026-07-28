@@ -1,12 +1,13 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import destinyEn from '../data/destiny-en.json';
 
 const SITE = 'https://mybazidestiny.com';
 const LAST_BUILD = new Date().toISOString().split('T')[0];
 
 export const GET: APIRoute = async () => {
-  const posts = await getCollection('blog');
+  const posts = (await getCollection('blog')).filter((post: CollectionEntry<'blog'>) => !post.data.noindex);
   const pages = await getCollection('pages');
 
   // Build a map of blog slug → lastmod for dynamic dates
@@ -16,7 +17,7 @@ export const GET: APIRoute = async () => {
     blogDates.set(p.id, d);
   }
 
-  const urls: { loc: string; alt?: string; priority: string; changefreq: string; lastmod: string }[] = [
+  const urls: { loc: string; alt?: string; priority: string; changefreq: string; lastmod?: string }[] = [
     { loc: '/', alt: '/zh/', priority: '1.0', changefreq: 'weekly', lastmod: LAST_BUILD },
     { loc: '/calculator.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/blog.html', priority: '0.9', changefreq: 'weekly', lastmod: LAST_BUILD },
@@ -39,11 +40,11 @@ export const GET: APIRoute = async () => {
   }
   for (const p of pages) {
     if (!urls.some((u) => u.loc === `/${p.id}.html`))
-      urls.push({ loc: `/${p.id}.html`, priority: '0.5', changefreq: 'monthly', lastmod: LAST_BUILD });
+    urls.push({ loc: `/${p.id}.html`, priority: '0.5', changefreq: 'monthly' });
   }
   for (const d of destinyEn) {
-    urls.push({ loc: `/${d.slug}.html`, alt: `/zh/${d.slug}.html`, priority: '0.7', changefreq: 'monthly', lastmod: LAST_BUILD });
-    urls.push({ loc: `/zh/${d.slug}.html`, alt: `/${d.slug}.html`, priority: '0.7', changefreq: 'monthly', lastmod: LAST_BUILD });
+    urls.push({ loc: `/${d.slug}.html`, alt: `/zh/${d.slug}.html`, priority: '0.7', changefreq: 'yearly' });
+    urls.push({ loc: `/zh/${d.slug}.html`, alt: `/${d.slug}.html`, priority: '0.7', changefreq: 'yearly' });
   }
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -55,7 +56,7 @@ ${urls
     const zhLoc = isZh ? u.loc : u.alt;
     return `  <url>
     <loc>${SITE}${u.loc}</loc>
-    <lastmod>${u.lastmod}</lastmod>
+    ${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}
     <changefreq>${u.changefreq}</changefreq>
     <priority>${u.priority}</priority>${zhLoc ? `
     <xhtml:link rel="alternate" hreflang="en" href="${SITE}${enLoc}"/>

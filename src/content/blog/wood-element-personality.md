@@ -1,7 +1,7 @@
 ---
 title: "Wood Element Personality"
-seoTitle: "Wood Element Personality in BaZi | Growth & Vision | BaZi Destiny"
-description: "Discover the Wood Element personality in Chinese BaZi astrology. Learn about Wood types' strengths, weaknesses, ideal careers, love compatibility, and how to thrive as a Wood-dominant person."
+seoTitle: "Wood Element Personality: Traits, Career & Love"
+description: "Explore traditional Wood element personality traits in BaZi, including strengths, growth areas, career tendencies, relationships, and balance."
 emoji: "☯"
 tag: "Career"
 pubDate: 2026-04-14
@@ -121,7 +121,7 @@ To reach your full potential:
 ## Is Wood Your Dominant Element?
 
 Get your complete BaZi chart and discover your element balance.
- [Calculate My BaZi Now](/)
+ [Calculate My BaZi Now](/calculator.html)
 
 ## Explore Other Elements
   [Wood 🌳](/wood-element-personality.html) [Fire 🔥](/fire-element-personality.html) [Earth ⛰️](/earth-element-personality.html) [Metal ⚔️](/metal-element-personality.html) [Water 🌊](/water-element-personality.html)

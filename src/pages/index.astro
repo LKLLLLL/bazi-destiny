@@ -7,6 +7,7 @@ import Armillary from '../components/Armillary.astro';
 import WuxingPentagon from '../components/WuxingPentagon.astro';
 
 const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.noindex)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
@@ -68,8 +69,8 @@ const faqs = [
 ---
 
 <Base
-  title="Free BaZi Calculator: Get Your Four Pillars of Destiny Reading Online | BaZi Destiny"
-  description="Free BaZi (Four Pillars of Destiny) calculator. Get your personalized Chinese astrology reading instantly — personality, career, love compatibility, lucky numbers & 2026 fortune."
+  title="Free BaZi Calculator & Four Pillars Reading | BaZi Destiny"
+  description="Generate a free BaZi Four Pillars chart from your birth date and time. Discover your Day Master, Five Elements balance, personality, and lucky directions."
   keywords="BaZi, Chinese astrology, Four Pillars of Destiny, Feng Shui, Chinese horoscope, bazi reading, fortune telling, destiny, Chinese zodiac"
   path="/"
   altPath="/zh/"

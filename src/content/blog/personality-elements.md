@@ -1,7 +1,7 @@
 ---
 title: "BaZi Personality Deep Dive"
-seoTitle: "BaZi Personality: How Your Element Shapes You | BaZi Destiny"
-description: "Discover how the Five Elements in your BaZi chart shape your personality, communication style, strengths, and weaknesses. A deep dive into Wu Xing and personal character."
+seoTitle: "BaZi Personality: How the Five Elements Shape You"
+description: "Learn how Wood, Fire, Earth, Metal, and Water are traditionally used to describe personality tendencies, strengths, and communication styles."
 emoji: "☯"
 tag: "Five Elements"
 pubDate: 2026-05-15

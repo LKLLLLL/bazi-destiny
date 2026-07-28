@@ -1,7 +1,7 @@
 ---
 title: "BaZi Career Guide"
-seoTitle: "BaZi Career Guide: Find Your Ideal Career Path | BaZi Destiny"
-description: "Discover your ideal career path using BaZi (Four Pillars of Destiny). Learn how your Day Master, dominant element, and Luck Cycles reveal your professional strengths, best industries, and wealth potential."
+seoTitle: "BaZi Career Guide: Day Master, Elements & Strengths"
+description: "Explore how the Day Master and Five Elements are traditionally used to discuss work styles, career strengths, suitable environments, and balance."
 emoji: "☯"
 tag: "Career"
 pubDate: 2026-04-14

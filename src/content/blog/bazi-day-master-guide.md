@@ -1,7 +1,7 @@
 ---
 title: "BaZi Day Master Guide: Find Your Core Element and What It Means"
-seoTitle: "BaZi Day Master Guide: Your Core Element | BaZi Destiny"
-description: "Learn what your BaZi Day Master is, how to find it, and what each of the 10 Day Masters reveals about your personality and destiny."
+seoTitle: "BaZi Day Master Guide: Your Core Element Explained"
+description: "Learn what the BaZi Day Master is, how it comes from the Day Pillar, and what each of the ten Heavenly Stems traditionally represents."
 emoji: "☯"
 tag: "Guide"
 pubDate: 2026-05-15
@@ -60,12 +60,12 @@ The Rain. Gentle but persistent. Nurtures everything it touches. Highly intuitiv
 
 ## How to Find Your Day Master
 
-Use [our free BaZi calculator](/) — enter your birth date and the tool will automatically calculate your Day Pillar and reveal your Day Master.
+Use [our free BaZi calculator](/calculator.html) — enter your birth date and the tool will automatically calculate your Day Pillar and reveal your Day Master.
 
 ## Get Your Free BaZi Reading
 
 Discover your Day Master, Five Element balance, and complete destiny chart.
- [Generate My BaZi Chart →](/)
+ [Generate My BaZi Chart →](/calculator.html)
 ---
 
 **Go Deeper:**

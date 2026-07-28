@@ -1,10 +1,11 @@
 ---
 title: "Complete Guide to BaZi: The Ancient Art of Chinese Four Pillars of Destiny"
-seoTitle: "Complete Guide to BaZi Chinese Astrology | BaZi Destiny"
-description: "Master BaZi (Four Pillars of Destiny) with our comprehensive guide. Learn how to read your birth chart, understand the Five Elements, and discover your destiny in love, career, and life."
+seoTitle: "Complete BaZi Guide: Four Pillars, Elements & Timing"
+description: "Learn the complete BaZi framework: Four Pillars, Day Master, Five Elements, chart strength, compatibility, and traditional timing concepts."
 emoji: "☯"
 tag: "Five Elements"
 pubDate: 2026-04-13
+updatedDate: 2026-07-29
 readTime: "8 min read"
 ---
 
@@ -169,7 +170,7 @@ Both systems offer valuable insights — many enthusiasts use both! BaZi's stren
 
 Ready to explore your BaZi chart? Here's your action plan:
 
-1. **Calculate your chart** — Use our free [BaZi calculator](/) for instant results
+1. **Calculate your chart** — Use our free [BaZi calculator](/calculator.html) for instant results
 1. **Identify your Day Master** — This is your core elemental identity
 1. **Note your dominant element** — What drives your personality?
 1. **Check element balance** — Where are the gaps?
@@ -177,8 +178,8 @@ Ready to explore your BaZi chart? Here's your action plan:
 
 ## Ready to Discover Your Destiny?
 
-Get your complete BaZi chart with personalized analysis — free, instant, no sign-up required.
- [Calculate My BaZi Now](/)
+Generate your Four Pillars, Day Master, and Five Elements overview — free, instant, no sign-up required.
+ [Calculate My BaZi Now](/calculator.html)
 
 ## Frequently Asked Questions
 
@@ -204,4 +205,4 @@ BaZi has been practiced for over 1,000 years in Chinese culture. While it's a me
 ---
 
 **Deepen Your Understanding:**
-[What is BaZi?](/what-is-bazi.html) · [The Five Elements](/bazi-elements.html) · [How to Read Your Chart](/how-to-read-bazi-chart.html) · [Day Master Guide](/bazi-day-master-guide.html)
+[What is BaZi?](/what-is-bazi.html) · [The Five Elements](/bazi-elements.html) · [Ten Gods](/bazi-ten-gods.html) · [Luck Pillars](/bazi-luck-pillars.html) · [Day Master Guide](/bazi-day-master-guide.html)

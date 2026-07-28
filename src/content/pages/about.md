@@ -1,28 +1,28 @@
 ---
-title: "About BaZi Destiny — Our Mission & Expertise"
-description: "Learn about BaZi Destiny — our mission, expertise in Chinese astrology, and commitment to providing accurate Four Pillars of Destiny readings. Meet our team and understand our methodology."
+title: "About BaZi Destiny — Mission & Methodology"
+description: "Learn how BaZi Destiny calculates Four Pillars charts, explains traditional Chinese astrology concepts, protects birth data, and reviews its educational content."
 ---
 
 ## Our Mission
 
-BaZi Destiny was founded with a single goal: to make **BaZi (Four Pillars of Destiny)** — one of the most sophisticated systems of Chinese astrology — accessible to anyone in the world, for free. We believe that the wisdom contained in your birth chart should not be locked behind paywalls or require years of study to understand.
+BaZi Destiny is an independent educational project built to make **BaZi (Four Pillars of Destiny)** easier to understand in English. We separate what the calculator can determine from birth data from the broader cultural interpretations traditionally associated with a chart.
 
-Our free BaZi calculator generates your complete birth chart instantly, with detailed interpretations of your Day Master, Five Elements, Ten Gods, personality traits, career guidance, and love compatibility — all based on authentic classical Chinese astrology principles.
+Our free calculator generates the Four Pillars, identifies the Day Master, and provides a simplified Five Elements overview with general personality and environment guidance. It does not currently calculate Ten Gods or 10-year Luck Pillars. Those concepts are covered as educational material rather than presented as personalized calculations.
 
-## Our Expertise
+## What We Cover
 
-Our content is researched and written by a team with deep knowledge of:
+Our reference material focuses on:
 
 - **Classical BaZi theory** — Based on texts dating back to the Tang and Song Dynasties, including the foundational works of Li Xuzhong and Zi Ping.
 - **Five Elements (Wu Xing) theory** — The philosophical framework underlying all Chinese metaphysics, from the Book of Changes (I Ching) to Traditional Chinese Medicine.
-- **Ten Gods (Ten Deities) system** — The relational framework that maps how elements interact in your chart to reveal personality, relationships, and life patterns.
+- **Ten Gods (Ten Deities) system** — Explained in educational content as a traditional relational framework; it is not part of the current calculator output.
 - **Chinese zodiac compatibility** — The 12-animal system with its Six Combinations, Three Harmonies, and clash relationships.
 
 ## Our Values
 
 #### 📚 Accuracy First
 
-Every calculation is based on authentic classical BaZi formulas. We cross-reference our calculations against established Chinese astrology texts and calibrate our solar term boundaries using precise astronomical data.
+The calculator follows the sexagenary cycle, changes the year at Li Chun, and uses the month-starting solar terms for Month Pillars. Calendar code is tested against known day-pillar and solar-term boundary cases. Traditional interpretations are presented as cultural guidance, not scientific fact.
 
 #### 🔓 Free & Accessible
 
@@ -40,11 +40,10 @@ Your birth data is personal. We do not sell your information to third parties. Y
 
 Our BaZi calculator uses the following methodology:
 
-- **Solar terms (节气)** — We use true solar time and exact solar term boundaries to determine month pillars, following the traditional Zi Ping method.
-- **True solar time** — Birth time is adjusted for the exact longitude and latitude of the birth location, not just the time zone.
+- **Solar terms (节气)** — Year and Month Pillars use a standard solar-term calculation model rather than Gregorian month boundaries.
+- **True solar time option** — When a supported birthplace is selected, users may apply a longitude-based time correction.
 - **Heavenly Stems & Earthly Branches** — All Four Pillars (Year, Month, Day, Hour) are calculated using the traditional sexagenary cycle (六十甲子).
-- **Ten Gods analysis** — Each element relationship is mapped using the Ten Deities system for nuanced personality and destiny interpretation.
-- **Luck Pillars (大运)** — Decade luck pillars are calculated based on the solar term distance from birth, following classical gender-based directional rules.
+- **Interpretation scope** — Current personalized results cover Four Pillars, Day Master, a simplified Five Elements distribution, and general lifestyle guidance.
 
 ## Data Sources & References
 
@@ -54,7 +53,9 @@ Our content is informed by the following classical and contemporary sources:
 - **渊海子平** (Yuan Hai Zi Ping) — The classic compilation by Xu Zi Ping
 - **三命通会** (San Ming Tong Hui) — "Comprehensive Treatise on the Three Fates"
 - **穷通宝鉴** (Qiong Tong Bao Jian) — "Precious Mirror for Sifting the Real"
-- Modern scholarship on Chinese metaphysics and cross-cultural astrology studies
+- Educational and historical material on Chinese calendrical traditions
+
+These works have multiple editions and interpretive traditions. We use them as historical context and do not claim that metaphysical readings are scientifically validated predictions.
 
 ## Connect With Us
 

@@ -1,7 +1,7 @@
 ---
 title: "Rat and Dragon Compatibility: Love, Work & Friendship in Chinese Zodiac"
-seoTitle: "Rat & Dragon Compatibility in Chinese Zodiac | BaZi Destiny"
-description: "Discover the compatibility between Rat and Dragon in Chinese astrology. Love match, work partnership, and friendship analysis with detailed insights."
+seoTitle: "Rat and Dragon Compatibility: Love, Work & Friendship"
+description: "Explore traditional Rat and Dragon compatibility in love, friendship, and work, plus the limits of using zodiac animals without full BaZi charts."
 emoji: "☯"
 tag: "Zodiac"
 pubDate: 2026-05-15
@@ -44,7 +44,7 @@ As friends, Rat and Dragon enjoy a stimulating and loyal bond. They inspire each
 ## Get Your Free BaZi Reading
 
 Discover your Day Master, Five Element balance, and complete destiny chart.
- [Generate My BaZi Chart →](/)
+ [Generate My BaZi Chart →](/calculator.html)
 
 ---
 

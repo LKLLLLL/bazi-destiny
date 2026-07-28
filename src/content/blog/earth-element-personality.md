@@ -1,7 +1,7 @@
 ---
 title: "Earth Element Personality"
-seoTitle: "Earth Element Personality in BaZi | Traits & Career | BaZi Destiny"
-description: "Discover the Earth Element personality in Chinese BaZi astrology. Learn about Earth types' strengths, weaknesses, ideal careers, love compatibility, and how to thrive as an Earth-dominant person."
+seoTitle: "Earth Element Personality: Traits, Career & Love"
+description: "Explore traditional Earth element personality traits in BaZi, including strengths, growth areas, career tendencies, relationships, and balance."
 emoji: "☯"
 tag: "Career"
 pubDate: 2026-04-14
@@ -89,7 +89,7 @@ In Traditional Chinese Medicine, Earth governs the **spleen and stomach**. When 
 ## Is Earth Your Dominant Element?
 
 Get your complete BaZi chart and discover your element balance.
- [Calculate My BaZi Now](/)
+ [Calculate My BaZi Now](/calculator.html)
 
 ## Explore Other Elements
   [Wood 🌳](/wood-element-personality.html) [Fire 🔥](/fire-element-personality.html) [Earth ⛰️](/earth-element-personality.html) [Metal ⚔️](/metal-element-personality.html) [Water 🌊](/water-element-personality.html)

@@ -6,6 +6,8 @@ emoji: "☯"
 tag: "Guide"
 pubDate: 2026-05-15
 readTime: "3 min read"
+canonicalPath: "/what-is-bazi.html"
+noindex: true
 ---
 
 BaZi Destiny · Knowledge Base
@@ -41,7 +43,7 @@ While Western astrology uses the position of planets at your birth, BaZi focuses
 
 ## How to Get Your BaZi Reading
 
-You need your birth date and ideally your birth time. The more precise your birth time, the more accurate your Day Pillar and Hour Pillar will be. [Use our free BaZi calculator](/) to generate your complete chart instantly.
+You need your birth date and ideally your birth time. The more precise your birth time, the more accurate your Day Pillar and Hour Pillar will be. [Use our free BaZi calculator](/calculator.html) to generate your complete chart instantly.
 
 ## Common BaZi Terms You Should Know
 
@@ -53,7 +55,7 @@ You need your birth date and ideally your birth time. The more precise your birt
 ## Get Your Free BaZi Reading
 
 Discover your Day Master, Five Element balance, and complete destiny chart.
- [Generate My BaZi Chart →](/)
+ [Generate My BaZi Chart →](/calculator.html)
 
 ---
 

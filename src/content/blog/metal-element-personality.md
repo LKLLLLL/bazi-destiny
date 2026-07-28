@@ -1,7 +1,7 @@
 ---
 title: "Metal Element Personality"
-seoTitle: "Metal Element Personality in BaZi | Clarity & Focus | BaZi Destiny"
-description: "Discover the Metal Element personality in Chinese BaZi astrology. Learn about Metal types' strengths, weaknesses, ideal careers, love compatibility, and how to thrive as a Metal-dominant person."
+seoTitle: "Metal Element Personality: Traits, Career & Love"
+description: "Explore traditional Metal element personality traits in BaZi, including strengths, growth areas, career tendencies, relationships, and balance."
 emoji: "☯"
 tag: "Career"
 pubDate: 2026-04-14
@@ -89,7 +89,7 @@ In Traditional Chinese Medicine, Metal governs the **lungs and large intestine**
 ## Is Metal Your Dominant Element?
 
 Get your complete BaZi chart and discover your element balance.
- [Calculate My BaZi Now](/)
+ [Calculate My BaZi Now](/calculator.html)
 
 ## Explore Other Elements
   [Wood 🌳](/wood-element-personality.html) [Fire 🔥](/fire-element-personality.html) [Earth ⛰️](/earth-element-personality.html) [Metal ⚔️](/metal-element-personality.html) [Water 🌊](/water-element-personality.html)

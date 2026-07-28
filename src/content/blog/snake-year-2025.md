@@ -1,7 +1,7 @@
 ---
 title: "2025 Year of the Wood Snake"
-seoTitle: "2025 Year of the Wood Snake — Fortune Guide | BaZi Destiny"
-description: "2025 is the Year of the Wood Snake. Discover your fortune, lucky colors, best career months, and love predictions based on your Chinese zodiac sign and BaZi chart."
+seoTitle: "2025 Wood Snake: Chinese Zodiac Year Guide"
+description: "Learn about the 2025 Wood Snake year, its Chinese zodiac symbolism, Five Element themes, calendar boundaries, and traditional cultural context."
 emoji: "☯"
 tag: "Zodiac"
 pubDate: 2025-01-15

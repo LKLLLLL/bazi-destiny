@@ -3,6 +3,8 @@
   "cleanUrls": false,
   "trailingSlash": false,
   "redirects": [
+    { "source": "/wood-element-personality-guide.html", "destination": "/wood-element-personality.html", "statusCode": 308 },
+    { "source": "/what-is-bazi-four-pillars.html", "destination": "/what-is-bazi.html", "statusCode": 308 },
     { "source": "/calculator", "destination": "/calculator.html", "statusCode": 308 },
     { "source": "/success", "destination": "/success.html", "statusCode": 308 },
     { "source": "/love-match-result", "destination": "/love-match-result.html", "statusCode": 308 },

@@ -2,16 +2,16 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
-const posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.noindex)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const [featured, ...rest] = posts;
 const tags = [...new Set(posts.map((p) => p.data.tag))];
 ---
 
 <Base
-  title="BaZi Blog — Chinese Astrology Guides & Insights | BaZi Destiny"
-  description="Explore BaZi (Four Pillars of Destiny) through expert guides. Learn how Chinese astrology birth charts work, discover your element, and read your destiny."
+  title="BaZi Guides: Four Pillars, Day Master & Five Elements"
+  description="Learn BaZi through practical guides to the Four Pillars, Day Master, Five Elements, compatibility, Chinese zodiac years, and chart interpretation."
   path="/blog.html"
 >
   <header class="blog-hero">
@@ -24,6 +24,16 @@ const tags = [...new Set(posts.map((p) => p.data.tag))];
       </div>
     </div>
   </header>
+
+  <nav class="topic-nav wrap" aria-label="BaZi topic guides">
+    <span>Start with</span>
+    <a href="/what-is-bazi.html">BaZi Basics</a>
+    <a href="/how-to-read-bazi-chart.html">Read a Chart</a>
+    <a href="/bazi-day-master-guide.html">Day Master</a>
+    <a href="/bazi-elements.html">Five Elements</a>
+    <a href="/bazi-ten-gods.html">Ten Gods</a>
+    <a href="/bazi-luck-pillars.html">Luck Pillars</a>
+  </nav>
 
   <div class="wrap blog-body">
     {featured && (
@@ -75,6 +85,20 @@ const tags = [...new Set(posts.map((p) => p.data.tag))];
     padding: 0.3rem 0.85rem;
     background: rgba(212, 175, 106, 0.05);
   }
+  .topic-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem 1rem;
+    flex-wrap: wrap;
+    padding-block: 1rem;
+    border-top: 1px solid var(--line-soft);
+    border-bottom: 1px solid var(--line-soft);
+    color: var(--bone-dim);
+    font-size: 0.85rem;
+  }
+  .topic-nav span { color: var(--gold); font-weight: 600; }
+  .topic-nav a { color: var(--bone-dim); }
+  .topic-nav a:hover { color: var(--bone); }
 
   .featured {
     display: grid;

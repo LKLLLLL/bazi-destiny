@@ -13,18 +13,17 @@ All our content is based on:
 
 - Classical Chinese astrology texts (滴天髓, 渊海子平, 三命通会, 穷通宝鉴)
 - Established BaZi calculation methods (Zi Ping system)
-- Academic research on Chinese metaphysics and Wu Xing theory
-- Professional experience in Chinese astrology consultation
+- Educational research on Chinese calendrical traditions and Wu Xing theory
 
-We do not fabricate interpretations or mix unrelated astrological systems. When we reference Western astrology for comparison, we clearly label it as such.
+We distinguish general zodiac-year traditions from calculations that require a complete birth date and time. When we reference Western astrology for comparison, we clearly label it as a separate system.
 
 ### 2. Accuracy & Verification
 
 Our content undergoes the following verification process:
 
-- **Calculation verification:** All BaZi chart calculations are tested against known birth charts and historical figures for accuracy.
-- **Solar term calibration:** Month pillar boundaries are calibrated using precise astronomical solar term data, not approximate calendar dates.
-- **Element relationship verification:** All Ten Gods, clash, combination, and penalty relationships are verified against classical reference tables.
+- **Calculation verification:** Four Pillars calculations are tested against known sexagenary-day anchors and solar-term boundary cases.
+- **Scope verification:** Pages must not present a birth-year profile as a complete BaZi chart or a personalized Luck Pillar calculation.
+- **Claim review:** Names, dates, calendar boundaries, and other factual statements must be checked or removed.
 - **Zodiac year verification:** All Chinese zodiac year assignments are verified against the sexagenary cycle (e.g., 2026 = 丙午 Fire Horse, not Fire Snake).
 
 ### 3. Content Review Process
@@ -32,17 +31,17 @@ Our content undergoes the following verification process:
 Every article and guide follows this process:
 
 1. **Draft:** Initial content is written based on research and source materials.
-1. **Review:** Content is reviewed for factual accuracy, particularly classical Chinese astrology terminology and calculations.
+1. **Review:** Content is checked for factual consistency, calculation scope, terminology, and unsupported claims.
 1. **Edit:** Clarity, readability, and educational value are refined.
-1. **Publish:** Content is published with proper schema markup and meta tags.
-1. **Update:** Content is reviewed periodically and updated when new information or corrections are needed.
+1. **Publish:** Content is published with canonical URLs, appropriate indexing rules, and structured metadata where relevant.
+1. **Update:** Content is reviewed when calculation logic, annual references, or source material changes.
 
 ### 4. Corrections Policy
 
 We take factual errors seriously. If we discover an error in our content:
 
 - We correct it as soon as possible
-- We update the dateModified field in our article schema
+- We update the visible revision date and structured data when an article is materially revised
 - For significant corrections, we note the change in the article
 
 If you spot an error, please [use our calculator](/) and contact us through the site. We appreciate corrections from our community.
@@ -61,7 +60,7 @@ Any sponsored content or advertisements will be clearly labeled. We do not accep
 
 ### 8. Date & Last Updated
 
-This editorial policy was last updated on **July 26, 2026**. We review this policy at least annually.
+This editorial policy was last updated on **July 29, 2026**. We review this policy at least annually.
 
 ## Questions?
 

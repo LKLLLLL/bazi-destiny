@@ -1,7 +1,7 @@
 ---
 title: "BaZi Love Compatibility: What Your Chinese Astrology Chart Says About Your Ideal Partner"
-seoTitle: "BaZi Love Compatibility: Find Your Perfect Match | BaZi Destiny"
-description: "How does BaZi predict love compatibility? Learn your Day Master, Five Elements compatibility, and which zodiac signs match you best in this complete guide to BaZi relationships."
+seoTitle: "BaZi Love Compatibility: Day Masters & Five Elements"
+description: "Learn how BaZi compatibility compares Day Masters, Five Elements, branches, and complete birth charts instead of relying on zodiac animals alone."
 emoji: "☯"
 tag: "Five Elements"
 pubDate: 2026-04-11

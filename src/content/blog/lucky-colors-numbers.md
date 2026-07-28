@@ -1,7 +1,7 @@
 ---
 title: "BaZi Lucky Colors, Numbers & Directions"
-seoTitle: "BaZi Lucky Colors, Numbers & Directions | BaZi Destiny"
-description: "Discover your BaZi lucky colors, numbers, directions, and times of day. Learn which colors enhance your element, which numbers bring prosperity, and how to use feng shui directions for your Day Master."
+seoTitle: "BaZi Lucky Colors, Numbers & Directions"
+description: "Learn the traditional Five Element correspondences behind BaZi colors, numbers, directions, and seasons, plus how to apply them responsibly."
 emoji: "☯"
 tag: "Feng Shui"
 pubDate: 2026-04-14

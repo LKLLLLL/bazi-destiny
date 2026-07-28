@@ -34,12 +34,15 @@ const altPath = isZh ? `/${rec.slug}.html` : `/zh/${rec.slug}.html`;
 const jsonLd: Record<string, unknown>[] = [
   {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'WebPage',
     headline: rec.title,
     description: rec.description,
     url: `https://mybazidestiny.com${path}`,
-    author: { '@type': 'Organization', name: 'BaZi Destiny' },
-    publisher: { '@type': 'Organization', name: 'BaZi Destiny', url: 'https://mybazidestiny.com' },
+    isPartOf: { '@type': 'WebSite', name: 'BaZi Destiny', url: 'https://mybazidestiny.com/' },
+    about: [
+      { '@type': 'Thing', name: `${rec.year} Chinese zodiac` },
+      { '@type': 'Thing', name: rec.animal },
+    ],
   },
   {
     '@context': 'https://schema.org',
@@ -87,7 +90,7 @@ if (rec.faqs.length) {
       <p>
         {isZh
           ? '出生年份只是四柱之一。输入完整出生信息，获取包含日主、十神、大运的完整个性解读。'
-          : 'Your birth year reveals only one pillar. For a complete picture — Day Master, Ten Gods, and 10-year luck cycles — generate your full personalized report.'}
+          : 'Your birth year reveals only one pillar. Enter your complete birth details to calculate all Four Pillars, your Day Master, and a Five Elements overview.'}
       </p>
       <a href={isZh ? '/calculator.html' : '/calculator.html'} class="btn btn-gold btn-lg">
         {isZh ? '免费排盘 →' : 'Generate My Free BaZi Chart →'}

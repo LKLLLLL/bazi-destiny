@@ -1,7 +1,7 @@
 ---
 title: "The Five Elements in BaZi"
-seoTitle: "Five Elements in BaZi (Wu Xing) — Complete Guide | BaZi Destiny"
-description: "Master the Five Elements (Wu Xing) in Chinese astrology. Learn how Wood, Fire, Earth, Metal, and Water shape your BaZi chart and personality."
+seoTitle: "Five Elements in BaZi: Complete Wu Xing Guide"
+description: "Learn how Wood, Fire, Earth, Metal, and Water interact through generating and controlling cycles and shape the structure of a BaZi chart."
 emoji: "☯"
 tag: "Five Elements"
 pubDate: 2026-04-20
@@ -66,7 +66,7 @@ Water types are adaptable, wise, and go with the flow. They find the path of lea
 ### Discover Your Element Profile
 
 Your BaZi chart shows exactly which elements dominate your personality and how to balance them for better harmony.
- [ 🔮 Get Your Free BaZi Reading ](/)
+ [ 🔮 Get Your Free BaZi Reading ](/calculator.html)
 ---
 
 **Explore Each Element:**
