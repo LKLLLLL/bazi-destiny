@@ -74,6 +74,11 @@ import PaymentModal from '../components/PaymentModal.astro';
   const d2 = p.get('d2') || '';
   const h2 = p.get('h2') || '';
 
+  // HTML-escape user-supplied names before they reach innerHTML.
+  function esc(s: unknown): string {
+    return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] as string));
+  }
+
   document.getElementById('lmrTitle').textContent = n1 + ' & ' + n2;
   document.title = n1 + ' & ' + n2 + ' \u2014 Love Match | BaZi Destiny';
 
@@ -110,7 +115,7 @@ import PaymentModal from '../components/PaymentModal.astro';
     document.getElementById('lmrScore').innerHTML =
       '<div style="text-align:center;padding:0.5rem 0 1.4rem;border-bottom:1px solid var(--line-soft);margin-bottom:0.5rem">' +
       scoreRing(r.overall, color) +
-      '<div style="font-family:var(--font-display);font-size:clamp(1.5rem,3vw,1.8rem);font-weight:600;margin-top:0.8rem;letter-spacing:0.02em">' + n1 + ' &amp; ' + n2 + '</div>' +
+      '<div style="font-family:var(--font-display);font-size:clamp(1.5rem,3vw,1.8rem);font-weight:600;margin-top:0.8rem;letter-spacing:0.02em">' + esc(n1) + ' &amp; ' + esc(n2) + '</div>' +
       '<div style="font-family:var(--font-display);font-size:clamp(1.1rem,2.5vw,1.4rem);font-style:italic;color:' + color + '">' + r.tier.label + '</div>' +
       '</div>';
   }

@@ -11,6 +11,8 @@ const blog = defineCollection({
     tag: z.string().default('Guide'),
     pubDate: z.coerce.date(),
     readTime: z.string().default('5 min read'),
+    canonicalPath: z.string().optional(),
+    noindex: z.boolean().default(false),
   }),
 });
 

@@ -54,23 +54,14 @@ async function writeEntry(entry: Entry): Promise<number> {
 const headers = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Cache-Control': 'public, max-age=30',
 };
 
 export const OPTIONS: APIRoute = () => new Response(null, { status: 204, headers });
 
-export const GET: APIRoute = async ({ url }) => {
-  // Admin: ?clear=1 resets the leaderboard
-  if (new URL(url).searchParams.has('clear')) {
-    try {
-      const client = await kv();
-      await client.set(KV_KEY, []);
-      return new Response(JSON.stringify({ entries: [], kv: true, cleared: true }), { status: 200, headers });
-    } catch {
-      return new Response(JSON.stringify({ error: 'clear failed' }), { status: 500, headers });
-    }
-  }
+export const GET: APIRoute = async () => {
   try {
     const entries = (await readEntries())
       .filter((e) => e.score > 0)
@@ -78,6 +69,22 @@ export const GET: APIRoute = async ({ url }) => {
     return new Response(JSON.stringify({ entries, kv: HAS_KV }), { status: 200, headers });
   } catch {
     return new Response(JSON.stringify({ entries: SEED, kv: false }), { status: 200, headers });
+  }
+};
+
+export const DELETE: APIRoute = async ({ request }) => {
+  const clearKey = process.env.LEADERBOARD_CLEAR_KEY;
+  const supplied = request.headers.get('authorization');
+  const adminHeaders = { ...headers, 'Cache-Control': 'no-store' };
+  if (!clearKey || supplied !== `Bearer ${clearKey}`) {
+    return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: adminHeaders });
+  }
+  try {
+    const client = await kv();
+    await client.set(KV_KEY, []);
+    return new Response(JSON.stringify({ entries: [], kv: true, cleared: true }), { status: 200, headers: adminHeaders });
+  } catch {
+    return new Response(JSON.stringify({ error: 'Clear failed' }), { status: 500, headers: adminHeaders });
   }
 };
 
@@ -105,7 +112,27 @@ function sanitizeElement(v: unknown): string {
   return VALID_ELEMENTS.includes(cleaned) ? cleaned : '';
 }
 
-export const POST: APIRoute = async ({ request }) => {
+async function rateLimited(clientAddress: string): Promise<boolean> {
+  if (!HAS_KV) return false;
+  try {
+    const client = await kv();
+    const bucket = Math.floor(Date.now() / 60_000);
+    const key = `bazi:leaderboard:rate:${clientAddress}:${bucket}`;
+    const count = await client.incr(key);
+    if (count === 1) await client.expire(key, 90);
+    return count > 10;
+  } catch {
+    return false;
+  }
+}
+
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  if (await rateLimited(clientAddress || 'unknown')) {
+    return new Response(
+      JSON.stringify({ success: false, error: 'Too many submissions' }),
+      { status: 429, headers: { ...headers, 'Cache-Control': 'no-store', 'Retry-After': '60' } }
+    );
+  }
   let body: any;
   try {
     body = await request.json();

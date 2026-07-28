@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "node scripts/generate-og-images.mjs 2>/dev/null; astro build && node scripts/fileformat.mjs && node scripts/verify-dist.mjs",
+    "test:bazi": "node --experimental-strip-types tests/bazi-engine.test.ts",
+    "test:payments": "node --experimental-strip-types tests/paypal-unlock.test.ts",
+    "test": "pnpm test:bazi && pnpm test:payments",
     "preview": "astro preview",
     "postbuild": "echo done"
   },

@@ -3,6 +3,13 @@
   "cleanUrls": false,
   "trailingSlash": false,
   "redirects": [
+    { "source": "/calculator", "destination": "/calculator.html", "statusCode": 308 },
+    { "source": "/success", "destination": "/success.html", "statusCode": 308 },
+    { "source": "/love-match-result", "destination": "/love-match-result.html", "statusCode": 308 },
+    { "source": "/synergy-guide", "destination": "/synergy-guide.html", "statusCode": 308 },
+    { "source": "/privacy-policy", "destination": "/privacy-policy.html", "statusCode": 308 },
+    { "source": "/terms-of-service", "destination": "/terms-of-service.html", "statusCode": 308 },
+    { "source": "/editorial-policy", "destination": "/editorial-policy.html", "statusCode": 308 },
     { "source": "/leaderboard", "destination": "/leaderboard.html", "statusCode": 308 },
     { "source": "/love-match", "destination": "/love-match.html", "statusCode": 308 },
     { "source": "/blog", "destination": "/blog.html", "statusCode": 308 },

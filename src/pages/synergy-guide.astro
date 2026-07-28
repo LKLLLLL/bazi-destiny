@@ -8,7 +8,7 @@ import Base from '../layouts/Base.astro';
   path="/synergy-guide.html"
   noindex={true}
 >
-  <div class="sg-wrap">
+  <div class="sg-wrap" id="sgWrap">
     <header class="sg-hero">
       <p class="eyebrow center"><span class="han"></span> Synergy Boost</p>
       <h1 id="sgTitle">Your Synergy Guide</h1>
@@ -27,6 +27,15 @@ import Base from '../layouts/Base.astro';
       <button class="btn btn-gold" onclick="window.print()">Download PDF</button>
     </div>
   </div>
+
+  <div class="sg-wrap" id="sgLocked" hidden>
+    <div class="panel sg-locked">
+      <div class="sg-locked-icon" aria-hidden="true">🔒</div>
+      <h1>This guide is locked</h1>
+      <p>The Synergy Boost Guide is part of the Love Match upgrade. Run a free match first, then unlock it from your result page.</p>
+      <a href="/love-match.html" class="btn btn-love btn-lg">Try Love Match — Free</a>
+    </div>
+  </div>
 </Base>
 
 <style>
@@ -38,14 +47,39 @@ import Base from '../layouts/Base.astro';
   .sg-intro-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--gold-bright); padding: 0.5rem 1.2rem; border: 1px solid rgba(212,175,106,0.3); border-radius: 999px; margin-bottom: 1.2rem; background: rgba(212,175,106,0.06); }
   .sg-intro-text { color: var(--bone-dim); font-size: 0.95rem; line-height: 1.8; max-width: 52ch; margin: 0 auto; }
   .sg-footer { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; padding-top: 1.8rem; border-top: 1px solid var(--line-soft); }
+  .sg-locked { text-align: center; padding: clamp(2.4rem, 6vw, 3.4rem) 2rem; margin-top: calc(68px + 2rem); }
+  .sg-locked-icon { font-size: 2.4rem; margin-bottom: 1rem; }
+  .sg-locked h1 { font-size: 1.6rem; margin-bottom: 0.7rem; }
+  .sg-locked p { color: var(--bone-dim); font-size: 0.92rem; max-width: 42ch; margin: 0 auto 1.6rem; }
 </style>
 
 <script>
+  import { isUnlocked, resolveUnlock } from '../lib/paypal';
+
+  // Gate this product independently from the Life Blueprint tiers.
+  const unlock = resolveUnlock('synergy');
+  const __unlocked = unlock.unlocked || isUnlocked('synergy');
+
+  if (!__unlocked) {
+    var __w = document.getElementById('sgWrap');
+    var __l = document.getElementById('sgLocked');
+    if (__w) __w.hidden = true;
+    if (__l) __l.hidden = false;
+  } else {
+
+  // HTML-escape user-supplied values before they reach innerHTML.
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  var VALID_ELEMENTS = { Wood: 1, Fire: 1, Earth: 1, Metal: 1, Water: 1 };
+
   var p = new URLSearchParams(window.location.search);
   var n1 = p.get('n1') || 'Person 1';
   var n2 = p.get('n2') || 'Person 2';
-  var e1 = p.get('e1') || 'Wood';
-  var e2 = p.get('e2') || 'Fire';
+  var e1 = VALID_ELEMENTS[p.get('e1')] ? p.get('e1') : 'Wood';
+  var e2 = VALID_ELEMENTS[p.get('e2')] ? p.get('e2') : 'Fire';
 
   // Helper: join HTML lines into <p> paragraphs
   function P() {
@@ -62,7 +96,7 @@ import Base from '../layouts/Base.astro';
 
   document.getElementById('sgTitle').textContent = n1 + ' & ' + n2;
   document.getElementById('sgSub').textContent = 'A personalized aura alignment guide for your ' + e1 + ' \u00d7 ' + e2 + ' match. Five practices to deepen your elemental bond.';
-  document.getElementById('sgBadge').innerHTML = e1 + ' \u00d7 ' + e2;
+  document.getElementById('sgBadge').textContent = e1 + ' \u00d7 ' + e2;
   document.getElementById('sgIntroText').textContent =
     'Every couple has a unique energy signature. When ' + e1 + ' meets ' + e2 +
     ', the Five Elements dance in a pattern that is entirely yours. This guide translates that ancient wisdom into five simple daily practices\u2014' +
@@ -172,7 +206,7 @@ import Base from '../layouts/Base.astro';
     ];
   }
 
-  var cards = getSynergy(e1, e2, n1, n2);
+  var cards = getSynergy(e1, e2, esc(n1), esc(n2));
   document.getElementById('sgCards').innerHTML = cards.map(function(c) {
     return '<div class="sg-card">' +
       '<div class="sg-card-header">' +
@@ -183,4 +217,6 @@ import Base from '../layouts/Base.astro';
   }).join('');
 
   document.title = n1 + ' & ' + n2 + ' \u2014 Synergy Guide | BaZi Destiny';
+
+  } // end unlock gate
 </script>

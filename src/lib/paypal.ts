@@ -5,7 +5,7 @@ export const PAYPAL_CONFIG = {
   businessEmail: 'qwe4320325@gmail.com',
   currency: 'USD',
   products: {
-    pro: { name: 'Destiny Master - Pro Reading', price: '9.90', itemId: 'BAZI-PRO' },
+    pro: { name: 'Life Blueprint - Full BaZi Reading', price: '9.90', itemId: 'BAZI-PRO' },
     ultimate: { name: 'Soul Guide - Ultimate Reading', price: '29.90', itemId: 'BAZI-ULTIMATE' },
     synergy: { name: 'Synergy Boost Guide - Love Match', price: '4.90', itemId: 'BAZI-SYNERGY' },
   } as Record<Tier, { name: string; price: string; itemId: string }>,
@@ -45,25 +45,39 @@ function verify(raw: string | null): string | null {
   return payload;
 }
 
-function storeUnlock(tier: string): void {
-  const now = Date.now();
-  const payload = tier + '|' + now;
-  localStorage.setItem(STORAGE_KEY, sign(payload));
+function tierKey(tier: Tier): string {
+  return `${STORAGE_KEY}:${tier}`;
 }
 
-function readUnlock(): string | null {
+function storeUnlock(tier: Tier): void {
+  const now = Date.now();
+  const payload = tier + '|' + now;
+  localStorage.setItem(tierKey(tier), sign(payload));
+}
+
+function readUnlock(tier: Tier): string | null {
   try {
-    // Try new signed format first
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(tierKey(tier));
     if (raw) {
       const payload = verify(raw);
-      if (payload) return payload;
+      if (payload?.startsWith(`${tier}|`)) return payload;
     }
-    // Fallback: migrate legacy proUnlocked key
+    // Migrate the earlier single-key format without granting another product.
+    const oldRaw = localStorage.getItem(STORAGE_KEY);
+    const oldPayload = verify(oldRaw);
+    if (oldPayload) {
+      const oldTier = oldPayload.split('|')[0] as Tier;
+      if (oldTier === 'pro' || oldTier === 'ultimate' || oldTier === 'synergy') {
+        storeUnlock(oldTier);
+        localStorage.removeItem(STORAGE_KEY);
+        if (oldTier === tier) return oldPayload;
+      }
+    }
+    // The original boolean flag represented the Life Blueprint product.
     if (localStorage.getItem('proUnlocked') === 'true') {
       storeUnlock('pro');
       localStorage.removeItem('proUnlocked');
-      return 'pro|legacy';
+      return tier === 'pro' ? 'pro|legacy' : null;
     }
     return null;
   } catch {
@@ -94,28 +108,44 @@ export function startCheckout(tier: Tier, pendingReading?: unknown): void {
   window.location.href = url.toString();
 }
 
-/** Returns the pending reading (and clears the flag) when the user is unlocked. */
-export function resolveUnlock(): { unlocked: boolean; pending: unknown | null } {
+function validPending(tier: Tier, pending: unknown): boolean {
+  if (!pending || typeof pending !== 'object') return false;
+  const value = pending as Record<string, unknown>;
+  return tier === 'synergy'
+    ? typeof value.n1 === 'string' && typeof value.n2 === 'string'
+    : typeof value.date === 'string';
+}
+
+/** Completes a matching checkout return and returns its pending reading. */
+export function resolveUnlock(required: 'pro' | 'synergy' = 'pro'): { unlocked: boolean; pending: unknown | null } {
   const params = new URLSearchParams(window.location.search);
-  const paid = params.get('payment') === 'success';
+  const returned = params.get('payment') === 'success';
   let pending: unknown | null = null;
   try {
     const raw = localStorage.getItem('pendingReading');
-    if (paid && raw) {
-      pending = JSON.parse(raw);
+    const pendingTier = localStorage.getItem('pendingTier') as Tier | null;
+    const tierMatches = required === 'pro'
+      ? pendingTier === 'pro' || pendingTier === 'ultimate'
+      : pendingTier === 'synergy';
+    const parsed = returned && raw ? JSON.parse(raw) : null;
+    const paid = Boolean(returned && pendingTier && tierMatches && validPending(pendingTier, parsed));
+    if (paid && pendingTier) {
+      pending = parsed;
+      storeUnlock(pendingTier);
       localStorage.removeItem('pendingReading');
+      localStorage.removeItem('pendingTier');
     }
-    if (paid) storeUnlock('pro');
-    const unlocked = paid || readUnlock() !== null;
-    if (paid || params.get('payment') === 'cancel') {
+    const unlocked = paid || isUnlocked(required);
+    if (returned || params.get('payment') === 'cancel') {
       window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
     }
     return { unlocked, pending };
   } catch {
-    return { unlocked: paid, pending };
+    return { unlocked: isUnlocked(required), pending };
   }
 }
 
-export function isUnlocked(): boolean {
-  return readUnlock() !== null;
+export function isUnlocked(required: 'pro' | 'synergy' = 'pro'): boolean {
+  if (required === 'synergy') return readUnlock('synergy') !== null;
+  return readUnlock('pro') !== null || readUnlock('ultimate') !== null;
 }

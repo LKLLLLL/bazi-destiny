@@ -4,29 +4,72 @@ import Base from '../layouts/Base.astro';
 
 <Base
   title="Payment Successful — Your Reading is Unlocked | BaZi Destiny"
-  description="Your Destiny Master reading is unlocked. Return to your chart to see the full analysis."
+  description="Your Life Blueprint reading is unlocked. Return to your chart to see the full analysis."
   path="/success.html"
   noindex={true}
 >
   <div class="wrap-narrow success-wrap">
     <div class="success-card panel" data-reveal>
       <div class="success-seal" aria-hidden="true">开</div>
-      <h1>Payment successful</h1>
-      <p class="success-sub">Your full reading is unlocked — the seal is broken. Taking you back to your chart…</p>
-      <div class="success-features">
+      <h1 id="successTitle">Payment successful</h1>
+      <p class="success-sub" id="successSub">Your full reading is unlocked — the seal is broken. Taking you back to your chart…</p>
+      <div class="success-features" id="successFeatures">
         <span>✓ Full 12-section reading</span>
         <span>✓ Feng Shui analysis</span>
         <span>✓ Lucky kit</span>
-        <span>✓ PDF report</span>
+        <span>✓ Print-ready report</span>
       </div>
       <a href="/calculator.html" class="btn btn-gold btn-lg" id="continueBtn">View My Full Reading →</a>
-      <p class="success-note">Unlocked on this device. Questions? <a href="mailto:contact@bazidestiny.com">contact@bazidestiny.com</a></p>
+      <p class="success-note">Unlocked on this device. Questions? <a href="mailto:contact@mybazidestiny.com">contact@mybazidestiny.com</a></p>
     </div>
   </div>
 
   <script is:inline>
-    try { localStorage.setItem('proUnlocked', 'true'); } catch (e) {}
-    setTimeout(() => { window.location.href = '/calculator.html'; }, 2600);
+    (function () {
+      var title = document.getElementById('successTitle');
+      var sub = document.getElementById('successSub');
+      var features = document.getElementById('successFeatures');
+      var btn = document.getElementById('continueBtn');
+
+      var pending = null;
+      var tier = null;
+      try {
+        tier = localStorage.getItem('pendingTier');
+        var raw = localStorage.getItem('pendingReading');
+        pending = raw ? JSON.parse(raw) : null;
+      } catch (e) {}
+
+      var validTier = tier === 'pro' || tier === 'ultimate' || tier === 'synergy';
+      var validPending = pending && typeof pending === 'object' && (
+        tier === 'synergy'
+          ? typeof pending.n1 === 'string' && typeof pending.n2 === 'string'
+          : typeof pending.date === 'string'
+      );
+
+      // No matching checkout was started on this device — nothing to complete.
+      if (!validTier || !validPending) {
+        if (title) title.textContent = 'No active checkout';
+        if (sub) sub.textContent = 'We could not find a recent purchase started on this device. Cast your chart first, then check out.';
+        if (features) features.style.display = 'none';
+        if (btn) { btn.textContent = 'Start a Free Reading'; btn.setAttribute('href', '/calculator.html'); }
+        return;
+      }
+
+      var dest = '/calculator.html?payment=success';
+      if (tier === 'synergy' && pending && pending.n1) {
+        var q = new URLSearchParams();
+        q.set('payment', 'success');
+        q.set('n1', String(pending.n1 || 'Person 1'));
+        q.set('n2', String(pending.n2 || 'Person 2'));
+        q.set('e1', String(pending.e1 || 'Wood'));
+        q.set('e2', String(pending.e2 || 'Fire'));
+        dest = '/synergy-guide.html?' + q.toString();
+        if (sub) sub.textContent = 'Your Synergy Boost Guide is unlocked — taking you there now…';
+        if (btn) btn.textContent = 'Open My Synergy Guide →';
+      }
+      if (btn) btn.setAttribute('href', dest);
+      setTimeout(function () { window.location.href = dest; }, 2600);
+    })();
   </script>
 </Base>
 

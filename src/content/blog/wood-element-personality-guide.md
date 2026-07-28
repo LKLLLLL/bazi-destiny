@@ -6,6 +6,8 @@ emoji: "☯"
 tag: "Five Elements"
 pubDate: 2026-05-15
 readTime: "3 min read"
+canonicalPath: "/wood-element-personality.html"
+noindex: true
 ---
 
 BaZi Destiny · Knowledge Base

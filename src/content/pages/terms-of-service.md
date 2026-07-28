@@ -16,7 +16,7 @@ By using BaZi Destiny, you acknowledge that you have read, understood, and agree
 BaZi Destiny provides personalized astrological readings based on the Chinese BaZi (Four Pillars of Destiny) system. We offer:
 
 - **Free Readings:** Basic personality and elemental profile analysis.
-- **Premium Readings (Destiny Master / Destiny Oracle):** Detailed career, relationship, health, and Feng Shui guidance available through paid subscription.
+- **Premium Readings (Life Blueprint / Soul Guide):** Detailed career, relationship, health, and Feng Shui guidance available through a one-time purchase.
 - **Love Compatibility:** Analysis of compatibility between two individuals based on their BaZi charts.
 
 ## 3. User Accounts
@@ -63,4 +63,4 @@ These Terms shall be governed by the laws of the jurisdiction in which BaZi Dest
 ## 11. Contact
 
 For questions about these Terms, please contact us at:
- **legal@bazidestiny.com**
+ **legal@mybazidestiny.com**

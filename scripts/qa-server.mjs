@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { readFileSync, existsSync, statSync } from 'node:fs';
-import { join, extname } from 'node:path';
+import { join, extname, resolve, sep } from 'node:path';
 
 const ROOT = new URL('../.vercel/output/static/', import.meta.url).pathname;
 const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.xml': 'application/xml', '.txt': 'text/plain', '.json': 'application/json', '.woff2': 'font/woff2', '.ico': 'image/x-icon' };
@@ -13,7 +13,9 @@ const SEED = [
 
 createServer((req, res) => {
   const u = new URL(req.url, 'http://x');
-  const path = decodeURIComponent(u.pathname);
+  let path;
+  try { path = decodeURIComponent(u.pathname); }
+  catch { res.writeHead(400); res.end('400 Bad Request'); return; }
   if (path === '/api/leaderboard') {
     if (req.method === 'POST') {
       let b = '';
@@ -29,7 +31,10 @@ createServer((req, res) => {
     res.end(JSON.stringify({ entries: SEED, kv: false }));
     return;
   }
-  let file = join(ROOT, path);
+  let file = resolve(ROOT, `.${path}`);
+  // Path traversal guard — never serve outside the static root.
+  const root = resolve(ROOT);
+  if (file !== root && !file.startsWith(root + sep)) { res.writeHead(404); res.end('404 ' + path); return; }
   if (path.endsWith('/')) file = join(ROOT, path, 'index.html');
   if (!existsSync(file) && !extname(path)) file = file + '.html';
   if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');

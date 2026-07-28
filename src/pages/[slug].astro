@@ -33,7 +33,7 @@ if (kind === 'article' || kind === 'page') {
 if (kind === 'article') {
   const all = await getCollection('blog');
   related = all
-    .filter((p) => p.id !== post.id)
+    .filter((p) => p.id !== post.id && !p.data.noindex)
     .sort((a, b) => {
       const sameA = a.data.tag === post.data.tag ? 1 : 0;
       const sameB = b.data.tag === post.data.tag ? 1 : 0;
@@ -51,7 +51,7 @@ const articleLd =
           headline: post.data.title,
           description: post.data.description,
           image: 'https://mybazidestiny.com/og-image.png',
-          url: `https://mybazidestiny.com/${post.id}.html`,
+          url: `https://mybazidestiny.com${post.data.canonicalPath ?? `/${post.id}.html`}`,
           datePublished: post.data.pubDate.toISOString().slice(0, 10),
           author: { '@type': 'Organization', name: 'BaZi Destiny' },
           publisher: { '@type': 'Organization', name: 'BaZi Destiny', url: 'https://mybazidestiny.com' },
@@ -85,7 +85,8 @@ const PAGE_ICONS: Record<string, string> = {
   <Base
     title={post.data.seoTitle ?? `${post.data.title} | BaZi Destiny`}
     description={post.data.description}
-    path={`/${post.id}.html`}
+    path={post.data.canonicalPath ?? `/${post.id}.html`}
+    noindex={post.data.noindex}
     ogType="article"
     ogImageOverride={`https://mybazidestiny.com/og/${post.id}.png`}
     jsonLd={articleLd}

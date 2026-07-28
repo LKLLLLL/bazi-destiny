@@ -40,7 +40,7 @@ Our service is not intended for individuals under the age of 18. We do not knowi
 
 ## 7. Your Rights
 
-You have the right to request deletion of your personal data at any time. Contact us at privacy@bazidestiny.com.
+You have the right to request deletion of your personal data at any time. Contact us at privacy@mybazidestiny.com.
 
 ## 8. Changes to This Policy
 
@@ -49,4 +49,4 @@ We may update this Privacy Policy from time to time. Changes will be posted on t
 ## 9. Contact Us
 
 If you have any questions about this Privacy Policy, please contact us at:
- **privacy@bazidestiny.com**
+ **privacy@mybazidestiny.com**
