@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { kv } from '@vercel/kv';
 import { CHECKOUT_COOKIE, createOrder, paypalIsConfigured, tierFromUnknown } from '../../../lib/paypal/server';
-import { json, sameOrigin } from '../../../lib/paypal/http';
+import { json, requestOrigin, sameOrigin } from '../../../lib/paypal/http';
 
 export const prerender = false;
 
@@ -23,7 +23,7 @@ export const POST: APIRoute = async ({ request, url, clientAddress, cookies }) =
     const body = await request.json();
     const tier = tierFromUnknown(body?.tier);
     if (!tier) return json({ error: 'Unknown product' }, 400);
-    const order = await createOrder(tier, url.origin);
+    const order = await createOrder(tier, requestOrigin(request, url));
     cookies.set(CHECKOUT_COOKIE, order.checkoutToken, {
       httpOnly: true,
       secure: url.protocol === 'https:',

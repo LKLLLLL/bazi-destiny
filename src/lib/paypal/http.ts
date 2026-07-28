@@ -14,7 +14,21 @@ export function json(data: unknown, status = 200, headers: Record<string, string
 
 export function sameOrigin(request: Request, url: URL): boolean {
   const origin = request.headers.get('origin');
-  return origin === url.origin;
+  if (!origin) return false;
+  try {
+    return new URL(origin).origin === requestOrigin(request, url);
+  } catch {
+    return false;
+  }
+}
+
+export function requestOrigin(request: Request, url: URL): string {
+  const host = request.headers.get('x-forwarded-host')?.split(',')[0]?.trim()
+    || request.headers.get('host')
+    || url.host;
+  const protocol = request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim()
+    || url.protocol.replace(':', '');
+  return `${protocol}://${host}`;
 }
 
 export async function hasEntitlement(context: Pick<APIContext, 'cookies'>, tier: Tier): Promise<boolean> {
