@@ -60,6 +60,19 @@
               required
             />
           </div>
+          <div class="sc-gender-row">
+            <span class="sc-date-label">Gender · 性别</span>
+            <div class="sc-gender-options">
+              <label class="sc-gender-btn">
+                <input type="radio" name="scGender" value="male" />
+                <span>Male · 男</span>
+              </label>
+              <label class="sc-gender-btn">
+                <input type="radio" name="scGender" value="female" />
+                <span>Female · 女</span>
+              </label>
+            </div>
+          </div>
           <button class="btn btn-gold btn-lg sc-next" id="scNext0" disabled>
             Continue
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -435,6 +448,26 @@
     box-shadow: 0 0 0 3px rgba(212, 175, 106, 0.18);
   }
   .sc-date-input:valid { border-color: var(--gold); }
+
+  .sc-gender-row { margin-bottom: 1.6rem; }
+  .sc-gender-options {
+    display: flex; gap: 0.6rem; justify-content: center; margin-top: 0.4rem;
+  }
+  .sc-gender-btn {
+    flex: 1; max-width: 160px;
+  }
+  .sc-gender-btn input { position: absolute; opacity: 0; pointer-events: none; }
+  .sc-gender-btn span {
+    display: block; text-align: center; padding: 0.7rem 0.5rem;
+    border: 1px solid var(--line-soft); border-radius: var(--radius-s);
+    background: var(--ink-1); color: var(--bone-dim);
+    font-size: 0.9rem; cursor: pointer; transition: all 0.2s;
+  }
+  .sc-gender-btn input:checked + span {
+    border-color: var(--gold); background: rgba(212,175,106,0.08); color: var(--gold);
+    font-weight: 600;
+  }
+  .sc-gender-btn span:hover { border-color: var(--line); }
 
   /* Step 2 — Hour */
   .sc-hour-grid {
@@ -1086,6 +1119,7 @@
     cityLat: number;
     cityTimezone: number;
     useSolarTime: boolean;
+    gender: 'male' | 'female' | '';
     cityData?: typeof CITIES[0]; // cached full city object to avoid re-lookup
   }
 
@@ -1097,6 +1131,7 @@
     cityLat: 0,
     cityTimezone: 8,
     useSolarTime: false,
+    gender: '',
   };
 
   let currentStep = 0;
@@ -1124,6 +1159,7 @@
         state.cityLat = saved.cityLat || 0;
         state.cityTimezone = saved.cityTimezone || 8;
         state.useSolarTime = saved.useSolarTime || false;
+        state.gender = saved.gender || '';
         return true;
       }
     } catch {}
@@ -1165,7 +1201,21 @@
   dateInput?.addEventListener('input', () => {
     const v = dateInput.value;
     state.date = v;
-    next0.disabled = !v;
+    updateNext0();
+    saveState();
+  });
+
+  document.querySelectorAll<HTMLInputElement>('input[name="scGender"]').forEach(r => {
+    r.addEventListener('change', () => {
+      state.gender = r.value as 'male' | 'female';
+      updateNext0();
+      saveState();
+    });
+  });
+
+  function updateNext0() {
+    next0.disabled = !(state.date && state.gender);
+  }
     saveState();
   });
 
@@ -1449,7 +1499,7 @@
 
     currentData = {
       ...data,
-      name: 'Friend',
+      gender: state.gender,
       date,
       hour,
       cityName,
@@ -1495,7 +1545,8 @@
     // Header
     $('ccDayMaster')!.textContent = `${p.day?.stem || '?'}${p.day?.branch || '?'}`;
     $('ccBadge')!.setAttribute('style', `--dm-color:${domColor}`);
-    $('ccName')!.textContent = `${data.name || 'Seeker'} · ${yearAnimal} ${ZODIAC_EMOJI[yearAnimal] || '✦'}`;
+    const genderLabel = data.gender === 'male' ? '♂' : data.gender === 'female' ? '♀' : '';
+    $('ccName')!.textContent = `${genderLabel} ${yearAnimal} ${ZODIAC_EMOJI[yearAnimal] || '✦'}`;
     $('ccSubtitle')!.textContent = data.isThreePillar
       ? `Born ${birthYear} · Core Engine: ${STEM_EN[p.day.stem]} · Primary Attribute: ${domEn}`
       : `Born ${birthYear} · Core Engine: ${STEM_EN[p.day.stem]} · Primary Attribute: ${domEn}`;
