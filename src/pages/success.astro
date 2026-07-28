@@ -39,7 +39,7 @@ import Base from '../layouts/Base.astro';
         pending = raw ? JSON.parse(raw) : null;
       } catch (e) {}
 
-      var validTier = tier === 'pro' || tier === 'ultimate' || tier === 'synergy';
+      var validTier = tier === 'pro' || tier === 'synergy';
       var validPending = pending && typeof pending === 'object' && (
         tier === 'synergy'
           ? typeof pending.n1 === 'string' && typeof pending.n2 === 'string'

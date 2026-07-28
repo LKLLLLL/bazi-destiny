@@ -16,18 +16,19 @@ By using BaZi Destiny, you acknowledge that you have read, understood, and agree
 BaZi Destiny provides personalized astrological readings based on the Chinese BaZi (Four Pillars of Destiny) system. We offer:
 
 - **Free Readings:** Basic personality and elemental profile analysis.
-- **Premium Readings (Life Blueprint / Soul Guide):** Detailed career, relationship, health, and Feng Shui guidance available through a one-time purchase.
+- **Life Blueprint:** Personalized alignment guidance available through a one-time purchase.
 - **Love Compatibility:** Analysis of compatibility between two individuals based on their BaZi charts.
+- **Synergy Boost Guide:** Additional practical relationship guidance available through a one-time purchase.
 
 ## 3. User Accounts
 
 You may need to create an account to access premium features. You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account.
 
-## 4. Payments & Subscriptions
+## 4. Payments
 
-- Premium subscriptions are billed through PayPal.
+- Paid readings are billed as one-time purchases through PayPal.
 - All payments are in USD unless otherwise specified.
-- Subscriptions auto-renew unless cancelled at least 24 hours before the end of the current period.
+- Purchases do not renew automatically.
 - Refunds are processed at our discretion. Contact support within 7 days of a charge if you believe there is an error.
 
 ## 5. Intellectual Property

@@ -163,7 +163,7 @@ const tiers = [
 <script>
   document.querySelectorAll('[data-upgrade]').forEach((btn) => {
     btn.addEventListener('click', () => {
-      const tier = btn.getAttribute('data-upgrade') as 'pro' | 'ultimate';
+      const tier = btn.getAttribute('data-upgrade') as 'pro';
       (window as any).__baziUpgrade?.(tier, (window as any).currentReading ?? undefined);
     });
   });

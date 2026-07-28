@@ -31,12 +31,12 @@ assert.equal(isUnlocked('synergy'), true);
 assert.equal(isUnlocked('pro'), false, 'synergy purchase must not unlock Life Blueprint');
 
 storage.clear();
-storage.setItem('pendingTier', 'ultimate');
+storage.setItem('pendingTier', 'pro');
 storage.setItem('pendingReading', JSON.stringify({ date: '1990-06-15', pillars: {} }));
 location.search = '?payment=success';
-const ultimate = resolveUnlock();
-assert.equal(ultimate.unlocked, true);
-assert.equal(isUnlocked('pro'), true, 'ultimate purchase must include Life Blueprint access');
+const pro = resolveUnlock();
+assert.equal(pro.unlocked, true);
+assert.equal(isUnlocked('pro'), true, 'Life Blueprint purchase must unlock Life Blueprint');
 assert.equal(isUnlocked('synergy'), false);
 
 console.log('paypal-unlock: return validation and tier isolation passed');

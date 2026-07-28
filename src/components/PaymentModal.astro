@@ -1,5 +1,5 @@
 ---
-// Shared upgrade modal — opened via window.__baziUpgrade('pro' | 'ultimate')
+// Shared payment modal for the Life Blueprint and Synergy Guide.
 ---
 
 <div class="pay-modal" id="paymentModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -105,8 +105,6 @@
 
 <script>
   import { startCheckout, type Tier } from '../lib/paypal';
-  // Extend Tier locally for synergy
-  type ExtendedTier = Tier | 'synergy';
 
   const modal = document.getElementById('paymentModal');
   const title = document.getElementById('modalTitle');
@@ -114,7 +112,7 @@
   const price = document.getElementById('modalPrice');
   const features = document.getElementById('modalFeatures');
   const checkoutBtn = document.getElementById('checkoutBtn') as HTMLButtonElement | null;
-  let selectedTier: ExtendedTier = 'pro';
+  let selectedTier: Tier = 'pro';
   let pendingReading: unknown = null;
   let lockedScrollY = 0;
   let scrollLocked = false;
@@ -162,7 +160,7 @@
     scrollLocked = false;
   }
 
-  const COPY: Record<ExtendedTier, { title: string; desc: string; price: string; features: string[]; btn: string }> = {
+  const COPY: Record<Tier, { title: string; desc: string; price: string; features: string[]; btn: string }> = {
     pro: {
       title: 'Unlock Life Blueprint',
       desc: 'The complete BaZi reading — Career, Wealth, Relationships, Health, personalized Feng Shui guidance, and daily alignment practices.',
@@ -174,18 +172,6 @@
         '✓ Yours forever — one-time payment',
       ],
       btn: 'Pay $9.90 — Unlock Now',
-    },
-    ultimate: {
-      title: 'Upgrade to Soul Guide',
-      desc: 'Everything in Life Blueprint plus 1:1 follow-up Q&A, a 30-minute Feng Shui room consultation, and 3 months of monthly horoscopes.',
-      price: '$29.90 <small>one-time</small>',
-      features: [
-        '✓ Everything in Life Blueprint',
-        '✓ 1:1 Follow-up Q&A session',
-        '✓ 30-min Feng Shui room consultation',
-        '✓ 3 months of monthly horoscopes',
-      ],
-      btn: 'Pay $29.90 — Unlock Now',
     },
     synergy: {
       title: 'Unlock Synergy Boost Guide',
@@ -202,7 +188,7 @@
     },
   };
 
-  function open(tier: ExtendedTier, reading?: unknown) {
+  function open(tier: Tier, reading?: unknown) {
     returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     selectedTier = tier;
     if (reading) pendingReading = reading;

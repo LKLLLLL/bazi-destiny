@@ -275,13 +275,6 @@
             <span class="han">改运</span> Life Alignment Guide
           </div>
           <div class="cc-pro-grid" id="ccProGrid"></div>
-          <div class="cc-upsell">
-            <div class="cc-upsell-copy">
-              <strong>Want a human eye on your chart?</strong>
-              <span>Soul Guide adds 1:1 Q&amp;A, a 30-min Feng Shui room consult, and 3 months of horoscopes.</span>
-            </div>
-            <button class="btn btn-ghost" id="upgradeUltBtn">Upgrade to Soul Guide — $29.90</button>
-          </div>
         </div>
 
         <div class="results-actions">
@@ -1036,20 +1029,6 @@
   .cc-pro-head .han { font-size: 0.85rem; color: var(--gold-deep); }
   .cc-pro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
   @media (max-width: 600px) { .cc-pro-grid { grid-template-columns: 1fr; } }
-  .cc-upsell {
-    margin-top: 1.2rem;
-    padding: 1rem 1.2rem;
-    border: 1px dashed var(--line);
-    border-radius: var(--radius-s);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  .cc-upsell-copy { display: grid; gap: 0.15rem; }
-  .cc-upsell-copy strong { font-size: 0.9rem; color: var(--bone); }
-  .cc-upsell-copy span { font-size: 0.78rem; color: var(--bone-faint); }
   .cc-ls-card {
     background: var(--ink-1);
     border: 1px solid var(--line-soft);
@@ -1799,7 +1778,6 @@
 
   // ── PayPal Unlock ──
   $('unlockProBtn')?.addEventListener('click', () => { (window as any).__baziUpgrade?.('pro', currentData); if (isUnlocked()) { $('ccPaywall')!.style.display = 'none'; renderProLifestyle(); } });
-  $('upgradeUltBtn')?.addEventListener('click', () => (window as any).__baziUpgrade?.('ultimate', currentData));
   
   // Check if already unlocked from PayPal return
   const unlock = resolveUnlock();

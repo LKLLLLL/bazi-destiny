@@ -1,12 +1,11 @@
 // PayPal checkout — tamper-resistant unlock using hashed signature.
-export type Tier = 'pro' | 'ultimate' | 'synergy';
+export type Tier = 'pro' | 'synergy';
 
 export const PAYPAL_CONFIG = {
   businessEmail: 'qwe4320325@gmail.com',
   currency: 'USD',
   products: {
     pro: { name: 'Life Blueprint - Full BaZi Reading', price: '9.90', itemId: 'BAZI-PRO' },
-    ultimate: { name: 'Soul Guide - Ultimate Reading', price: '29.90', itemId: 'BAZI-ULTIMATE' },
     synergy: { name: 'Synergy Boost Guide - Love Match', price: '4.90', itemId: 'BAZI-SYNERGY' },
   } as Record<Tier, { name: string; price: string; itemId: string }>,
   returnUrl: 'https://mybazidestiny.com/success.html',
@@ -67,7 +66,7 @@ function readUnlock(tier: Tier): string | null {
     const oldPayload = verify(oldRaw);
     if (oldPayload) {
       const oldTier = oldPayload.split('|')[0] as Tier;
-      if (oldTier === 'pro' || oldTier === 'ultimate' || oldTier === 'synergy') {
+      if (oldTier === 'pro' || oldTier === 'synergy') {
         storeUnlock(oldTier);
         localStorage.removeItem(STORAGE_KEY);
         if (oldTier === tier) return oldPayload;
@@ -124,9 +123,7 @@ export function resolveUnlock(required: 'pro' | 'synergy' = 'pro'): { unlocked: 
   try {
     const raw = localStorage.getItem('pendingReading');
     const pendingTier = localStorage.getItem('pendingTier') as Tier | null;
-    const tierMatches = required === 'pro'
-      ? pendingTier === 'pro' || pendingTier === 'ultimate'
-      : pendingTier === 'synergy';
+    const tierMatches = required === 'pro' ? pendingTier === 'pro' : pendingTier === 'synergy';
     const parsed = returned && raw ? JSON.parse(raw) : null;
     const paid = Boolean(returned && pendingTier && tierMatches && validPending(pendingTier, parsed));
     if (paid && pendingTier) {
@@ -147,5 +144,5 @@ export function resolveUnlock(required: 'pro' | 'synergy' = 'pro'): { unlocked: 
 
 export function isUnlocked(required: 'pro' | 'synergy' = 'pro'): boolean {
   if (required === 'synergy') return readUnlock('synergy') !== null;
-  return readUnlock('pro') !== null || readUnlock('ultimate') !== null;
+  return readUnlock('pro') !== null;
 }
