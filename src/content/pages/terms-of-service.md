@@ -22,7 +22,7 @@ BaZi Destiny provides personalized astrological readings based on the Chinese Ba
 
 ## 3. User Accounts
 
-You may need to create an account to access premium features. You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account.
+No account is required. Access to a paid reading is associated with the browser that completes the purchase. Clearing browser cookies may remove locally remembered access; contact support with your PayPal receipt if access needs to be restored.
 
 ## 4. Payments
 

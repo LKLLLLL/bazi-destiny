@@ -65,14 +65,21 @@ import PaymentModal from '../components/PaymentModal.astro';
   import BaZiEngine from '../lib/bazi/engine';
   import Compatibility from '../lib/bazi/compatibility';
   import { scoreRing, ELEM_EN, ELEM_COLOR } from '../lib/charts';
+  import { clearPendingCheckout, readPendingCheckout } from '../lib/paypal';
 
   const p = new URLSearchParams(window.location.search);
-  const n1 = p.get('n1') || 'Person 1';
-  const n2 = p.get('n2') || 'Person 2';
-  const d1 = p.get('d1') || '';
-  const h1 = p.get('h1') || '';
-  const d2 = p.get('d2') || '';
-  const h2 = p.get('h2') || '';
+  const cancelled = p.get('payment') === 'cancel' ? readPendingCheckout('synergy') as any : null;
+  const n1 = cancelled?.n1 || p.get('n1') || 'Person 1';
+  const n2 = cancelled?.n2 || p.get('n2') || 'Person 2';
+  const d1 = cancelled?.d1 || p.get('d1') || '';
+  const h1 = cancelled?.h1 || p.get('h1') || '';
+  const d2 = cancelled?.d2 || p.get('d2') || '';
+  const h2 = cancelled?.h2 || p.get('h2') || '';
+  if (cancelled) {
+    clearPendingCheckout();
+    const restored = new URLSearchParams({ n1, n2, d1, h1, d2, h2 });
+    window.history.replaceState({}, document.title, `${window.location.pathname}?${restored}`);
+  }
 
   // HTML-escape user-supplied names before they reach innerHTML.
   function esc(s: unknown): string {
@@ -182,7 +189,7 @@ import PaymentModal from '../components/PaymentModal.astro';
       if (ub) {
         ub.onclick = function() {
           if (window.__baziUpgrade) {
-            window.__baziUpgrade('synergy', { n1: n1, n2: n2, e1: e1, e2: e2 });
+            window.__baziUpgrade('synergy', { n1: n1, n2: n2, e1: e1, e2: e2, d1: d1, h1: h1, d2: d2, h2: h2 });
           }
         };
       }

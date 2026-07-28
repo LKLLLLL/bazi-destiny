@@ -1103,7 +1103,7 @@
   import BaZiEngine from '../lib/bazi/engine';
   import Readings from '../lib/bazi/readings';
   import { elementsDonut, elementBars, compass, pillarStrengthCards, ELEM_EN, ELEM_COLOR, STEM_EN, BRANCH_EN, ZODIAC_EMOJI } from '../lib/charts';
-  import { resolveUnlock, isUnlocked } from '../lib/paypal';
+  import { clearPendingCheckout, getPaymentStatus, isUnlocked, readPendingCheckout } from '../lib/paypal';
   import { getLifestyleGuide } from '../lib/bazi/lifestyle';
 
   const LS_KEY = 'bazi_stepcalc_data';
@@ -1138,6 +1138,7 @@
   let currentData: any = null;
   let loadTimer: ReturnType<typeof setInterval> | null = null;
   let loadTimeout: ReturnType<typeof setTimeout> | null = null;
+  const paymentStatusReady = getPaymentStatus();
 
   // ── localStorage ──
   function saveState() {
@@ -1615,12 +1616,18 @@
     // Paywall state — paying customers always see the full blueprint
     const paywall = $('ccPaywall');
     const pro = $('ccPro');
-    if (isUnlocked()) {
+    if (isUnlocked('pro')) {
       if (paywall) paywall.style.display = 'none';
       renderProLifestyle();
     } else {
       if (paywall) paywall.style.display = '';
       if (pro) pro.hidden = true;
+      void paymentStatusReady.then((status) => {
+        if (status.pro && currentData === data) {
+          if (paywall) paywall.style.display = 'none';
+          renderProLifestyle();
+        }
+      });
     }
   }
 
@@ -1777,18 +1784,23 @@
   });
 
   // ── PayPal Unlock ──
-  $('unlockProBtn')?.addEventListener('click', () => { (window as any).__baziUpgrade?.('pro', currentData); if (isUnlocked()) { $('ccPaywall')!.style.display = 'none'; renderProLifestyle(); } });
+  $('unlockProBtn')?.addEventListener('click', () => { (window as any).__baziUpgrade?.('pro', currentData); });
   
-  // Check if already unlocked from PayPal return
-  const unlock = resolveUnlock();
-  if (unlock.unlocked && (unlock.pending as any)?.date) {
-    currentData = unlock.pending;
-    (window as any).currentReading = currentData;
-    for (let i = 0; i <= 2; i++) { const el = $(`scStep${i}`); if (el) el.hidden = true; }
-    $('scWelcome')!.hidden = true;
-    $('calcResults')!.hidden = false;
-    renderResults(currentData);
-  }
+  // Restore the chart only after the server confirms the PayPal order.
+  void paymentStatusReady.then((status) => {
+    const returned = new URLSearchParams(window.location.search).get('checkout') === 'complete';
+    const pending = returned && status.pro ? readPendingCheckout('pro') as any : null;
+    if (pending?.date) {
+      currentData = pending;
+      clearPendingCheckout();
+      (window as any).currentReading = currentData;
+      for (let i = 0; i <= 2; i++) { const el = $(`scStep${i}`); if (el) el.hidden = true; }
+      $('scWelcome')!.hidden = true;
+      $('calcResults')!.hidden = false;
+      window.history.replaceState({}, document.title, window.location.pathname);
+      renderResults(currentData);
+    }
+  });
 
 
   // Debug mode — only available in dev environment, add ?debug=1 to URL to skip paywall

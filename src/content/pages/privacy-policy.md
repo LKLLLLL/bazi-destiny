@@ -18,16 +18,15 @@ When you use BaZi Destiny, we may collect the following information:
 
 - To generate and deliver your personalized BaZi reading
 - To improve our services and user experience
-- To process premium subscription payments
-- To communicate with you about your account or service updates
+- To process one-time purchases and deliver paid readings
 
 ## 3. Data Storage & Security
 
-Your birth data and reading results are stored securely. We use industry-standard encryption (TLS/SSL) to protect data in transit. We do not sell, rent, or share your personal information with third parties for their marketing purposes.
+Your birth data and reading results remain in your browser unless you choose to share them. For a purchase, we store the PayPal order ID, product tier, amount, currency, and payment status so that we can verify access and prevent an order from being reused. We use industry-standard encryption (TLS/SSL) to protect data in transit. We do not sell, rent, or share your personal information with third parties for their marketing purposes.
 
 ## 4. Cookies
 
-We may use essential cookies to maintain your session and preferences. We do not use tracking or advertising cookies.
+We use essential HttpOnly cookies to maintain checkout state and remember access to a purchased reading. These cookies are required for paid features and are not used for advertising or cross-site tracking.
 
 ## 5. Third-Party Services
 

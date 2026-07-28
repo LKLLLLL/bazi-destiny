@@ -8,7 +8,7 @@
     "build": "pnpm seo:audit && node scripts/generate-og-images.mjs && astro build && node scripts/fileformat.mjs && node scripts/verify-dist.mjs",
     "seo:audit": "node scripts/seo-audit.mjs",
     "test:bazi": "node --experimental-strip-types tests/bazi-engine.test.ts",
-    "test:payments": "node --experimental-strip-types tests/paypal-unlock.test.ts",
+    "test:payments": "node --experimental-strip-types tests/paypal-unlock.test.ts && node --experimental-strip-types tests/paypal-server.test.ts",
     "test": "pnpm test:bazi && pnpm test:payments",
     "preview": "astro preview",
     "postbuild": "echo done"
@@ -19,6 +19,7 @@
     "@vercel/kv": "^3.0.0"
   },
   "devDependencies": {
+    "@types/node": "^22.20.1",
     "sharp": "^0.35.3",
     "typescript": "^5.8.0"
   }

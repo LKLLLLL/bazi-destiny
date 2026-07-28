@@ -1,42 +1,50 @@
 import assert from 'node:assert/strict';
-import { isUnlocked, resolveUnlock } from '../src/lib/paypal.ts';
+import { getPaymentStatus, isUnlocked, readPendingCheckout, startCheckout } from '../src/lib/paypal.ts';
 
 class MemoryStorage {
   private values = new Map<string, string>();
   getItem(key: string) { return this.values.get(key) ?? null; }
   setItem(key: string, value: string) { this.values.set(key, String(value)); }
   removeItem(key: string) { this.values.delete(key); }
-  clear() { this.values.clear(); }
 }
 
-const storage = new MemoryStorage();
-const location = { search: '?payment=success', pathname: '/calculator.html', hash: '' };
+const sessionStorage = new MemoryStorage();
+let assignedUrl = '';
+let status = { pro: false, synergy: false };
+let lastRequest: { url: string; init?: RequestInit } | null = null;
+
 Object.assign(globalThis, {
-  localStorage: storage,
-  window: {
-    location,
-    history: { replaceState: () => { location.search = ''; } },
+  sessionStorage,
+  window: { location: { assign: (url: string) => { assignedUrl = url; } } },
+  fetch: async (url: string, init?: RequestInit) => {
+    lastRequest = { url, init };
+    if (url === '/api/paypal/status') {
+      return new Response(JSON.stringify(status), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
+    if (url === '/api/paypal/create-order') {
+      return new Response(JSON.stringify({
+        orderId: 'TESTORDER123',
+        approveUrl: 'https://www.sandbox.paypal.com/checkoutnow?token=TESTORDER123',
+      }), { status: 201, headers: { 'Content-Type': 'application/json' } });
+    }
+    throw new Error(`Unexpected request: ${url}`);
   },
-  document: { title: 'test' },
 });
 
-assert.deepEqual(resolveUnlock(), { unlocked: false, pending: null }, 'direct success visit must not unlock');
+await getPaymentStatus(true);
+assert.equal(isUnlocked('pro'), false, 'browser state alone must not unlock Life Blueprint');
+assert.equal(isUnlocked('synergy'), false, 'browser state alone must not unlock Synergy Guide');
 
-storage.setItem('pendingTier', 'synergy');
-storage.setItem('pendingReading', JSON.stringify({ n1: 'A', n2: 'B', e1: 'Wood', e2: 'Fire' }));
-location.search = '?payment=success';
-const synergy = resolveUnlock('synergy');
-assert.equal(synergy.unlocked, true);
-assert.equal(isUnlocked('synergy'), true);
-assert.equal(isUnlocked('pro'), false, 'synergy purchase must not unlock Life Blueprint');
+status = { pro: true, synergy: false };
+await getPaymentStatus(true);
+assert.equal(isUnlocked('pro'), true, 'server-confirmed entitlement unlocks Life Blueprint');
+assert.equal(isUnlocked('synergy'), false, 'product entitlements stay isolated');
 
-storage.clear();
-storage.setItem('pendingTier', 'pro');
-storage.setItem('pendingReading', JSON.stringify({ date: '1990-06-15', pillars: {} }));
-location.search = '?payment=success';
-const pro = resolveUnlock();
-assert.equal(pro.unlocked, true);
-assert.equal(isUnlocked('pro'), true, 'Life Blueprint purchase must unlock Life Blueprint');
-assert.equal(isUnlocked('synergy'), false);
+const reading = { date: '1990-06-15', pillars: { day: 'test' } };
+await startCheckout('pro', reading);
+assert.equal(assignedUrl, 'https://www.sandbox.paypal.com/checkoutnow?token=TESTORDER123');
+assert.deepEqual(readPendingCheckout('pro'), reading, 'pending reading survives the PayPal redirect');
+assert.equal(lastRequest?.url, '/api/paypal/create-order');
+assert.deepEqual(JSON.parse(String(lastRequest?.init?.body)), { tier: 'pro' }, 'the client must never submit a price');
 
-console.log('paypal-unlock: return validation and tier isolation passed');
+console.log('paypal-unlock: server entitlement and checkout isolation passed');

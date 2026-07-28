@@ -13,7 +13,7 @@
     <div id="modalPrice" class="pay-modal-price"></div>
     <div id="modalFeatures" class="pay-modal-features"></div>
     <button class="btn btn-gold btn-lg btn-full" id="checkoutBtn">Pay &amp; Unlock</button>
-    <p class="pay-modal-note">Secure checkout via PayPal · One-time payment, yours forever</p>
+    <p class="pay-modal-note" id="checkoutNote" aria-live="polite">Secure checkout via PayPal · One-time payment, yours forever</p>
   </div>
 </div>
 
@@ -112,6 +112,7 @@
   const price = document.getElementById('modalPrice');
   const features = document.getElementById('modalFeatures');
   const checkoutBtn = document.getElementById('checkoutBtn') as HTMLButtonElement | null;
+  const checkoutNote = document.getElementById('checkoutNote');
   let selectedTier: Tier = 'pro';
   let pendingReading: unknown = null;
   let lockedScrollY = 0;
@@ -198,6 +199,8 @@
     if (price) { price.style.display = c.price ? '' : 'none'; price.innerHTML = c.price; }
     if (features) features.innerHTML = c.features.map((f) => `<div>${f}</div>`).join('');
     if (checkoutBtn) checkoutBtn.innerHTML = `💳 ${c.btn}`;
+    if (checkoutBtn) checkoutBtn.disabled = false;
+    if (checkoutNote) checkoutNote.textContent = 'Secure checkout via PayPal · One-time payment, yours forever';
     if (modal) {
       lockPage();
       modal.hidden = false;
@@ -214,7 +217,18 @@
   (window as any).__baziUpgrade = (tier: Tier, reading?: unknown) => open(tier, reading);
   (window as any).__baziSetPendingReading = (reading: unknown) => { pendingReading = reading; };
 
-  checkoutBtn?.addEventListener('click', () => startCheckout(selectedTier, pendingReading));
+  checkoutBtn?.addEventListener('click', async () => {
+    checkoutBtn.disabled = true;
+    checkoutBtn.textContent = 'Opening PayPal...';
+    if (checkoutNote) checkoutNote.textContent = 'Creating a secure order...';
+    try {
+      await startCheckout(selectedTier, pendingReading);
+    } catch (error) {
+      checkoutBtn.disabled = false;
+      checkoutBtn.textContent = `💳 ${COPY[selectedTier].btn}`;
+      if (checkoutNote) checkoutNote.textContent = error instanceof Error ? error.message : 'Checkout is temporarily unavailable.';
+    }
+  });
   document.getElementById('modalClose')?.addEventListener('click', close);
   modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });

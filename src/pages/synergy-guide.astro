@@ -4,11 +4,11 @@ import Base from '../layouts/Base.astro';
 
 <Base
   title="Synergy Boost Guide | BaZi Destiny"
-  description="Your personalized aura alignment guide — morning rituals, communication, shared activities, home energy, and conflict resolution."
+  description="Your personalized relationship alignment guide — communication, shared activities, home energy, and conflict resolution."
   path="/synergy-guide.html"
   noindex={true}
 >
-  <div class="sg-wrap" id="sgWrap">
+  <div class="sg-wrap" id="sgWrap" hidden>
     <header class="sg-hero">
       <p class="eyebrow center"><span class="han"></span> Synergy Boost</p>
       <h1 id="sgTitle">Your Synergy Guide</h1>
@@ -28,18 +28,19 @@ import Base from '../layouts/Base.astro';
     </div>
   </div>
 
-  <div class="sg-wrap" id="sgLocked" hidden>
+  <div class="sg-wrap" id="sgLocked">
     <div class="panel sg-locked">
       <div class="sg-locked-icon" aria-hidden="true">🔒</div>
-      <h1>This guide is locked</h1>
-      <p>The Synergy Boost Guide is part of the Love Match upgrade. Run a free match first, then unlock it from your result page.</p>
-      <a href="/love-match.html" class="btn btn-love btn-lg">Try Love Match — Free</a>
+      <h1 id="sgLockedTitle">Checking your purchase</h1>
+      <p id="sgLockedText">Confirming access to your Synergy Boost Guide…</p>
+      <a href="/love-match.html" class="btn btn-love btn-lg" id="sgLockedAction" hidden>Try Love Match — Free</a>
     </div>
   </div>
 </Base>
 
 <style>
   .sg-wrap { padding: calc(68px + 2rem) 1.25rem 4rem; max-width: 680px; margin: 0 auto; }
+  .sg-wrap[hidden] { display: none; }
   .sg-hero { text-align: center; margin-bottom: 3rem; }
   .sg-hero h1 { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); font-weight: 600; line-height: 1.2; margin-top: 0.4rem; }
   .sg-sub { color: var(--bone-dim); font-size: 0.95rem; margin-top: 0.6rem; max-width: 44ch; margin-inline: auto; line-height: 1.6; }
@@ -54,169 +55,55 @@ import Base from '../layouts/Base.astro';
 </style>
 
 <script>
-  import { isUnlocked, resolveUnlock } from '../lib/paypal';
+  import { clearPendingCheckout, getPaymentStatus, readPendingCheckout } from '../lib/paypal';
+  import { getSynergyGuide, isEnglishElement } from '../lib/bazi/synergy';
 
-  // Gate this product independently from the Life Blueprint tiers.
-  const unlock = resolveUnlock('synergy');
-  const __unlocked = unlock.unlocked || isUnlocked('synergy');
+  const params = new URLSearchParams(window.location.search);
+  const completedCheckout = params.get('checkout') === 'complete';
+  const pending = completedCheckout ? readPendingCheckout('synergy') as any : null;
+  const name1 = pending?.n1 || params.get('n1') || 'Person 1';
+  const name2 = pending?.n2 || params.get('n2') || 'Person 2';
+  const element1 = pending?.e1 || params.get('e1') || 'Wood';
+  const element2 = pending?.e2 || params.get('e2') || 'Fire';
+  const wrap = document.getElementById('sgWrap');
+  const locked = document.getElementById('sgLocked');
+  const lockedTitle = document.getElementById('sgLockedTitle');
+  const lockedText = document.getElementById('sgLockedText');
+  const lockedAction = document.getElementById('sgLockedAction') as HTMLAnchorElement | null;
 
-  if (!__unlocked) {
-    var __w = document.getElementById('sgWrap');
-    var __l = document.getElementById('sgLocked');
-    if (__w) __w.hidden = true;
-    if (__l) __l.hidden = false;
-  } else {
+  async function loadGuide() {
+    const status = await getPaymentStatus(true);
+    if (!status.synergy) {
+      if (lockedTitle) lockedTitle.textContent = 'This guide is locked';
+      if (lockedText) lockedText.textContent = 'Run a free match first, then unlock the Synergy Boost Guide from your result page.';
+      if (lockedAction) lockedAction.hidden = false;
+      return;
+    }
 
-  // HTML-escape user-supplied values before they reach innerHTML.
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-    });
-  }
-  var VALID_ELEMENTS = { Wood: 1, Fire: 1, Earth: 1, Metal: 1, Water: 1 };
+    if (!isEnglishElement(element1) || !isEnglishElement(element2)) {
+      if (lockedTitle) lockedTitle.textContent = 'Guide unavailable';
+      if (lockedText) lockedText.textContent = 'The saved match data is invalid. Please run the match again.';
+      if (lockedAction) { lockedAction.hidden = false; lockedAction.textContent = 'Back to Love Match'; }
+      return;
+    }
 
-  var p = new URLSearchParams(window.location.search);
-  var n1 = p.get('n1') || 'Person 1';
-  var n2 = p.get('n2') || 'Person 2';
-  var e1 = VALID_ELEMENTS[p.get('e1')] ? p.get('e1') : 'Wood';
-  var e2 = VALID_ELEMENTS[p.get('e2')] ? p.get('e2') : 'Fire';
-
-  // Helper: join HTML lines into <p> paragraphs
-  function P() {
-    var args = Array.prototype.slice.call(arguments);
-    var html = args[0];
-    for (var i = 1; i < args.length; i++) html += args[i];
-    // Split on double newline as paragraph markers
-    var paras = html.split('\n\n');
-    return '<p>' + paras.join('</p><p>') + '</p>';
-  }
-
-  // Helper: em dash without spaces (U+2014)
-  var D = '\u2014';
-
-  document.getElementById('sgTitle').textContent = n1 + ' & ' + n2;
-  document.getElementById('sgSub').textContent = 'A personalized aura alignment guide for your ' + e1 + ' \u00d7 ' + e2 + ' match. Five practices to deepen your elemental bond.';
-  document.getElementById('sgBadge').textContent = e1 + ' \u00d7 ' + e2;
-  document.getElementById('sgIntroText').textContent =
-    'Every couple has a unique energy signature. When ' + e1 + ' meets ' + e2 +
-    ', the Five Elements dance in a pattern that is entirely yours. This guide translates that ancient wisdom into five simple daily practices\u2014' +
-    'designed for ' + n1 + ' and ' + n2 + ' specifically.';
-
-  function getSynergy(eA, eB, nA, nB) {
-    var styles = {
-      Wood: '<strong>expresses love through action and creation</strong>\u2014not big on words, but always showing up',
-      Fire: '<strong>loves out loud</strong>\u2014warm, expressive, emotional highs and lows are part of the package',
-      Earth: '<strong>steady and practical</strong>\u2014affection shows up as reliability, care, and quiet presence',
-      Metal: '<strong>precise and composed</strong>\u2014love lives in the details, thoughtful gestures over grand speeches',
-      Water: '<strong>deeply intuitive</strong>\u2014connects through emotional sharing, needs to feel truly heard'
-    };
-    var acts = {
-      'Wood-Wood': 'tend a balcony garden together\u2014plant one new green thing each week',
-      'Wood-Fire': 'cook a new dish from scratch on Sunday evenings\u2014fire\'s heat meets wood\'s creativity',
-      'Wood-Earth': 'reorganize a shared room\u2014build your own system of order together',
-      'Wood-Metal': 'collaborate on a woodworking craft or DIY furniture project',
-      'Wood-Water': 'hike a riverside trail every weekend\u2014water nourishes wood in nature',
-      'Fire-Wood': 'cook a new dish from scratch on Sunday evenings\u2014fire\'s heat meets wood\'s creativity',
-      'Fire-Fire': 'take a weekly dance or fitness class\u2014channel that double-fire energy together',
-      'Fire-Earth': 'repaint a wall or refurbish a vintage piece of furniture',
-      'Fire-Metal': 'visit galleries or attend live concerts\u2014fire\'s passion tempered by metal\'s refinement',
-      'Fire-Water': 'walk along the beach at sunrise\u2014fire and water find their peace in nature',
-      'Earth-Wood': 'reorganize a shared room\u2014build your own system of order together',
-      'Earth-Fire': 'repaint a wall or refurbish a vintage piece of furniture',
-      'Earth-Earth': 'plan your monthly finances or next trip\u2014double-earth stability in action',
-      'Earth-Metal': 'study investing or learn a marketable skill\u2014earth nurtures metal\'s practicality',
-      'Earth-Water': 'set up an aquarium or grow a moss terrarium\u2014earth and water blended daily',
-      'Metal-Wood': 'collaborate on a woodworking craft or DIY furniture project',
-      'Metal-Fire': 'visit galleries or attend live concerts\u2014fire\'s passion tempered by metal\'s refinement',
-      'Metal-Earth': 'study investing or learn a marketable skill\u2014earth nurtures metal\'s practicality',
-      'Metal-Metal': 'share one industry insight or new idea each morning\u2014two sharp minds refining each other',
-      'Metal-Water': 'co-write a shared journal or film reviews\u2014water inspires, metal crafts the words',
-      'Water-Wood': 'hike a riverside trail every weekend\u2014water nourishes wood in nature',
-      'Water-Fire': 'walk along the beach at sunrise\u2014fire and water find their peace in nature',
-      'Water-Earth': 'set up an aquarium or grow a moss terrarium\u2014earth and water blended daily',
-      'Water-Metal': 'co-write a shared journal or film reviews\u2014water inspires, metal crafts the words',
-      'Water-Water': 'stay up late talking, or read the same book on a rainy Sunday\u2014double water understands deepest'
-    };
-    var dirs = { Wood:'east', Fire:'south', Earth:'center', Metal:'west', Water:'north' };
-    var objs = { Wood:'a potted plant or small tree', Fire:'a warm-toned lamp or candle set', Earth:'ceramic pottery or a natural stone piece', Metal:'a metal wind chime or framed mirror', Water:'a small tabletop fountain or crystal bowl of water' };
-    var cools = {
-      Wood: '<strong>step outside alone for ten minutes</strong>\u2014trees and grass are Wood\'s natural stabilizers',
-      Fire: '<strong>drink a glass of cool water slowly, in silence</strong>\u2014water calms fire\'s heat from within',
-      Earth: '<strong>stand barefoot on wood flooring</strong>, or place both hands on a potted plant\'s soil for a minute',
-      Metal: '<strong>organize a single drawer</strong> or polish a metal object\u2014restored order settles a Metal mind',
-      Water: '<strong>wash your hands and face with warm water</strong>, or play a recording of gentle rain or flowing stream'
-    };
-    var times = { Wood:'Dawn (5\u20137 AM)', Fire:'Late morning (10 AM\u2013noon)', Earth:'Early morning (7\u20139 AM)', Metal:'Daybreak (6\u20138 AM)', Water:'First light (5\u20136 AM)' };
-
-    return [
-      {
-        title: 'Morning Ritual',
-        body: P(
-          '<em>' + times[eA] + '</em> is when ' + eA + ' and ' + eB + ' energies harmonize best\u2014this is your couple\'s power hour. ' +
-          '<strong>Begin each day sitting side by side in silence for five minutes.</strong> ' +
-          'No phones, no words, just the shared rhythm of breath.',
-          nA + ' (' + eA + ') <strong>initiates the calm</strong>; ' + nB + ' (' + eB + ') <strong>receives</strong>. ' +
-          'Over two weeks, this simple ritual will synchronize your energy fields at a level you can both feel.'
-        )
-      },
-      {
-        title: 'Communication Style',
-
-        body: P(
-          nA + ' (' + eA + '): ' + (styles[eA] || '') + '.',
-          nB + ' (' + eB + '): ' + (styles[eB] || '') + '.',
-          'Here is the bridge: when ' + nA + ' goes quiet, <strong>do not push</strong>\u2014they are processing internally, and silence is not withdrawal. ' +
-          'When ' + nB + ' needs to talk, <strong>pause everything and listen with full presence</strong>\u2014not to fix, but to witness.',
-          'These two simple shifts alone will transform how conflicts resolve between you.'
-        )
-      },
-      {
-        title: 'Shared Activity',
-
-        body: P(
-          '<strong>Your elemental prescription:</strong> ' + (acts[eA+'-'+eB] || acts[eB+'-'+eA] || 'complete one small creative project together each week') + '.',
-          'Why this works: <em>physical co-creation is the fastest path to deepening an elemental bond.</em> ' +
-          'When your hands build together, your energies merge at the Five Elements level\u2014far deeper than conversation alone can reach.',
-          '<strong>Make it a weekly ritual;</strong> consistency matters more than scale.'
-        )
-      },
-      {
-        title: 'Home Energy',
-
-        body: P(
-          '<strong>Face your bed toward the ' + (dirs[eA] || 'east') + '</strong>\u2014' +
-          'this aligns ' + nA + '\'s ' + eA + ' energy with the natural flow of your shared space.',
-          '<strong>Place ' + (objs[eB] || 'a meaningful object') + ' in the ' + (dirs[eB] || 'south') + ' area</strong> of your home to anchor ' + nB + '\'s ' + eB + ' presence.',
-          'Most importantly: <strong>keep the center of your living space open and uncluttered.</strong> ' +
-          eA + ' and ' + eB + ' energies need clear, unobstructed pathways to flow, merge, and strengthen each other.'
-        )
-      },
-      {
-        title: 'Conflict Resolution',
-
-        body: P(
-          'When tension rises, <strong>separate into your own spaces for fifteen minutes</strong>\u2014no negotiation, no last word.',
-          nA + ': ' + (cools[eA] || 'breathe deeply and steady your emotions') + '.',
-          nB + ': ' + (cools[eB] || 'breathe deeply and steady your emotions') + '.',
-          'Here is the most important part: when you come back together, <strong>do not begin with words.</strong> ' +
-          '<strong>Start with a single touch</strong>\u2014hold hands, embrace, or gently rest a hand on the other\'s shoulder. ' +
-          'Physical contact resets your combined energy field <em>before</em> words can undo it. Then speak. This sequence changes everything.'
-        )
-      }
-    ];
+    const guide = getSynergyGuide(element1, element2, name1, name2);
+    document.getElementById('sgTitle')!.textContent = guide.title;
+    document.getElementById('sgSub')!.textContent = guide.subtitle;
+    document.getElementById('sgBadge')!.textContent = guide.badge;
+    document.getElementById('sgIntroText')!.textContent = guide.intro;
+    document.getElementById('sgCards')!.innerHTML = guide.cards.map((card: any) =>
+      `<div class="sg-card"><div class="sg-card-header"><div class="sg-card-title">${card.title}</div></div><div class="sg-card-body">${card.bodyHtml}</div></div>`
+    ).join('');
+    document.title = `${guide.title} — Synergy Guide | BaZi Destiny`;
+    if (completedCheckout) {
+      clearPendingCheckout();
+      const clean = new URLSearchParams({ n1: name1, n2: name2, e1: element1, e2: element2 });
+      window.history.replaceState({}, document.title, `${window.location.pathname}?${clean}`);
+    }
+    if (locked) locked.hidden = true;
+    if (wrap) wrap.hidden = false;
   }
 
-  var cards = getSynergy(e1, e2, esc(n1), esc(n2));
-  document.getElementById('sgCards').innerHTML = cards.map(function(c) {
-    return '<div class="sg-card">' +
-      '<div class="sg-card-header">' +
-          '<div class="sg-card-title">' + c.title + '</div>' +
-        '</div>' +
-      '<div class="sg-card-body">' + c.body + '</div>' +
-    '</div>';
-  }).join('');
-
-  document.title = n1 + ' & ' + n2 + ' \u2014 Synergy Guide | BaZi Destiny';
-
-  } // end unlock gate
+  void loadGuide();
 </script>

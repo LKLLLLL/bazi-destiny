@@ -1,148 +1,82 @@
-// PayPal checkout — tamper-resistant unlock using hashed signature.
-export type Tier = 'pro' | 'synergy';
+import { PAYPAL_PRODUCTS, type Tier } from './paypal/products.ts';
 
-export const PAYPAL_CONFIG = {
-  businessEmail: 'qwe4320325@gmail.com',
-  currency: 'USD',
-  products: {
-    pro: { name: 'Life Blueprint - Full BaZi Reading', price: '9.90', itemId: 'BAZI-PRO' },
-    synergy: { name: 'Synergy Boost Guide - Love Match', price: '4.90', itemId: 'BAZI-SYNERGY' },
-  } as Record<Tier, { name: string; price: string; itemId: string }>,
-  returnUrl: 'https://mybazidestiny.com/success.html',
-  cancelUrl: 'https://mybazidestiny.com/?payment=cancel',
-};
+export type { Tier } from './paypal/products.ts';
+export { PAYPAL_PRODUCTS } from './paypal/products.ts';
 
-// ── Tamper-resistant unlock ──
-// Uses a simple hash to prevent casual localStorage.setItem bypass.
-// Not cryptographically strong — a determined user can still reverse-engineer this.
-// For real security, move unlock verification server-side (Vercel KV + API).
+const PENDING_READING_KEY = 'bazi_checkout_reading';
+const PENDING_TIER_KEY = 'bazi_checkout_tier';
 
-const STORAGE_KEY = '__bazi_v2';
-const SALT = 0x5a3f7b2c;
-
-function djb2(str: string): number {
-  let hash = 5381;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) + hash + str.charCodeAt(i)) | 0;
-  }
-  return hash >>> 0;
+export interface PaymentStatus {
+  pro: boolean;
+  synergy: boolean;
 }
 
-function sign(payload: string): string {
-  const raw = payload + ':' + (djb2(payload) ^ SALT).toString(36);
-  return raw;
+let statusCache: PaymentStatus | null = null;
+let statusRequest: Promise<PaymentStatus> | null = null;
+
+export async function getPaymentStatus(force = false): Promise<PaymentStatus> {
+  if (!force && statusCache) return statusCache;
+  if (!force && statusRequest) return statusRequest;
+  statusRequest = fetch('/api/paypal/status', {
+    credentials: 'same-origin',
+    headers: { Accept: 'application/json' },
+  })
+    .then(async (response) => {
+      if (!response.ok) throw new Error('Unable to check payment status');
+      const body = await response.json();
+      statusCache = { pro: body?.pro === true, synergy: body?.synergy === true };
+      return statusCache;
+    })
+    .catch(() => ({ pro: false, synergy: false }))
+    .finally(() => { statusRequest = null; });
+  return statusRequest;
 }
 
-function verify(raw: string | null): string | null {
-  if (!raw) return null;
-  const lastColon = raw.lastIndexOf(':');
-  if (lastColon === -1) return null;
-  const payload = raw.substring(0, lastColon);
-  const expected = djb2(payload) ^ SALT;
-  const actual = parseInt(raw.substring(lastColon + 1), 36);
-  if (expected !== actual) return null;
-  return payload;
+export function isUnlocked(tier: Tier): boolean {
+  return statusCache?.[tier] === true;
 }
 
-function tierKey(tier: Tier): string {
-  return `${STORAGE_KEY}:${tier}`;
-}
-
-function storeUnlock(tier: Tier): void {
-  const now = Date.now();
-  const payload = tier + '|' + now;
-  localStorage.setItem(tierKey(tier), sign(payload));
-}
-
-function readUnlock(tier: Tier): string | null {
+export async function startCheckout(tier: Tier, pendingReading?: unknown): Promise<void> {
+  if (!Object.hasOwn(PAYPAL_PRODUCTS, tier)) throw new Error('Unknown product');
   try {
-    const raw = localStorage.getItem(tierKey(tier));
-    if (raw) {
-      const payload = verify(raw);
-      if (payload?.startsWith(`${tier}|`)) return payload;
-    }
-    // Migrate the earlier single-key format without granting another product.
-    const oldRaw = localStorage.getItem(STORAGE_KEY);
-    const oldPayload = verify(oldRaw);
-    if (oldPayload) {
-      const oldTier = oldPayload.split('|')[0] as Tier;
-      if (oldTier === 'pro' || oldTier === 'synergy') {
-        storeUnlock(oldTier);
-        localStorage.removeItem(STORAGE_KEY);
-        if (oldTier === tier) return oldPayload;
-      }
-    }
-    // The original boolean flag represented the Life Blueprint product.
-    if (localStorage.getItem('proUnlocked') === 'true') {
-      storeUnlock('pro');
-      localStorage.removeItem('proUnlocked');
-      return tier === 'pro' ? 'pro|legacy' : null;
-    }
-    return null;
+    if (pendingReading) sessionStorage.setItem(PENDING_READING_KEY, JSON.stringify(pendingReading));
+    sessionStorage.setItem(PENDING_TIER_KEY, tier);
+  } catch {
+    throw new Error('Your browser could not save this reading for checkout');
+  }
+
+  const response = await fetch('/api/paypal/create-order', {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({ tier }),
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok || typeof body?.approveUrl !== 'string') {
+    throw new Error(body?.error || 'Unable to start PayPal checkout');
+  }
+  const approveUrl = new URL(body.approveUrl);
+  if (approveUrl.protocol !== 'https:' || !approveUrl.hostname.endsWith('.paypal.com')) {
+    throw new Error('PayPal returned an invalid checkout address');
+  }
+  window.location.assign(approveUrl.toString());
+}
+
+export function readPendingCheckout(expectedTier: Tier): unknown | null {
+  try {
+    if (sessionStorage.getItem(PENDING_TIER_KEY) !== expectedTier) return null;
+    const raw = sessionStorage.getItem(PENDING_READING_KEY);
+    return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
   }
 }
 
-export function startCheckout(tier: Tier, pendingReading?: unknown): void {
-  const product = PAYPAL_CONFIG.products[tier];
-  if (pendingReading) {
-    try {
-      localStorage.setItem('pendingReading', JSON.stringify(pendingReading));
-      localStorage.setItem('pendingTier', tier);
-    } catch {
-      /* storage unavailable */
-    }
-  }
-  const url = new URL('https://www.paypal.com/cgi-bin/webscr');
-  url.searchParams.set('cmd', '_xclick');
-  url.searchParams.set('business', PAYPAL_CONFIG.businessEmail);
-  url.searchParams.set('item_name', product.name);
-  url.searchParams.set('amount', product.price);
-  url.searchParams.set('currency_code', PAYPAL_CONFIG.currency);
-  url.searchParams.set('item_number', product.itemId);
-  url.searchParams.set('return', PAYPAL_CONFIG.returnUrl);
-  url.searchParams.set('cancel_return', PAYPAL_CONFIG.cancelUrl);
-  url.searchParams.set('custom', tier);
-  window.location.href = url.toString();
-}
-
-function validPending(tier: Tier, pending: unknown): boolean {
-  if (!pending || typeof pending !== 'object') return false;
-  const value = pending as Record<string, unknown>;
-  return tier === 'synergy'
-    ? typeof value.n1 === 'string' && typeof value.n2 === 'string'
-    : typeof value.date === 'string';
-}
-
-/** Completes a matching checkout return and returns its pending reading. */
-export function resolveUnlock(required: 'pro' | 'synergy' = 'pro'): { unlocked: boolean; pending: unknown | null } {
-  const params = new URLSearchParams(window.location.search);
-  const returned = params.get('payment') === 'success';
-  let pending: unknown | null = null;
+export function clearPendingCheckout(): void {
   try {
-    const raw = localStorage.getItem('pendingReading');
-    const pendingTier = localStorage.getItem('pendingTier') as Tier | null;
-    const tierMatches = required === 'pro' ? pendingTier === 'pro' : pendingTier === 'synergy';
-    const parsed = returned && raw ? JSON.parse(raw) : null;
-    const paid = Boolean(returned && pendingTier && tierMatches && validPending(pendingTier, parsed));
-    if (paid && pendingTier) {
-      pending = parsed;
-      storeUnlock(pendingTier);
-      localStorage.removeItem('pendingReading');
-      localStorage.removeItem('pendingTier');
-    }
-    const unlocked = paid || isUnlocked(required);
-    if (returned || params.get('payment') === 'cancel') {
-      window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
-    }
-    return { unlocked, pending };
+    sessionStorage.removeItem(PENDING_READING_KEY);
+    sessionStorage.removeItem(PENDING_TIER_KEY);
   } catch {
-    return { unlocked: isUnlocked(required), pending };
+    /* storage unavailable */
   }
-}
-
-export function isUnlocked(required: 'pro' | 'synergy' = 'pro'): boolean {
-  if (required === 'synergy') return readUnlock('synergy') !== null;
-  return readUnlock('pro') !== null;
 }
