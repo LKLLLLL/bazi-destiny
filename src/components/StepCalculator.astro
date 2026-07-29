@@ -2,6 +2,7 @@
 // StepCalculator — multi-step birth data wizard
 // 1. Birth Date → 2. Birth Hour → 3. Birth City
 // Progress bar + clickable back + localStorage persistence + True Solar Time
+import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
 ---
 
 <section class="step-calc-section" id="calculator" aria-label="BaZi calculator">
@@ -273,6 +274,7 @@
         <div class="cc-pro" id="ccPro" hidden>
           <div class="cc-pro-head">
             <span class="han">改运</span> Life Alignment Guide
+            {TEMPORARY_FREE_ACCESS && <span class="cc-free-badge">Limited-Time Free</span>}
           </div>
           <div class="cc-pro-grid" id="ccProGrid"></div>
         </div>
@@ -1027,6 +1029,18 @@
     color: var(--gold); margin-bottom: 1rem;
   }
   .cc-pro-head .han { font-size: 0.85rem; color: var(--gold-deep); }
+  .cc-free-badge {
+    margin-left: auto;
+    padding: 0.22rem 0.55rem;
+    border: 1px solid rgba(212,175,106,0.35);
+    border-radius: 999px;
+    color: var(--gold-bright);
+    background: rgba(212,175,106,0.08);
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
   .cc-pro-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
   .cc-ls-card {
     background: var(--ink-1);

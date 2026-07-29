@@ -1,7 +1,7 @@
-import { PAYPAL_PRODUCTS, type Tier } from './paypal/products.ts';
+import { PAYPAL_PRODUCTS, TEMPORARY_FREE_ACCESS, type Tier } from './paypal/products.ts';
 
 export type { Tier } from './paypal/products.ts';
-export { PAYPAL_PRODUCTS } from './paypal/products.ts';
+export { PAYPAL_PRODUCTS, TEMPORARY_FREE_ACCESS } from './paypal/products.ts';
 
 const PENDING_READING_KEY = 'bazi_checkout_reading';
 const PENDING_TIER_KEY = 'bazi_checkout_tier';
@@ -11,10 +11,12 @@ export interface PaymentStatus {
   synergy: boolean;
 }
 
-let statusCache: PaymentStatus | null = null;
+const FREE_STATUS: PaymentStatus = { pro: true, synergy: true };
+let statusCache: PaymentStatus | null = TEMPORARY_FREE_ACCESS ? FREE_STATUS : null;
 let statusRequest: Promise<PaymentStatus> | null = null;
 
 export async function getPaymentStatus(force = false): Promise<PaymentStatus> {
+  if (TEMPORARY_FREE_ACCESS) return FREE_STATUS;
   if (!force && statusCache) return statusCache;
   if (!force && statusRequest) return statusRequest;
   statusRequest = fetch('/api/paypal/status', {
@@ -33,10 +35,15 @@ export async function getPaymentStatus(force = false): Promise<PaymentStatus> {
 }
 
 export function isUnlocked(tier: Tier): boolean {
-  return statusCache?.[tier] === true;
+  return TEMPORARY_FREE_ACCESS || statusCache?.[tier] === true;
 }
 
 export async function startCheckout(tier: Tier, pendingReading?: unknown): Promise<void> {
+  if (TEMPORARY_FREE_ACCESS) throw new Error('Checkout is paused during limited-time free access');
+  return startPaidCheckout(tier, pendingReading);
+}
+
+export async function startPaidCheckout(tier: Tier, pendingReading?: unknown): Promise<void> {
   if (!Object.hasOwn(PAYPAL_PRODUCTS, tier)) throw new Error('Unknown product');
   try {
     if (pendingReading) sessionStorage.setItem(PENDING_READING_KEY, JSON.stringify(pendingReading));

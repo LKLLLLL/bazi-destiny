@@ -104,7 +104,7 @@
 </style>
 
 <script>
-  import { startCheckout, type Tier } from '../lib/paypal';
+  import { startCheckout, TEMPORARY_FREE_ACCESS, type Tier } from '../lib/paypal';
 
   const modal = document.getElementById('paymentModal');
   const title = document.getElementById('modalTitle');
@@ -189,7 +189,30 @@
     },
   };
 
+  function openFreeAccess(tier: Tier, reading?: unknown) {
+    if (tier === 'pro') {
+      window.location.assign('/calculator.html');
+      return;
+    }
+    if (!reading || typeof reading !== 'object') {
+      window.location.assign('/love-match.html');
+      return;
+    }
+    const value = reading as Record<string, unknown>;
+    const query = new URLSearchParams({
+      n1: String(value.n1 || 'Person 1'),
+      n2: String(value.n2 || 'Person 2'),
+      e1: String(value.e1 || 'Wood'),
+      e2: String(value.e2 || 'Fire'),
+    });
+    window.location.assign(`/synergy-guide.html?${query}`);
+  }
+
   function open(tier: Tier, reading?: unknown) {
+    if (TEMPORARY_FREE_ACCESS) {
+      openFreeAccess(tier, reading);
+      return;
+    }
     returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     selectedTier = tier;
     if (reading) pendingReading = reading;

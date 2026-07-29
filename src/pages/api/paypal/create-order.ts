@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { kv } from '@vercel/kv';
 import { CHECKOUT_COOKIE, createOrder, paypalIsConfigured, tierFromUnknown } from '../../../lib/paypal/server';
 import { json, requestOrigin, sameOrigin } from '../../../lib/paypal/http';
+import { TEMPORARY_FREE_ACCESS } from '../../../lib/paypal/products';
 
 export const prerender = false;
 
@@ -15,6 +16,7 @@ async function rateLimited(address: string): Promise<boolean> {
 
 export const POST: APIRoute = async ({ request, url, clientAddress, cookies }) => {
   if (!sameOrigin(request, url)) return json({ error: 'Invalid request origin' }, 403);
+  if (TEMPORARY_FREE_ACCESS) return json({ error: 'Checkout is paused during limited-time free access' }, 409);
   if (!paypalIsConfigured()) return json({ error: 'Checkout is temporarily unavailable' }, 503);
   try {
     if (await rateLimited(clientAddress || 'unknown')) {

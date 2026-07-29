@@ -1,5 +1,12 @@
 import assert from 'node:assert/strict';
-import { getPaymentStatus, isUnlocked, readPendingCheckout, startCheckout } from '../src/lib/paypal.ts';
+import {
+  getPaymentStatus,
+  isUnlocked,
+  readPendingCheckout,
+  startCheckout,
+  startPaidCheckout,
+  TEMPORARY_FREE_ACCESS,
+} from '../src/lib/paypal.ts';
 
 class MemoryStorage {
   private values = new Map<string, string>();
@@ -32,19 +39,18 @@ Object.assign(globalThis, {
 });
 
 await getPaymentStatus(true);
-assert.equal(isUnlocked('pro'), false, 'browser state alone must not unlock Life Blueprint');
-assert.equal(isUnlocked('synergy'), false, 'browser state alone must not unlock Synergy Guide');
-
-status = { pro: true, synergy: false };
-await getPaymentStatus(true);
-assert.equal(isUnlocked('pro'), true, 'server-confirmed entitlement unlocks Life Blueprint');
-assert.equal(isUnlocked('synergy'), false, 'product entitlements stay isolated');
+assert.equal(TEMPORARY_FREE_ACCESS, true, 'limited-time free promotion must be explicit');
+assert.equal(isUnlocked('pro'), true, 'Life Blueprint is unlocked during the promotion');
+assert.equal(isUnlocked('synergy'), true, 'Synergy Guide is unlocked during the promotion');
 
 const reading = { date: '1990-06-15', pillars: { day: 'test' } };
-await startCheckout('pro', reading);
+await assert.rejects(startCheckout('pro', reading), /paused during limited-time free access/);
+assert.equal(lastRequest, null, 'the free promotion must not create a PayPal order');
+
+await startPaidCheckout('pro', reading);
 assert.equal(assignedUrl, 'https://www.sandbox.paypal.com/checkoutnow?token=TESTORDER123');
 assert.deepEqual(readPendingCheckout('pro'), reading, 'pending reading survives the PayPal redirect');
 assert.equal(lastRequest?.url, '/api/paypal/create-order');
 assert.deepEqual(JSON.parse(String(lastRequest?.init?.body)), { tier: 'pro' }, 'the client must never submit a price');
 
-console.log('paypal-unlock: server entitlement and checkout isolation passed');
+console.log('paypal-unlock: free promotion and paid checkout isolation passed');

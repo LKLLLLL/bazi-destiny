@@ -65,7 +65,7 @@ import PaymentModal from '../components/PaymentModal.astro';
   import BaZiEngine from '../lib/bazi/engine';
   import Compatibility from '../lib/bazi/compatibility';
   import { scoreRing, ELEM_EN, ELEM_COLOR } from '../lib/charts';
-  import { clearPendingCheckout, readPendingCheckout } from '../lib/paypal';
+  import { clearPendingCheckout, readPendingCheckout, TEMPORARY_FREE_ACCESS } from '../lib/paypal';
 
   const p = new URLSearchParams(window.location.search);
   const cancelled = p.get('payment') === 'cancel' ? readPendingCheckout('synergy') as any : null;
@@ -151,10 +151,11 @@ import PaymentModal from '../components/PaymentModal.astro';
     const extras = document.getElementById('lmrExtras');
     if (!extras) return;
 
+    const synergyCta = TEMPORARY_FREE_ACCESS ? 'Open Free Guide \u2014 Limited Time' : 'Unlock Guide \u2014 $4.90';
     extras.innerHTML =
       '<div class="lmr-extras-grid">' +
       '<div class="lmr-wall"><div class="lmr-wall-icon"></div><div class="lmr-wall-label">World Leaderboard</div><p class="lmr-wall-desc">Your <strong>' + r.overall + '/100</strong> score outranks most couples. Add your match to the global board.</p><button class="btn btn-gold lmr-wall-btn" id="lmrBoardBtn">Add to Leaderboard</button></div>' +
-      '<div class="lmr-wall"><div class="lmr-wall-icon"></div><div class="lmr-wall-label">Synergy Boost Guide</div><p class="lmr-wall-desc">Unlock your personalized aura alignment guide for ' + e1 + ' \u00D7 ' + e2 + ' \u2014 morning rituals, communication, shared activities, home energy &amp; conflict resolution.</p><button class="btn btn-gold lmr-wall-btn" id="lmrUpgradeBtn">Unlock Guide \u2014 $4.90</button></div>' +
+      '<div class="lmr-wall"><div class="lmr-wall-icon"></div><div class="lmr-wall-label">Synergy Boost Guide</div><p class="lmr-wall-desc">Open your personalized aura alignment guide for ' + e1 + ' \u00D7 ' + e2 + ' \u2014 morning rituals, communication, shared activities, home energy &amp; conflict resolution.</p><button class="btn btn-gold lmr-wall-btn" id="lmrUpgradeBtn">' + synergyCta + '</button></div>' +
       '</div>';
 
     setTimeout(function() {

@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
 ---
 
 <Base
@@ -10,7 +11,7 @@ import Base from '../layouts/Base.astro';
 >
   <div class="sg-wrap" id="sgWrap" hidden>
     <header class="sg-hero">
-      <p class="eyebrow center"><span class="han"></span> Synergy Boost</p>
+      <p class="eyebrow center"><span class="han"></span> Synergy Boost {TEMPORARY_FREE_ACCESS && '· Limited-Time Free'}</p>
       <h1 id="sgTitle">Your Synergy Guide</h1>
       <p class="sg-sub" id="sgSub">Loading your personalized alignment plan…</p>
     </header>

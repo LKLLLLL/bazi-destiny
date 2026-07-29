@@ -1,4 +1,6 @@
 ---
+import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
+
 const tiers = [
   {
     name: 'Basic Reading',
@@ -22,12 +24,13 @@ const tiers = [
   {
     name: 'Life Blueprint',
     han: '知命',
-    price: '$9.90',
-    per: 'one-time',
+    price: TEMPORARY_FREE_ACCESS ? 'Free' : '$9.90',
+    per: TEMPORARY_FREE_ACCESS ? 'limited time' : 'one-time',
     desc: 'Complete alignment guide across five dimensions — your personal operating manual.',
-    cta: 'Unlock Blueprint — $9.90',
+    cta: TEMPORARY_FREE_ACCESS ? 'Open Free Blueprint' : 'Unlock Blueprint — $9.90',
     action: 'pro',
     popular: true,
+    badge: TEMPORARY_FREE_ACCESS ? 'Limited-Time Free' : 'Most Popular',
     features: [
       [true, 'Everything in Basic Reading'],
       [true, 'Full Life Alignment Guide'],
@@ -48,13 +51,13 @@ const tiers = [
     <div class="section-head center" data-reveal>
       <p class="eyebrow center"><span class="han">结缘</span> Pricing</p>
       <h2 class="section-title">Your Journey <em>Starts Here</em></h2>
-      <p class="section-sub">One-time payment. No subscription, no hidden fees — your reading is yours forever.</p>
+      <p class="section-sub">{TEMPORARY_FREE_ACCESS ? 'Full access is free for a limited time.' : 'One-time payment. No subscription, no hidden fees — your reading is yours forever.'}</p>
     </div>
 
     <div class="pricing-grid">
       {tiers.map((tier, i) => (
         <article class={`price-card${'popular' in tier && tier.popular ? ' popular' : ''}`} data-reveal style={`--reveal-delay:${i * 0.1}s`}>
-          {'popular' in tier && tier.popular && <span class="pop-badge">Most Popular</span>}
+          {'popular' in tier && tier.popular && <span class="pop-badge">{tier.badge}</span>}
           <span class="price-han" aria-hidden="true">{tier.han}</span>
           <h3>{tier.name}</h3>
           <div class="price-line">
@@ -83,7 +86,7 @@ const tiers = [
 
     <p class="pricing-note" data-reveal>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-      Secure checkout via PayPal · 30-day happiness guarantee — write to us anytime.
+      {TEMPORARY_FREE_ACCESS ? 'Limited-time free access · Regular one-time pricing will return later.' : 'Secure checkout via PayPal · 30-day happiness guarantee — write to us anytime.'}
     </p>
   </div>
 </section>
