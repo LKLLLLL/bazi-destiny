@@ -1027,8 +1027,7 @@
     color: var(--gold); margin-bottom: 1rem;
   }
   .cc-pro-head .han { font-size: 0.85rem; color: var(--gold-deep); }
-  .cc-pro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
-  @media (max-width: 600px) { .cc-pro-grid { grid-template-columns: 1fr; } }
+  .cc-pro-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
   .cc-ls-card {
     background: var(--ink-1);
     border: 1px solid var(--line-soft);
