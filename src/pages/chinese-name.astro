@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import ChineseNameGenerator from '../components/ChineseNameGenerator.astro';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Chinese Given Name Generator',
+    url: 'https://mybazidestiny.com/chinese-name.html',
+    description: 'Generate three meaningful Chinese given names inspired by BaZi, birth season, classical poetry, and Chinese botanical tradition.',
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'All',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  },
+];
+---
+
+<Base
+  title="Chinese Given Name Generator | BaZi Destiny"
+  description="Find a meaningful Chinese given name inspired by your BaZi, birth season, classical poetry, and traditional botanical imagery."
+  keywords="Chinese name generator, Chinese given name, Chinese name with meaning, BaZi name, Chinese poetry names"
+  path="/chinese-name.html"
+  jsonLd={jsonLd}
+>
+  <div class="name-page wrap">
+    <ChineseNameGenerator />
+  </div>
+</Base>
+
+<style>
+  .name-page { padding-top: calc(68px + clamp(2rem, 5vh, 3.5rem)); }
+</style>

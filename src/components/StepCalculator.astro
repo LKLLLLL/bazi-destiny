@@ -279,6 +279,22 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
           <div class="cc-pro-grid" id="ccProGrid"></div>
         </div>
 
+        <div class="next-tools" aria-label="Continue exploring">
+          <p><span class="han">续</span> Continue exploring</p>
+          <div class="next-tools-grid">
+            <a href="/chinese-name.html" class="next-tool">
+              <span class="han" aria-hidden="true">名</span>
+              <span><strong>Find Your Chinese Name</strong><small>Turn your birth chart into a meaningful given name.</small></span>
+              <b aria-hidden="true">→</b>
+            </a>
+            <a href="/love-match.html" class="next-tool">
+              <span class="han" aria-hidden="true">缘</span>
+              <span><strong>Try Love Match</strong><small>Compare your Five Elements with someone special.</small></span>
+              <b aria-hidden="true">→</b>
+            </a>
+          </div>
+        </div>
+
         <div class="results-actions">
           <button class="btn btn-ghost" id="shareBtn">Share Result</button>
           <button class="btn btn-gold" id="pdfBtn">Download PDF</button>
@@ -1078,6 +1094,19 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
 
 
   /* Actions */
+  .next-tools { margin-top: 1.8rem; padding-top: 1.4rem; border-top: 1px solid var(--line-soft); }
+  .next-tools > p { margin-bottom: 0.8rem; color: var(--gold); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+  .next-tools > p .han { margin-right: 0.35rem; }
+  .next-tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+  .next-tool { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.7rem; min-width: 0; padding: 0.85rem; border: 1px solid var(--line); border-radius: var(--radius-s); background: rgba(212,175,106,.04); color: var(--bone); }
+  .next-tool:hover { border-color: var(--gold-deep); background: rgba(212,175,106,.09); color: var(--bone); }
+  .next-tool > .han { display: grid; width: 2rem; height: 2rem; place-items: center; border: 1px solid var(--line-strong); border-radius: 4px; color: var(--gold); }
+  .next-tool strong, .next-tool small { display: block; }
+  .next-tool strong { font-size: 0.78rem; }
+  .next-tool small { margin-top: 0.15rem; color: var(--bone-faint); font-size: 0.66rem; line-height: 1.4; }
+  .next-tool b { color: var(--gold); font-weight: 400; }
+  @media (max-width: 560px) { .next-tools-grid { grid-template-columns: 1fr; } }
+
   .results-actions {
     display: flex;
     flex-wrap: wrap;

@@ -23,6 +23,7 @@ export async function getStaticPaths() {
 }
 
 const { kind, post, rec } = Astro.props as any;
+const isNameArticle = kind === 'article' && post.data.tag === 'Chinese Names';
 
 let Content: any = null;
 let related: any[] = [];
@@ -124,18 +125,19 @@ const PAGE_ICONS: Record<string, string> = {
       <aside class="art-editorial-note">
         <strong>About this guide</strong>
         <span>
-          This article explains a traditional cultural framework, not a scientifically validated prediction.
-          Review our <a href="/about.html">calculation methodology</a> and <a href="/editorial-policy.html">editorial standards</a>.
+          {isNameArticle
+            ? <>This article provides linguistic and cultural context. Chinese names can carry more than one reading, and natural usage varies by person and region. Review our <a href="/editorial-policy.html">editorial standards</a>.</>
+            : <>This article explains a traditional cultural framework, not a scientifically validated prediction. Review our <a href="/about.html">calculation methodology</a> and <a href="/editorial-policy.html">editorial standards</a>.</>}
         </span>
       </aside>
     </article>
 
     <div class="wrap-narrow">
       <div class="art-cta" data-reveal>
-        <span class="art-cta-han han" aria-hidden="true">排盘</span>
-        <h2>Read your own chart</h2>
-        <p>Everything in this article becomes personal once you see your Four Pillars. Free, instant, no sign-up.</p>
-        <a href="/calculator.html" class="btn btn-gold btn-lg">Cast My Chart — Free</a>
+        <span class="art-cta-han han" aria-hidden="true">{isNameArticle ? '取名' : '排盘'}</span>
+        <h2>{isNameArticle ? 'Find your Chinese given name' : 'Read your own chart'}</h2>
+        <p>{isNameArticle ? 'Discover three meaningful names inspired by your birth season, classical poetry, and Chinese botanical tradition.' : 'Everything in this article becomes personal once you see your Four Pillars. Free, instant, no sign-up.'}</p>
+        <a href={isNameArticle ? '/chinese-name.html' : '/calculator.html'} class="btn btn-gold btn-lg">{isNameArticle ? 'Find My Chinese Name' : 'Cast My Chart — Free'}</a>
       </div>
 
       {related.length > 0 && (

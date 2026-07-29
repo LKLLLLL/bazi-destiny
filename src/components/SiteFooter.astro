@@ -23,6 +23,7 @@ const { lang } = Astro.props;
       <nav class="footer-col" aria-label="Tools">
         <h4>{t(lang, 'footer.tools')}</h4>
         <a href="/calculator.html">{t(lang, 'footer.calculator')}</a>
+        {lang === 'en' && <a href="/chinese-name.html">Chinese Name</a>}
         <a href="/love-match.html">{t(lang, 'footer.loveMatch')}</a>
         <a href="/leaderboard.html">{t(lang, 'footer.leaderboard')}</a>
       </nav>

@@ -95,17 +95,43 @@ const faqs = [
         <div class="hero-ctas" data-reveal style="--reveal-delay:.24s">
           <a href="/calculator.html" class="btn btn-gold btn-lg">
             Get My Free Reading
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a href="/love-match.html" class="btn btn-love btn-lg">
-            <svg width="17" height="17" viewBox="0 0 32 30" fill="currentColor"><path d="M16 28S2 19.6 2 10.3C2 5 6 2 10 2c2.6 0 4.7 1.3 6 3.3C17.3 3.3 19.4 2 22 2c4 0 8 3 8 8.3C30 19.6 16 28 16 28z"/></svg>
-            Try Love Match
+          <a href="/chinese-name.html" class="btn btn-ghost btn-lg">
+            Find My Chinese Name
           </a>
         </div>
       </div>
     </div>
     <div class="hero-scrollhint" aria-hidden="true">
       <span class="vertical-han">观象授时</span>
+    </div>
+  </section>
+
+  <!-- ================= FREE TOOLS ================= -->
+  <section class="section tool-hub">
+    <div class="wrap">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow center"><span class="han">三门</span> Explore</p>
+        <h2 class="section-title">Three ways to begin</h2>
+        <p class="section-sub">Start with the question that brought you here. Every tool is free.</p>
+      </div>
+      <div class="tool-grid">
+        <a href="/calculator.html" class="tool-card card" data-reveal>
+          <span class="tool-han han" aria-hidden="true">命</span>
+          <div><h3>BaZi Reading</h3><p>Four Pillars, Day Master, Five Elements, and practical guidance.</p></div>
+          <span class="tool-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="/chinese-name.html" class="tool-card card" data-reveal style="--reveal-delay:.08s">
+          <span class="tool-han han" aria-hidden="true">名</span>
+          <div><h3>Chinese Given Name</h3><p>A meaningful name drawn from your birth season and classical culture.</p></div>
+          <span class="tool-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="/love-match.html" class="tool-card card" data-reveal style="--reveal-delay:.16s">
+          <span class="tool-han han" aria-hidden="true">缘</span>
+          <div><h3>Love Match</h3><p>Compare two birth charts for elemental harmony and relationship insight.</p></div>
+          <span class="tool-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -293,6 +319,17 @@ const faqs = [
   }
   .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 2.2rem; }
   .hero-ctas.center { justify-content: center; }
+  /* ---------- free tools ---------- */
+  .tool-hub { border-top: 1px solid var(--line-soft); }
+  .tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .tool-card { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; min-width: 0; padding: 1.35rem; color: var(--bone); }
+  .tool-card:hover { color: var(--bone); border-color: var(--line-strong); transform: translateY(-3px); }
+  .tool-han { display: grid; width: 3rem; height: 3rem; place-items: center; border: 1px solid var(--line-strong); border-radius: var(--radius-s); color: var(--gold); font-size: 1.45rem; }
+  .tool-card h3 { font-size: 1.2rem; }
+  .tool-card p { margin-top: 0.3rem; color: var(--bone-dim); font-size: 0.8rem; line-height: 1.55; }
+  .tool-arrow { color: var(--gold); font-size: 1.2rem; transition: transform .25s var(--ease-out); }
+  .tool-card:hover .tool-arrow { transform: translateX(3px); }
+  @media (max-width: 860px) { .tool-grid { grid-template-columns: 1fr; } }
   .hero-scrollhint {
     position: absolute;
     left: clamp(0.8rem, 3vw, 2.2rem);

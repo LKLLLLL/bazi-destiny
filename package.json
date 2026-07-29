@@ -9,7 +9,8 @@
     "seo:audit": "node scripts/seo-audit.mjs",
     "test:bazi": "node --experimental-strip-types tests/bazi-engine.test.ts",
     "test:payments": "node --experimental-strip-types tests/paypal-unlock.test.ts && node --experimental-strip-types tests/paypal-server.test.ts",
-    "test": "pnpm test:bazi && pnpm test:payments",
+    "test:names": "node --experimental-strip-types tests/chinese-names.test.ts",
+    "test": "pnpm test:bazi && pnpm test:names && pnpm test:payments",
     "preview": "astro preview",
     "postbuild": "echo done"
   },
