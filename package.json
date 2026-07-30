@@ -10,7 +10,8 @@
     "test:bazi": "node --experimental-strip-types tests/bazi-engine.test.ts",
     "test:payments": "node --experimental-strip-types tests/paypal-unlock.test.ts && node --experimental-strip-types tests/paypal-server.test.ts",
     "test:names": "node --experimental-strip-types tests/chinese-names.test.ts",
-    "test": "pnpm test:bazi && pnpm test:names && pnpm test:payments",
+    "test:guardians": "node --experimental-strip-types tests/guardian-spirits.test.ts",
+    "test": "pnpm test:bazi && pnpm test:names && pnpm test:guardians && pnpm test:payments",
     "preview": "astro preview",
     "postbuild": "echo done"
   },
