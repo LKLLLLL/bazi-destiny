@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "pnpm seo:audit && node scripts/generate-og-images.mjs && astro build && node scripts/fileformat.mjs && node scripts/verify-dist.mjs",
+    "build": "pnpm analytics:audit && pnpm seo:audit && node scripts/generate-og-images.mjs && astro build && node scripts/fileformat.mjs && node scripts/verify-dist.mjs",
+    "analytics:audit": "node scripts/verify-analytics.mjs",
     "seo:audit": "node scripts/seo-audit.mjs",
     "test:bazi": "node --experimental-strip-types tests/bazi-engine.test.ts",
     "test:payments": "node --experimental-strip-types tests/paypal-unlock.test.ts && node --experimental-strip-types tests/paypal-server.test.ts",
