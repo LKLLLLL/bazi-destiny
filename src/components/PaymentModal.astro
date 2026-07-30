@@ -104,7 +104,8 @@
 </style>
 
 <script>
-  import { startCheckout, TEMPORARY_FREE_ACCESS, type Tier } from '../lib/paypal';
+  import { PAYPAL_PRODUCTS, startCheckout, TEMPORARY_FREE_ACCESS, type Tier } from '../lib/paypal';
+  import { trackEvent } from '../lib/analytics';
 
   const modal = document.getElementById('paymentModal');
   const title = document.getElementById('modalTitle');
@@ -241,6 +242,19 @@
   (window as any).__baziSetPendingReading = (reading: unknown) => { pendingReading = reading; };
 
   checkoutBtn?.addEventListener('click', async () => {
+    const product = PAYPAL_PRODUCTS[selectedTier];
+    const value = Number(product.price);
+    const item = { item_id: product.itemId, item_name: product.name, price: value, quantity: 1 };
+    trackEvent('click_payment', {
+      product_tier: selectedTier,
+      currency: 'USD',
+      value,
+    });
+    trackEvent('begin_checkout', {
+      currency: 'USD',
+      value,
+      items: [item],
+    });
     checkoutBtn.disabled = true;
     checkoutBtn.textContent = 'Opening PayPal...';
     if (checkoutNote) checkoutNote.textContent = 'Creating a secure order...';

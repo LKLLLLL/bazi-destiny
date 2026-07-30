@@ -1210,6 +1210,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
   import { clearPendingCheckout, getPaymentStatus, isUnlocked, readPendingCheckout } from '../lib/paypal';
   import { getLifestyleGuide } from '../lib/bazi/lifestyle';
   import { getGuardianSpirit } from '../lib/bazi/guardian-spirits';
+  import { trackEvent } from '../lib/analytics';
 
   const LS_KEY = 'bazi_stepcalc_data';
 
@@ -1618,6 +1619,11 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
       $('scLoading')!.hidden = true;
       $('calcResults')!.hidden = false;
       renderResults(currentData);
+      trackEvent('generate_bazi_chart', {
+        tool_name: 'bazi_calculator',
+        pillar_count: currentData.isThreePillar ? 3 : 4,
+        city_provided: Boolean(currentData.cityName),
+      });
       $('calcResults')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 

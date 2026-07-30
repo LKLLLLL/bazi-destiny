@@ -77,6 +77,7 @@
 
 <script>
   import { generateChineseNames, type NameGender } from '../lib/chinese-names';
+  import { trackEvent } from '../lib/analytics';
 
   const form = document.getElementById('nameForm') as HTMLFormElement;
   const results = document.getElementById('nameResults') as HTMLElement;
@@ -182,6 +183,11 @@
       </article>
     `).join('');
 
+    trackEvent('generate_chinese_name', {
+      tool_name: 'chinese_name',
+      result_count: generated.names.length,
+      birth_time_provided: Boolean(time),
+    });
     results.hidden = false;
     results.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });

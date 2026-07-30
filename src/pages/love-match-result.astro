@@ -66,6 +66,7 @@ import PaymentModal from '../components/PaymentModal.astro';
   import Compatibility from '../lib/bazi/compatibility';
   import { scoreRing, ELEM_EN, ELEM_COLOR } from '../lib/charts';
   import { clearPendingCheckout, readPendingCheckout, TEMPORARY_FREE_ACCESS } from '../lib/paypal';
+  import { trackEvent } from '../lib/analytics';
 
   const p = new URLSearchParams(window.location.search);
   const cancelled = p.get('payment') === 'cancel' ? readPendingCheckout('synergy') as any : null;
@@ -113,6 +114,10 @@ import PaymentModal from '../components/PaymentModal.astro';
       renderScore(n1, n2, r, color);
       renderGuidance(r, e1, e2);
       renderExtras(r, e1, e2, n1, n2, data1, data2);
+      trackEvent('generate_love_match', {
+        tool_name: 'love_match',
+        compatibility_tier: r.tier.label,
+      });
     } catch(e) {
       document.getElementById('lmrLoading').innerHTML = '<p style="color:var(--cinnabar);text-align:center;padding:2rem">Error calculating. Please try again.</p>';
     }
