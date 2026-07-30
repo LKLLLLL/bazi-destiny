@@ -12,7 +12,7 @@ export const PAYPAL_PRODUCTS = {
 } as const;
 
 // Keep paid product definitions intact so checkout can be restored with one switch.
-export const TEMPORARY_FREE_ACCESS = true;
+export const TEMPORARY_FREE_ACCESS = false;
 
 export type Tier = keyof typeof PAYPAL_PRODUCTS;
 
