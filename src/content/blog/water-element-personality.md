@@ -93,3 +93,6 @@ Get your complete BaZi chart and discover your element balance.
 
 ## Explore Other Elements
   [Wood 🌳](/wood-element-personality.html) [Fire 🔥](/fire-element-personality.html) [Earth ⛰️](/earth-element-personality.html) [Metal ⚔️](/metal-element-personality.html) [Water 🌊](/water-element-personality.html)
+
+**Go Deeper:**
+[BaZi Health & Five Elements](/bazi-health-five-elements.html)

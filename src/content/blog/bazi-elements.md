@@ -71,3 +71,6 @@ Your BaZi chart shows exactly which elements dominate your personality and how t
 
 **Explore Each Element:**
 [Wood Element Personality](/wood-element-personality.html) · [Fire Element Personality](/fire-element-personality.html) · [Earth Element Personality](/earth-element-personality.html) · [Metal Element Personality](/metal-element-personality.html) · [Water Element Personality](/water-element-personality.html)
+
+**Continue Learning:**
+[BaZi Health & Five Elements](/bazi-health-five-elements.html)

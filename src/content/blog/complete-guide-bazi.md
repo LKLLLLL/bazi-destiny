@@ -205,4 +205,4 @@ BaZi has been practiced for over 1,000 years in Chinese culture. While it's a me
 ---
 
 **Deepen Your Understanding:**
-[What is BaZi?](/what-is-bazi.html) · [The Five Elements](/bazi-elements.html) · [Ten Gods](/bazi-ten-gods.html) · [Luck Pillars](/bazi-luck-pillars.html) · [Day Master Guide](/bazi-day-master-guide.html)
+[What is BaZi?](/what-is-bazi.html) · [The Five Elements](/bazi-elements.html) · [Ten Gods](/bazi-ten-gods.html) · [Luck Pillars](/bazi-luck-pillars.html) · [Day Master Guide](/bazi-day-master-guide.html) · [Health & Five Elements](/bazi-health-five-elements.html)
