@@ -14,7 +14,8 @@ export const GET: APIRoute = async () => {
   // Build a map of blog slug → lastmod for dynamic dates
   const blogDates = new Map<string, string>();
   for (const p of posts) {
-    const d = p.data.pubDate ? new Date(p.data.pubDate).toISOString().split('T')[0] : LAST_BUILD;
+    const date = p.data.updatedDate ?? p.data.pubDate;
+    const d = date ? new Date(date).toISOString().split('T')[0] : LAST_BUILD;
     blogDates.set(p.id, d);
   }
 
