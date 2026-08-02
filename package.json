@@ -9,6 +9,7 @@
     "analytics:audit": "node scripts/verify-analytics.mjs",
     "seo:audit": "node scripts/seo-audit.mjs",
     "geo:audit": "node scripts/geo-audit.mjs",
+    "indexnow:submit": "node scripts/indexnow-submit.mjs",
     "test:bazi": "node --experimental-strip-types tests/bazi-engine.test.ts",
     "test:payments": "node --experimental-strip-types tests/paypal-unlock.test.ts && node --experimental-strip-types tests/paypal-server.test.ts",
     "test:names": "node --experimental-strip-types tests/chinese-names.test.ts",

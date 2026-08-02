@@ -5,7 +5,7 @@ import { join } from 'node:path';
 const ROOT = new URL('../.vercel/output/static/', import.meta.url).pathname;
 const URL_FILE = new URL('../../live/urls.txt', import.meta.url);
 
-const requiredFiles = ['index.html', 'pricing.html', 'methodology.html', 'llms.txt', 'sitemap.xml'];
+const requiredFiles = ['index.html', 'pricing.html', 'methodology.html', 'llms.txt', 'sitemap.xml', '272bd5de5baf4ae5b83bf3b043803fa9.txt'];
 const errors = [];
 for (const file of requiredFiles) {
   if (!existsSync(join(ROOT, file))) errors.push(`missing required output ${file}`);
