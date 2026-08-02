@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import LoveMatch from '../components/LoveMatch.astro';
+import ToolSeoContent from '../components/ToolSeoContent.astro';
 
 const jsonLd = [
   {
@@ -13,6 +14,44 @@ const jsonLd = [
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     description:
       'Free BaZi love compatibility calculator. Compare two birth charts for elemental harmony, day pillar bond, and relationship guidance.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What does a BaZi compatibility calculator compare?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'This calculator compares two Day Pillars, Day Master polarity, and Five Elements relationships. The score is a transparent summary of those selected traditional factors, not a prediction that a relationship will succeed or fail.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How is the BaZi compatibility score calculated?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'The score weights Day Pillar interaction at 40 percent, Day Master stem and polarity interaction at 30 percent, and Five Elements interaction at 30 percent.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Is BaZi compatibility the same as Chinese zodiac compatibility?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'No. Zodiac compatibility usually compares only the birth-year animals. BaZi compatibility can compare the Day Pillars, Heavenly Stems, Earthly Branches, and element relationships across two complete charts.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Can BaZi compatibility predict whether a couple will stay together?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'No. BaZi is a traditional interpretive framework and cannot establish whether a relationship will succeed. Communication, safety, shared values, and real behavior matter more than a symbolic score.',
+        },
+      },
+    ],
   },
 ];
 ---
@@ -27,7 +66,7 @@ const jsonLd = [
   <header class="lm-hero">
     <div class="wrap-narrow center">
       <p class="eyebrow center"><span class="han">合婚</span> Love Match</p>
-      <h1>How compatible <em>are you?</em></h1>
+      <h1>BaZi love compatibility: <em>how do your charts interact?</em></h1>
       <p class="lm-lead">
         In classical China, families compared the couple's Eight Characters before a wedding — 合婚.
         Enter both birthdays and let the Five Elements tell the story of the two of you.
@@ -38,6 +77,56 @@ const jsonLd = [
   <div class="wrap-narrow lm-tool">
     <LoveMatch />
   </div>
+
+  <ToolSeoContent
+    eyebrow="Two charts, one comparison"
+    title="How this BaZi compatibility score is built"
+    summary="The calculator compares selected traditional chart relationships and explains the result. It is designed for cultural exploration and conversation, not to decide whether a relationship should begin or end."
+    headingId="bazi-compatibility-explained"
+  >
+    <div class="tool-seo-grid">
+      <section>
+        <h3>Day Pillar interaction: 40%</h3>
+        <p>The Day Pillar is traditionally associated with the self and close relationships. Its stem and branch pairing receives the largest share of this calculator's score.</p>
+      </section>
+      <section>
+        <h3>Day Master and polarity: 30%</h3>
+        <p>The two Day Master stems are compared by element and Yin-Yang polarity. This describes a symbolic interaction pattern, not a fixed personality diagnosis.</p>
+      </section>
+      <section>
+        <h3>Five Elements relationship: 30%</h3>
+        <p>The calculator checks whether the Day Master elements generate, control, match, or remain neutral toward one another within the traditional Five Elements cycles.</p>
+      </section>
+      <section>
+        <h3>More than zodiac animals</h3>
+        <p>Year-animal compatibility uses one part of each chart. BaZi comparison adds the Day Pillars and elemental relationships, which makes it more specific than a zodiac-only match.</p>
+      </section>
+    </div>
+
+    <div class="tool-seo-links">
+      <p><strong>Understand the inputs:</strong> calculate each person's <a href="/calculator.html">Four Pillars chart</a>, read the <a href="/bazi-day-master-guide.html">Day Master guide</a>, or review <a href="/love-compatibility.html">how BaZi compatibility differs from zodiac matching</a>.</p>
+    </div>
+
+    <section class="tool-faq" aria-labelledby="match-faq-title">
+      <h3 id="match-faq-title">BaZi compatibility questions</h3>
+      <details>
+        <summary>What does a BaZi compatibility calculator compare?</summary>
+        <p>This calculator compares two Day Pillars, Day Master polarity, and Five Elements relationships. The score is a transparent summary of those selected traditional factors, not a prediction that a relationship will succeed or fail.</p>
+      </details>
+      <details>
+        <summary>How is the BaZi compatibility score calculated?</summary>
+        <p>The score weights Day Pillar interaction at 40%, Day Master stem and polarity interaction at 30%, and Five Elements interaction at 30%.</p>
+      </details>
+      <details>
+        <summary>Is BaZi compatibility the same as Chinese zodiac compatibility?</summary>
+        <p>No. Zodiac compatibility usually compares only the birth-year animals. BaZi compatibility can compare the Day Pillars, Heavenly Stems, Earthly Branches, and element relationships across two complete charts.</p>
+      </details>
+      <details>
+        <summary>Can BaZi compatibility predict whether a couple will stay together?</summary>
+        <p>No. BaZi is a traditional interpretive framework and cannot establish whether a relationship will succeed. Communication, safety, shared values, and real behavior matter more than a symbolic score.</p>
+      </details>
+    </section>
+  </ToolSeoContent>
 </Base>
 
 <style>

@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import StepCalculator from '../components/StepCalculator.astro';
 import PaymentModal from '../components/PaymentModal.astro';
+import ToolSeoContent from '../components/ToolSeoContent.astro';
 
 const jsonLd = [
   {
@@ -15,6 +16,44 @@ const jsonLd = [
     operatingSystem: 'All',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What is a BaZi calculator?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'A BaZi calculator converts a birth date and time into the Four Pillars of Destiny: the Year, Month, Day, and Hour pillars. Each pillar contains a Heavenly Stem and an Earthly Branch, producing the eight characters known as BaZi.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What information do I need to calculate my BaZi chart?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'A birth date is required. Birth time determines the Hour Pillar, while birthplace can be used for optional true solar time correction. If the time or city is unknown, the chart should be read with those limitations in mind.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Does this BaZi calculator use true solar time?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. True solar time correction is optional. When enabled with a selected birth city, the calculator adjusts the entered time using the city longitude before calculating the Hour Pillar.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Is a BaZi calculator scientifically proven?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'No. BaZi is a traditional Chinese metaphysical and calendrical system, not a scientifically validated method for predicting life outcomes. The chart calculation can be reproduced, while interpretations remain cultural and symbolic.',
+        },
+      },
+    ],
+  },
 ];
 ---
 
@@ -26,14 +65,78 @@ const jsonLd = [
   ogType="website"
   jsonLd={jsonLd}
 >
+  <header class="calc-hero wrap-narrow">
+    <p class="eyebrow"><span class="han">八字</span> Free Four Pillars Chart</p>
+    <h1>Free BaZi Calculator with True Solar Time</h1>
+    <p>
+      Calculate your Four Pillars, Day Master, Five Elements balance, and traditional chart patterns from your birth date and time. No sign-up is required.
+    </p>
+  </header>
   <div class="calc-page-wrap">
     <StepCalculator />
   </div>
   <PaymentModal />
+
+  <ToolSeoContent
+    eyebrow="How the calculator works"
+    title="From birth details to eight characters"
+    summary="A BaZi chart maps a moment of birth to four stem-branch pairs. The calculator handles the calendrical conversion; the explanations describe how those symbols are traditionally read."
+    headingId="bazi-calculator-explained"
+  >
+    <div class="tool-seo-grid">
+      <section>
+        <h3>The Four Pillars</h3>
+        <p>The Year, Month, Day, and Hour pillars each contain one Heavenly Stem and one Earthly Branch. Together they form the eight characters written as 八字, or BaZi.</p>
+      </section>
+      <section>
+        <h3>Your Day Master</h3>
+        <p>The Heavenly Stem of the Day Pillar is called the Day Master. It is the reference point used to discuss the other elements and relationships in a traditional chart.</p>
+      </section>
+      <section>
+        <h3>Five Elements balance</h3>
+        <p>The chart associates stems and branches with Wood, Fire, Earth, Metal, and Water. A simple element count is useful context, but it is not the same as a complete favorable-element analysis.</p>
+      </section>
+      <section>
+        <h3>Optional true solar time</h3>
+        <p>Clock time follows civil time zones. When you provide a birth city and enable correction, this calculator uses longitude to estimate local solar time before determining the Hour Pillar.</p>
+      </section>
+    </div>
+
+    <div class="tool-seo-links">
+      <p><strong>Continue with your chart:</strong> learn about the <a href="/bazi-day-master-guide.html">Day Master</a>, <a href="/bazi-ten-gods.html">Ten Gods</a>, and <a href="/bazi-luck-pillars.html">Luck Pillars</a>; create a <a href="/chinese-name.html">Chinese name inspired by your birth season</a>; or <a href="/love-match.html">compare two BaZi charts</a>.</p>
+    </div>
+
+    <section class="tool-faq" aria-labelledby="calculator-faq-title">
+      <h3 id="calculator-faq-title">BaZi calculator questions</h3>
+      <details>
+        <summary>What is a BaZi calculator?</summary>
+        <p>A BaZi calculator converts a birth date and time into the Four Pillars of Destiny: the Year, Month, Day, and Hour pillars. Each pillar contains a Heavenly Stem and an Earthly Branch, producing the eight characters known as BaZi.</p>
+      </details>
+      <details>
+        <summary>What information do I need to calculate my BaZi chart?</summary>
+        <p>A birth date is required. Birth time determines the Hour Pillar, while birthplace can be used for optional true solar time correction. If the time or city is unknown, the chart should be read with those limitations in mind.</p>
+      </details>
+      <details>
+        <summary>Does this BaZi calculator use true solar time?</summary>
+        <p>Yes. True solar time correction is optional. When enabled with a selected birth city, the calculator adjusts the entered time using the city longitude before calculating the Hour Pillar.</p>
+      </details>
+      <details>
+        <summary>Is a BaZi calculator scientifically proven?</summary>
+        <p>No. BaZi is a traditional Chinese metaphysical and calendrical system, not a scientifically validated method for predicting life outcomes. The chart calculation can be reproduced, while interpretations remain cultural and symbolic.</p>
+      </details>
+    </section>
+  </ToolSeoContent>
 </Base>
 
 <style>
+  .calc-hero {
+    padding-top: calc(68px + clamp(2.5rem, 6vh, 4.5rem));
+    text-align: center;
+  }
+  .calc-hero .eyebrow { justify-content: center; }
+  .calc-hero h1 { margin-top: 0.9rem; font-size: clamp(2.35rem, 5vw, 3.8rem); }
+  .calc-hero > p:last-child { max-width: 720px; margin: 1rem auto 0; color: var(--bone-dim); line-height: 1.8; }
   .calc-page-wrap {
-    padding-top: calc(68px + clamp(2rem, 5vh, 3.5rem));
+    padding-top: clamp(1.8rem, 4vh, 3rem);
   }
 </style>

@@ -1,0 +1,76 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  summary: string;
+  headingId: string;
+}
+
+const { eyebrow, title, summary, headingId } = Astro.props;
+---
+
+<section class="tool-seo" aria-labelledby={headingId}>
+  <div class="wrap-narrow">
+    <header class="tool-seo-head">
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 id={headingId}>{title}</h2>
+      <p class="tool-seo-summary">{summary}</p>
+    </header>
+    <div class="tool-seo-body prose">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .tool-seo {
+    margin-top: clamp(3.5rem, 8vh, 6rem);
+    padding: clamp(3.5rem, 8vh, 6rem) 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .tool-seo-head { max-width: 760px; }
+  .tool-seo-head h2 {
+    margin-top: 0.8rem;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.08;
+  }
+  .tool-seo-summary {
+    margin-top: 1.1rem;
+    color: var(--bone-dim);
+    font-size: 1.08rem;
+    line-height: 1.8;
+  }
+  .tool-seo-body { margin-top: clamp(2rem, 5vh, 3.5rem); }
+  .tool-seo-body :global(.tool-seo-grid) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.2rem 2rem;
+  }
+  .tool-seo-body :global(.tool-seo-grid > section) {
+    padding-top: 1.15rem;
+    border-top: 1px solid var(--line-soft);
+  }
+  .tool-seo-body :global(.tool-seo-grid h3) { margin-top: 0; }
+  .tool-seo-body :global(.tool-seo-links) {
+    margin-top: 2.5rem;
+    padding: 1.25rem 1.4rem;
+    border-left: 3px solid var(--gold);
+    background: rgba(212, 175, 106, 0.06);
+  }
+  .tool-seo-body :global(.tool-seo-links p) { margin: 0; }
+  .tool-seo-body :global(.tool-faq) { margin-top: 3rem; }
+  .tool-seo-body :global(.tool-faq details) {
+    border-top: 1px solid var(--line-soft);
+    padding: 1rem 0;
+  }
+  .tool-seo-body :global(.tool-faq details:last-child) { border-bottom: 1px solid var(--line-soft); }
+  .tool-seo-body :global(.tool-faq summary) {
+    color: var(--bone);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .tool-seo-body :global(.tool-faq details p) { margin: 0.75rem 0 0; }
+  @media (max-width: 680px) {
+    .tool-seo-body :global(.tool-seo-grid) { grid-template-columns: 1fr; }
+  }
+</style>

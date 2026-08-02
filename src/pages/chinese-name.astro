@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import ChineseNameGenerator from '../components/ChineseNameGenerator.astro';
+import ToolSeoContent from '../components/ToolSeoContent.astro';
 
 const jsonLd = [
   {
@@ -13,11 +14,49 @@ const jsonLd = [
     operatingSystem: 'All',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How can a birthday inspire a Chinese name?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'A birth date provides a season, solar-term context, and three or four BaZi pillars. Those details can narrow poetic and natural imagery for a Chinese given name without claiming that one name is destined or guaranteed to change a life path.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Do I need my birth time to generate a Chinese name?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'No. Birth time adds the Hour Pillar, but a date alone still provides birth season and broader elemental imagery. The generator allows an unknown birth time instead of asking users to guess.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Does the generator create a Chinese surname?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'No. Chinese surnames normally represent inherited family lineage. The generator creates a given name and does not assign a random family identity.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Are all generated names direct quotations from Chinese poetry?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'No. Results distinguish direct quotations, phrase-based selections, seasonal inspiration, and botanical imagery. Each name should explain its source rather than presenting an adaptation as an ancient quotation.',
+        },
+      },
+    ],
+  },
 ];
 ---
 
 <Base
-  title="Chinese Given Name Generator | BaZi Destiny"
+  title="Chinese Name Generator by Birthday & Poetry | BaZi Destiny"
   description="Find a meaningful Chinese given name inspired by your BaZi, birth season, classical poetry, and traditional botanical imagery."
   keywords="Chinese name generator, Chinese given name, Chinese name with meaning, BaZi name, Chinese poetry names"
   path="/chinese-name.html"
@@ -26,6 +65,56 @@ const jsonLd = [
   <div class="name-page wrap">
     <ChineseNameGenerator />
   </div>
+
+  <ToolSeoContent
+    eyebrow="Meaning before translation"
+    title="A Chinese name shaped by language and cultural context"
+    summary="This generator does not simply transliterate an English name. It creates three Chinese given-name directions using birth season, BaZi-inspired imagery, classical literature, and a curated botanical source."
+    headingId="chinese-name-generator-explained"
+  >
+    <div class="tool-seo-grid">
+      <section>
+        <h3>Birthday and season</h3>
+        <p>Your date of birth identifies a season and traditional solar-term context. These provide coherent images such as spring growth, autumn clarity, winter stillness, or summer light.</p>
+      </section>
+      <section>
+        <h3>Classical poetry</h3>
+        <p>Poetic names are checked against the original line and modern usage. We distinguish exact quotations from names that are only inspired by an image or phrase.</p>
+      </section>
+      <section>
+        <h3>Natural pronunciation</h3>
+        <p>A meaningful character pair must also sound like a plausible person. Results include pinyin, an English pronunciation guide, meaning, source, and a modern usage impression.</p>
+      </section>
+      <section>
+        <h3>A given name, not a surname</h3>
+        <p>Chinese surnames carry lineage and are generally inherited. Assigning a random surname can imply a family identity the user does not have, so the tool creates given names only.</p>
+      </section>
+    </div>
+
+    <div class="tool-seo-links">
+      <p><strong>Explore the naming method:</strong> read <a href="/chinese-name-based-on-birthday.html">Chinese Names Based on Your Birthday</a>, browse <a href="/chinese-names-from-poetry.html">names from the Shi Jing and Chu Ci</a>, or <a href="/calculator.html">calculate your full BaZi chart</a> first.</p>
+    </div>
+
+    <section class="tool-faq" aria-labelledby="name-faq-title">
+      <h3 id="name-faq-title">Chinese name generator questions</h3>
+      <details>
+        <summary>How can a birthday inspire a Chinese name?</summary>
+        <p>A birth date provides a season, solar-term context, and three or four BaZi pillars. Those details can narrow poetic and natural imagery for a Chinese given name without claiming that one name is destined or guaranteed to change a life path.</p>
+      </details>
+      <details>
+        <summary>Do I need my birth time to generate a Chinese name?</summary>
+        <p>No. Birth time adds the Hour Pillar, but a date alone still provides birth season and broader elemental imagery. The generator allows an unknown birth time instead of asking users to guess.</p>
+      </details>
+      <details>
+        <summary>Does the generator create a Chinese surname?</summary>
+        <p>No. Chinese surnames normally represent inherited family lineage. The generator creates a given name and does not assign a random family identity.</p>
+      </details>
+      <details>
+        <summary>Are all generated names direct quotations from Chinese poetry?</summary>
+        <p>No. Results distinguish direct quotations, phrase-based selections, seasonal inspiration, and botanical imagery. Each name should explain its source rather than presenting an adaptation as an ancient quotation.</p>
+      </details>
+    </section>
+  </ToolSeoContent>
 </Base>
 
 <style>
