@@ -29,6 +29,7 @@ export const GET: APIRoute = async () => {
     { loc: '/faq.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/pricing.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/methodology.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
+    { loc: '/test-cases.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/about.html', priority: '0.5', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/editorial-policy.html', priority: '0.3', changefreq: 'yearly', lastmod: LAST_BUILD },
     { loc: '/privacy-policy.html', priority: '0.3', changefreq: 'yearly', lastmod: LAST_BUILD },

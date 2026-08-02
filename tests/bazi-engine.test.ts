@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import BaZiEngine from '../src/lib/bazi/engine.ts';
+import { PUBLIC_BAZI_TEST_CASES } from '../src/data/public-bazi-test-cases.ts';
+import { CITIES, solarTimeCorrection } from '../src/data/cities.ts';
 
 function pillar(date: string) {
   const [year, month, day] = date.split('-').map(Number);
@@ -32,4 +34,26 @@ assert.deepEqual(BaZiEngine.solarToLunar(2025, 7, 30), {
   isLeap: true,
 });
 
-console.log(`bazi-engine: 8 anchors passed (${process.env.TZ || 'system timezone'})`);
+for (const testCase of PUBLIC_BAZI_TEST_CASES) {
+  for (const observation of testCase.observations) {
+    const [year, month, day] = observation.date.split('-').map(Number);
+    const actual = BaZiEngine.calculateFourPillars(year, month, day, observation.effectiveHour).pillars;
+    assert.deepEqual(
+      {
+        year: actual.year.stem + actual.year.branch,
+        month: actual.month.stem + actual.month.branch,
+        day: actual.day.stem + actual.day.branch,
+        hour: actual.hour.stem + actual.hour.branch,
+      },
+      observation.expected,
+      `${testCase.id}: ${observation.label}`
+    );
+  }
+}
+
+const chengdu = CITIES.find((city) => city.name === 'Chengdu');
+assert.ok(chengdu, 'Chengdu public solar-time test city');
+assert.ok(Math.abs(solarTimeCorrection(chengdu) - -63.6) < 1e-9, 'Chengdu longitude correction');
+
+const publicObservations = PUBLIC_BAZI_TEST_CASES.reduce((total, testCase) => total + testCase.observations.length, 0);
+console.log(`bazi-engine: 8 anchors and ${publicObservations} public boundary observations passed (${process.env.TZ || 'system timezone'})`);

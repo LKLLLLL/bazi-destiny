@@ -1,0 +1,194 @@
+---
+import Base from '../layouts/Base.astro';
+import {
+  PUBLIC_BAZI_TEST_CASES,
+  PUBLIC_TEST_CASES_UPDATED,
+  PUBLIC_TEST_CASE_VERSION,
+  PUBLIC_TEST_CONVENTIONS,
+} from '../data/public-bazi-test-cases';
+import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    '@id': `${SITE_URL}/test-cases.html#article`,
+    headline: `${BRAND_NAME} BaZi Calculator Public Test Cases`,
+    description: 'Reproducible BaZi calculator test cases for Li Chun, Jie solar terms, Zi hour, civil-date rules, and true solar time correction.',
+    url: `${SITE_URL}/test-cases.html`,
+    author: { '@id': ORGANIZATION_ID },
+    publisher: { '@id': ORGANIZATION_ID },
+    isPartOf: { '@id': WEBSITE_ID },
+    dateModified: PUBLIC_TEST_CASES_UPDATED,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    '@id': `${SITE_URL}/test-cases.html#dataset`,
+    name: `${BRAND_NAME} Public BaZi Calculator Test Cases`,
+    description: 'Versioned public test vectors for documented BaZi calculation boundaries and longitude correction.',
+    url: `${SITE_URL}/test-cases.html`,
+    creator: { '@id': ORGANIZATION_ID },
+    isPartOf: { '@id': WEBSITE_ID },
+    version: PUBLIC_TEST_CASE_VERSION,
+    dateModified: PUBLIC_TEST_CASES_UPDATED,
+    distribution: {
+      '@type': 'DataDownload',
+      contentUrl: `${SITE_URL}/test-cases.json`,
+      encodingFormat: 'application/json',
+    },
+  },
+];
+---
+
+<Base
+  title="Public BaZi Calculator Test Cases | MyBaziDestiny"
+  description="Verify MyBaziDestiny with public BaZi test cases for Li Chun, Jie solar-term boundaries, Zi hour, civil-date rules, and true solar time correction."
+  path="/test-cases.html"
+  ogType="article"
+  jsonLd={jsonLd}
+>
+  <header class="test-hero wrap-narrow">
+    <p class="eyebrow"><span class="han">验算</span> Public Verification</p>
+    <h1>BaZi calculator test cases</h1>
+    <p>These fixed examples make the calculator's boundary rules inspectable. Each row publishes the input, effective time, and expected Four Pillars used by the automated regression tests.</p>
+    <div class="test-meta" aria-label="Dataset details">
+      <span>Version {PUBLIC_TEST_CASE_VERSION}</span>
+      <span>Updated {PUBLIC_TEST_CASES_UPDATED}</span>
+      <a href="/test-cases.json">Download JSON</a>
+    </div>
+  </header>
+
+  <section class="conventions-band">
+    <div class="wrap conventions-grid">
+      <div>
+        <p class="eyebrow">Declared scope</p>
+        <h2>Rules before results</h2>
+        <p>The cases verify this calculator's published implementation. They do not claim that every BaZi school uses the same day boundary or astronomical method.</p>
+      </div>
+      <ol>
+        {PUBLIC_TEST_CONVENTIONS.map((convention) => <li>{convention}</li>)}
+      </ol>
+    </div>
+  </section>
+
+  <div class="test-list wrap">
+    {PUBLIC_BAZI_TEST_CASES.map((testCase, index) => (
+      <section class="test-case" id={testCase.id} aria-labelledby={`${testCase.id}-title`}>
+        <div class="case-heading">
+          <span class="case-number">0{index + 1}</span>
+          <div>
+            <p class="case-category">{testCase.category.replaceAll('-', ' ')}</p>
+            <h2 id={`${testCase.id}-title`}>{testCase.title}</h2>
+            <p>{testCase.rule}</p>
+          </div>
+        </div>
+
+        <div class="case-fact">
+          <strong>Verifies</strong>
+          <span>{testCase.verifies}</span>
+        </div>
+
+        <div class="table-wrap" tabindex="0" role="region" aria-label={`${testCase.title} results`}>
+          <table>
+            <thead>
+              <tr>
+                <th>Observation</th>
+                <th>Input</th>
+                <th>Effective time</th>
+                <th>Year</th>
+                <th>Month</th>
+                <th>Day</th>
+                <th>Hour</th>
+              </tr>
+            </thead>
+            <tbody>
+              {testCase.observations.map((observation) => (
+                <tr>
+                  <th scope="row">{observation.label}</th>
+                  <td>{observation.date}<br />{observation.inputTime}</td>
+                  <td>
+                    {observation.effectiveTime}
+                    {observation.correctionMinutes !== undefined && <small>{observation.correctionMinutes} min</small>}
+                  </td>
+                  <td class="pillar">{observation.expected.year}</td>
+                  <td class="pillar">{observation.expected.month}</td>
+                  <td class="pillar">{observation.expected.day}</td>
+                  <td class="pillar">{observation.expected.hour}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p class="case-result"><strong>Expected difference:</strong> {testCase.result}</p>
+        <p class="case-id">Test ID: <code>{testCase.id}</code></p>
+      </section>
+    ))}
+  </div>
+
+  <section class="limits-band">
+    <div class="wrap-narrow">
+      <p class="eyebrow"><span class="han">范围</span> What is not tested</p>
+      <h2>Calculation evidence, not a prediction claim</h2>
+      <p>These cases verify deterministic calendar and time-handling behavior. They do not scientifically validate personality or future predictions. The current public calculator does not calculate Hidden Stems, weighted chart strength, favorable elements, or personalized Da Yun starting ages.</p>
+      <p>Mean solar-term offsets are intended for 1900-2100, while the lunar conversion table covers 1900-2049. Historical daylight-saving and political timezone changes must be checked independently.</p>
+      <div class="test-actions">
+        <a class="btn btn-gold" href="/calculator.html">Run the calculator</a>
+        <a class="btn btn-ghost" href="/methodology.html">Read the methodology</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .test-hero { padding-top: calc(68px + 5rem); padding-bottom: 4rem; }
+  .test-hero h1 { font-size: clamp(2.6rem, 6vw, 4.8rem); margin: 0.55rem 0 1rem; }
+  .test-hero > p:not(.eyebrow) { color: var(--bone-dim); font-size: 1.08rem; max-width: 70ch; }
+  .test-meta { display: flex; flex-wrap: wrap; gap: 0.65rem 1.4rem; margin-top: 1.5rem; color: var(--bone-faint); font-size: 0.82rem; }
+  .test-meta a { color: var(--gold-bright); }
+  .conventions-band { padding: 4rem 0; border-block: 1px solid var(--line-soft); background: rgba(212, 175, 106, 0.04); }
+  .conventions-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 5rem; align-items: start; }
+  .conventions-grid h2 { font-size: 2.2rem; margin-top: 0.55rem; }
+  .conventions-grid > div > p:last-child { color: var(--bone-dim); margin-top: 1rem; line-height: 1.75; }
+  .conventions-grid ol { counter-reset: convention; display: grid; gap: 0; }
+  .conventions-grid li { counter-increment: convention; display: grid; grid-template-columns: 2rem 1fr; gap: 0.8rem; padding: 0.8rem 0; border-bottom: 1px solid var(--line-soft); color: var(--bone-dim); }
+  .conventions-grid li::before { content: counter(convention, decimal-leading-zero); color: var(--gold-deep); font-family: var(--font-display); }
+  .test-list { padding-top: 1rem; }
+  .test-case { padding: 4.5rem 0; border-bottom: 1px solid var(--line-soft); scroll-margin-top: 90px; }
+  .case-heading { display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 1.5rem; max-width: 860px; }
+  .case-number { color: var(--gold-deep); font-family: var(--font-display); padding-top: 0.35rem; }
+  .case-category { color: var(--gold); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+  .case-heading h2 { font-size: clamp(1.7rem, 3.4vw, 2.45rem); margin: 0.35rem 0 0.75rem; }
+  .case-heading p:last-child { color: var(--bone-dim); line-height: 1.75; }
+  .case-fact { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; margin: 2rem 0 1rem 5.5rem; max-width: 800px; font-size: 0.88rem; }
+  .case-fact strong { color: var(--gold); }
+  .case-fact span { color: var(--bone-dim); }
+  .table-wrap { max-width: 100%; overflow-x: auto; border: 1px solid var(--line); }
+  .table-wrap:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  table { width: 100%; min-width: 780px; border-collapse: collapse; }
+  th, td { padding: 1rem 0.9rem; border-right: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); text-align: left; vertical-align: middle; }
+  tr:last-child th, tr:last-child td { border-bottom: 0; }
+  th:last-child, td:last-child { border-right: 0; }
+  thead th { color: var(--gold); background: rgba(212, 175, 106, 0.055); font-size: 0.75rem; font-weight: 600; }
+  tbody th { color: var(--bone); font-size: 0.82rem; min-width: 9rem; }
+  tbody td { color: var(--bone-dim); font-size: 0.82rem; }
+  td small { display: block; color: var(--bone-faint); margin-top: 0.25rem; }
+  .pillar { color: var(--gold-bright); font-family: var(--font-display); font-size: 1.2rem; white-space: nowrap; }
+  .case-result { margin-top: 1.3rem; color: var(--bone-dim); line-height: 1.7; }
+  .case-result strong { color: var(--bone); }
+  .case-id { margin-top: 0.7rem; color: var(--bone-faint); font-size: 0.75rem; }
+  .case-id code { color: var(--gold); }
+  .limits-band { padding: 5rem 0; border-top: 1px solid var(--line-soft); background: rgba(255, 255, 255, 0.012); }
+  .limits-band h2 { font-size: 2.25rem; margin: 0.55rem 0 1rem; }
+  .limits-band > div > p:not(.eyebrow) { color: var(--bone-dim); margin-top: 1rem; line-height: 1.8; }
+  .test-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+  @media (max-width: 760px) {
+    .test-hero { padding-top: calc(68px + 3.5rem); }
+    .conventions-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .case-heading { grid-template-columns: 2rem minmax(0, 1fr); gap: 0.8rem; }
+    .case-fact { margin-left: 2.8rem; grid-template-columns: 1fr; gap: 0.35rem; }
+    .test-actions { display: grid; }
+    .test-actions .btn { width: 100%; }
+  }
+</style>

@@ -130,7 +130,7 @@ If the Four Pillars differ, investigate the calendar and time rules. If the pill
 
 ## A Practical Test Before Trusting a Result
 
-Use a birth date that is not close to a boundary first. Confirm the Year, Month, Day, and Hour Pillars across two documented tools or with a qualified practitioner. Then test the actual birth details and note any Li Chun, solar-term, timezone, DST, or Zi-hour issue.
+Use a birth date that is not close to a boundary first. Confirm the Year, Month, Day, and Hour Pillars across two documented tools or with a qualified practitioner. Then test the actual birth details and note any Li Chun, solar-term, timezone, DST, or Zi-hour issue. MyBaziDestiny publishes [fixed boundary test cases](/test-cases.html) and [machine-readable test vectors](/test-cases.json) so these conventions can be reproduced.
 
 Do not choose a calculator because it gives the most flattering answer. Choose the one that makes its method, limitations, privacy, and product scope easiest to verify.
 

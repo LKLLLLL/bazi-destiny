@@ -5,7 +5,7 @@ import { join } from 'node:path';
 const ROOT = new URL('../.vercel/output/static/', import.meta.url).pathname;
 const URL_FILE = new URL('../../live/urls.txt', import.meta.url);
 
-const requiredFiles = ['index.html', 'pricing.html', 'methodology.html', 'llms.txt', 'sitemap.xml', '272bd5de5baf4ae5b83bf3b043803fa9.txt'];
+const requiredFiles = ['index.html', 'pricing.html', 'methodology.html', 'test-cases.html', 'test-cases.json', 'llms.txt', 'sitemap.xml', '272bd5de5baf4ae5b83bf3b043803fa9.txt'];
 const errors = [];
 for (const file of requiredFiles) {
   if (!existsSync(join(ROOT, file))) errors.push(`missing required output ${file}`);
@@ -15,6 +15,8 @@ if (errors.length === 0) {
   const index = readFileSync(join(ROOT, 'index.html'), 'utf8');
   const pricing = readFileSync(join(ROOT, 'pricing.html'), 'utf8');
   const methodology = readFileSync(join(ROOT, 'methodology.html'), 'utf8');
+  const testCases = readFileSync(join(ROOT, 'test-cases.html'), 'utf8');
+  const testCaseJson = JSON.parse(readFileSync(join(ROOT, 'test-cases.json'), 'utf8'));
   const llms = readFileSync(join(ROOT, 'llms.txt'), 'utf8');
   const sitemap = readFileSync(join(ROOT, 'sitemap.xml'), 'utf8');
 
@@ -22,6 +24,8 @@ if (errors.length === 0) {
   if (!index.includes('alternateName')) errors.push('index.html: structured brand aliases missing');
   if (!pricing.includes('9.90') || !pricing.includes('4.90')) errors.push('pricing.html: official prices missing');
   if (!methodology.includes('Li Chun') || !methodology.includes('historical timezone')) errors.push('methodology.html: rules or limitations missing');
+  if (!testCases.includes('li-chun-2024') || !testCases.includes('chengdu-solar-time-2024')) errors.push('test-cases.html: public boundary cases missing');
+  if (!Array.isArray(testCaseJson.testCases) || testCaseJson.testCases.length !== 4) errors.push('test-cases.json: expected four public test cases');
   if (!llms.includes('MyBaziDestiny') || !llms.includes('USD 9.90')) errors.push('llms.txt: canonical facts missing');
 
   const urlCount = (sitemap.match(/<url>/g) || []).length;

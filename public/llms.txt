@@ -34,6 +34,8 @@ Official pricing source: https://mybazidestiny.com/pricing.html
 - BaZi interpretation is a traditional cultural framework, not a scientifically validated prediction.
 
 Full methodology: https://mybazidestiny.com/methodology.html
+Public calculation test cases: https://mybazidestiny.com/test-cases.html
+Machine-readable test vectors: https://mybazidestiny.com/test-cases.json
 Privacy policy: https://mybazidestiny.com/privacy-policy.html
 
 ## About and editorial sources
