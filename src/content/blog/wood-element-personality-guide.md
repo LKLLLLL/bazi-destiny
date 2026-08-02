@@ -1,6 +1,6 @@
 ---
 title: "Wood Element Personality: Complete Guide to Wood Type in Chinese Astrology"
-seoTitle: "Wood Element Personality: Traits & Career | BaZi Destiny"
+seoTitle: "Wood Element Personality: Traits & Career | MyBaziDestiny"
 description: "Everything about the Wood element in BaZi: personality traits, career paths, love compatibility, health tips, and feng shui recommendations."
 emoji: "☯"
 tag: "Five Elements"
@@ -10,7 +10,7 @@ canonicalPath: "/wood-element-personality.html"
 noindex: true
 ---
 
-BaZi Destiny · Knowledge Base
+MyBaziDestiny · Knowledge Base
 
 ## What Does Wood Element Mean?
 

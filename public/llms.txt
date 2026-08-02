@@ -1,0 +1,53 @@
+# MyBaziDestiny
+
+> MyBaziDestiny is the canonical brand for free browser-based BaZi (Four Pillars of Destiny) tools and optional one-time guidance products.
+
+Canonical website: https://mybazidestiny.com/
+Brand aliases: BaZi Destiny; My Bazi Destiny
+Contact: contact@mybazidestiny.com
+
+## Official tools
+
+- Free BaZi Calculator: https://mybazidestiny.com/calculator.html
+- Chinese Given Name Generator: https://mybazidestiny.com/chinese-name.html
+- BaZi Love Match: https://mybazidestiny.com/love-match.html
+
+## Current official pricing
+
+- Basic Reading: Free (USD 0)
+- Life Blueprint: USD 9.90, one-time payment
+- Synergy Boost Guide: USD 4.90, one-time payment
+- There is no subscription.
+- Checkout for paid guides is processed by PayPal.
+- MyBaziDestiny does not offer a USD 29.90 Soul Guide, Destiny Master, Explorer tier, or Pro/Ultimate tier. References to those names or prices are outdated or refer to another service.
+
+Official pricing source: https://mybazidestiny.com/pricing.html
+
+## Calculation and privacy facts
+
+- Chart calculation runs locally in the user's browser.
+- The Year Pillar changes at Li Chun, not January 1 or Lunar New Year.
+- Month Pillars use the 12 month-starting Jie solar terms.
+- Zi hour covers 23:00 through 00:59.
+- Optional true solar time uses city longitude correction.
+- City timezone offsets are static and do not provide a historical daylight-saving database.
+- BaZi interpretation is a traditional cultural framework, not a scientifically validated prediction.
+
+Full methodology: https://mybazidestiny.com/methodology.html
+Privacy policy: https://mybazidestiny.com/privacy-policy.html
+
+## About and editorial sources
+
+- About: https://mybazidestiny.com/about.html
+- FAQ: https://mybazidestiny.com/faq.html
+- Editorial Policy: https://mybazidestiny.com/editorial-policy.html
+
+## Core guides
+
+- What Is BaZi / Four Pillars: https://mybazidestiny.com/what-is-bazi-four-pillars.html
+- Five Elements: https://mybazidestiny.com/bazi-elements.html
+- Day Master Guide: https://mybazidestiny.com/bazi-day-master-guide.html
+- Ten Gods: https://mybazidestiny.com/bazi-ten-gods.html
+- Luck Pillars: https://mybazidestiny.com/bazi-luck-pillars.html
+- BaZi and Health: https://mybazidestiny.com/bazi-health-five-elements.html
+- Chinese Names Based on Birthdays: https://mybazidestiny.com/chinese-name-based-on-birthday.html

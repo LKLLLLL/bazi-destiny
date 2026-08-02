@@ -4,7 +4,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
 ---
 
 <Base
-  title="Synergy Boost Guide | BaZi Destiny"
+  title="Synergy Boost Guide | MyBaziDestiny"
   description="Your personalized relationship alignment guide — communication, shared activities, home energy, and conflict resolution."
   path="/synergy-guide.html"
   noindex={true}
@@ -96,7 +96,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     document.getElementById('sgCards')!.innerHTML = guide.cards.map((card: any) =>
       `<div class="sg-card"><div class="sg-card-header"><div class="sg-card-title">${card.title}</div></div><div class="sg-card-body">${card.bodyHtml}</div></div>`
     ).join('');
-    document.title = `${guide.title} — Synergy Guide | BaZi Destiny`;
+    document.title = `${guide.title} — Synergy Guide | MyBaziDestiny`;
     if (completedCheckout) {
       clearPendingCheckout();
       const clean = new URLSearchParams({ n1: name1, n2: name2, e1: element1, e2: element2 });

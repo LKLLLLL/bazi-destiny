@@ -1,13 +1,13 @@
 ---
-title: "Privacy Policy — BaZi Destiny"
-description: "Read the Privacy Policy for BaZi Destiny. Learn how we collect, use, and protect your personal data when you use our BaZi calculator and compatibility readings."
+title: "Privacy Policy — MyBaziDestiny"
+description: "Read the Privacy Policy for MyBaziDestiny. Learn how we collect, use, and protect your personal data when you use our BaZi calculator and compatibility readings."
 ---
 
-BaZi Destiny ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website and services.
+MyBaziDestiny ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website and services.
 
 ## 1. Information We Collect
 
-When you use BaZi Destiny, we may collect the following information:
+When you use MyBaziDestiny, we may collect the following information:
 
 - **Birth Information:** Date of birth, birth time (hour), and birth location that you voluntarily provide for generating your BaZi reading.
 - **Name:** Any name you choose to associate with your reading.

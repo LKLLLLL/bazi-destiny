@@ -1,6 +1,6 @@
 ---
 title: "BaZi Health & Five Elements: What Your Chart Says About Wellness"
-seoTitle: "BaZi Health Guide: Five Elements & Wellness | BaZi Destiny"
+seoTitle: "BaZi Health Guide: Five Elements & Wellness | MyBaziDestiny"
 description: "Learn how the Five Elements in your BaZi chart relate to organ systems, energy balance, and wellness patterns through Traditional Chinese Medicine."
 emoji: "☯"
 tag: "Five Elements"

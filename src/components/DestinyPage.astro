@@ -38,7 +38,7 @@ const jsonLd: Record<string, unknown>[] = [
     headline: rec.title,
     description: rec.description,
     url: `https://mybazidestiny.com${path}`,
-    isPartOf: { '@type': 'WebSite', name: 'BaZi Destiny', url: 'https://mybazidestiny.com/' },
+    isPartOf: { '@type': 'WebSite', name: 'MyBaziDestiny', url: 'https://mybazidestiny.com/' },
     about: [
       { '@type': 'Thing', name: `${rec.year} Chinese zodiac` },
       { '@type': 'Thing', name: rec.animal },
@@ -72,7 +72,7 @@ if (rec.faqs.length) {
       <div class="dest-emoji" aria-hidden="true">{rec.emoji}</div>
       <h1>{rec.h1}</h1>
       {rec.subs.map((s) => <p class="dest-sub">{s}</p>)}
-      <div class="dest-badge">{isZh ? '八字命运 · 免费详解' : 'BaZi Destiny · Free Analysis'}</div>
+      <div class="dest-badge">{isZh ? '八字命运 · 免费详解' : 'MyBaziDestiny · Free Analysis'}</div>
     </div>
   </div>
 

@@ -1,19 +1,19 @@
 ---
-title: "Terms of Service — BaZi Destiny"
-description: "Read the Terms of Service for BaZi Destiny. Understand the rules, limitations, and user responsibilities when using our BaZi calculator and AI-powered destiny readings."
+title: "Terms of Service — MyBaziDestiny"
+description: "Read the Terms of Service for MyBaziDestiny. Understand the rules, limitations, and user responsibilities when using our BaZi calculator and AI-powered destiny readings."
 ---
 
-**Entertainment Purposes Only.** BaZi Destiny readings are provided for entertainment and self-reflection purposes. Our astrology readings are not a substitute for professional medical, legal, financial, or psychological advice. Always seek qualified professionals for serious concerns.
+**Entertainment Purposes Only.** MyBaziDestiny readings are provided for entertainment and self-reflection purposes. Our astrology readings are not a substitute for professional medical, legal, financial, or psychological advice. Always seek qualified professionals for serious concerns.
 
-By accessing or using the BaZi Destiny website and services ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use our Service.
+By accessing or using the MyBaziDestiny website and services ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use our Service.
 
 ## 1. Acceptance of Terms
 
-By using BaZi Destiny, you acknowledge that you have read, understood, and agree to be bound by these Terms and our Privacy Policy.
+By using MyBaziDestiny, you acknowledge that you have read, understood, and agree to be bound by these Terms and our Privacy Policy.
 
 ## 2. Service Description
 
-BaZi Destiny provides personalized astrological readings based on the Chinese BaZi (Four Pillars of Destiny) system. We offer:
+MyBaziDestiny provides personalized astrological readings based on the Chinese BaZi (Four Pillars of Destiny) system. We offer:
 
 - **Free Readings:** Basic personality and elemental profile analysis.
 - **Life Blueprint:** Personalized alignment guidance available through a one-time purchase.
@@ -33,7 +33,7 @@ No account is required. Access to a paid reading is associated with the browser 
 
 ## 5. Intellectual Property
 
-All content on the BaZi Destiny website, including text, design, graphics, and software, is the property of BaZi Destiny and is protected by copyright laws. You may not reproduce, distribute, or create derivative works without our written permission.
+All content on the MyBaziDestiny website, including text, design, graphics, and software, is the property of MyBaziDestiny and is protected by copyright laws. You may not reproduce, distribute, or create derivative works without our written permission.
 
 ## 6. Prohibited Conduct
 
@@ -51,7 +51,7 @@ THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIN
 
 ## 8. Limitation of Liability
 
-BaZi Destiny and its operators shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Service.
+MyBaziDestiny and its operators shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Service.
 
 ## 9. Changes to Terms
 
@@ -59,7 +59,7 @@ We reserve the right to modify these Terms at any time. Changes will be posted o
 
 ## 10. Governing Law
 
-These Terms shall be governed by the laws of the jurisdiction in which BaZi Destiny operates, without regard to its conflict of law provisions.
+These Terms shall be governed by the laws of the jurisdiction in which MyBaziDestiny operates, without regard to its conflict of law provisions.
 
 ## 11. Contact
 

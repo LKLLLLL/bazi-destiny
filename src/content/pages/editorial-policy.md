@@ -1,11 +1,11 @@
 ---
-title: "Editorial Policy — BaZi Destiny Content Standards"
-description: "BaZi Destiny's editorial policy: how we research, write, and verify our Chinese astrology content. Learn about our content standards, review process, and accuracy commitments."
+title: "Editorial Policy — MyBaziDestiny Content Standards"
+description: "MyBaziDestiny's editorial policy: how we research, write, and verify our Chinese astrology content. Learn about our content standards, review process, and accuracy commitments."
 ---
 
 ## Content Standards
 
-At BaZi Destiny, we are committed to publishing content that is accurate, well-researched, and genuinely helpful. This editorial policy outlines how we create and maintain our content.
+At MyBaziDestiny, we are committed to publishing content that is accurate, well-researched, and genuinely helpful. This editorial policy outlines how we create and maintain our content.
 
 ### 1. Research & Sources
 

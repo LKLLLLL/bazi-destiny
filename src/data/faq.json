@@ -7,6 +7,10 @@
     "a": "BaZi, meaning \"Eight Characters\" in Chinese, is an ancient astrological system that analyzes your destiny based on your birth date and time. It's called \"Four Pillars\" because it examines four components of your birth: the Year, Month, Day, and Hour pillars. Each pillar contains a Heavenly Stem and an Earthly Branch, creating eight characters that reveal your unique energetic blueprint."
    },
    {
+    "q": "Is MyBaziDestiny the same as BaZi Destiny?",
+    "a": "Yes. MyBaziDestiny is the canonical brand name. BaZi Destiny and My Bazi Destiny are former or spaced display aliases for the same website at mybazidestiny.com."
+   },
+   {
     "q": "How is BaZi different from Western astrology?",
     "a": "While Western astrology focuses on planetary positions at your birth time, BaZi analyzes the interplay of Five Elements (Wood, Fire, Earth, Metal, Water) through your birth chart. BaZi provides more specific insights about your career path, wealth potential, relationships, and life cycles. It's particularly powerful for timing major life decisions and understanding your innate strengths."
    },
@@ -21,7 +25,11 @@
   "items": [
    {
     "q": "What information do I need for a reading?",
-    "a": "You'll need your birth date and ideally your birth hour. The birth hour is important because it determines your Day Master and provides more accurate readings. If you don't know your exact birth time, you can still get a reading, but some details will be less specific. Your name and gender are optional but help personalize the reading."
+    "a": "You'll need your birth date and ideally your birth hour. The birth date determines your Day Master, while the birth hour determines the Hour Pillar and adds detail to the chart. If you don't know your exact birth time, you can still get a three-pillar reading. Your name and gender are optional but help personalize the reading."
+   },
+   {
+    "q": "How does MyBaziDestiny calculate the Four Pillars?",
+    "a": "The Year Pillar changes at Li Chun, Month Pillars use the 12 month-starting Jie solar terms, and the Hour Pillar uses traditional two-hour branches with Zi hour from 23:00 to 00:59. Optional true solar time applies a longitude correction. See the Methodology page for supported dates and timezone limitations."
    },
    {
     "q": "What's included in the free reading?",

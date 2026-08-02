@@ -5,6 +5,7 @@ import Pricing from '../components/Pricing.astro';
 import PaymentModal from '../components/PaymentModal.astro';
 import Armillary from '../components/Armillary.astro';
 import WuxingPentagon from '../components/WuxingPentagon.astro';
+import { BRAND_ALIASES, BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
 
 const posts = (await getCollection('blog'))
   .filter((post) => !post.data.noindex)
@@ -15,21 +16,53 @@ const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'BaZi Destiny',
-    url: 'https://mybazidestiny.com/',
+    '@id': WEBSITE_ID,
+    name: BRAND_NAME,
+    alternateName: BRAND_ALIASES,
+    url: `${SITE_URL}/`,
     description:
       'Discover your destiny through BaZi (Four Pillars of Destiny) Chinese astrology. Free personalized readings for career, love, wealth, and life path.',
-    publisher: { '@type': 'Organization', name: 'BaZi Destiny', url: 'https://mybazidestiny.com/' },
+    publisher: { '@id': ORGANIZATION_ID },
   },
   {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'BaZi Destiny',
-    url: 'https://mybazidestiny.com/',
-    logo: 'https://mybazidestiny.com/og-image.png',
+    '@id': ORGANIZATION_ID,
+    name: BRAND_NAME,
+    alternateName: BRAND_ALIASES,
+    url: `${SITE_URL}/`,
+    logo: `${SITE_URL}/og-image.png`,
     description:
       'Free BaZi (Four Pillars of Destiny) Chinese astrology readings — personality, career, love compatibility, and Feng Shui guidance.',
     email: 'contact@mybazidestiny.com',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    '@id': `${SITE_URL}/calculator.html#application`,
+    name: `${BRAND_NAME} Free BaZi Calculator`,
+    url: `${SITE_URL}/calculator.html`,
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'Web',
+    provider: { '@id': ORGANIZATION_ID },
+    isPartOf: { '@id': WEBSITE_ID },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    '@id': `${SITE_URL}/pricing.html#life-blueprint`,
+    name: 'MyBaziDestiny Life Blueprint',
+    description: 'A one-time BaZi Life Alignment Guide with personalized practical recommendations.',
+    brand: { '@id': ORGANIZATION_ID },
+    url: `${SITE_URL}/pricing.html#life-blueprint`,
+    offers: {
+      '@type': 'Offer',
+      price: '9.90',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      url: `${SITE_URL}/pricing.html#life-blueprint`,
+    },
   },
 ];
 
@@ -69,7 +102,7 @@ const faqs = [
 ---
 
 <Base
-  title="Free BaZi Calculator & Four Pillars Reading | BaZi Destiny"
+  title="Free BaZi Calculator & Four Pillars Reading | MyBaziDestiny"
   description="Generate a free BaZi Four Pillars chart from your birth date and time. Discover your Day Master, Five Elements balance, personality, and lucky directions."
   keywords="BaZi, Chinese astrology, Four Pillars of Destiny, Feng Shui, Chinese horoscope, bazi reading, fortune telling, destiny, Chinese zodiac"
   path="/"
@@ -132,7 +165,7 @@ const faqs = [
     <div class="wrap">
       <div class="section-head" data-reveal>
         <p class="eyebrow"><span class="han">古法今译</span> The Process</p>
-        <h2 class="section-title">Ancient science, <em>modern clarity</em></h2>
+        <h2 class="section-title">Ancient tradition, <em>modern clarity</em></h2>
       </div>
       <div class="steps-grid">
         {steps.map((s, i) => (

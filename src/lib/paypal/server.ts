@@ -116,7 +116,7 @@ export async function createOrder(tier: Tier, origin: string): Promise<{ orderId
       payment_source: {
         paypal: {
           experience_context: {
-            brand_name: 'BaZi Destiny',
+            brand_name: 'MyBaziDestiny',
             user_action: 'PAY_NOW',
             return_url: returnUrl.toString(),
             cancel_url: cancelUrl.toString(),

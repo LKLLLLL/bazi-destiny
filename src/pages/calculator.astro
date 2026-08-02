@@ -3,18 +3,22 @@ import Base from '../layouts/Base.astro';
 import StepCalculator from '../components/StepCalculator.astro';
 import PaymentModal from '../components/PaymentModal.astro';
 import ToolSeoContent from '../components/ToolSeoContent.astro';
+import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
 
 const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: 'BaZi Destiny Calculator',
-    url: 'https://mybazidestiny.com/calculator.html',
+    '@id': `${SITE_URL}/calculator.html#application`,
+    name: `${BRAND_NAME} Free BaZi Calculator`,
+    url: `${SITE_URL}/calculator.html`,
     description:
       'Free BaZi (Four Pillars of Destiny) calculator. Get your personalized Chinese astrology reading instantly.',
     applicationCategory: 'LifestyleApplication',
     operatingSystem: 'All',
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    provider: { '@id': ORGANIZATION_ID },
+    isPartOf: { '@id': WEBSITE_ID },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
   },
   {
     '@context': 'https://schema.org',
@@ -58,7 +62,7 @@ const jsonLd = [
 ---
 
 <Base
-  title="Free BaZi Calculator: Four Pillars Chart | BaZi Destiny"
+  title="Free BaZi Calculator: Four Pillars Chart | MyBaziDestiny"
   description="Enter your birth date and time to calculate your Four Pillars, Day Master, Five Elements balance, personality traits, and favorable directions for free."
   keywords="BaZi calculator, Chinese astrology, Four Pillars, free reading, destiny chart"
   path="/calculator.html"

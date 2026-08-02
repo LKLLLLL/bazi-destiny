@@ -1,0 +1,132 @@
+---
+import Base from '../layouts/Base.astro';
+import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
+
+const products = [
+  {
+    id: 'basic-reading',
+    name: 'Basic Reading',
+    price: '0',
+    displayPrice: 'Free',
+    description: 'Your Four Pillars chart, Day Master, Five Elements balance, personality traits, and favorable directions.',
+    href: '/calculator.html',
+    cta: 'Generate free chart',
+  },
+  {
+    id: 'life-blueprint',
+    name: 'Life Blueprint',
+    price: '9.90',
+    displayPrice: '$9.90 USD',
+    description: 'A one-time Life Alignment Guide with personalized colors, numbers, directions, clothing, routine, diet, and conduct guidance.',
+    href: '/calculator.html',
+    cta: 'Start with your chart',
+  },
+  {
+    id: 'synergy-boost-guide',
+    name: 'Synergy Boost Guide',
+    price: '4.90',
+    displayPrice: '$4.90 USD',
+    description: 'A one-time practical guide added to a love match result, covering communication, shared activities, home energy, and conflict resolution.',
+    href: '/love-match.html',
+    cta: 'Calculate love match',
+  },
+];
+
+const jsonLd = products.map((product) => ({
+  '@context': 'https://schema.org',
+  '@type': product.price === '0' ? 'Service' : 'Product',
+  '@id': `${SITE_URL}/pricing.html#${product.id}`,
+  name: `${BRAND_NAME} ${product.name}`,
+  description: product.description,
+  url: `${SITE_URL}/pricing.html#${product.id}`,
+  provider: { '@id': ORGANIZATION_ID },
+  brand: { '@id': ORGANIZATION_ID },
+  isPartOf: { '@id': WEBSITE_ID },
+  offers: {
+    '@type': 'Offer',
+    price: product.price,
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    url: `${SITE_URL}${product.href}`,
+  },
+}));
+---
+
+<Base
+  title="MyBaziDestiny Pricing: Free Chart, $9.90 Blueprint"
+  description="Official MyBaziDestiny pricing: Basic Reading is free, Life Blueprint is $9.90 USD once, and Synergy Boost Guide is $4.90 USD once. No subscription."
+  path="/pricing.html"
+  jsonLd={jsonLd}
+>
+  <header class="fact-hero wrap-narrow">
+    <p class="eyebrow"><span class="han">明价</span> Official Pricing</p>
+    <h1>Simple, one-time pricing</h1>
+    <p>Start with a free chart. Paid guides are optional one-time purchases, with no subscription or recurring charge.</p>
+  </header>
+
+  <section class="pricing-list wrap" aria-label="Products and prices">
+    {products.map((product, index) => (
+      <article class="pricing-row" id={product.id}>
+        <span class="item-number">0{index + 1}</span>
+        <div class="item-copy">
+          <h2>{product.name}</h2>
+          <p>{product.description}</p>
+        </div>
+        <div class="item-action">
+          <strong>{product.displayPrice}</strong>
+          <span>{product.price === '0' ? 'No payment required' : 'One-time payment'}</span>
+          <a class="btn btn-ghost" href={product.href}>{product.cta}</a>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <section class="checkout-band">
+    <div class="wrap checkout-grid">
+      <div>
+        <p class="eyebrow">Checkout</p>
+        <h2>PayPal, with no recurring billing</h2>
+      </div>
+      <div class="checkout-facts">
+        <p><strong>Currency</strong><span>All listed prices are in USD.</span></p>
+        <p><strong>Payment</strong><span>Paid guides use PayPal checkout.</span></p>
+        <p><strong>Access</strong><span>No account is required; keep your PayPal receipt.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap-narrow price-note">
+    <h2>Official price reference</h2>
+    <p>This page is the canonical source for current MyBaziDestiny pricing. Product names or prices shown on third-party websites, search results, or AI answers may be outdated. For questions about an existing purchase, email <a href="mailto:contact@mybazidestiny.com">contact@mybazidestiny.com</a>.</p>
+  </section>
+</Base>
+
+<style>
+  .fact-hero { padding-top: calc(68px + 5rem); padding-bottom: 3.5rem; }
+  .fact-hero h1 { font-size: clamp(2.6rem, 6vw, 4.8rem); margin: 0.55rem 0 1rem; }
+  .fact-hero > p:last-child { color: var(--bone-dim); font-size: 1.08rem; max-width: 62ch; }
+  .pricing-list { border-top: 1px solid var(--line); }
+  .pricing-row { display: grid; grid-template-columns: 4rem minmax(0, 1fr) 15rem; gap: 2rem; align-items: center; padding: 2.4rem 0; border-bottom: 1px solid var(--line-soft); scroll-margin-top: 90px; }
+  .item-number { color: var(--gold-deep); font-family: var(--font-display); font-size: 1rem; }
+  .item-copy h2 { font-size: 1.65rem; margin-bottom: 0.55rem; }
+  .item-copy p { color: var(--bone-dim); max-width: 68ch; }
+  .item-action { display: grid; justify-items: start; gap: 0.45rem; }
+  .item-action strong { color: var(--gold-bright); font-family: var(--font-display); font-size: 1.8rem; }
+  .item-action span { color: var(--bone-faint); font-size: 0.82rem; }
+  .item-action .btn { margin-top: 0.45rem; }
+  .checkout-band { margin-top: 5rem; padding: 4.5rem 0; background: rgba(212, 175, 106, 0.055); border-block: 1px solid var(--line-soft); }
+  .checkout-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; }
+  .checkout-grid h2 { font-size: 2.2rem; }
+  .checkout-facts { display: grid; gap: 1.2rem; }
+  .checkout-facts p { display: grid; grid-template-columns: 8rem 1fr; gap: 1rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--line-soft); }
+  .checkout-facts span { color: var(--bone-dim); }
+  .price-note { padding: 5rem 0 1rem; }
+  .price-note h2 { margin-bottom: 1rem; }
+  .price-note p { color: var(--bone-dim); }
+  @media (max-width: 760px) {
+    .fact-hero { padding-top: calc(68px + 3.5rem); }
+    .pricing-row { grid-template-columns: 2rem 1fr; gap: 1rem; }
+    .item-action { grid-column: 2; }
+    .checkout-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+</style>

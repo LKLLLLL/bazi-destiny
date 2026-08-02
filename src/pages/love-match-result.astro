@@ -4,7 +4,7 @@ import PaymentModal from '../components/PaymentModal.astro';
 ---
 
 <Base
-  title="Love Match Result | BaZi Destiny"
+  title="Love Match Result | MyBaziDestiny"
   description="See your BaZi compatibility score and synergy boost tips."
   path="/love-match-result.html"
   noindex={true}
@@ -88,7 +88,7 @@ import PaymentModal from '../components/PaymentModal.astro';
   }
 
   document.getElementById('lmrTitle').textContent = n1 + ' & ' + n2;
-  document.title = n1 + ' & ' + n2 + ' \u2014 Love Match | BaZi Destiny';
+  document.title = n1 + ' & ' + n2 + ' \u2014 Love Match | MyBaziDestiny';
 
   if (!d1 || !h1 || !d2 || !h2) {
     document.getElementById('lmrLoading').innerHTML = '<div style="text-align:center;padding:3rem"><span style="font-size:3rem">\uD83D\uDC95</span><h2>No match data</h2><p style="color:var(--bone-dim)">Go back and enter both birth details.</p><a href="/love-match.html" class="btn btn-love btn-lg">Try Love Match</a></div>';

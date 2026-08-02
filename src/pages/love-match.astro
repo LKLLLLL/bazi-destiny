@@ -2,18 +2,38 @@
 import Base from '../layouts/Base.astro';
 import LoveMatch from '../components/LoveMatch.astro';
 import ToolSeoContent from '../components/ToolSeoContent.astro';
+import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
 
 const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: 'BaZi Love Match — Chinese Zodiac Compatibility Calculator',
-    url: 'https://mybazidestiny.com/love-match.html',
+    '@id': `${SITE_URL}/love-match.html#application`,
+    name: `${BRAND_NAME} BaZi Love Match`,
+    url: `${SITE_URL}/love-match.html`,
     applicationCategory: 'LifestyleApplication',
     operatingSystem: 'Web',
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    provider: { '@id': ORGANIZATION_ID },
+    isPartOf: { '@id': WEBSITE_ID },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
     description:
       'Free BaZi love compatibility calculator. Compare two birth charts for elemental harmony, day pillar bond, and relationship guidance.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    '@id': `${SITE_URL}/pricing.html#synergy-boost-guide`,
+    name: `${BRAND_NAME} Synergy Boost Guide`,
+    description: 'A one-time practical relationship guide added to a BaZi love match result.',
+    brand: { '@id': ORGANIZATION_ID },
+    url: `${SITE_URL}/pricing.html#synergy-boost-guide`,
+    offers: {
+      '@type': 'Offer',
+      price: '4.90',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      url: `${SITE_URL}/love-match.html`,
+    },
   },
   {
     '@context': 'https://schema.org',
@@ -57,7 +77,7 @@ const jsonLd = [
 ---
 
 <Base
-  title="BaZi Love Compatibility Calculator | BaZi Destiny"
+  title="BaZi Love Compatibility Calculator | MyBaziDestiny"
   description="Compare two BaZi birth charts for Five Elements harmony, Day Pillar connections, relationship strengths, and potential challenges. Free and instant."
   keywords="bazi love match, chinese zodiac compatibility, bazi compatibility, love calculator, four pillars compatibility, 八字合婚"
   path="/love-match.html"

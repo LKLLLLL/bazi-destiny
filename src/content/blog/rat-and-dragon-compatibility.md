@@ -8,7 +8,7 @@ pubDate: 2026-05-15
 readTime: "3 min read"
 ---
 
-BaZi Destiny · Knowledge Base
+MyBaziDestiny · Knowledge Base
 
 ## Rat + Dragon: A Powerful Match
 

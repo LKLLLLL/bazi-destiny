@@ -1,6 +1,6 @@
 ---
 title: "What is BaZi? The Complete Beginner's Guide to Four Pillars of Destiny"
-seoTitle: "What is BaZi? Beginner's Guide to Four Pillars | BaZi Destiny"
+seoTitle: "What is BaZi? Beginner's Guide to Four Pillars | MyBaziDestiny"
 description: "Learn what BaZi (Four Pillars of Destiny) is, how it works, and how to read your birth chart. Complete beginner's guide to Chinese astrology."
 emoji: "☯"
 tag: "Guide"
@@ -10,7 +10,7 @@ canonicalPath: "/what-is-bazi.html"
 noindex: true
 ---
 
-BaZi Destiny · Knowledge Base
+MyBaziDestiny · Knowledge Base
 
 ## What Does BaZi Mean?
 

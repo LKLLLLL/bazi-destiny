@@ -2,17 +2,21 @@
 import Base from '../layouts/Base.astro';
 import ChineseNameGenerator from '../components/ChineseNameGenerator.astro';
 import ToolSeoContent from '../components/ToolSeoContent.astro';
+import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
 
 const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: 'Chinese Given Name Generator',
-    url: 'https://mybazidestiny.com/chinese-name.html',
+    '@id': `${SITE_URL}/chinese-name.html#application`,
+    name: `${BRAND_NAME} Chinese Given Name Generator`,
+    url: `${SITE_URL}/chinese-name.html`,
     description: 'Generate three meaningful Chinese given names inspired by BaZi, birth season, classical poetry, and Chinese botanical tradition.',
     applicationCategory: 'LifestyleApplication',
     operatingSystem: 'All',
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    provider: { '@id': ORGANIZATION_ID },
+    isPartOf: { '@id': WEBSITE_ID },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
   },
   {
     '@context': 'https://schema.org',
@@ -56,7 +60,7 @@ const jsonLd = [
 ---
 
 <Base
-  title="Chinese Name Generator by Birthday & Poetry | BaZi Destiny"
+  title="Chinese Name Generator by Birthday & Poetry | MyBaziDestiny"
   description="Find a meaningful Chinese given name inspired by your BaZi, birth season, classical poetry, and traditional botanical imagery."
   keywords="Chinese name generator, Chinese given name, Chinese name with meaning, BaZi name, Chinese poetry names"
   path="/chinese-name.html"

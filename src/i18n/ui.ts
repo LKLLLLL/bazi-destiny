@@ -25,7 +25,7 @@ export const ui = {
     'footer.terms': 'Terms of Service',
     'footer.editorial': 'Editorial Policy',
     'footer.contact': 'Contact',
-    'footer.rights': '© 2026 BaZi Destiny. All rights reserved.',
+    'footer.rights': '© 2026 MyBaziDestiny. All rights reserved.',
   },
   zh: {
     'nav.home': '首页',

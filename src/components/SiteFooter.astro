@@ -15,7 +15,7 @@ const { lang } = Astro.props;
       <div class="footer-brand">
         <a href={lang === 'zh' ? '/zh/' : '/'} class="brand">
           <Seal size={30} />
-          <span class="brand-word">BaZi <em>Destiny</em></span>
+          <span class="brand-word">My<em>BaZiDestiny</em></span>
         </a>
         <p class="footer-tag">{t(lang, 'footer.tagline')}</p>
         <p class="footer-han han">四柱推命 · 五行生克 · 观象授时</p>
@@ -32,6 +32,8 @@ const { lang } = Astro.props;
         <a href="/blog.html">{t(lang, 'footer.blog')}</a>
         <a href="/faq.html">{t(lang, 'footer.faq')}</a>
         <a href="/about.html">{t(lang, 'footer.about')}</a>
+        <a href="/pricing.html">Pricing</a>
+        <a href="/methodology.html">Methodology</a>
       </nav>
       <nav class="footer-col" aria-label="Legal">
         <h4>{t(lang, 'footer.legal')}</h4>

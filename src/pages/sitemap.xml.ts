@@ -2,8 +2,9 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import destinyEn from '../data/destiny-en.json';
+import { SITE_URL } from '../lib/brand';
 
-const SITE = 'https://mybazidestiny.com';
+const SITE = SITE_URL;
 const LAST_BUILD = new Date().toISOString().split('T')[0];
 
 export const GET: APIRoute = async () => {
@@ -25,6 +26,8 @@ export const GET: APIRoute = async () => {
     { loc: '/love-match.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/leaderboard.html', priority: '0.8', changefreq: 'daily', lastmod: LAST_BUILD },
     { loc: '/faq.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
+    { loc: '/pricing.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
+    { loc: '/methodology.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/about.html', priority: '0.5', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/editorial-policy.html', priority: '0.3', changefreq: 'yearly', lastmod: LAST_BUILD },
     { loc: '/privacy-policy.html', priority: '0.3', changefreq: 'yearly', lastmod: LAST_BUILD },
@@ -41,11 +44,11 @@ export const GET: APIRoute = async () => {
   }
   for (const p of pages) {
     if (!urls.some((u) => u.loc === `/${p.id}.html`))
-    urls.push({ loc: `/${p.id}.html`, priority: '0.5', changefreq: 'monthly' });
+    urls.push({ loc: `/${p.id}.html`, priority: '0.5', changefreq: 'monthly', lastmod: LAST_BUILD });
   }
   for (const d of destinyEn) {
-    urls.push({ loc: `/${d.slug}.html`, alt: `/zh/${d.slug}.html`, priority: '0.7', changefreq: 'yearly' });
-    urls.push({ loc: `/zh/${d.slug}.html`, alt: `/${d.slug}.html`, priority: '0.7', changefreq: 'yearly' });
+    urls.push({ loc: `/${d.slug}.html`, alt: `/zh/${d.slug}.html`, priority: '0.7', changefreq: 'yearly', lastmod: LAST_BUILD });
+    urls.push({ loc: `/zh/${d.slug}.html`, alt: `/${d.slug}.html`, priority: '0.7', changefreq: 'yearly', lastmod: LAST_BUILD });
   }
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

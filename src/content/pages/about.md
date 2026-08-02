@@ -1,11 +1,11 @@
 ---
-title: "About BaZi Destiny — Mission & Methodology"
-description: "Learn how BaZi Destiny calculates Four Pillars charts, explains traditional Chinese astrology concepts, protects birth data, and reviews its educational content."
+title: "About MyBaziDestiny — Mission & Methodology"
+description: "Learn how MyBaziDestiny calculates Four Pillars charts, explains traditional Chinese astrology concepts, protects birth data, and reviews its educational content."
 ---
 
 ## Our Mission
 
-BaZi Destiny is an independent educational project built to make **BaZi (Four Pillars of Destiny)** easier to understand in English. We separate what the calculator can determine from birth data from the broader cultural interpretations traditionally associated with a chart.
+MyBaziDestiny is an independent educational project built to make **BaZi (Four Pillars of Destiny)** easier to understand in English. We separate what the calculator can determine from birth data from the broader cultural interpretations traditionally associated with a chart.
 
 Our free calculator generates the Four Pillars, identifies the Day Master, and provides a simplified Five Elements overview with general personality and environment guidance. It does not currently calculate Ten Gods or 10-year Luck Pillars. Those concepts are covered as educational material rather than presented as personalized calculations.
 
