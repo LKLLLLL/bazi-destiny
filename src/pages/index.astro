@@ -6,6 +6,7 @@ import PaymentModal from '../components/PaymentModal.astro';
 import Armillary from '../components/Armillary.astro';
 import WuxingPentagon from '../components/WuxingPentagon.astro';
 import { BRAND_ALIASES, BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
+import { productJsonLd } from '../lib/product-schema';
 
 const posts = (await getCollection('blog'))
   .filter((post) => !post.data.noindex)
@@ -48,22 +49,7 @@ const jsonLd = [
     isPartOf: { '@id': WEBSITE_ID },
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
   },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    '@id': `${SITE_URL}/pricing.html#life-blueprint`,
-    name: 'MyBaziDestiny Life Blueprint',
-    description: 'A one-time BaZi Life Alignment Guide with personalized practical recommendations.',
-    brand: { '@id': ORGANIZATION_ID },
-    url: `${SITE_URL}/pricing.html#life-blueprint`,
-    offers: {
-      '@type': 'Offer',
-      price: '9.90',
-      priceCurrency: 'USD',
-      availability: 'https://schema.org/InStock',
-      url: `${SITE_URL}/pricing.html#life-blueprint`,
-    },
-  },
+  productJsonLd('lifeBlueprint'),
 ];
 
 const elements = [

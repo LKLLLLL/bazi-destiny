@@ -5,7 +5,15 @@ import { join } from 'node:path';
 const ROOT = new URL('../.vercel/output/static/', import.meta.url).pathname;
 const URL_FILE = new URL('../../live/urls.txt', import.meta.url);
 
-const requiredFiles = ['index.html', 'pricing.html', 'methodology.html', 'test-cases.html', 'test-cases.json', 'llms.txt', 'sitemap.xml', '272bd5de5baf4ae5b83bf3b043803fa9.txt'];
+const productImages = [
+  'products/life-blueprint-1x1.png',
+  'products/life-blueprint-4x3.png',
+  'products/life-blueprint-16x9.png',
+  'products/synergy-boost-guide-1x1.png',
+  'products/synergy-boost-guide-4x3.png',
+  'products/synergy-boost-guide-16x9.png',
+];
+const requiredFiles = ['index.html', 'pricing.html', 'methodology.html', 'test-cases.html', 'test-cases.json', 'llms.txt', 'sitemap.xml', '272bd5de5baf4ae5b83bf3b043803fa9.txt', ...productImages];
 const errors = [];
 for (const file of requiredFiles) {
   if (!existsSync(join(ROOT, file))) errors.push(`missing required output ${file}`);
@@ -23,6 +31,18 @@ if (errors.length === 0) {
   if (!index.includes('MyBaziDestiny')) errors.push('index.html: canonical brand missing');
   if (!index.includes('alternateName')) errors.push('index.html: structured brand aliases missing');
   if (!pricing.includes('9.90') || !pricing.includes('4.90')) errors.push('pricing.html: official prices missing');
+  if (!pricing.includes('No physical item is shipped')) errors.push('pricing.html: visible digital delivery disclosure missing');
+
+  const productJsonLd = [...pricing.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)]
+    .map((match) => JSON.parse(match[1]))
+    .filter((value) => value['@type'] === 'Product');
+  if (productJsonLd.length !== 2) errors.push(`pricing.html: expected two Product JSON-LD objects, found ${productJsonLd.length}`);
+  for (const product of productJsonLd) {
+    if (!Array.isArray(product.image) || product.image.length !== 3) errors.push(`pricing.html: ${product.name} must include three product images`);
+    if (product.brand?.['@type'] !== 'Brand' || product.brand?.name !== 'MyBaziDestiny') errors.push(`pricing.html: ${product.name} has an invalid brand object`);
+    if (product.offers?.availability !== 'https://schema.org/OnlineOnly') errors.push(`pricing.html: ${product.name} is not marked as online-only`);
+    if (product.aggregateRating || product.review) errors.push(`pricing.html: ${product.name} contains unverified rating or review data`);
+  }
   if (!methodology.includes('Li Chun') || !methodology.includes('historical timezone')) errors.push('methodology.html: rules or limitations missing');
   if (!testCases.includes('li-chun-2024') || !testCases.includes('chengdu-solar-time-2024')) errors.push('test-cases.html: public boundary cases missing');
   if (!Array.isArray(testCaseJson.testCases) || testCaseJson.testCases.length !== 4) errors.push('test-cases.json: expected four public test cases');

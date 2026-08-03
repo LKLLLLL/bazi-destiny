@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
+import { DIGITAL_PRODUCTS, productJsonLd } from '../lib/product-schema';
 
 const products = [
   {
@@ -11,6 +12,8 @@ const products = [
     description: 'Your Four Pillars chart, Day Master, Five Elements balance, personality traits, and favorable directions.',
     href: '/calculator.html',
     cta: 'Generate free chart',
+    image: '/og-image.png',
+    imageAlt: 'MyBaziDestiny BaZi reading',
   },
   {
     id: 'life-blueprint',
@@ -20,6 +23,8 @@ const products = [
     description: 'A one-time Life Alignment Guide with personalized colors, numbers, directions, clothing, routine, diet, and conduct guidance.',
     href: '/calculator.html',
     cta: 'Start with your chart',
+    image: `/products/${DIGITAL_PRODUCTS.lifeBlueprint.imageSlug}-1x1.png`,
+    imageAlt: 'MyBaziDestiny Life Blueprint digital guide cover',
   },
   {
     id: 'synergy-boost-guide',
@@ -29,27 +34,32 @@ const products = [
     description: 'A one-time practical guide added to a love match result, covering communication, shared activities, home energy, and conflict resolution.',
     href: '/love-match.html',
     cta: 'Calculate love match',
+    image: `/products/${DIGITAL_PRODUCTS.synergyBoostGuide.imageSlug}-1x1.png`,
+    imageAlt: 'MyBaziDestiny Synergy Boost Guide digital guide cover',
   },
 ];
 
-const jsonLd = products.map((product) => ({
-  '@context': 'https://schema.org',
-  '@type': product.price === '0' ? 'Service' : 'Product',
-  '@id': `${SITE_URL}/pricing.html#${product.id}`,
-  name: `${BRAND_NAME} ${product.name}`,
-  description: product.description,
-  url: `${SITE_URL}/pricing.html#${product.id}`,
-  provider: { '@id': ORGANIZATION_ID },
-  brand: { '@id': ORGANIZATION_ID },
-  isPartOf: { '@id': WEBSITE_ID },
-  offers: {
-    '@type': 'Offer',
-    price: product.price,
-    priceCurrency: 'USD',
-    availability: 'https://schema.org/InStock',
-    url: `${SITE_URL}${product.href}`,
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${SITE_URL}/pricing.html#basic-reading`,
+    name: `${BRAND_NAME} Basic Reading`,
+    description: products[0].description,
+    url: `${SITE_URL}/pricing.html#basic-reading`,
+    provider: { '@id': ORGANIZATION_ID },
+    isPartOf: { '@id': WEBSITE_ID },
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/OnlineOnly',
+      url: `${SITE_URL}/calculator.html`,
+    },
   },
-}));
+  productJsonLd('lifeBlueprint'),
+  productJsonLd('synergyBoostGuide'),
+];
 ---
 
 <Base
@@ -68,6 +78,7 @@ const jsonLd = products.map((product) => ({
     {products.map((product, index) => (
       <article class="pricing-row" id={product.id}>
         <span class="item-number">0{index + 1}</span>
+        <img class="item-image" src={product.image} alt={product.imageAlt} width="112" height="112" loading="lazy" />
         <div class="item-copy">
           <h2>{product.name}</h2>
           <p>{product.description}</p>
@@ -91,6 +102,7 @@ const jsonLd = products.map((product) => ({
         <p><strong>Currency</strong><span>All listed prices are in USD.</span></p>
         <p><strong>Payment</strong><span>Paid guides use PayPal checkout.</span></p>
         <p><strong>Access</strong><span>No account is required; keep your PayPal receipt.</span></p>
+        <p><strong>Delivery</strong><span>Paid guides are digital and available online after payment. No physical item is shipped.</span></p>
       </div>
     </div>
   </section>
@@ -106,8 +118,9 @@ const jsonLd = products.map((product) => ({
   .fact-hero h1 { font-size: clamp(2.6rem, 6vw, 4.8rem); margin: 0.55rem 0 1rem; }
   .fact-hero > p:last-child { color: var(--bone-dim); font-size: 1.08rem; max-width: 62ch; }
   .pricing-list { border-top: 1px solid var(--line); }
-  .pricing-row { display: grid; grid-template-columns: 4rem minmax(0, 1fr) 15rem; gap: 2rem; align-items: center; padding: 2.4rem 0; border-bottom: 1px solid var(--line-soft); scroll-margin-top: 90px; }
+  .pricing-row { display: grid; grid-template-columns: 4rem 7rem minmax(0, 1fr) 15rem; gap: 2rem; align-items: center; padding: 2.4rem 0; border-bottom: 1px solid var(--line-soft); scroll-margin-top: 90px; }
   .item-number { color: var(--gold-deep); font-family: var(--font-display); font-size: 1rem; }
+  .item-image { width: 7rem; height: 7rem; object-fit: cover; border: 1px solid var(--line); border-radius: var(--radius-s); }
   .item-copy h2 { font-size: 1.65rem; margin-bottom: 0.55rem; }
   .item-copy p { color: var(--bone-dim); max-width: 68ch; }
   .item-action { display: grid; justify-items: start; gap: 0.45rem; }
@@ -125,8 +138,10 @@ const jsonLd = products.map((product) => ({
   .price-note p { color: var(--bone-dim); }
   @media (max-width: 760px) {
     .fact-hero { padding-top: calc(68px + 3.5rem); }
-    .pricing-row { grid-template-columns: 2rem 1fr; gap: 1rem; }
-    .item-action { grid-column: 2; }
+    .pricing-row { grid-template-columns: 2rem 5rem minmax(0, 1fr); gap: 1rem; }
+    .item-image { width: 5rem; height: 5rem; }
+    .item-copy { grid-column: 3; }
+    .item-action { grid-column: 3; }
     .checkout-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   }
 </style>

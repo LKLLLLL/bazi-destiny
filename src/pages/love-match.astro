@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import LoveMatch from '../components/LoveMatch.astro';
 import ToolSeoContent from '../components/ToolSeoContent.astro';
 import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
+import { productJsonLd } from '../lib/product-schema';
 
 const jsonLd = [
   {
@@ -19,22 +20,7 @@ const jsonLd = [
     description:
       'Free BaZi love compatibility calculator. Compare two birth charts for elemental harmony, day pillar bond, and relationship guidance.',
   },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    '@id': `${SITE_URL}/pricing.html#synergy-boost-guide`,
-    name: `${BRAND_NAME} Synergy Boost Guide`,
-    description: 'A one-time practical relationship guide added to a BaZi love match result.',
-    brand: { '@id': ORGANIZATION_ID },
-    url: `${SITE_URL}/pricing.html#synergy-boost-guide`,
-    offers: {
-      '@type': 'Offer',
-      price: '4.90',
-      priceCurrency: 'USD',
-      availability: 'https://schema.org/InStock',
-      url: `${SITE_URL}/love-match.html`,
-    },
-  },
+  productJsonLd('synergyBoostGuide'),
   {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

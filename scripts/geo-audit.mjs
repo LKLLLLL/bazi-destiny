@@ -11,8 +11,9 @@ function requireMatch(path, value, pattern, message) {
   if (!pattern.test(value)) errors.push(`${path}: ${message}`);
 }
 
-const [brand, index, pricing, methodology, testCases, testCaseData, llms, sitemap, products, indexNow, indexNowKey] = await Promise.all([
+const [brand, productSchema, index, pricing, methodology, testCases, testCaseData, llms, sitemap, products, indexNow, indexNowKey] = await Promise.all([
   source('src/lib/brand.ts'),
+  source('src/lib/product-schema.ts'),
   source('src/pages/index.astro'),
   source('src/pages/pricing.astro'),
   source('src/pages/methodology.astro'),
@@ -27,10 +28,17 @@ const [brand, index, pricing, methodology, testCases, testCaseData, llms, sitema
 
 requireMatch('src/lib/brand.ts', brand, /BRAND_NAME = 'MyBaziDestiny'/, 'canonical brand constant is missing');
 requireMatch('src/lib/brand.ts', brand, /BaZi Destiny.*My Bazi Destiny/s, 'brand aliases are missing');
+requireMatch('src/lib/product-schema.ts', productSchema, /'@type': 'Brand'[\s\S]*name: BRAND_NAME/, 'Product brand must be a typed Brand with a name');
+requireMatch('src/lib/product-schema.ts', productSchema, /-1x1\.png[\s\S]*-4x3\.png[\s\S]*-16x9\.png/, 'Product image variants are incomplete');
+requireMatch('src/lib/product-schema.ts', productSchema, /image:\s*productImageUrls\(product\.imageSlug\)/, 'Product schema does not use the image variants');
+requireMatch('src/lib/product-schema.ts', productSchema, /availability: 'https:\/\/schema\.org\/OnlineOnly'/, 'digital-only availability is missing');
+requireMatch('src/lib/product-schema.ts', productSchema, /Online digital access; no physical shipment/, 'digital delivery disclosure is missing');
+if (/aggregateRating|\breview\s*:/.test(productSchema)) errors.push('src/lib/product-schema.ts: unverified ratings or reviews must not be published');
 requireMatch('src/pages/index.astro', index, /alternateName:\s*BRAND_ALIASES/, 'Organization/WebSite aliases are missing');
 requireMatch('src/pages/index.astro', index, /ORGANIZATION_ID/, 'stable Organization identifier is missing');
 requireMatch('src/pages/pricing.astro', pricing, /Basic Reading[\s\S]*9\.90[\s\S]*4\.90/, 'official product prices are incomplete');
 requireMatch('src/pages/pricing.astro', pricing, /no subscription/i, 'no-subscription fact is missing');
+requireMatch('src/pages/pricing.astro', pricing, /No physical item is shipped/, 'visible digital delivery disclosure is missing');
 requireMatch('src/pages/methodology.astro', methodology, /Li Chun[\s\S]*Jie solar terms[\s\S]*23:00 through 00:59/, 'core calculation rules are incomplete');
 requireMatch('src/pages/methodology.astro', methodology, /static UTC offsets[\s\S]*historical timezone/i, 'timezone limitation is missing');
 requireMatch('src/pages/test-cases.astro', testCases, /TechArticle[\s\S]*Dataset[\s\S]*test-cases\.json/, 'public test case schemas or JSON distribution are missing');
@@ -50,4 +58,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('GEO audit passed: canonical entity, official offers, methodology, public test cases, llms.txt, and sitemap sources verified.');
+console.log('GEO audit passed: canonical entity, official digital offers, product images, methodology, public test cases, llms.txt, and sitemap sources verified.');

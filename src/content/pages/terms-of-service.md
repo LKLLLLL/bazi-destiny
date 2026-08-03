@@ -29,6 +29,7 @@ No account is required. Access to a paid reading is associated with the browser 
 - Paid readings are billed as one-time purchases through PayPal.
 - All payments are in USD unless otherwise specified.
 - Purchases do not renew automatically.
+- Paid guides are personalized digital content made available online after payment; no physical item is shipped.
 - Refunds are processed at our discretion. Contact support within 7 days of a charge if you believe there is an error.
 
 ## 5. Intellectual Property
