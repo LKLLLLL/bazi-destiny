@@ -164,7 +164,7 @@ export function getPremiumReport(data: PremiumReadingData): PremiumReportSection
       number: 8,
       icon: '言',
       title: 'Communication & Social Style',
-      intro: `Your ${dominantEn} energy influences how you express ideas, respond under pressure, and contribute in groups. Your strongest social impact comes from pairing ${persona.strength.toLowerCase()} with conscious communication.`,
+      intro: `Your ${dominantEn} energy influences how you express ideas, respond under pressure, and contribute in groups. Your strongest social impact comes from pairing your natural strengths with conscious communication.`,
       groups: [group('Practical Guidance', lifestyle.conduct)],
     },
     {
