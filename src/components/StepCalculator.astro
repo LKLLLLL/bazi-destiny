@@ -281,16 +281,28 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
         <div class="cc-paywall" id="ccPaywall">
           <div class="cc-paywall-lock" aria-hidden="true">🔒</div>
           <h4>Full Life Blueprint</h4>
-          <p>Unlock your complete alignment guide — what to wear, what to carry, daily rhythms, diet, and conduct. One purchase, forever yours.</p>
+          <p>Unlock your complete 12-section reading, including Career, Wealth, Relationships, Health, lucky elements, daily alignment, and personalized Feng Shui.</p>
           <button class="btn btn-gold btn-lg" id="unlockProBtn">Unlock Full Blueprint — $9.90</button>
         </div>
 
-        <!-- ===== PRO: LIFESTYLE GUIDE ===== -->
+        <!-- ===== PRO: 12-SECTION LIFE BLUEPRINT ===== -->
         <div class="cc-pro" id="ccPro" hidden>
-          <div class="cc-pro-head">
-            <span class="han">改运</span> Life Alignment Guide
+          <header class="cc-report-cover">
+            <span class="cc-cover-seal han" aria-hidden="true">命书</span>
+            <div class="cc-cover-copy">
+              <span class="cc-cover-kicker">Personal BaZi Dossier · 八字命书</span>
+              <h3>Your Complete Life Blueprint</h3>
+              <p>Twelve personalized chapters drawn from your Four Pillars, Day Master, and Five-Element balance.</p>
+            </div>
             {TEMPORARY_FREE_ACCESS && <span class="cc-free-badge">Limited-Time Free</span>}
+          </header>
+          <div class="cc-report-meta" aria-label="Report profile">
+            <div><span>Day Master</span><strong id="ccReportDayMaster"></strong></div>
+            <div><span>Core Current</span><strong id="ccReportElement"></strong></div>
+            <div><span>Growth Element</span><strong id="ccReportGrowth"></strong></div>
+            <div><span>Chapters</span><strong>12</strong></div>
           </div>
+          <nav class="cc-report-index" id="ccReportIndex" aria-label="Life Blueprint chapters"></nav>
           <div class="cc-pro-grid" id="ccProGrid"></div>
         </div>
 
@@ -312,7 +324,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
 
         <div class="results-actions">
           <button class="btn btn-ghost" id="shareBtn">Share Result</button>
-          <button class="btn btn-gold" id="pdfBtn">Download PDF</button>
+          <button class="btn btn-gold" id="pdfBtn">Print / Save as PDF</button>
           <button class="btn btn-ghost" id="recastBtn">Start Over</button>
         </div>
       </div>
@@ -1096,17 +1108,53 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
   .cc-paywall .btn { white-space: normal; max-width: 100%; }
   .cc-paywall-btns { display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap; }
 
-  /* Pro — lifestyle guide */
-  .cc-pro { margin: 1.4rem 0; }
-  .cc-pro[hidden] { display: none; }
-  .cc-pro-head {
-    display: flex; align-items: center; gap: 0.5rem;
-    font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 1rem;
+  /* Pro — complete report */
+  .cc-pro {
+    position: relative;
+    margin: 2rem 0 1.4rem;
+    padding: 1.6rem 0;
+    border-top: 1px solid rgba(212,175,106,0.42);
+    border-bottom: 1px solid rgba(212,175,106,0.24);
+    background:
+      linear-gradient(90deg, transparent, rgba(212,175,106,0.035) 12%, rgba(212,175,106,0.035) 88%, transparent);
   }
-  .cc-pro-head .han { font-size: 0.85rem; color: var(--gold-deep); }
+  .cc-pro[hidden] { display: none; }
+  .cc-report-cover {
+    display: grid;
+    grid-template-columns: 4.6rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.25rem 0 1.35rem;
+  }
+  .cc-cover-seal {
+    display: grid;
+    width: 4.6rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px solid rgba(203,92,75,0.8);
+    border-radius: 5px;
+    outline: 1px solid rgba(212,175,106,0.3);
+    outline-offset: -5px;
+    background: linear-gradient(145deg, rgba(151,45,35,0.92), rgba(91,27,24,0.94));
+    box-shadow: 0 10px 28px rgba(0,0,0,0.28), inset 0 0 20px rgba(255,196,137,0.08);
+    color: #f4dfbd;
+    font-size: 1.45rem;
+    line-height: 1;
+    writing-mode: vertical-rl;
+    letter-spacing: 0.12em;
+  }
+  .cc-cover-kicker {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--gold);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .cc-cover-copy h3 { margin: 0; font-family: var(--font-display); font-size: 1.55rem; letter-spacing: 0; }
+  .cc-cover-copy p { max-width: 55ch; margin: 0.35rem 0 0; color: var(--bone-dim); font-size: 0.82rem; line-height: 1.6; }
   .cc-free-badge {
-    margin-left: auto;
     padding: 0.22rem 0.55rem;
     border: 1px solid rgba(212,175,106,0.35);
     border-radius: 999px;
@@ -1117,39 +1165,124 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     letter-spacing: 0.08em;
     white-space: nowrap;
   }
-  .cc-pro-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
-  .cc-ls-card {
-    background: var(--ink-1);
+  .cc-report-meta {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-block: 1px solid var(--line-soft);
+    background: rgba(0,0,0,0.12);
+  }
+  .cc-report-meta > div { min-width: 0; padding: 0.8rem 0.9rem; border-right: 1px solid var(--line-soft); }
+  .cc-report-meta > div:last-child { border-right: 0; }
+  .cc-report-meta span { display: block; margin-bottom: 0.18rem; color: var(--bone-faint); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.1em; }
+  .cc-report-meta strong { display: block; overflow-wrap: anywhere; color: var(--gold-bright); font-family: var(--font-display); font-size: 0.92rem; }
+  .cc-report-index {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin: 1.2rem 0 1.5rem;
+  }
+  .cc-report-index :global(.cc-index-link) {
+    display: grid;
+    grid-template-columns: 1.8rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 0;
+    padding: 0.55rem 0.6rem;
     border: 1px solid var(--line-soft);
-    border-radius: var(--radius);
-    padding: 1.2rem 1.3rem;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.018);
+    color: var(--bone-dim);
   }
-  .cc-ls-icon { font-size: 1.4rem; display: block; margin-bottom: 0.5rem; }
-  .cc-ls-card h5 { font-family: var(--font-display); font-size: 1.05rem; margin-bottom: 0.7rem; color: var(--gold-bright); }
-  .cc-ls-card ul { list-style: none; padding: 0; display: grid; gap: 0.45rem; }
-  .cc-ls-card li {
-    font-size: 0.82rem; color: var(--bone-dim); line-height: 1.65;
-    padding-left: 1rem; position: relative;
+  .cc-report-index :global(.cc-index-link:hover) { border-color: var(--gold-deep); background: rgba(212,175,106,0.07); color: var(--bone); }
+  .cc-report-index :global(.cc-index-mark) {
+    display: grid;
+    width: 1.8rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px solid rgba(183,76,62,0.7);
+    border-radius: 3px;
+    background: rgba(117,32,27,0.36);
+    color: var(--gold-bright);
+    font-size: 0.86rem;
   }
-    .cc-lucky {
-    background: linear-gradient(135deg, rgba(212,175,106,0.08), rgba(212,175,106,0.03));
-    border: 1px solid rgba(212,175,106,0.25);
-    border-radius: var(--radius);
-    padding: 1.2rem 1.4rem;
-    display: flex; gap: 1rem; align-items: flex-start;
+  .cc-report-index :global(.cc-index-copy) { min-width: 0; }
+  .cc-report-index :global(.cc-index-copy small) { display: block; color: var(--bone-faint); font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .cc-report-index :global(.cc-index-copy strong) { display: block; overflow: hidden; color: inherit; font-size: 0.65rem; font-weight: 600; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
+  .cc-pro-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .cc-pro-grid :global(.cc-ls-card) {
+    position: relative;
+    overflow: hidden;
+    scroll-margin-top: 5rem;
+    border: 1px solid rgba(212,175,106,0.21);
+    border-radius: 5px;
+    background:
+      linear-gradient(145deg, rgba(212,175,106,0.055), transparent 38%),
+      rgba(12,14,25,0.72);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.16), inset 0 1px rgba(255,255,255,0.025);
+    padding: 1.35rem;
   }
-  .cc-lucky-icon { font-size: 1.8rem; flex: none; }
-  .cc-lucky-content { flex: 1; }
-  .cc-lucky h5 { font-family: var(--font-display); font-size: 1.05rem; margin-bottom: 0.8rem; color: var(--gold-bright); }
-  .cc-lucky-items { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-  .cc-lucky-stat { display: flex; flex-direction: column; gap: 0.3rem; }
-  .cc-lucky-label { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-faint); }
-  .cc-lucky-value { font-family: var(--font-display); font-size: 1.3rem; color: var(--gold-bright); font-weight: 700; }
-  .cc-lucky-colors { display: flex; gap: 0.35rem; }
-  .cc-lucky-colors span { width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); }
-
-  .cc-ls-card li::before {
-    content: '·'; position: absolute; left: 0; color: var(--gold);
+  .cc-pro-grid :global(.cc-ls-card::before) {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 2px;
+    background: linear-gradient(var(--gold-deep), transparent 72%);
+  }
+  .cc-pro-grid :global(.cc-report-title) { display: grid; grid-template-columns: 3.15rem minmax(0, 1fr); align-items: center; gap: 0.9rem; margin-bottom: 0.95rem; }
+  .cc-pro-grid :global(.cc-report-mark) {
+    display: grid;
+    width: 3.15rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px solid rgba(205,88,70,0.85);
+    border-radius: 4px;
+    outline: 1px solid rgba(212,175,106,0.22);
+    outline-offset: -4px;
+    background: linear-gradient(145deg, rgba(139,45,35,0.7), rgba(80,25,23,0.78));
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25), inset 0 0 14px rgba(255,208,151,0.07);
+    color: #f1d6ab;
+    font-size: 1.3rem;
+  }
+  .cc-pro-grid :global(.cc-report-kicker) { display: block; margin-bottom: 0.15rem; color: var(--bone-faint); font-size: 0.56rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; }
+  .cc-pro-grid :global(.cc-ls-card h5) { margin: 0; color: var(--gold-bright); font-family: var(--font-display); font-size: 1.15rem; letter-spacing: 0; }
+  .cc-pro-grid :global(.cc-report-intro) {
+    margin: 0 0 1.1rem;
+    padding: 0.8rem 0 0.8rem 1rem;
+    border-left: 2px solid rgba(212,175,106,0.52);
+    color: var(--bone);
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    line-height: 1.72;
+  }
+  .cc-pro-grid :global(.cc-report-groups) { display: grid; gap: 0.95rem; }
+  .cc-pro-grid :global(.cc-report-group) { padding-top: 0.9rem; border-top: 1px solid var(--line-soft); }
+  .cc-pro-grid :global(.cc-report-group h6) { display: flex; align-items: center; gap: 0.45rem; margin: 0 0 0.55rem; color: var(--gold); font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+  .cc-pro-grid :global(.cc-report-group h6::before) { content: ''; width: 0.35rem; height: 0.35rem; border: 1px solid var(--gold-deep); transform: rotate(45deg); }
+  .cc-pro-grid :global(.cc-ls-card ul) { display: grid; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
+  .cc-pro-grid :global(.cc-ls-card li) { position: relative; padding-left: 1rem; color: var(--bone-dim); font-size: 0.82rem; line-height: 1.65; }
+  .cc-pro-grid :global(.cc-ls-card li::before) { content: '·'; position: absolute; left: 0.15rem; color: var(--gold); font-weight: 700; }
+  @media (max-width: 680px) {
+    .cc-report-cover { grid-template-columns: 3.7rem minmax(0, 1fr); gap: 0.9rem; }
+    .cc-cover-seal { width: 3.7rem; font-size: 1.2rem; }
+    .cc-cover-copy h3 { font-size: 1.25rem; }
+    .cc-cover-copy p { font-size: 0.76rem; }
+    .cc-free-badge { grid-column: 1 / -1; justify-self: start; }
+    .cc-report-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cc-report-meta > div:nth-child(2) { border-right: 0; }
+    .cc-report-meta > div:nth-child(-n+2) { border-bottom: 1px solid var(--line-soft); }
+    .cc-report-index { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cc-pro-grid :global(.cc-ls-card) { padding: 1.1rem; }
+    .cc-pro-grid :global(.cc-report-title) { grid-template-columns: 2.85rem minmax(0, 1fr); }
+    .cc-pro-grid :global(.cc-report-mark) { width: 2.85rem; }
+  }
+  @media (min-width: 760px) {
+    .cc-pro-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+    .cc-pro-grid :global(.cc-ls-card[data-section="1"]),
+    .cc-pro-grid :global(.cc-ls-card[data-section="4"]),
+    .cc-pro-grid :global(.cc-ls-card[data-section="7"]),
+    .cc-pro-grid :global(.cc-ls-card[data-section="10"]),
+    .cc-pro-grid :global(.cc-ls-card[data-section="11"]),
+    .cc-pro-grid :global(.cc-ls-card[data-section="12"]) { grid-column: 1 / -1; }
   }
 
 
@@ -1198,6 +1331,16 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     .cc-paywall, .results-actions { display: none !important; }
     .cc-badge { border-color: #999; }
     .calc-results { animation: none; }
+    .cc-report-index :global(.cc-index-link),
+    .cc-pro-grid :global(.cc-ls-card) {
+      border-color: #c9b58f;
+      background: #fff;
+      color: #222;
+      box-shadow: none;
+    }
+    .cc-pro-grid :global(.cc-ls-card h5),
+    .cc-pro-grid :global(.cc-report-intro) { color: #222; }
+    .cc-pro-grid :global(.cc-ls-card li) { color: #444; }
   }
 
 </style>
@@ -1208,7 +1351,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
   import Readings from '../lib/bazi/readings';
   import { elementsDonut, elementBars, compass, pillarStrengthCards, ELEM_EN, ELEM_COLOR, STEM_EN, BRANCH_EN, ZODIAC_EMOJI } from '../lib/charts';
   import { clearPendingCheckout, getPaymentStatus, isUnlocked, readPendingCheckout } from '../lib/paypal';
-  import { getLifestyleGuide } from '../lib/bazi/lifestyle';
+  import { getPremiumReport } from '../lib/bazi/premium-report';
   import { getGuardianSpirit } from '../lib/bazi/guardian-spirits';
   import { trackEvent } from '../lib/analytics';
 
@@ -1690,7 +1833,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
       <p style="margin-top:0.5rem"><strong style="color:${defColor}">Growth area: ${defEn}</strong> — weaving small ${defEn}-element habits into your day brings balance and unlocks latent potential.</p>`;
 
     // Traits
-    const persona = Readings.getPersonality(p.day.stem, data.elements.dominant);
+    const persona = Readings.getPersonality(p.day.stem, p.day.element);
     const traits: string[] = persona?.traits || ['Adaptable', 'Curious', 'Reflective'];
     const strength = persona?.strength || 'Natural resilience and adaptability';
     const weakness = persona?.weakness || 'May overthink under pressure';
@@ -1752,46 +1895,47 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
 
   function renderProLifestyle() {
     if (!currentData) return;
-    const guide = getLifestyleGuide(currentData.elements.dominant, currentData.pillars.day.stem);
-    const sections: Array<{ key: string; icon: string; title: string; items: string[] }> = [
-      { key: 'wear', icon: '👗', title: 'What to Wear', items: guide.wear },
-      { key: 'carry', icon: '🎒', title: 'What to Carry', items: guide.carry },
-      { key: 'routine', icon: '⏰', title: 'Daily Routine', items: guide.routine },
-      { key: 'diet', icon: '🍽️', title: 'Diet', items: guide.diet },
-      { key: 'conduct', icon: '💬', title: 'Conduct & Speech', items: guide.conduct },
-    ];
+    const sections = getPremiumReport(currentData);
+    const escapeHtml = (value: unknown) => String(value)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
 
-    // Lucky numbers & colors from engine
-    const lucky = currentData.lucky || {};
-    const luckyHTML = lucky.colors ? `
-      <div class="cc-lucky" style="grid-column: 1 / -1;">
-        <span class="cc-lucky-icon">🍀</span>
-        <div class="cc-lucky-content">
-          <h5>Lucky Numbers & Colors</h5>
-          <div class="cc-lucky-items">
-            <div class="cc-lucky-stat">
-              <span class="cc-lucky-label">Numbers</span>
-              <span class="cc-lucky-value">${(lucky.numbers || [7, 8]).join(' · ')}</span>
-            </div>
-            <div class="cc-lucky-stat">
-              <span class="cc-lucky-label">Colors</span>
-              <div class="cc-lucky-colors">${(lucky.colors || ['#d4af6a']).map((c, i) => `<span style="background:${c}" title="${lucky.colorNames?.[i] || ''}"></span>`).join('')}</div>
-            </div>
-            <div class="cc-lucky-stat">
-              <span class="cc-lucky-label">Boost Element</span>
-              <span class="cc-lucky-value">${lucky.element || currentData.elements.dominant}${lucky.tones ? ' · ' + lucky.tones : ''}</span>
-            </div>
+    const day = currentData.pillars.day;
+    $('ccReportDayMaster')!.textContent = `${day.stem}${day.branch} · ${STEM_EN[day.stem] || ''}`;
+    $('ccReportElement')!.textContent = ELEM_EN[currentData.elements.dominant] || currentData.elements.dominant;
+    $('ccReportGrowth')!.textContent = ELEM_EN[currentData.elements.deficient] || currentData.elements.deficient;
+    $('ccReportIndex')!.innerHTML = sections.map((section) => `
+      <a class="cc-index-link" href="#report-${escapeHtml(section.key)}">
+        <span class="cc-index-mark han">${escapeHtml(section.icon)}</span>
+        <span class="cc-index-copy">
+          <small>Chapter ${String(section.number).padStart(2, '0')}</small>
+          <strong>${escapeHtml(section.title)}</strong>
+        </span>
+      </a>
+    `).join('');
+
+    $('ccProGrid')!.innerHTML = sections.map((section) => `
+      <article class="cc-ls-card" id="report-${escapeHtml(section.key)}" data-section="${section.number}">
+        <div class="cc-report-title">
+          <span class="cc-report-mark han">${escapeHtml(section.icon)}</span>
+          <div>
+            <span class="cc-report-kicker">Section ${section.number} of 12</span>
+            <h5>${escapeHtml(section.title)}</h5>
           </div>
         </div>
-      </div>
-    ` : '';
-
-    $('ccProGrid')!.innerHTML = luckyHTML + sections.map((s) => `
-      <div class="cc-ls-card">
-        <span class="cc-ls-icon">${s.icon}</span>
-        <h5>${s.title}</h5>
-        <ul>${s.items.map((item) => `<li>${item}</li>`).join('')}</ul>
-      </div>
+        <p class="cc-report-intro">${escapeHtml(section.intro)}</p>
+        <div class="cc-report-groups">
+          ${section.groups.map((group) => `
+            <section class="cc-report-group">
+              <h6>${escapeHtml(group.label)}</h6>
+              <ul>${group.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+            </section>
+          `).join('')}
+        </div>
+      </article>
     `).join('');
 
     $('ccPro')!.hidden = false;
@@ -1841,22 +1985,38 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
   .cc-guardian-copy h4 { display: flex; gap: 0.5rem; align-items: baseline; margin: 0; font-size: 1.15rem; }
   .cc-guardian-title { margin: 0.1rem 0 0; color: #777; font-size: 0.72rem; font-weight: 600; }
   .cc-guardian-background { margin: 0.45rem 0 0; color: #444; font-size: 0.85rem; }
-  .cc-lucky { background: #fdf8e8; border: 1px solid #d4af6a; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
-  .cc-lucky h5 { margin: 0 0 0.5rem; }
-  .cc-lucky-items { display: flex; gap: 1.5rem; }
-  .cc-lucky-colors span { display: inline-block; width: 20px; height: 20px; border-radius: 50%; margin-right: 3px; border: 1px solid #ccc; }
-  .cc-ls-card { margin-bottom: 1rem; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; }
-  .cc-ls-card h5 { margin: 0 0 0.5rem; }
-  .cc-ls-card ul { margin: 0; padding-left: 1rem; }
-  .cc-ls-card li { margin-bottom: 0.3rem; font-size: 0.85rem; }
-  .cc-pro-head { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: #888; border-bottom: 1px solid #ddd; padding-bottom: 0.4rem; margin: 1.5rem 0 0.8rem; }
+  .cc-pro { margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid #b88a43; }
+  .cc-report-cover { display: grid; grid-template-columns: 58px 1fr; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+  .cc-cover-seal { display: grid; width: 58px; height: 58px; place-items: center; border: 2px double #a5473c; border-radius: 4px; background: #8b2d23; color: #fff4df; writing-mode: vertical-rl; }
+  .cc-cover-kicker { display: block; color: #8b6b35; font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; }
+  .cc-cover-copy h3 { margin: 0.15rem 0; font-size: 1.45rem; }
+  .cc-cover-copy p { margin: 0; color: #555; font-size: 0.8rem; }
+  .cc-report-meta { display: grid; grid-template-columns: repeat(4, 1fr); margin-bottom: 1rem; border-block: 1px solid #ddd; }
+  .cc-report-meta > div { padding: 0.65rem; border-right: 1px solid #ddd; }
+  .cc-report-meta > div:last-child { border-right: 0; }
+  .cc-report-meta span, .cc-index-copy small { display: block; color: #777; font-size: 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .cc-report-meta strong { display: block; font-size: 0.8rem; }
+  .cc-report-index { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; margin-bottom: 1.2rem; }
+  .cc-index-link { display: grid; grid-template-columns: 24px 1fr; align-items: center; gap: 0.4rem; padding: 0.4rem; border: 1px solid #ddd; color: #333; text-decoration: none; }
+  .cc-index-mark { display: grid; width: 24px; height: 24px; place-items: center; border: 1px solid #a5473c; color: #8b2d23; }
+  .cc-index-copy strong { display: block; overflow: hidden; font-size: 0.56rem; text-overflow: ellipsis; white-space: nowrap; }
+  .cc-ls-card { margin-bottom: 1rem; padding: 1rem; border: 1px solid #c9b58f; border-left: 3px solid #b88a43; border-radius: 4px; }
+  .cc-report-title { display: grid; grid-template-columns: 42px 1fr; align-items: center; gap: 0.7rem; margin-bottom: 0.7rem; }
+  .cc-report-mark { display: grid; width: 42px; height: 42px; place-items: center; border: 2px double #a5473c; border-radius: 3px; background: #f8eee7; color: #8b2d23; font-size: 1.1rem; }
+  .cc-report-kicker { display: block; color: #777; font-size: 0.52rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+  .cc-ls-card h5 { margin: 0; color: #6f4f1d; font-size: 1.05rem; }
+  .cc-report-intro { margin: 0 0 0.8rem; padding: 0.55rem 0 0.55rem 0.8rem; border-left: 2px solid #c8a467; color: #333; }
+  .cc-report-group { padding-top: 0.65rem; border-top: 1px solid #e5e0d8; }
+  .cc-report-group h6 { margin: 0 0 0.35rem; color: #8b6b35; font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .cc-ls-card ul { margin: 0; padding-left: 1.1rem; }
+  .cc-ls-card li { margin-bottom: 0.25rem; font-size: 0.78rem; }
   .footer-note { text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 0.75rem; color: #999; }
-  @media print { body { max-width: none; } }
+  @media print { body { max-width: none; } .cc-ls-card { break-inside: auto; } .cc-report-title, .cc-report-group h6 { break-after: avoid; } }
 </style></head><body>
   ${resultsHTML.outerHTML}
   <div class="footer-note">Generated by mybazidestiny.com — Your Life Blueprint</div>
 </body></html>`;
-    // Open a print-ready view so the browser can save a real PDF; fall back to an HTML download.
+    // Open the tailored print view. If popups are blocked, print the current report instead.
     const printWin = window.open('', '_blank');
     if (printWin) {
       printWin.document.write(html);
@@ -1866,15 +2026,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
         printWin.print();
       });
     } else {
-      const blob = new Blob([html], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'my-life-blueprint.html';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      window.print();
     }
   });
   $('shareBtn')?.addEventListener('click', () => {

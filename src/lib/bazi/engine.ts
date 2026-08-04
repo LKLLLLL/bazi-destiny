@@ -155,7 +155,7 @@ function makePillar(stemIdx: number, branchIdx: number): Pillar {
     branch: EARTHLY_BRANCHES[branchIdx],
     stemIdx,
     branchIdx,
-    element: STEM_ELEMENTS[stemIdx % 5],
+    element: STEM_ELEMENTS[Math.floor(stemIdx / 2)],
   };
 }
 

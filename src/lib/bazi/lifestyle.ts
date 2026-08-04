@@ -218,7 +218,14 @@ const STEM_TWEAKS: Record<string, Partial<LifestyleGuide>> = {
 };
 
 export function getLifestyleGuide(dominantElement: string, dayStem: string): LifestyleGuide {
-  const base = ELEM_GUIDE[dominantElement] || ELEM_GUIDE['Water'];
+  const elementName: Record<string, string> = {
+    '木': 'Wood',
+    '火': 'Fire',
+    '土': 'Earth',
+    '金': 'Metal',
+    '水': 'Water',
+  };
+  const base = ELEM_GUIDE[elementName[dominantElement] || dominantElement] || ELEM_GUIDE['Water'];
   const tweaks = STEM_TWEAKS[dayStem] || {};
 
   return {
