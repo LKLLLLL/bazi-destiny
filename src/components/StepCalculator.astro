@@ -719,6 +719,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     background: rgba(212, 175, 106, 0.1);
     color: var(--gold-bright);
   }
+  .sc-city-item-flag { font-size: 1.1rem; width: 1.4rem; text-align: center; }
   .sc-city-item-name { flex: 1; font-weight: 500; }
   .sc-city-item-country { font-size: 0.75rem; color: var(--bone-faint); }
   .sc-city-item-tz { font-size: 0.68rem; color: var(--gold-deep); background: rgba(212,175,106,0.08); padding: 0.1rem 0.45rem; border-radius: 999px; }
@@ -1517,6 +1518,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     cityHighlightIdx = -1;
     cityList.innerHTML = cityResults.map((c, i) => `
       <li class="sc-city-item" role="option" data-idx="${i}">
+        <span class="sc-city-item-flag">${getFlag(c.country)}</span>
         <span class="sc-city-item-name">${c.name} <span class="han" style="font-size:.78rem;color:var(--bone-faint)">${c.nameCN}</span></span>
         <span class="sc-city-item-country">${c.country}</span>
         <span class="sc-city-item-tz">UTC${c.timezone >= 0 ? '+' : ''}${c.timezone}</span>
@@ -1524,6 +1526,28 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     `).join('');
     if (cityResults.length > 0) showCityList();
     else hideCityList();
+  }
+
+  const COUNTRY_FLAGS: Record<string, string> = {
+    'China': '🇨🇳', 'Japan': '🇯🇵', 'South Korea': '🇰🇷', 'Mongolia': '🇲🇳',
+    'Singapore': '🇸🇬', 'Malaysia': '🇲🇾', 'Thailand': '🇹🇭', 'Indonesia': '🇮🇩',
+    'Philippines': '🇵🇭', 'Vietnam': '🇻🇳', 'Myanmar': '🇲🇲',
+    'India': '🇮🇳', 'Pakistan': '🇵🇰', 'Bangladesh': '🇧🇩', 'Sri Lanka': '🇱🇰', 'Nepal': '🇳🇵',
+    'UAE': '🇦🇪', 'Qatar': '🇶🇦', 'Saudi Arabia': '🇸🇦', 'Turkey': '🇹🇷', 'Israel': '🇮🇱', 'Iran': '🇮🇷',
+    'United Kingdom': '🇬🇧', 'France': '🇫🇷', 'Germany': '🇩🇪', 'Italy': '🇮🇹', 'Spain': '🇪🇸',
+    'Netherlands': '🇳🇱', 'Belgium': '🇧🇪', 'Switzerland': '🇨🇭', 'Austria': '🇦🇹',
+    'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Denmark': '🇩🇰', 'Poland': '🇵🇱',
+    'Russia': '🇷🇺', 'Czech Republic': '🇨🇿', 'Hungary': '🇭🇺', 'Portugal': '🇵🇹',
+    'Ireland': '🇮🇪', 'Greece': '🇬🇷',
+    'United States': '🇺🇸', 'Canada': '🇨🇦', 'Mexico': '🇲🇽',
+    'Brazil': '🇧🇷', 'Argentina': '🇦🇷', 'Chile': '🇨🇱', 'Peru': '🇵🇪', 'Colombia': '🇨🇴',
+    'Australia': '🇦🇺', 'New Zealand': '🇳🇿',
+    'Egypt': '🇪🇬', 'Nigeria': '🇳🇬', 'Kenya': '🇰🇪', 'South Africa': '🇿🇦', 'Morocco': '🇲🇦', 'Ethiopia': '🇪🇹',
+    'Taiwan, China': '🇨🇳', 'Hong Kong, China': '🇨🇳', 'Macao, China': '🇨🇳',
+  };
+
+  function getFlag(country: string): string {
+    return COUNTRY_FLAGS[country] || '';
   }
 
   function selectCity(city: typeof CITIES[0]) {
