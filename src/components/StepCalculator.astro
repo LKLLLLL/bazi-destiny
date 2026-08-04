@@ -47,7 +47,6 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
       <!-- ============= STEP 1: DATE ============= -->
       <div class="sc-step" id="scStep0">
         <div class="sc-step-content">
-          <span class="sc-step-icon" aria-hidden="true">📅</span>
           <h3 class="sc-step-title">When were you born?</h3>
           <p class="sc-step-sub">Your birth date forms the foundation of your BaZi chart.</p>
           <div class="sc-date-wrap">
@@ -85,7 +84,6 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
       <!-- ============= STEP 2: HOUR ============= -->
       <div class="sc-step" id="scStep1" hidden>
         <div class="sc-step-content">
-          <span class="sc-step-icon" aria-hidden="true">🕐</span>
           <h3 class="sc-step-title">What time were you born?</h3>
           <p class="sc-step-sub">Your birth time determines the Hour Pillar, the most personal part of your chart.</p>
 
@@ -141,7 +139,6 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
       <!-- ============= STEP 3: CITY ============= -->
       <div class="sc-step" id="scStep2" hidden>
         <div class="sc-step-content">
-          <span class="sc-step-icon" aria-hidden="true">🌍</span>
           <h3 class="sc-step-title">Where were you born?</h3>
           <p class="sc-step-sub">Your birthplace allows a more precise solar-time calculation. You may skip this step if unknown.</p>
 
@@ -279,7 +276,6 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
 
         <!-- ===== PAYWALL ===== -->
         <div class="cc-paywall" id="ccPaywall">
-          <div class="cc-paywall-lock" aria-hidden="true">🔒</div>
           <h4>Full Life Blueprint</h4>
           <p>Unlock your complete 12-section reading, including Career, Wealth, Relationships, Health, lucky elements, daily alignment, and personalized Feng Shui.</p>
           <button class="btn btn-gold btn-lg" id="unlockProBtn">Unlock Full Blueprint — $9.90</button>
@@ -449,7 +445,6 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     align-items: center;
     text-align: center;
   }
-  .sc-step-icon { font-size: 2.2rem; margin-bottom: 0.8rem; }
   .sc-step-title { font-size: clamp(1.5rem, 3vw, 1.9rem); margin-bottom: 0.5rem; }
   .sc-step-sub { color: var(--bone-dim); font-size: 0.92rem; max-width: 42ch; margin-bottom: 1.8rem; }
 
@@ -724,7 +719,6 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     background: rgba(212, 175, 106, 0.1);
     color: var(--gold-bright);
   }
-  .sc-city-item-flag { font-size: 1.1rem; width: 1.4rem; text-align: center; }
   .sc-city-item-name { flex: 1; font-weight: 500; }
   .sc-city-item-country { font-size: 0.75rem; color: var(--bone-faint); }
   .sc-city-item-tz { font-size: 0.68rem; color: var(--gold-deep); background: rgba(212,175,106,0.08); padding: 0.1rem 0.45rem; border-radius: 999px; }
@@ -1025,12 +1019,6 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     font-size: 0.84rem;
     color: var(--bone-dim);
   }
-  .trait-icon {
-    font-size: 1rem;
-    flex: none;
-    width: 1.4rem;
-    text-align: center;
-  }
   .trait-note strong { display: block; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-faint); margin-bottom: 0.15rem; }
 
   /* Environment */
@@ -1043,7 +1031,6 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     background: var(--ink-1);
     border: 1px solid var(--line-soft);
   }
-  .env-icon { font-size: 1.2rem; flex: none; }
   .env-item strong { display: block; font-size: 0.82rem; color: var(--bone); margin-bottom: 0.1rem; }
   .env-item span { font-size: 0.88rem; color: var(--gold-bright); font-weight: 600; }
   .env-item small { display: block; font-size: 0.72rem; color: var(--bone-faint); margin-top: 0.3rem; }
@@ -1102,7 +1089,6 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     border-radius: var(--radius);
     background: linear-gradient(170deg, rgba(212,175,106,0.05), transparent 50%), var(--ink-1);
   }
-  .cc-paywall-lock { font-size: 2rem; margin-bottom: 0.5rem; }
   .cc-paywall h4 { font-size: 1.25rem; margin-bottom: 0.5rem; }
   .cc-paywall p { color: var(--bone-dim); font-size: 0.88rem; max-width: 44ch; margin: 0 auto 1.2rem; }
   .cc-paywall .btn { white-space: normal; max-width: 100%; }
@@ -1349,7 +1335,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
   import { CITIES, searchCities, solarTimeCorrection } from '../data/cities';
   import BaZiEngine from '../lib/bazi/engine';
   import Readings from '../lib/bazi/readings';
-  import { elementsDonut, elementBars, compass, pillarStrengthCards, ELEM_EN, ELEM_COLOR, STEM_EN, BRANCH_EN, ZODIAC_EMOJI } from '../lib/charts';
+  import { elementsDonut, elementBars, compass, pillarStrengthCards, ELEM_EN, ELEM_COLOR, STEM_EN, BRANCH_EN } from '../lib/charts';
   import { clearPendingCheckout, getPaymentStatus, isUnlocked, readPendingCheckout } from '../lib/paypal';
   import { getPremiumReport } from '../lib/bazi/premium-report';
   import { getGuardianSpirit } from '../lib/bazi/guardian-spirits';
@@ -1531,7 +1517,6 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     cityHighlightIdx = -1;
     cityList.innerHTML = cityResults.map((c, i) => `
       <li class="sc-city-item" role="option" data-idx="${i}">
-        <span class="sc-city-item-flag">${getFlag(c.country)}</span>
         <span class="sc-city-item-name">${c.name} <span class="han" style="font-size:.78rem;color:var(--bone-faint)">${c.nameCN}</span></span>
         <span class="sc-city-item-country">${c.country}</span>
         <span class="sc-city-item-tz">UTC${c.timezone >= 0 ? '+' : ''}${c.timezone}</span>
@@ -1539,28 +1524,6 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     `).join('');
     if (cityResults.length > 0) showCityList();
     else hideCityList();
-  }
-
-  const COUNTRY_FLAGS: Record<string, string> = {
-    'China': '🇨🇳', 'Japan': '🇯🇵', 'South Korea': '🇰🇷', 'Mongolia': '🇲🇳',
-    'Singapore': '🇸🇬', 'Malaysia': '🇲🇾', 'Thailand': '🇹🇭', 'Indonesia': '🇮🇩',
-    'Philippines': '🇵🇭', 'Vietnam': '🇻🇳', 'Myanmar': '🇲🇲',
-    'India': '🇮🇳', 'Pakistan': '🇵🇰', 'Bangladesh': '🇧🇩', 'Sri Lanka': '🇱🇰', 'Nepal': '🇳🇵',
-    'UAE': '🇦🇪', 'Qatar': '🇶🇦', 'Saudi Arabia': '🇸🇦', 'Turkey': '🇹🇷', 'Israel': '🇮🇱', 'Iran': '🇮🇷',
-    'United Kingdom': '🇬🇧', 'France': '🇫🇷', 'Germany': '🇩🇪', 'Italy': '🇮🇹', 'Spain': '🇪🇸',
-    'Netherlands': '🇳🇱', 'Belgium': '🇧🇪', 'Switzerland': '🇨🇭', 'Austria': '🇦🇹',
-    'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Denmark': '🇩🇰', 'Poland': '🇵🇱',
-    'Russia': '🇷🇺', 'Czech Republic': '🇨🇿', 'Hungary': '🇭🇺', 'Portugal': '🇵🇹',
-    'Ireland': '🇮🇪', 'Greece': '🇬🇷',
-    'United States': '🇺🇸', 'Canada': '🇨🇦', 'Mexico': '🇲🇽',
-    'Brazil': '🇧🇷', 'Argentina': '🇦🇷', 'Chile': '🇨🇱', 'Peru': '🇵🇪', 'Colombia': '🇨🇴',
-    'Australia': '🇦🇺', 'New Zealand': '🇳🇿',
-    'Egypt': '🇪🇬', 'Nigeria': '🇳🇬', 'Kenya': '🇰🇪', 'South Africa': '🇿🇦', 'Morocco': '🇲🇦', 'Ethiopia': '🇪🇹',
-    'Taiwan, China': '🇨🇳', 'Hong Kong, China': '🇨🇳', 'Macao, China': '🇨🇳',
-  };
-
-  function getFlag(country: string): string {
-    return COUNTRY_FLAGS[country] || '🌐';
   }
 
   function selectCity(city: typeof CITIES[0]) {
@@ -1583,7 +1546,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
       const sign = corr >= 0 ? '+' : '';
       const absMin = Math.abs(Math.round(corr));
       citySolar!.hidden = false;
-      citySolar!.textContent = `☀ True Solar Time correction: ${sign}${absMin} min${city.name !== 'Beijing' ? ` (at ${city.lon.toFixed(1)}° longitude)` : ''}`;
+      citySolar!.textContent = `True Solar Time correction: ${sign}${absMin} min${city.name !== 'Beijing' ? ` (at ${city.lon.toFixed(1)}° longitude)` : ''}`;
     } else {
       citySolar!.hidden = true;
     }
@@ -1798,8 +1761,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     // Header
     $('ccDayMaster')!.textContent = `${p.day?.stem || '?'}${p.day?.branch || '?'}`;
     $('ccBadge')!.setAttribute('style', `--dm-color:${domColor}`);
-    const genderLabel = data.gender === 'male' ? '♂' : data.gender === 'female' ? '♀' : '';
-    $('ccName')!.textContent = `${genderLabel} Your Birth Sign is ${yearAnimal} ${ZODIAC_EMOJI[yearAnimal] || '✦'}`.trim();
+    $('ccName')!.textContent = `Your Birth Sign is ${yearAnimal}`;
     $('ccSubtitle')!.textContent = data.isThreePillar
       ? `Born ${birthYear} · Day Master: ${STEM_EN[p.day.stem]} · Dominant Element: ${domEn}`
       : `Born ${birthYear} · Day Master: ${STEM_EN[p.day.stem]} · Dominant Element: ${domEn}`;
@@ -1843,15 +1805,14 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
         ${traits.map((t: string) => `<span class="trait-tag">${t}</span>`).join('')}
       </div>
       <div class="trait-notes">
-        <div class="trait-note"><span class="trait-icon">✓</span><div><strong>Strength</strong><span>${strength}</span></div></div>
-        <div class="trait-note"><span class="trait-icon">⚡</span><div><strong>Watch for</strong><span>${weakness}</span></div></div>
+        <div class="trait-note"><div><strong>Strength</strong><span>${strength}</span></div></div>
+        <div class="trait-note"><div><strong>Watch for</strong><span>${weakness}</span></div></div>
       </div>`;
 
     // Environment
     const d = data.directions;
     $('ccEnv')!.innerHTML = `
       <div class="env-item">
-        <span class="env-icon">🧭</span>
         <div>
           <strong>Best facing</strong>
           <span>${d.auspicious?.join(' · ') || 'East · South'}</span>
@@ -1859,7 +1820,6 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
         </div>
       </div>
       <div class="env-item">
-        <span class="env-icon">⚠️</span>
         <div>
           <strong>Drain zones</strong>
           <span>${d.inauspicious?.join(' · ') || 'West'}</span>
