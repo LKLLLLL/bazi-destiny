@@ -8,8 +8,8 @@ interface Props {
   altUrl?: string;
 }
 const { lang, altUrl } = Astro.props;
-const langToggleUrl = altUrl ?? (lang === 'en' ? '/zh/' : '/');
-const homeUrl = lang === 'zh' ? '/zh/' : '/';
+const langToggleUrl = altUrl ?? (lang === 'en' ? '/zh' : '/');
+const homeUrl = lang === 'zh' ? '/zh' : '/';
 ---
 
 <header class="site-header" id="siteHeader">
@@ -39,8 +39,8 @@ const homeUrl = lang === 'zh' ? '/zh/' : '/';
         </>
       ) : (
         <>
-          <a href="/zh/">首页</a>
-          <a href="/zh/#years">年份查询</a>
+          <a href="/zh">首页</a>
+          <a href="/zh#years">年份查询</a>
           <a href="/blog.html">博客 <span class="nav-en">EN</span></a>
         </>
       )}
@@ -68,8 +68,8 @@ const homeUrl = lang === 'zh' ? '/zh/' : '/';
       </>
     ) : (
       <>
-        <a href="/zh/" class="m-link">首页</a>
-        <a href="/zh/#years" class="m-link">年份查询</a>
+        <a href="/zh" class="m-link">首页</a>
+        <a href="/zh#years" class="m-link">年份查询</a>
         <a href="/blog.html" class="m-link">博客 (EN)</a>
         <a href="/faq.html" class="m-link">常见问题 (EN)</a>
       </>

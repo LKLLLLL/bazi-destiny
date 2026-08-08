@@ -20,7 +20,7 @@ export const GET: APIRoute = async () => {
   }
 
   const urls: { loc: string; alt?: string; priority: string; changefreq: string; lastmod?: string }[] = [
-    { loc: '/', alt: '/zh/', priority: '1.0', changefreq: 'weekly', lastmod: LAST_BUILD },
+    { loc: '/', alt: '/zh', priority: '1.0', changefreq: 'weekly', lastmod: LAST_BUILD },
     { loc: '/calculator.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/chinese-name.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/blog.html', priority: '0.9', changefreq: 'weekly', lastmod: LAST_BUILD },
@@ -34,7 +34,7 @@ export const GET: APIRoute = async () => {
     { loc: '/editorial-policy.html', priority: '0.3', changefreq: 'yearly', lastmod: LAST_BUILD },
     { loc: '/privacy-policy.html', priority: '0.3', changefreq: 'yearly', lastmod: LAST_BUILD },
     { loc: '/terms-of-service.html', priority: '0.3', changefreq: 'yearly', lastmod: LAST_BUILD },
-    { loc: '/zh/', alt: '/', priority: '0.9', changefreq: 'weekly', lastmod: LAST_BUILD },
+    { loc: '/zh', alt: '/', priority: '0.9', changefreq: 'weekly', lastmod: LAST_BUILD },
   ];
   for (const p of posts) {
     urls.push({

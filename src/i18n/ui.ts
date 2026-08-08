@@ -63,6 +63,6 @@ export function t(lang: Lang, key: UiKey): string {
 
 /** Prefix a path with the locale. Root paths stay bare for EN. */
 export function localePath(lang: Lang, path: string): string {
-  if (lang === 'zh') return path === '/' ? '/zh/' : `/zh${path}`;
+  if (lang === 'zh') return path === '/' ? '/zh' : `/zh${path}`;
   return path;
 }
