@@ -30,6 +30,7 @@ const { lang } = Astro.props;
       <nav class="footer-col" aria-label="Learn">
         <h4>{t(lang, 'footer.learn')}</h4>
         <a href="/blog.html">{t(lang, 'footer.blog')}</a>
+        {lang === 'en' && <a href="/chinese-zodiac-years.html">Chinese Zodiac Years</a>}
         <a href="/faq.html">{t(lang, 'footer.faq')}</a>
         <a href="/about.html">{t(lang, 'footer.about')}</a>
         <a href="/pricing.html">Pricing</a>

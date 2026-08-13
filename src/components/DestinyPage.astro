@@ -112,6 +112,7 @@ if (rec.faqs.length) {
         </a>
       )}
     </nav>
+    {!isZh && <p class="dest-all-years"><a href="/chinese-zodiac-years.html">Browse all Chinese zodiac years from 1960 to 2030</a></p>}
   </div>
 </Base>
 
@@ -159,6 +160,8 @@ if (rec.faqs.length) {
   .dest-content ul { padding-left: 1.2rem; margin-bottom: 0.85rem; }
   .dest-content li { line-height: 1.85; margin-bottom: 0.25rem; }
   .dest-content strong { color: var(--bone); }
+  .dest-all-years { text-align: center; margin-top: 0.25rem; }
+  .dest-all-years a { color: var(--gold); font-weight: 600; }
 
   /* ported blocks from live destiny pages */
   .dest-content :global(.stats-grid) {

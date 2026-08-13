@@ -24,6 +24,7 @@ export const GET: APIRoute = async () => {
     { loc: '/calculator.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/chinese-name.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/blog.html', priority: '0.9', changefreq: 'weekly', lastmod: LAST_BUILD },
+    { loc: '/chinese-zodiac-years.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/love-match.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/leaderboard.html', priority: '0.8', changefreq: 'daily', lastmod: LAST_BUILD },
     { loc: '/faq.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
