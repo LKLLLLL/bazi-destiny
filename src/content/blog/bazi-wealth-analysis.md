@@ -84,7 +84,7 @@ Every BaZi chart has wealth potential — the question is *how* and *when*, not 
 
 ## Wealth Through Your Luck Cycles
 
-Your Luck Cycles (大运) are 10-year periods that shift the elemental emphasis of your life. A person can experience dramatically different financial realities in different cycles:
+Your Luck Cycles (大运) are 10-year periods that shift the elemental emphasis of your life. The [BaZi Luck Pillars guide](/bazi-luck-pillars.html) explains how Da Yun direction and starting age are calculated. A person can experience dramatically different financial realities in different cycles:
 
 | Luck Cycle Element | Wealth Impact |
 |---|---|

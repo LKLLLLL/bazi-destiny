@@ -107,6 +107,6 @@ This example shows the derivation, not a complete reading. The same Ten God can 
 
 Begin with structure: calculate the Four Pillars, identify the Day Master, map the visible and hidden stems, and then classify their relationships. Only after that should traditional meanings be considered.
 
-Our current calculator identifies the Four Pillars and Day Master but does not yet generate a complete Ten Gods analysis. Use it to establish the chart, then consult this guide as an educational reference.
+Our current calculator identifies the Four Pillars and Day Master but does not yet generate a complete Ten Gods analysis. Use it to establish the chart, then consult this guide as an educational reference. The [BaZi Luck Pillars guide](/bazi-luck-pillars.html) explains how those relationships are examined again within each Da Yun cycle.
 
 [Generate your Four Pillars chart](/calculator.html) · [How to read a BaZi chart](/how-to-read-bazi-chart.html) · [Complete BaZi guide](/complete-guide-bazi.html)
