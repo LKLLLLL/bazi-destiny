@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import PalmReadingPage from '../components/PalmReadingPage.astro';
+import { SITE_URL } from '../lib/brand';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'MyBaziDestiny Palm Reading',
+    url: `${SITE_URL}/palm-reading.html`,
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'Any',
+    inLanguage: 'en',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description: 'A browser-based traditional Chinese palmistry experience that reads visible palm-line patterns from a user-selected photo.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'Which hand should a man or woman use for palm reading?', acceptedAnswer: { '@type': 'Answer', text: 'This experience follows the traditional male-left, female-right convention: men are read from the left palm and women from the right palm.' } },
+      { '@type': 'Question', name: 'Is my palm photo uploaded or stored?', acceptedAnswer: { '@type': 'Answer', text: 'No. The photo is processed locally in your browser and is not sent to a server by the palm-reading tool.' } },
+      { '@type': 'Question', name: 'Can a palm line predict lifespan or illness?', acceptedAnswer: { '@type': 'Answer', text: 'No. Line length is not a measure of lifespan and palmistry should not be used for medical conclusions. This experience is for cultural interest and self-reflection only.' } },
+      { '@type': 'Question', name: 'How is palmistry different from BaZi?', acceptedAnswer: { '@type': 'Answer', text: 'BaZi uses birth date and time to construct the Four Pillars. Palmistry interprets visible hand features. They are separate traditional frameworks.' } },
+    ],
+  },
+];
+---
+
+<Base
+  title="Free Online Palm Reading from a Photo | MyBaziDestiny"
+  description="Upload a palm photo for a private, instant traditional Chinese palmistry reading of your life, head, heart and fate lines. Male-left, female-right guidance included."
+  keywords="palm reading, Chinese palmistry, palm reading from photo, male left female right, traditional palm lines"
+  lang="en"
+  path="/palm-reading.html"
+  altPath="/zh/palm-reading.html"
+  bodyClass="palm-page"
+  jsonLd={jsonLd}
+>
+  <PalmReadingPage lang="en" />
+</Base>

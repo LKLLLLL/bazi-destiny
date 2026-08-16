@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import PalmReadingPage from '../../components/PalmReadingPage.astro';
+import { SITE_URL } from '../../lib/brand';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '八字命运在线手相分析',
+    url: `${SITE_URL}/zh/palm-reading.html`,
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'Any',
+    inLanguage: 'zh-CN',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'CNY' },
+    description: '在浏览器本地读取手掌照片可见特征的中国传统手相文化体验。',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: '看手相应该看男左女右吗？', acceptedAnswer: { '@type': 'Answer', text: '本体验固定遵循男左女右的传统规则：男性分析左手，女性分析右手。' } },
+      { '@type': 'Question', name: '手掌照片会上传或保存吗？', acceptedAnswer: { '@type': 'Answer', text: '不会。本工具在你的浏览器中完成照片质量检查和参考分析，不会把手掌照片发送到服务器。' } },
+      { '@type': 'Question', name: '生命线能判断寿命和疾病吗？', acceptedAnswer: { '@type': 'Answer', text: '不能。生命线长短不代表寿命，手相也不能用于医学诊断。本体验仅供传统文化兴趣与自我反思。' } },
+      { '@type': 'Question', name: '手相与八字有什么不同？', acceptedAnswer: { '@type': 'Answer', text: '八字依据出生年月日时排四柱，手相则观察手部可见特征。两者是独立的传统框架。' } },
+    ],
+  },
+];
+---
+
+<Base
+  title="免费拍照看手相｜中国传统手相在线分析 | 八字命运"
+  description="上传手掌照片，免费参考分析生命线、智慧线、感情线和事业线。遵循男左女右传统规则，照片仅在浏览器本地处理。"
+  keywords="看手相, 手相分析, 中国传统手相, 男左女右, 手掌照片分析"
+  lang="zh"
+  path="/zh/palm-reading.html"
+  altPath="/palm-reading.html"
+  bodyClass="palm-page"
+  jsonLd={jsonLd}
+>
+  <PalmReadingPage lang="zh" />
+</Base>

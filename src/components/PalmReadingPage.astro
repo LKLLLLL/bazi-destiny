@@ -1,0 +1,120 @@
+---
+import '../styles/palm-reading.css';
+
+interface Props {
+  lang: 'en' | 'zh';
+}
+
+const { lang } = Astro.props;
+const zh = lang === 'zh';
+---
+
+<div class="palm-page">
+  <section class="palm-hero">
+    <div class="palm-hero-inner">
+      <div>
+        <span class="palm-kicker">{zh ? '中国传统手相 · 本地照片分析' : 'Chinese palmistry · local photo analysis'}</span>
+        <h1>{zh ? '从掌纹里，看见你的当下' : 'Read the story held in your palm'}</h1>
+        <p>{zh ? '拍下手掌，以审慎的传统视角观察生命线、智慧线、感情线与事业线。照片只在当前浏览器中处理。' : 'Photograph your palm and explore the life, head, heart and fate lines through a careful traditional lens. Your image stays in this browser.'}</p>
+        <div class="palm-hero-notes" aria-label={zh ? '功能特点' : 'Key features'}>
+          <span class="palm-hero-note"><i data-lucide="shield-check"></i> {zh ? '照片不上传' : 'Private by design'}</span>
+          <span class="palm-hero-note"><i data-lucide="scan-line"></i> {zh ? '即时质量检查' : 'Instant quality check'}</span>
+          <span class="palm-hero-note"><i data-lucide="sparkles"></i> {zh ? '免费免注册' : 'Free, no account'}</span>
+        </div>
+      </div>
+      <figure class="palm-hero-media">
+        <img src="/assets/images/palm-reading-guide.jpg" width="1280" height="853" alt={zh ? '手相解读者指向张开手掌上的主要掌纹' : 'A palm reader pointing to the major lines on an open hand'} fetchpriority="high" />
+        <figcaption class="palm-hero-caption">{zh ? '传统手相常观察的主要掌纹' : 'Major palm lines used in traditional readings'}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="palm-main">
+    <section class="palm-tool" data-palm-app data-lang={lang} aria-labelledby="palm-tool-title">
+      <div class="palm-workspace">
+        <div class="palm-panel" data-setup-panel>
+          <div class="palm-panel-header">
+            <div>
+              <h2 id="palm-tool-title">{zh ? '设置手相参考' : 'Set up your palm'}</h2>
+              <p class="palm-panel-sub">{zh ? '本体验固定遵循男左女右的传统规则。' : 'This reading follows the fixed traditional male-left, female-right convention.'}</p>
+            </div>
+          </div>
+
+          <div class="choice-group">
+            <span class="choice-label">{zh ? '看手惯例' : 'Reading convention'}</span>
+            <div class="segmented-control two" role="group" aria-label={zh ? '看手惯例' : 'Reading convention'}>
+              <button class="segment is-selected" type="button" data-gender="male" aria-pressed="true">{zh ? '男性' : 'Man'}</button>
+              <button class="segment" type="button" data-gender="female" aria-pressed="false">{zh ? '女性' : 'Woman'}</button>
+            </div>
+            <p class="tradition-note" data-tradition-note></p>
+          </div>
+
+          <div class="choice-group">
+            <span class="choice-label">{zh ? '按传统规则固定手掌' : 'Palm fixed by convention'}</span>
+            <div class="fixed-hand" data-fixed-hand aria-live="polite">{zh ? '左手' : 'Left palm'}</div>
+          </div>
+
+          <div class="choice-group">
+            <span class="choice-label">{zh ? '手掌照片' : 'Palm photo'}</span>
+            <div class="upload-area" data-drop-area>
+              <input type="file" data-photo-input accept="image/jpeg,image/png,image/webp,image/heic,image/heif" capture="environment" hidden />
+              <div class="upload-empty" data-upload-empty>
+                <div class="upload-icon"><i data-lucide="camera"></i></div>
+                <h3>{zh ? '拍到完整掌心与五根手指' : 'Show the full palm and all five fingers'}</h3>
+                <p>{zh ? '有自然光会更清楚，普通手掌照片即可，不要求纯色背景或垂直拍摄。' : 'Natural light helps, but an ordinary hand photo is fine. Keep the palm reasonably visible.'}</p>
+                <button class="btn btn-primary" type="button" data-choose-photo><i data-lucide="image-plus"></i> {zh ? '拍照或选择照片' : 'Take or choose photo'}</button>
+              </div>
+              <div class="upload-preview" data-preview-wrap hidden>
+                <img data-preview alt="" />
+                <div class="palm-guide-frame" aria-hidden="true"></div>
+                <button class="btn btn-secondary replace-photo" type="button" data-replace-photo><i data-lucide="refresh-cw"></i> {zh ? '更换照片' : 'Replace'}</button>
+              </div>
+            </div>
+            <div class="quality-list" data-quality-list></div>
+            <p class="quality-message" data-quality-message>{zh ? '选择照片后会显示质量检查结果。' : 'Quality checks appear after you choose a photo.'}</p>
+          </div>
+
+          <label class="consent-row"><input type="checkbox" data-consent /><span>{zh ? '我确认这是需要分析的手掌，并理解手相属于传统文化自我反思体验，不是科学建议。' : 'I confirm this is the selected palm and understand that palmistry is a cultural self-reflection practice, not scientific advice.'}</span></label>
+          <button class="btn btn-primary btn-wide" type="button" data-analyze disabled><i data-lucide="scan-line"></i> {zh ? '分析这只手掌' : 'Analyze my palm'}</button>
+        </div>
+
+        <div class="palm-panel analysis-progress" data-progress-panel hidden aria-live="polite">
+          <div class="scan-mark" aria-hidden="true"></div>
+          <h2>{zh ? '正在读取可见掌纹结构……' : 'Reading visible palm structure...'}</h2>
+          <p class="palm-panel-sub">{zh ? '正在比较掌纹对比度、连续性与整体平衡。' : 'Comparing line contrast, continuity and balance.'}</p>
+        </div>
+
+        <div class="palm-panel" data-result-panel hidden aria-live="polite">
+          <div data-result-body></div>
+          <div class="result-actions">
+            <button class="btn btn-primary" type="button" data-download><i data-lucide="download"></i> {zh ? '保存解读' : 'Save reading'}</button>
+            <a class="btn btn-secondary" href="/calculator.html"><i data-lucide="calendar-days"></i> {zh ? '对照八字排盘' : 'Compare with BaZi'}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="palm-section" aria-labelledby="what-we-read">
+      <div class="palm-section-heading"><span class="palm-kicker">{zh ? '工具可以观察什么' : 'What the tool can see'}</span><h2 id="what-we-read">{zh ? '透明的参考方法' : 'A transparent reading method'}</h2><p>{zh ? '单张正面照片可以支持宽泛的视觉观察。掌缘感情线、皮肤温度、柔韧度和细微掌丘无法从照片中可靠判断。' : 'A single front-facing photo can support broad visual observations. Side-edge relationship lines, skin temperature, flexibility and subtle three-dimensional mounts cannot be judged reliably from that image.'}</p></div>
+      <div class="method-grid">
+        <article class="method-item"><i data-lucide="heart-pulse"></i><h3>{zh ? '生命线' : 'Life line'}</h3><p>{zh ? '观察弧度、清晰度和连续性，不用于推断寿命或疾病。' : 'Arc, visibility and continuity. Never used to infer lifespan or illness.'}</p></article>
+        <article class="method-item"><i data-lucide="brain"></i><h3>{zh ? '智慧线与感情线' : 'Head and heart lines'}</h3><p>{zh ? '作为传统象征，参考思考方式与情感表达。' : 'Compared as traditional symbols of decision style and emotional expression.'}</p></article>
+        <article class="method-item"><i data-lucide="route"></i><h3>{zh ? '事业线与太阳线' : 'Fate and sun lines'}</h3><p>{zh ? '作为方向、技艺和认可度的反思主题，不代表确定结果。' : 'Read as reflective themes for direction, craft and recognition, not guaranteed outcomes.'}</p></article>
+        <article class="method-item"><i data-lucide="hand"></i><h3>{zh ? '掌形平衡' : 'Palm balance'}</h3><p>{zh ? '以可见纹理和整体比例补充语境，不声称识别个人身份。' : 'Visible texture and overall proportion add context without claiming biometric identity.'}</p></article>
+      </div>
+    </section>
+
+    <section class="palm-section" aria-labelledby="palm-faq">
+      <div class="palm-section-heading"><span class="palm-kicker">{zh ? '常见问题' : 'Common questions'}</span><h2 id="palm-faq">{zh ? '手相常见问题' : 'Palm reading FAQ'}</h2></div>
+      <div class="faq-list">
+        <details class="faq-item"><summary>{zh ? '看手相应该男左女右吗？' : 'Which hand should a man or woman use?'}</summary><p>{zh ? '本体验固定遵循男左女右：男性分析左手，女性分析右手。' : 'This experience follows the fixed traditional convention: male-left and female-right. Men are read from the left palm and women from the right palm.'}</p></details>
+        <details class="faq-item"><summary>{zh ? '手掌照片会上传或保存吗？' : 'Is my photo uploaded or stored?'}</summary><p>{zh ? '不会。本版本在浏览器中完成照片检查和参考分析，不会将手掌照片发送到 API；刷新或关闭页面后，照片也会从体验中清除。' : 'No. This version performs its image checks and reading in your browser. The tool does not send your palm photo to an API, and refreshing or closing the page clears it from the experience.'}</p></details>
+        <details class="faq-item"><summary>{zh ? '掌纹能预测寿命、疾病或财富吗？' : 'Can palm lines predict lifespan, illness or wealth?'}</summary><p>{zh ? '不能。生命线不代表寿命，照片不能诊断健康，也不能保证财富。请把解读当作传统文化自我反思提示。' : 'No. A life line does not measure lifespan, and a photo cannot diagnose health or guarantee money. Treat the reading as a cultural prompt for reflection.'}</p></details>
+        <details class="faq-item"><summary>{zh ? '手相与八字有什么不同？' : 'How is this different from a BaZi reading?'}</summary><p>{zh ? '八字依据出生年月日时排四柱，手相观察手部可见特征。两者是独立的传统体系：八字提供时间框架，手相提供当下视觉参考，互不验证。' : 'BaZi constructs Four Pillars from your birth date and time. Palmistry interprets visible hand features. They are separate traditional systems: BaZi offers a time-based framework, while this tool offers a present visual reflection. One does not verify the other.'}</p></details>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script is:inline src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+<script is:inline src="/js/palm-reading.js"></script>

@@ -122,8 +122,8 @@ const faqs = [
   <section class="section tool-hub">
     <div class="wrap">
       <div class="section-head center" data-reveal>
-        <p class="eyebrow center"><span class="han">三门</span> Explore</p>
-        <h2 class="section-title">Three ways to begin</h2>
+        <p class="eyebrow center"><span class="han">四门</span> Explore</p>
+        <h2 class="section-title">Four ways to begin</h2>
         <p class="section-sub">Start with the question that brought you here. Every tool is free.</p>
       </div>
       <div class="tool-grid">
@@ -140,6 +140,11 @@ const faqs = [
         <a href="/love-match.html" class="tool-card card" data-reveal style="--reveal-delay:.16s">
           <span class="tool-han han" aria-hidden="true">缘</span>
           <div><h3>Love Match</h3><p>Compare two birth charts for elemental harmony and relationship insight.</p></div>
+          <span class="tool-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="/palm-reading.html" class="tool-card card" data-reveal style="--reveal-delay:.24s">
+          <span class="tool-han han" aria-hidden="true">掌</span>
+          <div><h3>Palm Reading from a Photo</h3><p>Explore visible palm lines through a private, traditional Chinese palmistry reference.</p></div>
           <span class="tool-arrow" aria-hidden="true">→</span>
         </a>
       </div>
@@ -332,7 +337,7 @@ const faqs = [
   .hero-ctas.center { justify-content: center; }
   /* ---------- free tools ---------- */
   .tool-hub { border-top: 1px solid var(--line-soft); }
-  .tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .tool-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
   .tool-card { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; min-width: 0; padding: 1.35rem; color: var(--bone); }
   .tool-card:hover { color: var(--bone); border-color: var(--line-strong); transform: translateY(-3px); }
   .tool-han { display: grid; width: 3rem; height: 3rem; place-items: center; border: 1px solid var(--line-strong); border-radius: var(--radius-s); color: var(--gold); font-size: 1.45rem; }
@@ -340,7 +345,8 @@ const faqs = [
   .tool-card p { margin-top: 0.3rem; color: var(--bone-dim); font-size: 0.8rem; line-height: 1.55; }
   .tool-arrow { color: var(--gold); font-size: 1.2rem; transition: transform .25s var(--ease-out); }
   .tool-card:hover .tool-arrow { transform: translateX(3px); }
-  @media (max-width: 860px) { .tool-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 1024px) { .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .tool-grid { grid-template-columns: 1fr; } }
   .hero-scrollhint {
     position: absolute;
     left: clamp(0.8rem, 3vw, 2.2rem);

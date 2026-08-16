@@ -24,18 +24,19 @@ const { lang } = Astro.props;
         <h4>{t(lang, 'footer.tools')}</h4>
         <a href="/calculator.html">{t(lang, 'footer.calculator')}</a>
         {lang === 'en' && <a href="/chinese-name.html">My Chinese Name</a>}
-        <a href="/love-match.html">{t(lang, 'footer.loveMatch')}</a>
+        <a href="/love-match.html">{t(lang, 'footer.loveMatch')}{lang === 'zh' && ' (EN)'}</a>
+        <a href={lang === 'zh' ? '/zh/palm-reading.html' : '/palm-reading.html'}>{t(lang, 'footer.palmReading')}</a>
         <a href="/leaderboard.html">{t(lang, 'footer.leaderboard')}</a>
       </nav>
       <nav class="footer-col" aria-label="Learn">
         <h4>{t(lang, 'footer.learn')}</h4>
-        <a href="/blog.html">{t(lang, 'footer.blog')}</a>
+        <a href="/blog.html">{t(lang, 'footer.blog')}{lang === 'zh' && ' (EN)'}</a>
         {lang === 'en' && <a href="/chinese-zodiac-years.html">Chinese Zodiac Years</a>}
-        <a href="/faq.html">{t(lang, 'footer.faq')}</a>
+        <a href="/faq.html">{t(lang, 'footer.faq')}{lang === 'zh' && ' (EN)'}</a>
         <a href="/about.html">{t(lang, 'footer.about')}</a>
-        <a href="/pricing.html">Pricing</a>
-        <a href="/methodology.html">Methodology</a>
-        <a href="/test-cases.html">Test Cases</a>
+        <a href="/pricing.html">{lang === 'zh' ? '价格 (EN)' : 'Pricing'}</a>
+        <a href="/methodology.html">{lang === 'zh' ? '方法论 (EN)' : 'Methodology'}</a>
+        <a href="/test-cases.html">{lang === 'zh' ? '测试案例 (EN)' : 'Test Cases'}</a>
       </nav>
       <nav class="footer-col" aria-label="Legal">
         <h4>{t(lang, 'footer.legal')}</h4>

@@ -20,6 +20,7 @@ interface Props {
   keywords?: string;
   jsonLd?: Record<string, unknown>[];
   noindex?: boolean;
+  bodyClass?: string;
 }
 
 const {
@@ -33,6 +34,7 @@ const {
   keywords,
   jsonLd = [],
   noindex = false,
+  bodyClass,
 } = Astro.props;
 
 const site = SITE_URL;
@@ -91,7 +93,7 @@ const ogImage = ogImageOverride || `${site}/og-image.png`;
 
     {jsonLd.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
   </head>
-  <body>
+  <body class={bodyClass}>
     <a href="#main" class="skip-link">Skip to content</a>
     <div class="reading-progress" id="readingProgress" hidden aria-hidden="true">
       <div class="reading-progress-bar" id="readingProgressBar"></div>

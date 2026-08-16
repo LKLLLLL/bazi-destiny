@@ -34,6 +34,7 @@ const homeUrl = lang === 'zh' ? '/zh' : '/';
               <a href="/leaderboard.html"><span class="drop-ico">🏆</span> Leaderboard</a>
             </div>
           </div>
+          <a href="/palm-reading.html">Palm Reading</a>
           <a href="/blog.html">Blog</a>
           <a href="/faq.html">FAQ</a>
         </>
@@ -41,11 +42,14 @@ const homeUrl = lang === 'zh' ? '/zh' : '/';
         <>
           <a href="/zh">首页</a>
           <a href="/zh#years">年份查询</a>
+          <a href="/calculator.html">八字排盘</a>
+          <a href="/love-match.html">缘分配对</a>
+          <a href="/zh/palm-reading.html">看手相</a>
           <a href="/blog.html">博客 <span class="nav-en">EN</span></a>
         </>
       )}
       <a href={langToggleUrl} class="lang-toggle">{lang === 'en' ? '中文' : 'English'}</a>
-      <a href={lang === 'en' ? '/calculator.html' : '/calculator.html'} class="btn btn-gold btn-nav">{lang === 'en' ? 'Free Reading' : '免费排盘'}</a>
+      <a href="/calculator.html" class="btn btn-gold btn-nav">{lang === 'en' ? 'Free Reading' : '免费排盘'}</a>
     </nav>
 
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
@@ -61,6 +65,7 @@ const homeUrl = lang === 'zh' ? '/zh' : '/';
         <a href="/" class="m-link">Home</a>
         <a href="/chinese-name.html" class="m-link">My Chinese Name</a>
         <a href="/love-match.html" class="m-link love">Love Match</a>
+        <a href="/palm-reading.html" class="m-link">Palm Reading</a>
         <a href="/leaderboard.html" class="m-link">Leaderboard</a>
         <a href="/blog.html" class="m-link">Blog</a>
         <a href="/faq.html" class="m-link">FAQ</a>
@@ -70,13 +75,16 @@ const homeUrl = lang === 'zh' ? '/zh' : '/';
       <>
         <a href="/zh" class="m-link">首页</a>
         <a href="/zh#years" class="m-link">年份查询</a>
+        <a href="/calculator.html" class="m-link">八字排盘 (EN)</a>
+        <a href="/love-match.html" class="m-link">缘分配对 (EN)</a>
+        <a href="/zh/palm-reading.html" class="m-link">看手相</a>
         <a href="/blog.html" class="m-link">博客 (EN)</a>
         <a href="/faq.html" class="m-link">常见问题 (EN)</a>
       </>
     )}
     <div class="m-row">
       <a href={langToggleUrl} class="btn btn-ghost">{lang === 'en' ? '中文版本' : 'English'}</a>
-      <a href={lang === 'en' ? '/calculator.html' : '/calculator.html'} class="btn btn-gold">{lang === 'en' ? 'Free Reading' : '免费排盘'}</a>
+      <a href="/calculator.html" class="btn btn-gold">{lang === 'en' ? 'Free Reading' : '免费排盘'}</a>
     </div>
   </nav>
 </div>
