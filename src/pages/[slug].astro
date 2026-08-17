@@ -64,6 +64,22 @@ const articleLd =
           },
           isPartOf: { '@id': WEBSITE_ID },
         },
+        ...(post.data.faq?.length
+          ? [
+              {
+                '@context': 'https://schema.org',
+                '@type': 'FAQPage',
+                mainEntity: post.data.faq.map((f) => ({
+                  '@type': 'Question',
+                  name: f.q,
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: f.a,
+                  },
+                })),
+              },
+            ]
+          : []),
         {
           '@context': 'https://schema.org',
           '@type': 'BreadcrumbList',

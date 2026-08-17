@@ -12,6 +12,14 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     readTime: z.string().default('5 min read'),
+    faq: z
+      .array(
+        z.object({
+          q: z.string(),
+          a: z.string(),
+        }),
+      )
+      .optional(),
     canonicalPath: z.string().optional(),
     noindex: z.boolean().default(false),
   }),
