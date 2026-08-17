@@ -3,12 +3,12 @@ import Base from '../../layouts/Base.astro';
 import PaymentModal from '../../components/PaymentModal.astro';
 ---
 
-<Base title="八字合婚结果 | MyBaziDestiny" description="查看两人的八字合婚分数、日柱关系、五行生克与相处建议。" lang="zh" path="/zh/love-match-result.html" altPath="/love-match-result.html" noindex={true}>
+<Base title="八字合盘结果 | MyBaziDestiny" description="查看两人的八字合盘分数、日柱关系、五行生克与相处建议。" lang="zh" path="/zh/love-match-result.html" altPath="/love-match-result.html" noindex={true}>
   <div class="lmr-wrap" data-love-result data-lang="zh">
     <header class="lmr-hero">
-      <a href="/zh/love-match.html" class="lmr-back">← 重新合婚</a>
-      <p class="eyebrow center"><span class="han">合婚结果</span> 两命相参</p>
-      <h1 id="lmrTitle">八字合婚</h1>
+      <a href="/zh/love-match.html" class="lmr-back">← 重新合盘</a>
+      <p class="eyebrow center"><span class="han">合盘结果</span> 两命相参</p>
+      <h1 id="lmrTitle">八字合盘</h1>
     </header>
     <div class="lmr-card panel" id="lmrContent">
       <div class="lmr-loading" id="lmrLoading"><svg viewBox="0 0 100 100" width="60" height="60"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(212,175,106,0.2)" stroke-width="2"/><path d="M50 10a40 40 0 0 1 40 40" fill="none" stroke="#d4af6a" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1.2s" repeatCount="indefinite"/></path></svg><p>正在合参两人的命盘...</p></div>
@@ -80,9 +80,9 @@ import PaymentModal from '../../components/PaymentModal.astro';
   const controls: Record<string, string> = { 木: '土', 土: '水', 水: '火', 火: '金', 金: '木' };
 
   document.getElementById('lmrTitle')!.textContent = `${n1} 与 ${n2}`;
-  document.title = `${n1} 与 ${n2}的八字合婚结果 | MyBaziDestiny`;
+  document.title = `${n1} 与 ${n2}的八字合盘结果 | MyBaziDestiny`;
   if (!d1 || !h1 || !d2 || !h2) {
-    document.getElementById('lmrLoading')!.innerHTML = '<div style="text-align:center;padding:3rem"><h2>缺少合婚信息</h2><p style="color:var(--bone-dim)">请返回填写双方出生日期与时辰。</p><a href="/zh/love-match.html" class="btn btn-love btn-lg">重新填写</a></div>';
+    document.getElementById('lmrLoading')!.innerHTML = '<div style="text-align:center;padding:3rem"><h2>缺少合盘信息</h2><p style="color:var(--bone-dim)">请返回填写双方出生日期与时辰。</p><a href="/zh/love-match.html" class="btn btn-love btn-lg">重新填写</a></div>';
   } else setTimeout(compute, 500);
 
   function elementReading(e1: string, e2: string) {
@@ -106,7 +106,7 @@ import PaymentModal from '../../components/PaymentModal.astro';
       document.getElementById('lmrScore')!.innerHTML = `<div style="text-align:center;padding:.5rem 0 1.4rem;border-bottom:1px solid var(--line-soft)">${scoreRing(r.overall, r.tier.color, 180, 'zh')}<div style="font-size:clamp(1.5rem,3vw,1.8rem);font-weight:600;margin-top:.8rem">${esc(n1)} 与 ${esc(n2)}</div><div style="font-size:1.3rem;color:${r.tier.color}">${tierLabel(r.overall)}</div><p style="margin-top:.45rem;color:var(--bone-dim)">${data1.pillars.day.stem}${data1.pillars.day.branch}日柱 · ${data2.pillars.day.stem}${data2.pillars.day.branch}日柱</p></div>`;
       const verdict = r.overall >= 75 ? '两人的命局有足够的天然助力，适合把感情落实为共同生活、长期计划或共同事业。' : r.overall >= 60 ? '这段关系有真实潜力，关键不是有没有缘，而是能否把正确的相处方式稳定下来。' : '这是一段促人成长的关系，吸引力不弱，但必须靠成熟、边界与反复验证的行动来维持。';
       const tips = r.overall >= 75 ? ['把共同优势变成固定习惯，例如共同理财、运动或每周一次深度交流。', '关系顺的时候也要讨论长期目标，越早对齐现实安排，缘分越能落地。'] : r.overall >= 60 ? ['矛盾刚出现就说清，不要让可处理的问题变成情绪账。', '给双方明确角色与独立空间，含糊的责任最容易消耗感情。'] : ['放慢关系节奏，以重复行为判断可靠度，不要只凭一时感觉。', '把底线、金钱、时间与未来计划说清楚，能守约比会表达更重要。'];
-      document.getElementById('lmrTips')!.innerHTML = `<article class="lmr-verdict"><span class="lmr-verdict-kicker">传统合婚主断</span><h3>${relation.title}</h3><p class="lmr-verdict-lead">${verdict}</p><div class="lmr-verdict-grid"><p><strong>日柱依据：</strong>${data1.pillars.day.stem}${data1.pillars.day.branch}与${data2.pillars.day.stem}${data2.pillars.day.branch}相参，日柱契合度为 ${r.dayPillar.score} 分。</p><p><strong>五行依据：</strong>${relation.basis}</p><p><strong>现在要做：</strong>${relation.action}</p></div><p class="lmr-verdict-maxim">断语：缘分决定相遇，章法决定能走多远。</p></article><div class="lmr-dimensions"><div class="lmr-dimension"><span>日柱关系</span><strong>${r.dayPillar.score}</strong><small>亲密模式</small></div><div class="lmr-dimension"><span>日主阴阳</span><strong>${r.polarity.score}</strong><small>表达节奏</small></div><div class="lmr-dimension"><span>五行生克</span><strong>${r.element.score}</strong><small>${e1} × ${e2}</small></div></div><h3 style="margin:1.5rem 0 1rem;text-align:center">相处建议</h3>${tips.map((tip, i) => `<div class="lmr-tip"><b>${i + 1}</b><span>${tip}</span></div>`).join('')}`;
+      document.getElementById('lmrTips')!.innerHTML = `<article class="lmr-verdict"><span class="lmr-verdict-kicker">传统合盘主断</span><h3>${relation.title}</h3><p class="lmr-verdict-lead">${verdict}</p><div class="lmr-verdict-grid"><p><strong>日柱依据：</strong>${data1.pillars.day.stem}${data1.pillars.day.branch}与${data2.pillars.day.stem}${data2.pillars.day.branch}相参，日柱契合度为 ${r.dayPillar.score} 分。</p><p><strong>五行依据：</strong>${relation.basis}</p><p><strong>现在要做：</strong>${relation.action}</p></div><p class="lmr-verdict-maxim">断语：缘分决定相遇，章法决定能走多远。</p></article><div class="lmr-dimensions"><div class="lmr-dimension"><span>日柱关系</span><strong>${r.dayPillar.score}</strong><small>亲密模式</small></div><div class="lmr-dimension"><span>日主阴阳</span><strong>${r.polarity.score}</strong><small>表达节奏</small></div><div class="lmr-dimension"><span>五行生克</span><strong>${r.element.score}</strong><small>${e1} × ${e2}</small></div></div><h3 style="margin:1.5rem 0 1rem;text-align:center">相处建议</h3>${tips.map((tip, i) => `<div class="lmr-tip"><b>${i + 1}</b><span>${tip}</span></div>`).join('')}`;
       renderExtras(r, e1, e2);
       trackEvent('generate_love_match', { tool_name: 'love_match_zh', compatibility_tier: tierLabel(r.overall) });
     } catch {
@@ -117,7 +117,7 @@ import PaymentModal from '../../components/PaymentModal.astro';
   function renderExtras(r: any, e1: string, e2: string) {
     const extras = document.getElementById('lmrExtras');
     if (!extras) return;
-    extras.innerHTML = `<div class="lmr-extras-grid"><div class="lmr-wall"><h3>全球缘分榜</h3><p>当前合婚得分为 <strong>${r.overall}/100</strong>，可以匿名加入榜单，看看这段关系在所有配对中的位置。</p><button class="btn btn-gold" id="lmrBoardBtn">加入缘分榜</button></div><div class="lmr-wall"><h3>个性化相处指南</h3><p>依据${e1} × ${e2}的五行关系，生成沟通方式、共同活动、家居方位与冲突化解建议。</p><button class="btn btn-gold" id="lmrUpgradeBtn">${TEMPORARY_FREE_ACCESS ? '限时免费查看' : '解锁指南 — $4.90'}</button></div></div>`;
+    extras.innerHTML = `<div class="lmr-extras-grid"><div class="lmr-wall"><h3>全球缘分榜</h3><p>当前合盘得分为 <strong>${r.overall}/100</strong>，可以匿名加入榜单，看看这段关系在所有配对中的位置。</p><button class="btn btn-gold" id="lmrBoardBtn">加入缘分榜</button></div><div class="lmr-wall"><h3>个性化相处指南</h3><p>依据${e1} × ${e2}的五行关系，生成沟通方式、共同活动、家居方位与冲突化解建议。</p><button class="btn btn-gold" id="lmrUpgradeBtn">${TEMPORARY_FREE_ACCESS ? '限时免费查看' : '解锁指南 — $4.90'}</button></div></div>`;
     document.getElementById('lmrBoardBtn')?.addEventListener('click', async (event) => {
       const button = event.currentTarget as HTMLButtonElement;
       const entry = { name1: n1, name2: n2, score: r.overall, tier: tierLabel(r.overall), elem1: e1, elem2: e2 };

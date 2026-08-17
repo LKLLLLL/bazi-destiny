@@ -5,25 +5,25 @@ import ToolSeoContent from '../../components/ToolSeoContent.astro';
 import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../../lib/brand';
 
 const jsonLd = [
-  { '@context': 'https://schema.org', '@type': 'WebApplication', '@id': `${SITE_URL}/zh/love-match.html#application`, name: `${BRAND_NAME} 八字合婚`, url: `${SITE_URL}/zh/love-match.html`, applicationCategory: 'LifestyleApplication', operatingSystem: 'Web', provider: { '@id': ORGANIZATION_ID }, isPartOf: { '@id': WEBSITE_ID }, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, description: '输入两个人的出生日期与时辰，比较日柱、日主五行和关系模式，生成传统八字合婚结果。' },
+  { '@context': 'https://schema.org', '@type': 'WebApplication', '@id': `${SITE_URL}/zh/love-match.html#application`, name: `${BRAND_NAME} 八字合盘`, url: `${SITE_URL}/zh/love-match.html`, applicationCategory: 'LifestyleApplication', operatingSystem: 'Web', provider: { '@id': ORGANIZATION_ID }, isPartOf: { '@id': WEBSITE_ID }, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, description: '输入两个人的出生日期与时辰，比较日柱、日主五行和关系模式，生成传统八字合盘结果。' },
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
-    { '@type': 'Question', name: '八字合婚主要看什么？', acceptedAnswer: { '@type': 'Answer', text: '本站重点比较双方日柱、日主天干与五行生克关系，并综合生成契合分数与相处建议。' } },
-    { '@type': 'Question', name: '八字合婚和生肖配对一样吗？', acceptedAnswer: { '@type': 'Answer', text: '不一样。生肖通常只看出生年份，八字合婚还会比较日柱、天干、地支与五行关系。' } },
+    { '@type': 'Question', name: '八字合盘主要看什么？', acceptedAnswer: { '@type': 'Answer', text: '本站重点比较双方日柱、日主天干与五行生克关系，并综合生成契合分数与相处建议。' } },
+    { '@type': 'Question', name: '八字合盘和生肖配对一样吗？', acceptedAnswer: { '@type': 'Answer', text: '不一样。生肖通常只看出生年份，八字合盘还会比较日柱、天干、地支与五行关系。' } },
   ] },
 ];
 ---
 
-<Base title="八字合婚：免费测两人姻缘与五行契合 | MyBaziDestiny" description="免费八字合婚，比较两人的日柱、日主、阴阳与五行生克，查看姻缘契合分数、关系主断和相处建议。" keywords="八字合婚,姻缘配对,五行合婚,日柱合婚,婚姻命理" lang="zh" path="/zh/love-match.html" altPath="/love-match.html" jsonLd={jsonLd}>
-  <header class="lm-hero"><div class="wrap-narrow center"><p class="eyebrow center"><span class="han">合婚</span> 两命相参</p><h1>八字合婚：看两个人的命局如何相合</h1><p class="lm-lead">输入双方出生日期与时辰，从日柱、日主与五行生克判断缘分主线、相处优势和必须正视的矛盾。</p></div></header>
+<Base title="八字合盘：免费测两人姻缘与五行契合 | MyBaziDestiny" description="免费八字合盘，比较两人的日柱、日主、阴阳与五行生克，查看姻缘契合分数、关系主断和相处建议。" keywords="八字合盘,八字合婚,姻缘配对,五行合婚,日柱合婚,婚姻命理" lang="zh" path="/zh/love-match.html" altPath="/love-match.html" jsonLd={jsonLd}>
+  <header class="lm-hero"><div class="wrap-narrow center"><p class="eyebrow center"><span class="han">合盘</span> 两命相参</p><h1>八字合盘：看两个人的命局如何相合</h1><p class="lm-lead">输入双方出生日期与时辰，从日柱、日主与五行生克判断缘分主线、相处优势和必须正视的矛盾。</p></div></header>
   <div class="wrap-narrow lm-tool"><LoveMatch lang="zh" /></div>
-  <ToolSeoContent eyebrow="两命相参" title="八字合婚怎样判断两人的关系" summary="合婚不是只看生肖，而是把双方日柱、日主阴阳与五行生克放在一起，观察彼此是相生、同气、相制还是需要调和。" headingId="zh-love-match-explained">
+  <ToolSeoContent eyebrow="两命相参" title="八字合盘怎样判断两人的关系" summary="合盘不是只看生肖，而是把双方日柱、日主阴阳与五行生克放在一起，观察彼此是相生、同气、相制还是需要调和。" headingId="zh-love-match-explained">
     <div class="tool-seo-grid">
       <section><h3>日柱关系 40%</h3><p>日柱与亲密关系密切相关，双方日干日支的组合因此占据最高权重。</p></section>
       <section><h3>日主与阴阳 30%</h3><p>比较双方日主天干、阴阳属性和彼此作用，判断表达方式与关系节奏是否容易同步。</p></section>
       <section><h3>五行生克 30%</h3><p>五行相生通常代表扶助与流通，相克则代表牵制与磨合；同一五行既容易理解，也可能彼此固执。</p></section>
       <section><h3>明确的相处建议</h3><p>结果不只给分数，还会指出谁在关系中付出更多、矛盾容易出现在哪里，以及现在最需要建立的相处习惯。</p></section>
     </div>
-    <div class="tool-seo-links"><p><strong>先看个人命盘：</strong>可分别使用<a href="/zh/calculator.html">中文八字排盘</a>了解双方日主与五行，再进行合婚比较。</p></div>
+    <div class="tool-seo-links"><p><strong>先看个人命盘：</strong>可分别使用<a href="/zh/calculator.html">中文八字排盘</a>了解双方日主与五行，再进行合盘比较。</p></div>
   </ToolSeoContent>
 </Base>
 
