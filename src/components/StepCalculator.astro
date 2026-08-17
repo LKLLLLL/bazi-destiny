@@ -3,14 +3,21 @@
 // 1. Birth Date → 2. Birth Hour → 3. Birth City
 // Progress bar + clickable back + localStorage persistence + True Solar Time
 import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
+
+interface Props {
+  lang?: 'en' | 'zh';
+}
+
+const { lang = 'en' } = Astro.props;
+const isZh = lang === 'zh';
 ---
 
-<section class="step-calc-section" id="calculator" aria-label="BaZi calculator">
+<section class="step-calc-section" id="calculator" aria-label={isZh ? '八字排盘' : 'BaZi calculator'} data-step-calculator data-lang={lang}>
   <div class="wrap">
     <div class="section-head center" data-reveal>
-      <p class="eyebrow center"><span class="han">排盘</span> The Calculator</p>
-      <h2 class="section-title">Cast Your <em>Four Pillars</em></h2>
-      <p class="section-sub">One step at a time. Your answers are saved as you go.</p>
+      <p class="eyebrow center"><span class="han">排盘</span> {isZh ? '四柱命盘' : 'The Calculator'}</p>
+      <h2 class="section-title">{isZh ? <>排出你的<em>四柱八字</em></> : <>Cast Your <em>Four Pillars</em></>}</h2>
+      <p class="section-sub">{isZh ? '依次填写出生信息，即刻生成传统八字命盘。' : 'One step at a time. Your answers are saved as you go.'}</p>
     </div>
 
     <div class="sc-shell panel" data-reveal>
@@ -18,8 +25,8 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
       <div class="sc-welcome" id="scWelcome" hidden>
         <div class="sc-welcome-inner">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v4m0 12v4M4.9 4.9l2.8 2.8m8.6 8.6l2.8 2.8M2 12h4m12 0h4M4.9 19.1l2.8-2.8m8.6-8.6l2.8-2.8"/></svg>
-          <span>Welcome back — we kept your details</span>
-          <button class="sc-welcome-continue" id="scWelcomeContinue">Continue →</button>
+          <span>{isZh ? '已为你保留上次填写的信息' : 'Welcome back — we kept your details'}</span>
+          <button class="sc-welcome-continue" id="scWelcomeContinue">{isZh ? '继续排盘 →' : 'Continue →'}</button>
         </div>
       </div>
 
@@ -29,17 +36,17 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
           <div class="sc-progress-fill" id="scProgressFill"></div>
         </div>
         <div class="sc-progress-steps" id="scProgressSteps">
-          <button class="sc-step-dot active" data-step="0" aria-label="Step 1: Birth Date">
+          <button class="sc-step-dot active" data-step="0" aria-label={isZh ? '第一步：出生日期' : 'Step 1: Birth Date'}>
             <span class="sc-dot-num">1</span>
-            <span class="sc-dot-label">Date</span>
+            <span class="sc-dot-label">{isZh ? '日期' : 'Date'}</span>
           </button>
-          <button class="sc-step-dot" data-step="1" aria-label="Step 2: Birth Hour" disabled>
+          <button class="sc-step-dot" data-step="1" aria-label={isZh ? '第二步：出生时辰' : 'Step 2: Birth Hour'} disabled>
             <span class="sc-dot-num">2</span>
-            <span class="sc-dot-label">Hour</span>
+            <span class="sc-dot-label">{isZh ? '时辰' : 'Hour'}</span>
           </button>
-          <button class="sc-step-dot" data-step="2" aria-label="Step 3: Birth City" disabled>
+          <button class="sc-step-dot" data-step="2" aria-label={isZh ? '第三步：出生城市' : 'Step 3: Birth City'} disabled>
             <span class="sc-dot-num">3</span>
-            <span class="sc-dot-label">City</span>
+            <span class="sc-dot-label">{isZh ? '城市' : 'City'}</span>
           </button>
         </div>
       </div>
@@ -47,10 +54,10 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
       <!-- ============= STEP 1: DATE ============= -->
       <div class="sc-step" id="scStep0">
         <div class="sc-step-content">
-          <h3 class="sc-step-title">When were you born?</h3>
-          <p class="sc-step-sub">Your birth date forms the foundation of your BaZi chart.</p>
+          <h3 class="sc-step-title">{isZh ? '你的出生日期是？' : 'When were you born?'}</h3>
+          <p class="sc-step-sub">{isZh ? '出生年月日决定年柱、月柱与日柱，是命盘的根基。' : 'Your birth date forms the foundation of your BaZi chart.'}</p>
           <div class="sc-date-wrap">
-            <span class="sc-date-label">Date of Birth · 出生日期</span>
+            <span class="sc-date-label">{isZh ? '出生日期' : 'Date of Birth · 出生日期'}</span>
             <input
               class="sc-date-input"
               type="date"
@@ -61,31 +68,31 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
             />
           </div>
           <div class="sc-gender-row">
-            <span class="sc-date-label">Gender</span>
+            <span class="sc-date-label">{isZh ? '性别' : 'Gender'}</span>
             <div class="sc-gender-options">
               <label class="sc-gender-btn">
                 <input type="radio" name="scGender" value="male" />
-                <span>Male</span>
+                <span>{isZh ? '男' : 'Male'}</span>
               </label>
               <label class="sc-gender-btn">
                 <input type="radio" name="scGender" value="female" />
-                <span>Female</span>
+                <span>{isZh ? '女' : 'Female'}</span>
               </label>
             </div>
           </div>
           <button class="btn btn-gold btn-lg sc-next" id="scNext0" disabled>
-            Continue
+            {isZh ? '下一步' : 'Continue'}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </button>
-          <p class="sc-hint">Press Enter to continue</p>
+          <p class="sc-hint">{isZh ? '按回车键继续' : 'Press Enter to continue'}</p>
         </div>
       </div>
 
       <!-- ============= STEP 2: HOUR ============= -->
       <div class="sc-step" id="scStep1" hidden>
         <div class="sc-step-content">
-          <h3 class="sc-step-title">What time were you born?</h3>
-          <p class="sc-step-sub">Your birth time determines the Hour Pillar, the most personal part of your chart.</p>
+          <h3 class="sc-step-title">{isZh ? '你的出生时辰是？' : 'What time were you born?'}</h3>
+          <p class="sc-step-sub">{isZh ? '出生时辰决定时柱，关系晚运、潜能与内在追求。' : 'Your birth time determines the Hour Pillar, the most personal part of your chart.'}</p>
 
           <div class="sc-hour-grid" id="scHourGrid">
             {[
@@ -105,7 +112,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
               <button class="sc-hour-btn" type="button" data-hour={val}>
                 <span class="sc-hour-num">{val}:00</span>
                 <span class="sc-hour-name han">{label.split(' ')[0]}</span>
-                <span class="sc-hour-en">{label.split(' ')[1]}</span>
+                {!isZh && <span class="sc-hour-en">{label.split(' ')[1]}</span>}
                 <span class="sc-hour-range">{range}</span>
               </button>
             ))}
@@ -114,7 +121,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
           <div class="sc-options">
             <button class="sc-option-btn" id="scUnknownHour" type="button">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.5 9.5a3 3 0 0 1 5 2c0 3-4 3-4 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>
-              I don't know my birth time
+              {isZh ? '不知道出生时辰' : "I don't know my birth time"}
             </button>
 
             <label class="sc-toggle">
@@ -123,14 +130,14 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
                 <span class="sc-toggle-thumb"></span>
               </span>
               <span class="sc-toggle-label">
-                True Solar Time correction
-                <small>Account for your longitude (professional)</small>
+                {isZh ? '真太阳时校正' : 'True Solar Time correction'}
+                <small>{isZh ? '按出生地经度校正时辰' : 'Account for your longitude (professional)'}</small>
               </span>
             </label>
           </div>
 
           <button class="btn btn-gold btn-lg sc-next" id="scNext1" disabled>
-            Continue
+            {isZh ? '下一步' : 'Continue'}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </button>
         </div>
@@ -139,8 +146,8 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
       <!-- ============= STEP 3: CITY ============= -->
       <div class="sc-step" id="scStep2" hidden>
         <div class="sc-step-content">
-          <h3 class="sc-step-title">Where were you born?</h3>
-          <p class="sc-step-sub">Your birthplace allows a more precise solar-time calculation. You may skip this step if unknown.</p>
+          <h3 class="sc-step-title">{isZh ? '你的出生城市是？' : 'Where were you born?'}</h3>
+          <p class="sc-step-sub">{isZh ? '出生地可用于真太阳时校正；不清楚也可以跳过。' : 'Your birthplace allows a more precise solar-time calculation. You may skip this step if unknown.'}</p>
 
           <div class="sc-city-search" id="scCitySearch">
             <div class="sc-city-input-wrap">
@@ -149,7 +156,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
                 class="sc-city-input"
                 type="text"
                 id="scCityInput"
-                placeholder="Search city… (e.g. Beijing, London, New York)"
+                placeholder={isZh ? '搜索城市，如北京、上海、广州' : 'Search city… (e.g. Beijing, London, New York)'}
                 autocomplete="off"
                 aria-autocomplete="list"
                 aria-controls="scCityList"
@@ -176,11 +183,11 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
           </div>
 
           <button class="btn btn-ghost sc-skip" id="scSkipCity" type="button">
-            Skip — I don't know
+            {isZh ? '跳过，不知道出生地' : "Skip — I don't know"}
           </button>
 
           <button class="btn btn-gold btn-lg sc-next" id="scNext2" disabled>
-            Generate My BaZi Chart
+            {isZh ? '生成我的八字命盘' : 'Generate My BaZi Chart'}
             <span class="han" aria-hidden="true">生成</span>
           </button>
         </div>
@@ -205,10 +212,10 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
           <circle cx="50" cy="58.5" r="2.6" fill="#d4af6a" />
         </svg>
         <ol class="sc-cast-steps">
-          <li><span class="han">解码</span> Reading birth details</li>
-          <li><span class="han">建模</span> Calculating Four Pillars</li>
-          <li><span class="han">标识</span> Identifying Day Master</li>
-          <li><span class="han">生成</span> Preparing your BaZi reading</li>
+          <li><span class="han">解码</span> {isZh ? '读取出生信息' : 'Reading birth details'}</li>
+          <li><span class="han">建模</span> {isZh ? '推算四柱干支' : 'Calculating Four Pillars'}</li>
+          <li><span class="han">定主</span> {isZh ? '确定日主与格局' : 'Identifying Day Master'}</li>
+          <li><span class="han">生成</span> {isZh ? '生成命理解读' : 'Preparing your BaZi reading'}</li>
         </ol>
       </div>
 
@@ -217,7 +224,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
         <div class="cc-header">
           <div class="cc-badge" id="ccBadge">
             <span class="cc-badge-han han" id="ccDayMaster"></span>
-            <span class="cc-badge-label">Day Master</span>
+            <span class="cc-badge-label">{isZh ? '日主' : 'Day Master'}</span>
           </div>
           <h3 class="cc-name" id="ccName"></h3>
           <p class="cc-subtitle" id="ccSubtitle"></p>
@@ -226,7 +233,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
         <!-- ===== FOUR PILLARS ===== -->
         <div class="cc-modules">
           <div class="cc-module-label">
-            <span class="han">四柱</span> Four Pillars
+            <span class="han">四柱</span> {isZh ? '八字命盘' : 'Four Pillars'}
           </div>
           <div class="pillars-grid" id="pillarsGrid"></div>
           <div class="pillar-strength" id="pillarStrength"></div>
@@ -235,7 +242,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
         <!-- ===== FIVE ELEMENTS ===== -->
         <div class="cc-section">
           <div class="cc-section-head">
-            <span class="han">五行</span> Five Elements
+            <span class="han">五行</span> {isZh ? '五行强弱' : 'Five Elements'}
           </div>
           <div class="cc-attrs">
             <div class="cc-attrs-bars" id="attrBars"></div>
@@ -246,7 +253,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
         <!-- ===== DESTINY VERDICT ===== -->
         <div class="cc-section cc-verdict-section">
           <div class="cc-section-head">
-            <span class="han">命断</span> Destiny Verdict
+            <span class="han">命断</span> {isZh ? '格局与流年' : 'Destiny Verdict'}
           </div>
           <div id="ccVerdict"></div>
         </div>
@@ -254,7 +261,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
         <!-- ===== TRAITS ===== -->
         <div class="cc-section">
           <div class="cc-section-head">
-            <span class="han">天赋</span> Traits
+            <span class="han">天赋</span> {isZh ? '性情与优势' : 'Traits'}
           </div>
           <div class="cc-traits" id="ccTraits"></div>
         </div>
@@ -262,7 +269,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
         <!-- ===== ENVIRONMENT ===== -->
         <div class="cc-section">
           <div class="cc-section-head">
-            <span class="han">环境</span> Environment
+            <span class="han">环境</span> {isZh ? '方位指引' : 'Environment'}
           </div>
           <div class="cc-env" id="ccEnv"></div>
         </div>
@@ -270,7 +277,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
         <!-- ===== GUARDIAN SPIRIT ===== -->
         <div class="cc-section cc-guardian-section">
           <div class="cc-section-head">
-            <span class="han">守护</span> Your Guardian Spirit
+            <span class="han">守护</span> {isZh ? '命局守护意象' : 'Your Guardian Spirit'}
           </div>
           <div class="cc-guardian-card">
             <span class="cc-guardian-seal han" aria-hidden="true">守</span>
@@ -284,9 +291,9 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
 
         <!-- ===== PAYWALL ===== -->
         <div class="cc-paywall" id="ccPaywall">
-          <h4>Full Life Blueprint</h4>
-          <p>Unlock your complete 12-section reading, including Career, Wealth, Relationships, Health, lucky elements, daily alignment, and personalized Feng Shui.</p>
-          <button class="btn btn-gold btn-lg" id="unlockProBtn">Unlock Full Blueprint — $9.90</button>
+          <h4>{isZh ? '完整人生蓝图' : 'Full Life Blueprint'}</h4>
+          <p>{isZh ? '解锁 12 章完整命书，深入查看事业、财富、感情、健康、喜用五行、日常开运与个人风水。' : 'Unlock your complete 12-section reading, including Career, Wealth, Relationships, Health, lucky elements, daily alignment, and personalized Feng Shui.'}</p>
+          <button class="btn btn-gold btn-lg" id="unlockProBtn">{isZh ? '解锁完整命书 — $9.90' : 'Unlock Full Blueprint — $9.90'}</button>
         </div>
 
         <!-- ===== PRO: 12-SECTION LIFE BLUEPRINT ===== -->
@@ -294,47 +301,47 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
           <header class="cc-report-cover">
             <span class="cc-cover-seal han" aria-hidden="true">命书</span>
             <div class="cc-cover-copy">
-              <span class="cc-cover-kicker">Personal BaZi Dossier · 八字命书</span>
-              <h3>Your Complete Life Blueprint</h3>
-              <p>Twelve personalized chapters drawn from your Four Pillars, Day Master, and Five-Element balance.</p>
+              <span class="cc-cover-kicker">{isZh ? '个人八字命书' : 'Personal BaZi Dossier · 八字命书'}</span>
+              <h3>{isZh ? '完整人生蓝图' : 'Your Complete Life Blueprint'}</h3>
+              <p>{isZh ? '依据四柱、日主与五行强弱生成十二章个人命理解读。' : 'Twelve personalized chapters drawn from your Four Pillars, Day Master, and Five-Element balance.'}</p>
             </div>
-            {TEMPORARY_FREE_ACCESS && <span class="cc-free-badge">Limited-Time Free</span>}
+            {TEMPORARY_FREE_ACCESS && <span class="cc-free-badge">{isZh ? '限时免费' : 'Limited-Time Free'}</span>}
           </header>
           <div class="cc-report-meta" aria-label="Report profile">
-            <div><span>Day Master</span><strong id="ccReportDayMaster"></strong></div>
-            <div><span>Core Current</span><strong id="ccReportElement"></strong></div>
-            <div><span>Growth Element</span><strong id="ccReportGrowth"></strong></div>
-            <div><span>Chapters</span><strong>12</strong></div>
+            <div><span>{isZh ? '日主' : 'Day Master'}</span><strong id="ccReportDayMaster"></strong></div>
+            <div><span>{isZh ? '命局主势' : 'Core Current'}</span><strong id="ccReportElement"></strong></div>
+            <div><span>{isZh ? '调候五行' : 'Growth Element'}</span><strong id="ccReportGrowth"></strong></div>
+            <div><span>{isZh ? '章节' : 'Chapters'}</span><strong>12</strong></div>
           </div>
           <nav class="cc-report-index" id="ccReportIndex" aria-label="Life Blueprint chapters"></nav>
           <div class="cc-pro-grid" id="ccProGrid"></div>
         </div>
 
         <div class="next-tools" aria-label="Continue exploring">
-          <p><span class="han">续</span> Continue exploring</p>
+          <p><span class="han">续</span> {isZh ? '继续探索' : 'Continue exploring'}</p>
           <div class="next-tools-grid">
-            <a href="/chinese-name.html" class="next-tool">
+            {!isZh && <a href="/chinese-name.html" class="next-tool">
               <span class="han" aria-hidden="true">名</span>
               <span><strong>Find Your Chinese Name</strong><small>Turn your birth chart into a meaningful given name.</small></span>
               <b aria-hidden="true">→</b>
-            </a>
-            <a href="/love-match.html" class="next-tool">
+            </a>}
+            <a href={isZh ? '/zh/love-match.html' : '/love-match.html'} class="next-tool">
               <span class="han" aria-hidden="true">缘</span>
-              <span><strong>Try Love Match</strong><small>Compare your Five Elements with someone special.</small></span>
+              <span><strong>{isZh ? '八字合婚' : 'Try Love Match'}</strong><small>{isZh ? '比较两个人的日柱、五行与相处模式。' : 'Compare your Five Elements with someone special.'}</small></span>
               <b aria-hidden="true">→</b>
             </a>
-            <a href="/palm-reading.html" class="next-tool">
+            <a href={isZh ? '/zh/palm-reading.html' : '/palm-reading.html'} class="next-tool">
               <span class="han" aria-hidden="true">掌</span>
-              <span><strong>Palm Reading</strong><small>Explore visible palm lines through traditional Chinese palmistry.</small></span>
+              <span><strong>{isZh ? '传统手相' : 'Palm Reading'}</strong><small>{isZh ? '依照男左女右，以掌纹解读性情与运势。' : 'Explore visible palm lines through traditional Chinese palmistry.'}</small></span>
               <b aria-hidden="true">→</b>
             </a>
           </div>
         </div>
 
         <div class="results-actions">
-          <button class="btn btn-ghost" id="shareBtn">Share Result</button>
-          <button class="btn btn-gold" id="pdfBtn">Print / Save as PDF</button>
-          <button class="btn btn-ghost" id="recastBtn">Start Over</button>
+          <button class="btn btn-ghost" id="shareBtn">{isZh ? '分享结果' : 'Share Result'}</button>
+          <button class="btn btn-gold" id="pdfBtn">{isZh ? '打印 / 保存 PDF' : 'Print / Save as PDF'}</button>
+          <button class="btn btn-ghost" id="recastBtn">{isZh ? '重新排盘' : 'Start Over'}</button>
         </div>
       </div>
     </div>
@@ -1437,6 +1444,21 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
   const LS_KEY = 'bazi_stepcalc_data';
 
   const $ = (id: string) => document.getElementById(id);
+  const calculatorRoot = document.querySelector<HTMLElement>('[data-step-calculator]');
+  const isZh = calculatorRoot?.dataset.lang === 'zh';
+  const ELEMENT_ZH_DESC: Record<string, string> = {
+    '木': '生长、仁厚与创造', '火': '热情、表现与行动', '土': '稳定、承载与信用', '金': '原则、决断与精确', '水': '智慧、变通与洞察',
+  };
+  const DIRECTION_ZH: Record<string, string> = {
+    North: '北', Northeast: '东北', East: '东', Southeast: '东南', South: '南', Southwest: '西南', West: '西', Northwest: '西北',
+  };
+  const PERSONALITY_ZH: Record<string, { traits: string[]; strength: string; weakness: string }> = {
+    '木': { traits: ['重成长', '有原则', '富创造力'], strength: '善于开创、规划并推动长期成长', weakness: '压力大时容易固执，或一次承担太多' },
+    '火': { traits: ['行动快', '感染力强', '重体验'], strength: '能点燃气氛、快速推进并让想法被看见', weakness: '情绪与精力起伏较大，容易急于求成' },
+    '土': { traits: ['稳重', '可信赖', '能承事'], strength: '擅长守住中心，把复杂事情沉淀成稳定成果', weakness: '容易把责任都揽在自己身上，变通稍慢' },
+    '金': { traits: ['有标准', '重效率', '判断清晰'], strength: '善于取舍、建立规则并做出干净利落的决定', weakness: '要求过高时容易显得严厉或难以放松' },
+    '水': { traits: ['洞察敏锐', '适应力强', '善谋略'], strength: '能看见隐藏路径，在变化中找到更聪明的办法', weakness: '思虑过多时容易犹豫，或把真实想法藏得太深' },
+  };
 
   // ── State ──
   interface CalcState {
@@ -1662,7 +1684,9 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
       const sign = corr >= 0 ? '+' : '';
       const absMin = Math.abs(Math.round(corr));
       citySolar!.hidden = false;
-      citySolar!.textContent = `True Solar Time correction: ${sign}${absMin} min${city.name !== 'Beijing' ? ` (at ${city.lon.toFixed(1)}° longitude)` : ''}`;
+      citySolar!.textContent = isZh
+        ? `真太阳时校正：${sign}${absMin} 分钟${city.name !== 'Beijing' ? `（经度 ${city.lon.toFixed(1)}°）` : ''}`
+        : `True Solar Time correction: ${sign}${absMin} min${city.name !== 'Beijing' ? ` (at ${city.lon.toFixed(1)}° longitude)` : ''}`;
     } else {
       citySolar!.hidden = true;
     }
@@ -1856,11 +1880,11 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
   // ── Result rendering ──
   function pillarTile(label: string, pillar: any, isCore: boolean, idx: number): string {
     const color = ELEM_COLOR[pillar?.element] || 'var(--gold)';
-    const tag = isCore ? 'Core' : '';
+    const tag = isCore ? (isZh ? '命主' : 'Core') : '';
     return `<div class="ptile${isCore ? ' core' : ''}" style="--d:${idx * 0.09}s;--c:${color}">
       <span class="ptile-tag">${tag}</span>
       <span class="ptile-han han">${pillar?.stem || '—'}${pillar?.branch || '—'}</span>
-      <span class="ptile-en">${STEM_EN[pillar?.stem] || '?'}</span>
+      <span class="ptile-en">${isZh ? `${pillar?.element || '?'}行` : (STEM_EN[pillar?.stem] || '?')}</span>
       <span class="ptile-label">${label}</span>
     </div>`;
   }
@@ -1877,23 +1901,23 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     // Header
     $('ccDayMaster')!.textContent = `${p.day?.stem || '?'}${p.day?.branch || '?'}`;
     $('ccBadge')!.setAttribute('style', `--dm-color:${domColor}`);
-    $('ccName')!.textContent = `Your Birth Sign is ${yearAnimal}`;
-    $('ccSubtitle')!.textContent = data.isThreePillar
-      ? `Born ${birthYear} · Day Master: ${STEM_EN[p.day.stem]} · Dominant Element: ${domEn}`
+    $('ccName')!.textContent = isZh ? `${birthYear} 年生 · ${p.year?.stem || ''}${p.year?.branch || ''}年命` : `Your Birth Sign is ${yearAnimal}`;
+    $('ccSubtitle')!.textContent = isZh
+      ? `日主：${p.day.stem}${p.day.branch} · 命局主势：${data.elements.dominant} · 最需补足：${data.elements.deficient}`
       : `Born ${birthYear} · Day Master: ${STEM_EN[p.day.stem]} · Dominant Element: ${domEn}`;
 
     // Four Pillars
     $('pillarsGrid')!.innerHTML =
-      pillarTile('Origin', p.year, false, 0) +
-      pillarTile('Nature', p.month, false, 1) +
-      pillarTile('Identity', p.day, true, 2) +
+      pillarTile(isZh ? '根基 · 年柱' : 'Origin', p.year, false, 0) +
+      pillarTile(isZh ? '环境 · 月柱' : 'Nature', p.month, false, 1) +
+      pillarTile(isZh ? '命主 · 日柱' : 'Identity', p.day, true, 2) +
       (data.isThreePillar
-        ? `<div class="ptile locked" style="--d:0.27s"><span class="ptile-han han">?</span><span class="ptile-en">Unknown</span><span class="ptile-label">Potential</span></div>`
-        : pillarTile('Potential', p.hour, false, 3));
+        ? `<div class="ptile locked" style="--d:0.27s"><span class="ptile-han han">?</span><span class="ptile-en">${isZh ? '时辰未知' : 'Unknown'}</span><span class="ptile-label">${isZh ? '潜能 · 时柱' : 'Potential'}</span></div>`
+        : pillarTile(isZh ? '潜能 · 时柱' : 'Potential', p.hour, false, 3));
 
     // Pillar Strength gauges
     const ps = $('pillarStrength');
-    if (ps && !data.isThreePillar) ps.innerHTML = pillarStrengthCards(p);
+    if (ps && !data.isThreePillar) ps.innerHTML = pillarStrengthCards(p, isZh ? 'zh' : 'en');
 
     // Five Elements
     const elemMap: Record<string, { en: string; cn: string; desc: string }> = {
@@ -1905,42 +1929,43 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     };
     // Use proven elementBars function from charts.ts
     const el = $('attrBars');
-    if (el) el.innerHTML = elementBars(data.elements);
+    if (el) el.innerHTML = elementBars(data.elements, isZh ? 'zh' : 'en');
 
-    $('attrSummary')!.innerHTML = `
-      <p style="margin-top:0.5rem"><strong style="color:${defColor}">Growth area: ${defEn}</strong> — weaving small ${defEn}-element habits into your day brings balance and unlocks latent potential.</p>`;
+    $('attrSummary')!.innerHTML = isZh
+      ? `<p style="margin-top:0.5rem"><strong style="color:${defColor}">调候重点：补${data.elements.deficient}</strong>——有意识地增加${ELEMENT_ZH_DESC[data.elements.deficient]}，能缓和命局偏性，也更容易发挥潜能。</p>`
+      : `<p style="margin-top:0.5rem"><strong style="color:${defColor}">Growth area: ${defEn}</strong> — weaving small ${defEn}-element habits into your day brings balance and unlocks latent potential.</p>`;
 
     // Traditional verdict: conclusion first, then the chart logic and current-year timing.
-    const verdict = getExpertVerdict(data);
+    const verdict = getExpertVerdict(data, new Date().getFullYear(), isZh ? 'zh' : 'en');
     $('ccVerdict')!.innerHTML = `
       <article class="cc-verdict">
-        <span class="cc-verdict-kicker">Core pattern · ${verdict.yearLabel}</span>
+        <span class="cc-verdict-kicker">${isZh ? '核心格局' : 'Core pattern'} · ${verdict.yearLabel}</span>
         <h4>${verdict.title}</h4>
         <p class="cc-verdict-lead">${verdict.lead}</p>
         <div class="cc-verdict-proof">
-          ${verdict.evidence.map((item: string, index: number) => `<p><strong>${index === 0 ? 'Traditional basis.' : 'Element evidence.'}</strong> ${item}</p>`).join('')}
+          ${verdict.evidence.map((item: string, index: number) => `<p><strong>${isZh ? (index === 0 ? '传统依据：' : '五行依据：') : (index === 0 ? 'Traditional basis.' : 'Element evidence.')}</strong> ${item}</p>`).join('')}
         </div>
         <div class="cc-verdict-timing">
           <h5>${verdict.timingTitle}</h5>
           <p>${verdict.timing}</p>
         </div>
-        <p class="cc-verdict-action"><strong>What to do now.</strong> ${verdict.action}</p>
+        <p class="cc-verdict-action"><strong>${isZh ? '现在要做：' : 'What to do now.'}</strong> ${verdict.action}</p>
         <p class="cc-verdict-maxim">“${verdict.maxim}”</p>
       </article>`;
 
     // Traits
-    const persona = Readings.getPersonality(p.day.stem, p.day.element);
-    const traits: string[] = persona?.traits || ['Adaptable', 'Curious', 'Reflective'];
-    const strength = persona?.strength || 'Natural resilience and adaptability';
-    const weakness = persona?.weakness || 'May overthink under pressure';
+    const persona = isZh ? PERSONALITY_ZH[p.day.element] : Readings.getPersonality(p.day.stem, p.day.element);
+    const traits: string[] = persona?.traits || (isZh ? ['适应力强', '善观察', '重思考'] : ['Adaptable', 'Curious', 'Reflective']);
+    const strength = persona?.strength || (isZh ? '有韧性，能随环境调整' : 'Natural resilience and adaptability');
+    const weakness = persona?.weakness || (isZh ? '压力大时容易思虑过多' : 'May overthink under pressure');
 
     $('ccTraits')!.innerHTML = `
       <div class="trait-tags">
         ${traits.map((t: string) => `<span class="trait-tag">${t}</span>`).join('')}
       </div>
       <div class="trait-notes">
-        <div class="trait-note"><div><strong>Strength</strong><span>${strength}</span></div></div>
-        <div class="trait-note"><div><strong>Watch for</strong><span>${weakness}</span></div></div>
+        <div class="trait-note"><div><strong>${isZh ? '优势' : 'Strength'}</strong><span>${strength}</span></div></div>
+        <div class="trait-note"><div><strong>${isZh ? '需要留意' : 'Watch for'}</strong><span>${weakness}</span></div></div>
       </div>`;
 
     // Environment
@@ -1948,25 +1973,27 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
     $('ccEnv')!.innerHTML = `
       <div class="env-item">
         <div>
-          <strong>Best facing</strong>
-          <span>${d.auspicious?.join(' · ') || 'East · South'}</span>
-          <small>Face these when working, negotiating, or placing your desk.</small>
+          <strong>${isZh ? '有利方位' : 'Best facing'}</strong>
+          <span>${isZh ? (d.auspicious?.map((x: string) => DIRECTION_ZH[x] || x).join(' · ') || '东 · 南') : (d.auspicious?.join(' · ') || 'East · South')}</span>
+          <small>${isZh ? '工作、谈判或安放书桌时，可优先面向这些方位。' : 'Face these when working, negotiating, or placing your desk.'}</small>
         </div>
       </div>
       <div class="env-item">
         <div>
-          <strong>Drain zones</strong>
-          <span>${d.inauspicious?.join(' · ') || 'West'}</span>
-          <small>Long exposure drains your ${domEn} energy — minimize facing these directions.</small>
+          <strong>${isZh ? '耗气方位' : 'Drain zones'}</strong>
+          <span>${isZh ? (d.inauspicious?.map((x: string) => DIRECTION_ZH[x] || x).join(' · ') || '西') : (d.inauspicious?.join(' · ') || 'West')}</span>
+          <small>${isZh ? `久处容易消耗命局${data.elements.dominant}气，重要事项尽量少朝这些方向。` : `Long exposure drains your ${domEn} energy — minimize facing these directions.`}</small>
         </div>
       </div>`;
 
     // Guardian Spirit
     const guardian = getGuardianSpirit(data);
     $('guardianChinese')!.textContent = guardian.chinese;
-    $('guardianName')!.textContent = guardian.name;
-    $('guardianTitle')!.textContent = guardian.title;
-    $('guardianBackground')!.textContent = guardian.background;
+    $('guardianName')!.textContent = isZh ? '' : guardian.name;
+    $('guardianTitle')!.textContent = isZh ? `${p.day.stem}${p.day.branch}日主的守护象征` : guardian.title;
+    $('guardianBackground')!.textContent = isZh
+      ? `${guardian.chinese}象征在压力中守住${data.elements.dominant}的本性，同时主动补足${data.elements.deficient}气。你的天赋只有落实为长期行动，才会真正成为命运的助力。`
+      : guardian.background;
 
     // Paywall state — paying customers always see the full blueprint
     const paywall = $('ccPaywall');
@@ -1998,14 +2025,14 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
       .replaceAll("'", '&#039;');
 
     const day = currentData.pillars.day;
-    $('ccReportDayMaster')!.textContent = `${day.stem}${day.branch} · ${STEM_EN[day.stem] || ''}`;
-    $('ccReportElement')!.textContent = ELEM_EN[currentData.elements.dominant] || currentData.elements.dominant;
-    $('ccReportGrowth')!.textContent = ELEM_EN[currentData.elements.deficient] || currentData.elements.deficient;
+    $('ccReportDayMaster')!.textContent = `${day.stem}${day.branch}${isZh ? '' : ` · ${STEM_EN[day.stem] || ''}`}`;
+    $('ccReportElement')!.textContent = isZh ? `${currentData.elements.dominant}行` : (ELEM_EN[currentData.elements.dominant] || currentData.elements.dominant);
+    $('ccReportGrowth')!.textContent = isZh ? `${currentData.elements.deficient}行` : (ELEM_EN[currentData.elements.deficient] || currentData.elements.deficient);
     $('ccReportIndex')!.innerHTML = sections.map((section) => `
       <a class="cc-index-link" href="#report-${escapeHtml(section.key)}">
         <span class="cc-index-mark han">${escapeHtml(section.icon)}</span>
         <span class="cc-index-copy">
-          <small>Chapter ${String(section.number).padStart(2, '0')}</small>
+          <small>${isZh ? '第' : 'Chapter '}${String(section.number).padStart(2, '0')}${isZh ? '章' : ''}</small>
           <strong>${escapeHtml(section.title)}</strong>
         </span>
       </a>
@@ -2016,7 +2043,7 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
         <div class="cc-report-title">
           <span class="cc-report-mark han">${escapeHtml(section.icon)}</span>
           <div>
-            <span class="cc-report-kicker">Section ${section.number} of 12</span>
+            <span class="cc-report-kicker">${isZh ? `第 ${section.number} 章 · 共 12 章` : `Section ${section.number} of 12`}</span>
             <h5>${escapeHtml(section.title)}</h5>
           </div>
         </div>
@@ -2148,9 +2175,11 @@ import { TEMPORARY_FREE_ACCESS } from '../lib/paypal/products';
   $('shareBtn')?.addEventListener('click', () => {
     const elem = currentData ? ELEM_EN[currentData.elements.dominant] : '';
     const dm = currentData ? STEM_EN[currentData.pillars.day.stem] : '';
-    const text = `My BaZi chart: Day Master ${dm} · Dominant Element ${elem} · Discover yours: https://mybazidestiny.com/calculator.html`;
-    if (navigator.share) navigator.share({ title: 'My Life Blueprint', text }).catch(() => {});
-    else navigator.clipboard?.writeText(text).then(() => alert('Result link copied!'));
+    const text = isZh
+      ? `我的八字命盘：日主 ${currentData?.pillars.day.stem}${currentData?.pillars.day.branch} · 命局主势 ${currentData?.elements.dominant} · 免费排盘：https://mybazidestiny.com/zh/calculator.html`
+      : `My BaZi chart: Day Master ${dm} · Dominant Element ${elem} · Discover yours: https://mybazidestiny.com/calculator.html`;
+    if (navigator.share) navigator.share({ title: isZh ? '我的八字命盘' : 'My Life Blueprint', text }).catch(() => {});
+    else navigator.clipboard?.writeText(text).then(() => alert(isZh ? '结果链接已复制' : 'Result link copied!'));
   });
 
   $('recastBtn')?.addEventListener('click', () => {

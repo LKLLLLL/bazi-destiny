@@ -70,7 +70,7 @@ export function elementsDonut(elements: ElementData): string {
 }
 
 /** Element balance bars in generating-cycle order. */
-export function elementBars(elements: ElementData): string {
+export function elementBars(elements: ElementData, lang: 'en' | 'zh' = 'en'): string {
   const max = Math.max(...ELEM_ORDER.map((e) => elements.counts[e] || 0), 1);
   return ELEM_ORDER.map((elem) => {
     const count = elements.counts[elem] || 0;
@@ -79,7 +79,7 @@ export function elementBars(elements: ElementData): string {
     const isDef = elements.deficient === elem;
     return `<div class="ebar-row">
       <span class="ebar-han" style="color:${ELEM_COLOR[elem]}">${elem}</span>
-      <span class="ebar-name">${ELEM_EN[elem]}</span>
+      <span class="ebar-name">${lang === 'zh' ? `${elem}行` : ELEM_EN[elem]}</span>
       <span class="ebar-track"><span class="ebar-fill${isDom ? ' dom' : ''}${isDef ? ' def' : ''}" style="width:${w}%;background:${ELEM_COLOR[elem]}"></span></span>
       <span class="ebar-count">${count}${isDom ? ' ★' : ''}</span>
     </div>`;
@@ -119,7 +119,7 @@ export function compass(directions: { auspicious: string[]; inauspicious: string
 }
 
 /** Circular score ring used by Love Match. */
-export function scoreRing(score: number, color: string, size = 180): string {
+export function scoreRing(score: number, color: string, size = 180, lang: 'en' | 'zh' = 'en'): string {
   const r = 80;
   const circ = 2 * Math.PI * r;
   const offset = circ * (1 - score / 100);
@@ -129,7 +129,7 @@ export function scoreRing(score: number, color: string, size = 180): string {
       stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}"
       transform="rotate(-90 100 100)" style="filter:drop-shadow(0 0 10px ${color}66);transition:stroke-dashoffset 1.2s var(--ease-out)"/>
     <text x="100" y="96" text-anchor="middle" font-size="44" font-weight="700" fill="${color}" font-family="'Cormorant Garamond',serif">${score}</text>
-    <text x="100" y="122" text-anchor="middle" font-size="10.5" letter-spacing="2" fill="#84806f">OUT OF 100</text>
+    <text x="100" y="122" text-anchor="middle" font-size="10.5" letter-spacing="2" fill="#84806f">${lang === 'zh' ? '满分 100' : 'OUT OF 100'}</text>
   </svg>`;
 }
 
@@ -150,10 +150,11 @@ export function pillarStrengthCards(pillars: {
   month: { stem: string; branch: string; stemIdx: number; element: string };
   day: { stem: string; branch: string; stemIdx: number; element: string };
   hour: { stem: string; branch: string; stemIdx: number; element: string };
-}): string {
+}, lang: 'en' | 'zh' = 'en'): string {
+  const zh = lang === 'zh';
   const data: PillarStrengthData[] = [
     {
-      label: 'Year Pillar · 年柱',
+      label: zh ? '年柱' : 'Year Pillar · 年柱',
       stem: pillars.year.stem,
       branch: pillars.year.branch,
       stemEn: STEM_EN[pillars.year.stem] || pillars.year.stem,
@@ -163,7 +164,7 @@ export function pillarStrengthCards(pillars: {
       isDay: false,
     },
     {
-      label: 'Month Pillar · 月柱',
+      label: zh ? '月柱' : 'Month Pillar · 月柱',
       stem: pillars.month.stem,
       branch: pillars.month.branch,
       stemEn: STEM_EN[pillars.month.stem] || pillars.month.stem,
@@ -173,7 +174,7 @@ export function pillarStrengthCards(pillars: {
       isDay: false,
     },
     {
-      label: 'Day Pillar · 日柱',
+      label: zh ? '日柱' : 'Day Pillar · 日柱',
       stem: pillars.day.stem,
       branch: pillars.day.branch,
       stemEn: STEM_EN[pillars.day.stem] || pillars.day.stem,
@@ -183,7 +184,7 @@ export function pillarStrengthCards(pillars: {
       isDay: true,
     },
     {
-      label: 'Hour Pillar · 时柱',
+      label: zh ? '时柱' : 'Hour Pillar · 时柱',
       stem: pillars.hour.stem,
       branch: pillars.hour.branch,
       stemEn: STEM_EN[pillars.hour.stem] || pillars.hour.stem,
@@ -203,7 +204,7 @@ export function pillarStrengthCards(pillars: {
         <span class="ps-bar-fill" style="width:${p.strength}%;background:var(--pc)"></span>
       </div>
       <span class="ps-strength">${p.strength}%</span>
-      ${p.isDay ? '<span class="ps-badge">Core</span>' : ''}
+      ${p.isDay ? `<span class="ps-badge">${zh ? '命主' : 'Core'}</span>` : ''}
     </div>`
     )
     .join('');

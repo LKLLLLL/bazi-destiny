@@ -21,11 +21,11 @@ export const GET: APIRoute = async () => {
 
   const urls: { loc: string; alt?: string; priority: string; changefreq: string; lastmod?: string }[] = [
     { loc: '/', alt: '/zh', priority: '1.0', changefreq: 'weekly', lastmod: LAST_BUILD },
-    { loc: '/calculator.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
+    { loc: '/calculator.html', alt: '/zh/calculator.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/chinese-name.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/blog.html', priority: '0.9', changefreq: 'weekly', lastmod: LAST_BUILD },
     { loc: '/chinese-zodiac-years.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
-    { loc: '/love-match.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
+    { loc: '/love-match.html', alt: '/zh/love-match.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/palm-reading.html', alt: '/zh/palm-reading.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/leaderboard.html', priority: '0.8', changefreq: 'daily', lastmod: LAST_BUILD },
     { loc: '/faq.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
@@ -37,6 +37,8 @@ export const GET: APIRoute = async () => {
     { loc: '/privacy-policy.html', priority: '0.3', changefreq: 'yearly', lastmod: LAST_BUILD },
     { loc: '/terms-of-service.html', priority: '0.3', changefreq: 'yearly', lastmod: LAST_BUILD },
     { loc: '/zh', alt: '/', priority: '0.9', changefreq: 'weekly', lastmod: LAST_BUILD },
+    { loc: '/zh/calculator.html', alt: '/calculator.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
+    { loc: '/zh/love-match.html', alt: '/love-match.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/zh/palm-reading.html', alt: '/palm-reading.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
   ];
   for (const p of posts) {

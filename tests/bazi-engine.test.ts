@@ -70,5 +70,19 @@ assert.match(referenceVerdict.evidence[0], /杀印相生/);
 assert.equal(referenceVerdict.timingTitle, '2026 丙午: A Year of Decisive Movement');
 assert.match(referenceVerdict.timing, /午 directly clashes with the 戊子 pillar/);
 
+const referenceVerdictZh = getExpertVerdict({
+  pillars: referencePillars,
+  elements: {
+    percentages: { '木': 36, '火': 14, '土': 43, '金': 0, '水': 7 },
+    dominant: '土',
+    deficient: '金',
+  },
+}, 2026, 'zh');
+assert.equal(referenceVerdictZh.title, '压力终会转化为权柄');
+assert.match(referenceVerdictZh.evidence[0], /时干甲透出七杀/);
+assert.match(referenceVerdictZh.evidence[0], /杀印相生/);
+assert.equal(referenceVerdictZh.timingTitle, '2026 丙午：变动与决断之年');
+assert.match(referenceVerdictZh.timing, /子午冲/);
+
 const publicObservations = PUBLIC_BAZI_TEST_CASES.reduce((total, testCase) => total + testCase.observations.length, 0);
 console.log(`bazi-engine: 8 anchors, ${publicObservations} public boundary observations, and the expert-reading reference case passed (${process.env.TZ || 'system timezone'})`);

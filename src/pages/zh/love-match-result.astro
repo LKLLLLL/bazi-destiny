@@ -1,0 +1,131 @@
+---
+import Base from '../../layouts/Base.astro';
+import PaymentModal from '../../components/PaymentModal.astro';
+---
+
+<Base title="八字合婚结果 | MyBaziDestiny" description="查看两人的八字合婚分数、日柱关系、五行生克与相处建议。" lang="zh" path="/zh/love-match-result.html" altPath="/love-match-result.html" noindex={true}>
+  <div class="lmr-wrap" data-love-result data-lang="zh">
+    <header class="lmr-hero">
+      <a href="/zh/love-match.html" class="lmr-back">← 重新合婚</a>
+      <p class="eyebrow center"><span class="han">合婚结果</span> 两命相参</p>
+      <h1 id="lmrTitle">八字合婚</h1>
+    </header>
+    <div class="lmr-card panel" id="lmrContent">
+      <div class="lmr-loading" id="lmrLoading"><svg viewBox="0 0 100 100" width="60" height="60"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(212,175,106,0.2)" stroke-width="2"/><path d="M50 10a40 40 0 0 1 40 40" fill="none" stroke="#d4af6a" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1.2s" repeatCount="indefinite"/></path></svg><p>正在合参两人的命盘...</p></div>
+      <div id="lmrResults" hidden><div id="lmrScore"></div><div id="lmrTips"></div></div>
+    </div>
+    <div id="lmrExtras"></div>
+  </div>
+  <PaymentModal />
+</Base>
+
+<style>
+  .lmr-wrap { padding: calc(68px + clamp(2rem, 5vh, 3.5rem)) 1.25rem 4rem; }
+  .lmr-hero { text-align: center; margin-bottom: 2rem; padding: 0 1rem; }
+  .lmr-back { display: inline-block; margin-bottom: 1rem; font-size: 0.82rem; color: var(--bone-dim); }
+  .lmr-back:hover { color: var(--gold-bright); }
+  .lmr-hero h1 { font-family: var(--font-display); font-size: 3rem !important; font-weight: 600; line-height: 1.1; }
+  .lmr-card { max-width: 680px; margin: 0 auto; padding: clamp(1.8rem, 4vw, 3rem); }
+  .lmr-loading { text-align: center; padding: 3rem; color: var(--bone-dim); }
+  #lmrResults[hidden] { display: none; }
+  #lmrExtras { max-width: 720px; margin: 0 auto; }
+  .lmr-verdict { margin: 1.4rem 0 1.8rem; padding: 1.3rem; border: 1px solid rgba(212,175,106,.35); border-left: 3px solid var(--gold); border-radius: var(--radius-s); background: linear-gradient(135deg, rgba(212,175,106,.1), rgba(212,175,106,.025)); }
+  .lmr-verdict-kicker { display: block; color: var(--cinnabar-light); font-size: .68rem; font-weight: 700; letter-spacing: .14em; }
+  .lmr-verdict h3 { margin: .4rem 0 .65rem; font-family: var(--font-han); font-size: 1.35rem; }
+  .lmr-verdict-lead { color: var(--bone); font-size: 1rem; line-height: 1.8; }
+  .lmr-verdict-grid { display: grid; gap: .65rem; margin-top: 1rem; }
+  .lmr-verdict-grid p { margin: 0; color: var(--bone-dim); font-size: .86rem; line-height: 1.75; }
+  .lmr-verdict-grid strong { color: var(--gold-bright); }
+  .lmr-verdict-maxim { margin: 1rem 0 0; color: var(--gold-bright); font-family: var(--font-han); }
+  .lmr-dimensions { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; margin: 1.2rem 0; }
+  .lmr-dimension { padding: 1rem .6rem; text-align: center; border: 1px solid var(--line-soft); border-radius: var(--radius-s); background: var(--ink-1); }
+  .lmr-dimension span, .lmr-dimension small { display: block; }
+  .lmr-dimension span { color: var(--bone-faint); font-size: .72rem; }
+  .lmr-dimension strong { display: block; margin: .25rem 0; color: var(--gold-bright); font-size: 1.45rem; }
+  .lmr-dimension small { color: var(--bone-dim); font-size: .72rem; }
+  .lmr-tip { display: flex; gap: .8rem; padding: 1rem; margin-bottom: .7rem; background: var(--ink-1); border-radius: var(--radius-s); color: var(--bone-dim); line-height: 1.75; }
+  .lmr-tip b { color: var(--gold); }
+  .lmr-extras-grid { display: grid; gap: 1.2rem; margin-top: 2rem; }
+  .lmr-wall { padding: 1.8rem 1.5rem; text-align: center; background: var(--ink-1); border: 1px solid var(--line); border-radius: var(--radius); }
+  .lmr-wall h3 { font-size: 1.25rem; }
+  .lmr-wall p { max-width: 48ch; margin: .6rem auto 1.2rem; color: var(--bone-dim); line-height: 1.7; }
+  @media (max-width: 600px) { .lmr-hero h1 { font-size: 2rem !important; } .lmr-dimensions { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  import BaZiEngine from '../../lib/bazi/engine';
+  import Compatibility from '../../lib/bazi/compatibility';
+  import { scoreRing } from '../../lib/charts';
+  import { clearPendingCheckout, readPendingCheckout, TEMPORARY_FREE_ACCESS } from '../../lib/paypal';
+  import { trackEvent } from '../../lib/analytics';
+
+  const p = new URLSearchParams(window.location.search);
+  const cancelled = p.get('payment') === 'cancel' ? readPendingCheckout('synergy') as any : null;
+  const n1 = cancelled?.n1 || p.get('n1') || '你';
+  const n2 = cancelled?.n2 || p.get('n2') || '对方';
+  const d1 = cancelled?.d1 || p.get('d1') || '';
+  const h1 = cancelled?.h1 || p.get('h1') || '';
+  const d2 = cancelled?.d2 || p.get('d2') || '';
+  const h2 = cancelled?.h2 || p.get('h2') || '';
+  if (cancelled) {
+    clearPendingCheckout();
+    const restored = new URLSearchParams({ n1, n2, d1, h1, d2, h2 });
+    window.history.replaceState({}, document.title, `${window.location.pathname}?${restored}`);
+  }
+
+  const esc = (value: unknown) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] as string));
+  const tierLabel = (score: number) => score >= 85 ? '天作之合' : score >= 75 ? '高度契合' : score >= 65 ? '良好姻缘' : score >= 55 ? '平衡关系' : score >= 45 ? '成长型关系' : '需要用心经营';
+  const elementNature: Record<string, string> = { 木: '生长与规划', 火: '热情与行动', 土: '稳定与承诺', 金: '原则与判断', 水: '感受与变通' };
+  const generates: Record<string, string> = { 木: '火', 火: '土', 土: '金', 金: '水', 水: '木' };
+  const controls: Record<string, string> = { 木: '土', 土: '水', 水: '火', 火: '金', 金: '木' };
+
+  document.getElementById('lmrTitle')!.textContent = `${n1} 与 ${n2}`;
+  document.title = `${n1} 与 ${n2}的八字合婚结果 | MyBaziDestiny`;
+  if (!d1 || !h1 || !d2 || !h2) {
+    document.getElementById('lmrLoading')!.innerHTML = '<div style="text-align:center;padding:3rem"><h2>缺少合婚信息</h2><p style="color:var(--bone-dim)">请返回填写双方出生日期与时辰。</p><a href="/zh/love-match.html" class="btn btn-love btn-lg">重新填写</a></div>';
+  } else setTimeout(compute, 500);
+
+  function elementReading(e1: string, e2: string) {
+    if (e1 === e2) return { title: '同气相求，理解深但也容易相持', basis: `双方日主同属${e1}，在${elementNature[e1]}上天然同频，许多想法不言自明；但遇到分歧时，两人也容易同时坚持自己的方式。`, action: '保留共同目标，同时明确各自负责的领域，不要在同一件小事上反复争夺主导权。' };
+    if (generates[e1] === e2) return { title: `${e1}生${e2}，一方主动成就另一方`, basis: `${n1}的${e1}气自然生助${n2}的${e2}气，关系容易形成付出者与承接者。只要回应明确，这种流通能让感情越走越稳。`, action: `${n2}要把感谢说出来，${n1}也要避免把持续付出当成理所当然的责任。` };
+    if (generates[e2] === e1) return { title: `${e2}生${e1}，对方是关系中的助力`, basis: `${n2}的${e2}气自然生助${n1}的${e1}气，对方常在情绪、行动或现实资源上推你向前。`, action: `${n1}要主动回应支持，${n2}则要说清自己的需要，避免长期单向消耗。` };
+    if (controls[e1] === e2 || controls[e2] === e1) return { title: '五行相制，吸引与摩擦同时存在', basis: `双方日主形成${e1}${e2}相制，彼此容易被对方的不同吸引，也容易在节奏、标准或表达方式上互不相让。`, action: '矛盾出现时先分清事实与情绪，约定暂停时间和复盘方式；这段关系最怕靠猜，最需要规则。' };
+    return { title: '五行不冲，各有所长', basis: `${e1}与${e2}没有直接冲克，双方在${elementNature[e1]}与${elementNature[e2]}上各有优势，关系能通过分工形成互补。`, action: '把差异变成明确分工，重要决定先听完对方的判断逻辑，再谈谁来主导。' };
+  }
+
+  function compute() {
+    try {
+      const a = d1.split('-').map(Number), b = d2.split('-').map(Number);
+      const data1 = BaZiEngine.calculateFourPillars(a[0], a[1], a[2], parseInt(h1, 10));
+      const data2 = BaZiEngine.calculateFourPillars(b[0], b[1], b[2], parseInt(h2, 10));
+      const r = Compatibility.analyzeCompatibility(data1, data2);
+      const e1 = data1.pillars.day.element, e2 = data2.pillars.day.element;
+      const relation = elementReading(e1, e2);
+      document.getElementById('lmrLoading')!.style.display = 'none';
+      document.getElementById('lmrResults')!.hidden = false;
+      document.getElementById('lmrScore')!.innerHTML = `<div style="text-align:center;padding:.5rem 0 1.4rem;border-bottom:1px solid var(--line-soft)">${scoreRing(r.overall, r.tier.color, 180, 'zh')}<div style="font-size:clamp(1.5rem,3vw,1.8rem);font-weight:600;margin-top:.8rem">${esc(n1)} 与 ${esc(n2)}</div><div style="font-size:1.3rem;color:${r.tier.color}">${tierLabel(r.overall)}</div><p style="margin-top:.45rem;color:var(--bone-dim)">${data1.pillars.day.stem}${data1.pillars.day.branch}日柱 · ${data2.pillars.day.stem}${data2.pillars.day.branch}日柱</p></div>`;
+      const verdict = r.overall >= 75 ? '两人的命局有足够的天然助力，适合把感情落实为共同生活、长期计划或共同事业。' : r.overall >= 60 ? '这段关系有真实潜力，关键不是有没有缘，而是能否把正确的相处方式稳定下来。' : '这是一段促人成长的关系，吸引力不弱，但必须靠成熟、边界与反复验证的行动来维持。';
+      const tips = r.overall >= 75 ? ['把共同优势变成固定习惯，例如共同理财、运动或每周一次深度交流。', '关系顺的时候也要讨论长期目标，越早对齐现实安排，缘分越能落地。'] : r.overall >= 60 ? ['矛盾刚出现就说清，不要让可处理的问题变成情绪账。', '给双方明确角色与独立空间，含糊的责任最容易消耗感情。'] : ['放慢关系节奏，以重复行为判断可靠度，不要只凭一时感觉。', '把底线、金钱、时间与未来计划说清楚，能守约比会表达更重要。'];
+      document.getElementById('lmrTips')!.innerHTML = `<article class="lmr-verdict"><span class="lmr-verdict-kicker">传统合婚主断</span><h3>${relation.title}</h3><p class="lmr-verdict-lead">${verdict}</p><div class="lmr-verdict-grid"><p><strong>日柱依据：</strong>${data1.pillars.day.stem}${data1.pillars.day.branch}与${data2.pillars.day.stem}${data2.pillars.day.branch}相参，日柱契合度为 ${r.dayPillar.score} 分。</p><p><strong>五行依据：</strong>${relation.basis}</p><p><strong>现在要做：</strong>${relation.action}</p></div><p class="lmr-verdict-maxim">断语：缘分决定相遇，章法决定能走多远。</p></article><div class="lmr-dimensions"><div class="lmr-dimension"><span>日柱关系</span><strong>${r.dayPillar.score}</strong><small>亲密模式</small></div><div class="lmr-dimension"><span>日主阴阳</span><strong>${r.polarity.score}</strong><small>表达节奏</small></div><div class="lmr-dimension"><span>五行生克</span><strong>${r.element.score}</strong><small>${e1} × ${e2}</small></div></div><h3 style="margin:1.5rem 0 1rem;text-align:center">相处建议</h3>${tips.map((tip, i) => `<div class="lmr-tip"><b>${i + 1}</b><span>${tip}</span></div>`).join('')}`;
+      renderExtras(r, e1, e2);
+      trackEvent('generate_love_match', { tool_name: 'love_match_zh', compatibility_tier: tierLabel(r.overall) });
+    } catch {
+      document.getElementById('lmrLoading')!.innerHTML = '<p style="color:var(--cinnabar);text-align:center;padding:2rem">计算失败，请返回重新填写。</p>';
+    }
+  }
+
+  function renderExtras(r: any, e1: string, e2: string) {
+    const extras = document.getElementById('lmrExtras');
+    if (!extras) return;
+    extras.innerHTML = `<div class="lmr-extras-grid"><div class="lmr-wall"><h3>全球缘分榜</h3><p>当前合婚得分为 <strong>${r.overall}/100</strong>，可以匿名加入榜单，看看这段关系在所有配对中的位置。</p><button class="btn btn-gold" id="lmrBoardBtn">加入缘分榜</button></div><div class="lmr-wall"><h3>个性化相处指南</h3><p>依据${e1} × ${e2}的五行关系，生成沟通方式、共同活动、家居方位与冲突化解建议。</p><button class="btn btn-gold" id="lmrUpgradeBtn">${TEMPORARY_FREE_ACCESS ? '限时免费查看' : '解锁指南 — $4.90'}</button></div></div>`;
+    document.getElementById('lmrBoardBtn')?.addEventListener('click', async (event) => {
+      const button = event.currentTarget as HTMLButtonElement;
+      const entry = { name1: n1, name2: n2, score: r.overall, tier: tierLabel(r.overall), elem1: e1, elem2: e2 };
+      try { await fetch('/api/leaderboard', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(entry) }); } catch {}
+      button.textContent = '已加入缘分榜'; button.disabled = true;
+    });
+    document.getElementById('lmrUpgradeBtn')?.addEventListener('click', () => {
+      (window as any).__baziUpgrade?.('synergy', { n1, n2, e1: ({ 木: 'Wood', 火: 'Fire', 土: 'Earth', 金: 'Metal', 水: 'Water' } as Record<string, string>)[e1], e2: ({ 木: 'Wood', 火: 'Fire', 土: 'Earth', 金: 'Metal', 水: 'Water' } as Record<string, string>)[e2], d1, h1, d2, h2 });
+    });
+  }
+</script>

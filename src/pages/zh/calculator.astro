@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import StepCalculator from '../../components/StepCalculator.astro';
+import PaymentModal from '../../components/PaymentModal.astro';
+import ToolSeoContent from '../../components/ToolSeoContent.astro';
+import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../../lib/brand';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org', '@type': 'WebApplication',
+    '@id': `${SITE_URL}/zh/calculator.html#application`, name: `${BRAND_NAME} 免费八字排盘`,
+    url: `${SITE_URL}/zh/calculator.html`, description: '输入出生日期、时辰与城市，免费生成四柱八字、日主、五行强弱、传统格局与流年命断。',
+    applicationCategory: 'LifestyleApplication', operatingSystem: 'All', provider: { '@id': ORGANIZATION_ID }, isPartOf: { '@id': WEBSITE_ID },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
+      { '@type': 'Question', name: '八字排盘需要哪些信息？', acceptedAnswer: { '@type': 'Answer', text: '至少需要出生日期。出生时辰用于推算时柱，出生城市可用于可选的真太阳时校正。' } },
+      { '@type': 'Question', name: '什么是日主？', acceptedAnswer: { '@type': 'Answer', text: '日柱天干称为日主，是传统八字分析命局、十神与五行关系的中心。' } },
+      { '@type': 'Question', name: '不知道出生时辰还能排盘吗？', acceptedAnswer: { '@type': 'Answer', text: '可以生成三柱命盘，但时柱相关的晚运、潜能与部分细节无法确定。' } },
+    ],
+  },
+];
+---
+
+<Base
+  title="免费八字排盘：四柱、日主、五行与流年命断 | MyBaziDestiny"
+  description="免费在线八字排盘，输入出生日期和时辰，查看四柱、日主、五行强弱、传统命局格局、流年冲合与行动建议。"
+  keywords="八字排盘,免费八字,四柱排盘,日主,五行,流年,命理"
+  lang="zh"
+  path="/zh/calculator.html"
+  altPath="/calculator.html"
+  jsonLd={jsonLd}
+>
+  <header class="calc-hero wrap-narrow">
+    <p class="eyebrow"><span class="han">八字</span> 免费四柱命盘</p>
+    <h1>免费八字排盘与传统命理解读</h1>
+    <p>依据出生年月日时排出四柱，判断日主、五行强弱、命局格局与当前流年，一次看清命盘主线。</p>
+  </header>
+  <div class="calc-page-wrap"><StepCalculator lang="zh" /></div>
+  <PaymentModal />
+
+  <ToolSeoContent eyebrow="排盘原理" title="从出生信息推演四柱八字" summary="八字由年、月、日、时四组天干地支构成。排盘先完成历法换算，再以日主为中心观察十神、五行生克、格局与流年。" headingId="zh-bazi-calculator-explained">
+    <div class="tool-seo-grid">
+      <section><h3>四柱八字</h3><p>年柱、月柱、日柱和时柱各由一个天干与一个地支组成，合计八个字，因此称为八字。</p></section>
+      <section><h3>日主与十神</h3><p>日柱天干就是日主。其他天干与日主之间的生克、阴阳关系，会形成比肩、食神、财星、官杀与印星等十神。</p></section>
+      <section><h3>五行强弱</h3><p>木、火、土、金、水的分布显示命局气势。强项需要正确引导，偏弱之处则可通过环境、习惯与选择主动补足。</p></section>
+      <section><h3>真太阳时</h3><p>民用钟表使用统一时区，真太阳时会按出生地经度估算当地太阳时，用于更精细地确认时柱。</p></section>
+    </div>
+    <section class="tool-faq" aria-labelledby="zh-calculator-faq"><h3 id="zh-calculator-faq">八字排盘常见问题</h3><details><summary>不知道出生时辰怎么办？</summary><p>可以选择“不知道出生时辰”，系统会生成三柱命盘，并明确标出时柱未知。</p></details><details><summary>为什么出生城市会影响排盘？</summary><p>选择真太阳时校正后，出生城市的经度会影响当地太阳时，从而可能改变时柱。</p></details></section>
+  </ToolSeoContent>
+</Base>
+
+<style>
+  .calc-hero { padding-top: calc(68px + clamp(2.5rem, 6vh, 4.5rem)); text-align: center; }
+  .calc-hero .eyebrow { justify-content: center; }
+  .calc-hero h1 { margin-top: 0.9rem; font-size: clamp(2.35rem, 5vw, 3.8rem); }
+  .calc-hero > p:last-child { max-width: 720px; margin: 1rem auto 0; color: var(--bone-dim); line-height: 1.8; }
+  .calc-page-wrap { padding-top: clamp(1.8rem, 4vh, 3rem); }
+</style>

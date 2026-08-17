@@ -2,8 +2,10 @@
 interface Props {
   /** compact = teaser on home; full = standalone page */
   variant?: 'full';
+  lang?: 'en' | 'zh';
 }
-const { variant = 'full' } = Astro.props;
+const { variant = 'full', lang = 'en' } = Astro.props;
+const isZh = lang === 'zh';
 
 const hourOptions = [
   [23, '23:00 – 00:59 · 子时 Rat'], [1, '01:00 – 02:59 · 丑时 Ox'], [3, '03:00 – 04:59 · 寅时 Tiger'],
@@ -13,24 +15,24 @@ const hourOptions = [
 ] as const;
 ---
 
-<div class="lovematch panel" data-lovematch data-variant={variant}>
+<div class="lovematch panel" data-lovematch data-variant={variant} data-lang={lang}>
   <form class="lm-form" novalidate>
     <div class="lm-pair">
       <fieldset class="lm-person">
-        <legend><span class="lm-dot p1"></span> Person One</legend>
+        <legend><span class="lm-dot p1"></span> {isZh ? '你' : 'Person One'}</legend>
         <div class="field">
-          <label>Name</label>
-          <input class="input" type="text" name="name1" placeholder="First name" maxlength="30" />
+          <label>{isZh ? '姓名' : 'Name'}</label>
+          <input class="input" type="text" name="name1" placeholder={isZh ? '你的名字（可不填）' : 'First name'} maxlength="30" />
         </div>
         <div class="field">
-          <label>Birth Date</label>
+          <label>{isZh ? '出生日期' : 'Birth Date'}</label>
           <input class="input" type="date" name="date1" min="1900-01-01" max="2030-12-31" />
         </div>
         <div class="field">
-          <label>Birth Hour</label>
+          <label>{isZh ? '出生时辰' : 'Birth Hour'}</label>
           <select class="select" name="hour1">
-            <option value="">Select hour…</option>
-            {hourOptions.map(([v, label]) => <option value={v}>{label}</option>)}
+            <option value="">{isZh ? '选择时辰…' : 'Select hour…'}</option>
+            {hourOptions.map(([v, label]) => <option value={v}>{isZh ? label.replace(/\s[A-Za-z]+$/, '') : label}</option>)}
           </select>
         </div>
       </fieldset>
@@ -40,30 +42,30 @@ const hourOptions = [
       </div>
 
       <fieldset class="lm-person">
-        <legend><span class="lm-dot p2"></span> Person Two</legend>
+        <legend><span class="lm-dot p2"></span> {isZh ? '对方' : 'Person Two'}</legend>
         <div class="field">
-          <label>Name</label>
-          <input class="input" type="text" name="name2" placeholder="First name" maxlength="30" />
+          <label>{isZh ? '姓名' : 'Name'}</label>
+          <input class="input" type="text" name="name2" placeholder={isZh ? '对方名字（可不填）' : 'First name'} maxlength="30" />
         </div>
         <div class="field">
-          <label>Birth Date</label>
+          <label>{isZh ? '出生日期' : 'Birth Date'}</label>
           <input class="input" type="date" name="date2" min="1900-01-01" max="2030-12-31" />
         </div>
         <div class="field">
-          <label>Birth Hour</label>
+          <label>{isZh ? '出生时辰' : 'Birth Hour'}</label>
           <select class="select" name="hour2">
-            <option value="">Select hour…</option>
-            {hourOptions.map(([v, label]) => <option value={v}>{label}</option>)}
+            <option value="">{isZh ? '选择时辰…' : 'Select hour…'}</option>
+            {hourOptions.map(([v, label]) => <option value={v}>{isZh ? label.replace(/\s[A-Za-z]+$/, '') : label}</option>)}
           </select>
         </div>
       </fieldset>
     </div>
 
     <button type="submit" class="btn btn-love btn-lg btn-full lm-submit">
-      Test Our Compatibility
+      {isZh ? '查看两人的合婚结果' : 'Test Our Compatibility'}
       <span class="han" aria-hidden="true">合八字</span>
     </button>
-    <p class="lm-note">No account needed · Results in seconds · Nothing is stored</p>
+    <p class="lm-note">{isZh ? '无需注册 · 即时生成 · 出生信息不会保存' : 'No account needed · Results in seconds · Nothing is stored'}</p>
   </form>
 
   <div class="lm-results" hidden></div>
@@ -235,6 +237,7 @@ const hourOptions = [
   import { showToast } from '../lib/toast';
 
   document.querySelectorAll<HTMLElement>('[data-lovematch]').forEach((root) => {
+    const isZh = root.dataset.lang === 'zh';
     const form = root.querySelector<HTMLFormElement>('.lm-form');
     const results = root.querySelector<HTMLElement>('.lm-results');
     if (!form || !results) return;
@@ -272,14 +275,14 @@ const hourOptions = [
       el.addEventListener('blur', () => {
         const v = el.value;
         if (el.tagName === 'SELECT' && v === '') {
-          showErr(el, 'Birth hour is required');
+          showErr(el, isZh ? '请选择出生时辰' : 'Birth hour is required');
         } else if (el.type === 'date' && !v) {
-          showErr(el, 'Birth date is required');
+          showErr(el, isZh ? '请填写出生日期' : 'Birth date is required');
         } else {
           if (el.type === 'date' && v) {
             const d = new Date(v + 'T00:00:00');
             if (d < new Date('1900-01-01') || d > new Date('2030-12-31')) {
-              showErr(el, 'Date must be 1900–2030');
+              showErr(el, isZh ? '日期须在 1900 至 2030 年之间' : 'Date must be 1900–2030');
             } else {
               markValid(el);
             }
@@ -294,26 +297,26 @@ const hourOptions = [
       e.preventDefault();
       clearErrors();
       const val = (n: string) => (form.elements.namedItem(n) as HTMLInputElement)?.value ?? '';
-      const name1 = val('name1').trim() || 'You';
-      const name2 = val('name2').trim() || 'Partner';
+      const name1 = val('name1').trim() || (isZh ? '你' : 'You');
+      const name2 = val('name2').trim() || (isZh ? '对方' : 'Partner');
       const date1 = val('date1'), date2 = val('date2');
       const hour1 = val('hour1'), hour2 = val('hour2');
 
       let hasErr = false;
       if (!date1) {
-        showErr(form.elements.namedItem('date1') as HTMLInputElement, 'Birth date is required');
+        showErr(form.elements.namedItem('date1') as HTMLInputElement, isZh ? '请填写出生日期' : 'Birth date is required');
         hasErr = true;
       }
       if (hour1 === '') {
-        showErr(form.elements.namedItem('hour1') as HTMLSelectElement, 'Birth hour is required');
+        showErr(form.elements.namedItem('hour1') as HTMLSelectElement, isZh ? '请选择出生时辰' : 'Birth hour is required');
         hasErr = true;
       }
       if (!date2) {
-        showErr(form.elements.namedItem('date2') as HTMLInputElement, 'Birth date is required');
+        showErr(form.elements.namedItem('date2') as HTMLInputElement, isZh ? '请填写出生日期' : 'Birth date is required');
         hasErr = true;
       }
       if (hour2 === '') {
-        showErr(form.elements.namedItem('hour2') as HTMLSelectElement, 'Birth hour is required');
+        showErr(form.elements.namedItem('hour2') as HTMLSelectElement, isZh ? '请选择出生时辰' : 'Birth hour is required');
         hasErr = true;
       }
       if (hasErr) {
@@ -325,7 +328,7 @@ const hourOptions = [
       var params = new URLSearchParams();
       params.set('n1', name1); params.set('d1', date1); params.set('h1', hour1);
       params.set('n2', name2); params.set('d2', date2); params.set('h2', hour2);
-      window.location.href = '/love-match-result.html?' + params.toString();
+      window.location.href = (isZh ? '/zh/love-match-result.html?' : '/love-match-result.html?') + params.toString();
     });
   });
 </script>
