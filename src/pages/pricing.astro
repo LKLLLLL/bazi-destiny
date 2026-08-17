@@ -37,6 +37,17 @@ const products = [
     image: `/products/${DIGITAL_PRODUCTS.synergyBoostGuide.imageSlug}-1x1.png`,
     imageAlt: 'MyBaziDestiny Synergy Boost Guide digital guide cover',
   },
+  {
+    id: 'personalized-naming-verdict',
+    name: 'Personalized Naming Verdict',
+    price: '1.99',
+    displayPrice: '$1.99 USD',
+    description: 'A one-time verdict selecting the strongest of three free Chinese names, with element fit, cultural-source reasoning, pronunciation balance, and modern usage guidance.',
+    href: '/chinese-name.html',
+    cta: 'Generate three free names',
+    image: `/products/${DIGITAL_PRODUCTS.namingVerdict.imageSlug}-1x1.png`,
+    imageAlt: 'MyBaziDestiny Personalized Naming Verdict digital guide cover',
+  },
 ];
 
 const jsonLd = [
@@ -59,12 +70,13 @@ const jsonLd = [
   },
   productJsonLd('lifeBlueprint'),
   productJsonLd('synergyBoostGuide'),
+  productJsonLd('namingVerdict'),
 ];
 ---
 
 <Base
-  title="MyBaziDestiny Pricing: Free Chart, $9.90 Blueprint"
-  description="Official MyBaziDestiny pricing: Basic Reading is free, Life Blueprint is $9.90 USD once, and Synergy Boost Guide is $4.90 USD once. No subscription."
+  title="MyBaziDestiny Pricing: Free Tools and One-Time Guides"
+  description="Official MyBaziDestiny pricing: free BaZi and name tools, $1.99 Naming Verdict, $4.90 Synergy Guide, and $9.90 Life Blueprint. No subscription."
   path="/pricing.html"
   jsonLd={jsonLd}
 >

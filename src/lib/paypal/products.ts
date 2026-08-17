@@ -9,6 +9,11 @@ export const PAYPAL_PRODUCTS = {
     price: '4.90',
     itemId: 'BAZI-SYNERGY',
   },
+  naming: {
+    name: 'Personalized Chinese Naming Verdict',
+    price: '1.99',
+    itemId: 'BAZI-NAMING',
+  },
 } as const;
 
 // Keep paid product definitions intact so checkout can be restored with one switch.

@@ -1,8 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import ChineseNameGenerator from '../components/ChineseNameGenerator.astro';
+import PaymentModal from '../components/PaymentModal.astro';
 import ToolSeoContent from '../components/ToolSeoContent.astro';
 import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
+import { productJsonLd } from '../lib/product-schema';
 
 const jsonLd = [
   {
@@ -18,6 +20,7 @@ const jsonLd = [
     isPartOf: { '@id': WEBSITE_ID },
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
   },
+  productJsonLd('namingVerdict'),
   {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -69,6 +72,7 @@ const jsonLd = [
   <div class="name-page wrap">
     <ChineseNameGenerator />
   </div>
+  <PaymentModal />
 
   <ToolSeoContent
     eyebrow="Meaning before translation"

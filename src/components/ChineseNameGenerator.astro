@@ -47,7 +47,7 @@
     <button class="btn btn-gold btn-lg generate-btn" type="submit">
       Find My Chinese Name <span class="han">取名</span>
     </button>
-    <p class="privacy-note">Your details stay in your browser and are not sent to a server.</p>
+    <p class="privacy-note">Three names are free · Best-name verdict $1.99 one-time · Your details stay in your browser</p>
   </form>
 
   <div class="name-results" id="nameResults" hidden aria-live="polite">
@@ -56,8 +56,8 @@
       <h2 id="resultGreeting">Your Chinese given names</h2>
       <p id="elementSummary"></p>
     </div>
-    <div class="name-verdict" id="nameVerdict"></div>
     <div class="name-cards" id="nameCards"></div>
+    <div class="name-verdict" id="nameVerdict"></div>
     <div class="results-actions">
       <button class="btn btn-ghost" type="button" id="startOver">Adjust my choices</button>
       <a class="btn btn-gold" id="exploreBazi" href="/calculator.html?from=chinese-name">Explore My Full BaZi</a>
@@ -79,6 +79,14 @@
 <script>
   import { generateChineseNames, type NameGender } from '../lib/chinese-names';
   import { trackEvent } from '../lib/analytics';
+  import { clearPendingCheckout, getPaymentStatus, isUnlocked, readPendingCheckout } from '../lib/paypal';
+
+  interface NameFormState {
+    birthDate: string;
+    time: string;
+    englishName: string;
+    gender: NameGender;
+  }
 
   const form = document.getElementById('nameForm') as HTMLFormElement;
   const results = document.getElementById('nameResults') as HTMLElement;
@@ -92,6 +100,16 @@
   const unknownBirthTime = document.getElementById('unknownBirthTime') as HTMLInputElement;
   const birthDateInput = document.getElementById('birthDate') as HTMLInputElement;
   const prefillNote = document.getElementById('prefillNote') as HTMLElement;
+  const paymentStatusReady = getPaymentStatus();
+  let currentCheckoutState: NameFormState | null = null;
+
+  const elementPurpose: Record<string, string> = {
+    Wood: 'growth, direction, and the courage to begin',
+    Fire: 'visibility, warmth, and expressive confidence',
+    Earth: 'stability, trust, and the power to sustain',
+    Metal: 'clarity, standards, and refined judgment',
+    Water: 'wisdom, adaptability, and long-range vision',
+  };
 
   const escapeHtml = (value: string) => value.replace(/[&<>'"]/g, (character) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
@@ -116,58 +134,67 @@
     }
   } catch {}
 
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
+  function readFormState(): NameFormState | null {
     const values = new FormData(form);
     const birthDate = String(values.get('birthDate') ?? '');
     if (!birthDate) {
       error.textContent = 'Please enter your date of birth.';
       error.hidden = false;
-      return;
+      return null;
     }
-
     error.hidden = true;
-    const time = unknownBirthTime.checked ? '' : String(values.get('birthTime') ?? '');
-    const hour = time ? Number(time.split(':')[0]) + Number(time.split(':')[1]) / 60 : undefined;
-    const englishName = String(values.get('englishName') ?? '').trim();
-    const generated = generateChineseNames({
+    return {
       birthDate,
-      birthHour: hour,
-      englishName,
+      time: unknownBirthTime.checked ? '' : String(values.get('birthTime') ?? ''),
+      englishName: String(values.get('englishName') ?? '').trim(),
       gender: String(values.get('gender')) as NameGender,
-    });
-
-    try {
-      const rawHour = time ? Number(time.split(':')[0]) : null;
-      const pillarHour = rawHour === null ? 'unknown' : rawHour === 0 ? '23' : String(Math.floor((rawHour + 1) / 2) * 2 - 1);
-      localStorage.setItem('bazi_stepcalc_data', JSON.stringify({
-        date: birthDate,
-        hour: pillarHour,
-        cityName: '',
-        cityLon: 0,
-        cityLat: 0,
-        cityTimezone: 8,
-        useSolarTime: false,
-        gender: '',
-      }));
-    } catch {}
-
-    greeting.textContent = englishName ? `${englishName}, meet your Chinese names` : 'Your Chinese given names';
-    const basis = time ? 'Your birth chart, read alongside your birth season,' : 'Reading your birth date in its seasonal context';
-    const elementPurpose: Record<string, string> = {
-      Wood: 'growth, direction, and the courage to begin',
-      Fire: 'visibility, warmth, and expressive confidence',
-      Earth: 'stability, trust, and the power to sustain',
-      Metal: 'clarity, standards, and refined judgment',
-      Water: 'wisdom, adaptability, and long-range vision',
     };
+  }
+
+  function applyFormState(state: NameFormState) {
+    birthDateInput.value = state.birthDate;
+    birthTimeInput.value = state.time;
+    unknownBirthTime.checked = !state.time;
+    birthTimeInput.disabled = !state.time;
+    const nameInput = document.getElementById('englishName') as HTMLInputElement;
+    nameInput.value = state.englishName;
+    form.querySelector<HTMLInputElement>(`input[name="gender"][value="${state.gender}"]`)?.click();
+  }
+
+  function lockedVerdictHtml() {
+    return `
+      <div class="name-verdict-lock">
+        <div class="name-verdict-lock-main">
+          <span class="name-verdict-lock-seal han" aria-hidden="true">择</span>
+          <div>
+            <span class="name-verdict-kicker">命名结论 · Personalized naming verdict</span>
+            <h3>Which of these three names is your strongest overall choice?</h3>
+            <p>We have compared all three across your BaZi balance, cultural source, pronunciation, meaning, and modern Chinese usage. Unlock the final selection and the reasoning behind it.</p>
+          </div>
+        </div>
+        <div class="name-verdict-lock-signals" aria-label="Verdict criteria">
+          <span><strong>01</strong> Element fit</span>
+          <span><strong>02</strong> Meaning &amp; sound</span>
+          <span><strong>03</strong> Modern usage</span>
+        </div>
+        <div class="name-verdict-lock-action">
+          <button class="btn btn-gold btn-lg" type="button" id="unlockNamingBtn">Unlock My Best Name — $1.99</button>
+          <small>One-time PayPal payment · No subscription</small>
+        </div>
+      </div>`;
+  }
+
+  function unlockedVerdictHtml(generated: ReturnType<typeof generateChineseNames>) {
     const primary = generated.names.find((name) => name.element === generated.deficientElement) || generated.names[0];
     const primaryImpression = primary.impression.replace(/\.$/, '');
-    elementSummary.textContent = `${basis} shows a clear naming need: strengthen ${generated.deficientElementEnglish} (${generated.deficientElement}) through imagery of ${elementPurpose[generated.deficientElementEnglish]}.`;
-    nameVerdict.innerHTML = `
+    const comparison = generated.names.map((name) => {
+      const isPrimary = name.hanzi === primary.hanzi;
+      return `<div${isPrimary ? ' class="is-winner"' : ''}><span>${isPrimary ? 'Best overall' : name.inspirationLabel}</span><strong class="han">${name.hanzi}</strong><small>${isPrimary ? `Strongest ${generated.deficientElementEnglish} balance with the most complete naming fit.` : `${name.element} imagery with a more specific cultural direction.`}</small></div>`;
+    }).join('');
+    return `
       <div class="name-verdict-topline">
         <span class="name-verdict-kicker">命名结论 · Naming verdict</span>
-        <span class="name-verdict-status">Primary recommendation</span>
+        <span class="name-verdict-status">Unlocked · Primary recommendation</span>
       </div>
       <div class="name-verdict-main">
         <div class="name-verdict-identity" aria-label="Recommended name: ${escapeHtml(primary.hanzi)}, ${escapeHtml(primary.pinyin)}">
@@ -196,16 +223,51 @@
           <dd><strong>${primaryImpression}</strong><small>How the name is likely to feel in modern Chinese use.</small></dd>
         </div>
       </dl>
+      <div class="name-verdict-comparison">
+        <h4>How the three names compare</h4>
+        <div>${comparison}</div>
+      </div>
       <div class="name-verdict-decision">
         <span class="han" aria-hidden="true">定</span>
         <p><strong>Final choice</strong> Choose <span class="han">${primary.hanzi}</span> when you want the most complete recommendation. The other two names remain strong alternatives for a more seasonal or botanical identity.</p>
       </div>`;
+  }
+
+  async function renderNames(state: NameFormState, scroll = true) {
+    currentCheckoutState = state;
+    const { birthDate, time, englishName, gender } = state;
+    const hour = time ? Number(time.split(':')[0]) + Number(time.split(':')[1]) / 60 : undefined;
+    const generated = generateChineseNames({
+      birthDate,
+      birthHour: hour,
+      englishName,
+      gender,
+    });
+
+    try {
+      const rawHour = time ? Number(time.split(':')[0]) : null;
+      const pillarHour = rawHour === null ? 'unknown' : rawHour === 0 ? '23' : String(Math.floor((rawHour + 1) / 2) * 2 - 1);
+      localStorage.setItem('bazi_stepcalc_data', JSON.stringify({
+        date: birthDate,
+        hour: pillarHour,
+        cityName: '',
+        cityLon: 0,
+        cityLat: 0,
+        cityTimezone: 8,
+        useSolarTime: false,
+        gender: '',
+      }));
+    } catch {}
+
+    greeting.textContent = englishName ? `${englishName}, meet your Chinese names` : 'Your Chinese given names';
+    const basis = time ? 'Your birth chart, read alongside your birth season,' : 'Reading your birth date in its seasonal context';
+    elementSummary.textContent = `${basis} shows a clear naming need: strengthen ${generated.deficientElementEnglish} (${generated.deficientElement}) through imagery of ${elementPurpose[generated.deficientElementEnglish]}.`;
     cards.innerHTML = generated.names.map((name) => `
-      <article class="name-card${name.hanzi === primary.hanzi ? ' is-primary' : ''}">
+      <article class="name-card">
         <div class="name-plaque">
           <div class="plaque-corner plaque-corner-a" aria-hidden="true"></div>
           <div class="plaque-corner plaque-corner-b" aria-hidden="true"></div>
-          <div class="name-rank">${name.hanzi === primary.hanzi ? 'Primary recommendation' : name.inspirationLabel}</div>
+          <div class="name-rank">${name.inspirationLabel}</div>
           <div class="name-identity">
             <div class="name-hanzi han">${name.hanzi}</div>
             <div class="name-romanization"><h3>${name.pinyin}</h3><p>${name.pronunciation}</p></div>
@@ -230,13 +292,34 @@
       </article>
     `).join('');
 
+    nameVerdict.classList.add('is-locked');
+    nameVerdict.innerHTML = lockedVerdictHtml();
+    results.hidden = false;
+    if (scroll) results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    await paymentStatusReady;
+    if (isUnlocked('naming')) {
+      nameVerdict.classList.remove('is-locked');
+      nameVerdict.innerHTML = unlockedVerdictHtml(generated);
+    }
+
     trackEvent('generate_chinese_name', {
       tool_name: 'chinese_name',
       result_count: generated.names.length,
       birth_time_provided: Boolean(time),
     });
-    results.hidden = false;
-    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const state = readFormState();
+    if (state) await renderNames(state);
+  });
+
+  nameVerdict.addEventListener('click', (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>('#unlockNamingBtn');
+    if (!button || !currentCheckoutState) return;
+    (window as any).__baziUpgrade?.('naming', currentCheckoutState);
   });
 
   cards.addEventListener('click', async (event) => {
@@ -251,6 +334,26 @@
     results.hidden = true;
     form.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
+
+  void (async () => {
+    const params = new URLSearchParams(window.location.search);
+    const completed = params.get('checkout') === 'complete';
+    const cancelled = params.get('payment') === 'cancel';
+    if (!completed && !cancelled) return;
+    const pending = readPendingCheckout('naming') as Partial<NameFormState> | null;
+    if (!pending?.birthDate || !['neutral', 'feminine', 'masculine'].includes(String(pending.gender))) return;
+    const state: NameFormState = {
+      birthDate: String(pending.birthDate),
+      time: typeof pending.time === 'string' ? pending.time : '',
+      englishName: typeof pending.englishName === 'string' ? pending.englishName : '',
+      gender: pending.gender as NameGender,
+    };
+    applyFormState(state);
+    if (completed) await getPaymentStatus(true);
+    await renderNames(state, false);
+    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (completed && isUnlocked('naming')) clearPendingCheckout();
+  })();
 </script>
 
 <style>
@@ -293,8 +396,20 @@
   .result-kicker { color: var(--gold); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; }
   .results-heading h2 { margin-top: 0.35rem; font-size: clamp(1.8rem, 4vw, 2.7rem); }
   .results-heading > p:last-child { margin-top: 0.7rem; color: var(--bone-dim); font-size: 0.9rem; }
-  .name-verdict { position: relative; max-width: 54rem; margin: 0 auto 1.7rem; padding: 1.35rem 0 0; border-top: 1px solid rgba(212,175,106,.45); border-bottom: 1px solid rgba(212,175,106,.32); background: linear-gradient(180deg, rgba(212,175,106,.07), transparent 70%); overflow: hidden; }
+  .name-verdict { position: relative; max-width: 54rem; margin: 1.7rem auto 0; padding: 1.35rem 0 0; border-top: 1px solid rgba(212,175,106,.45); border-bottom: 1px solid rgba(212,175,106,.32); background: linear-gradient(180deg, rgba(212,175,106,.07), transparent 70%); overflow: hidden; }
   .name-verdict::before { content: ''; position: absolute; top: 0; left: 0; width: 7rem; height: 2px; background: var(--gold); }
+  .name-verdict.is-locked { padding-top: 0; border: 1px solid rgba(212,175,106,.32); background: linear-gradient(145deg, rgba(212,175,106,.095), rgba(212,175,106,.02)); }
+  .name-verdict.is-locked::before { width: 35%; }
+  :global(.name-verdict-lock-main) { display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: center; padding: clamp(1.4rem, 4vw, 2.1rem); }
+  :global(.name-verdict-lock-seal) { display: grid; width: 4.4rem; height: 4.4rem; place-items: center; border: 1px solid var(--cinnabar); color: var(--cinnabar-light); font-size: 1.65rem; transform: rotate(-3deg); box-shadow: inset 0 0 0 5px rgba(178,59,48,.06); }
+  :global(.name-verdict-lock-main h3) { max-width: 35rem; margin: 0.45rem 0 0.6rem; font-size: clamp(1.35rem, 3vw, 1.85rem); line-height: 1.2; }
+  :global(.name-verdict-lock-main p) { max-width: 38rem; color: var(--bone-dim); font-size: 0.86rem; line-height: 1.7; }
+  :global(.name-verdict-lock-signals) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid var(--line-soft); }
+  :global(.name-verdict-lock-signals span) { display: flex; gap: 0.55rem; align-items: center; padding: 0.9rem 1.1rem; border-right: 1px solid var(--line-soft); color: var(--bone-dim); font-size: 0.74rem; font-weight: 600; }
+  :global(.name-verdict-lock-signals span:last-child) { border-right: 0; }
+  :global(.name-verdict-lock-signals strong) { color: var(--cinnabar-light); font-family: var(--font-display); }
+  :global(.name-verdict-lock-action) { display: flex; gap: 0.8rem 1.2rem; align-items: center; justify-content: space-between; padding: 1.15rem clamp(1.4rem, 4vw, 2.1rem); }
+  :global(.name-verdict-lock-action small) { color: var(--bone-faint); font-size: 0.7rem; }
   :global(.name-verdict-topline) { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0 1.35rem; }
   :global(.name-verdict-kicker) { color: var(--cinnabar-light); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
   :global(.name-verdict-status) { color: var(--gold); font-size: 0.66rem; font-weight: 700; text-transform: uppercase; }
@@ -316,6 +431,15 @@
   :global(.name-verdict-signals dd) { margin: 0.55rem 0 0; }
   :global(.name-verdict-signals dd strong) { display: block; color: var(--bone); font-size: 0.82rem; line-height: 1.45; }
   :global(.name-verdict-signals dd small) { display: block; margin-top: 0.3rem; color: var(--bone-faint); font-size: 0.7rem; line-height: 1.5; }
+  :global(.name-verdict-comparison) { padding: 1.15rem 1.2rem 1.3rem; border-top: 1px solid var(--line-soft); }
+  :global(.name-verdict-comparison h4) { margin: 0 0 0.8rem; color: var(--gold); font-size: 0.76rem; text-transform: uppercase; }
+  :global(.name-verdict-comparison > div) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  :global(.name-verdict-comparison > div > div) { min-width: 0; padding: 0.2rem 1rem; border-right: 1px solid var(--line-soft); }
+  :global(.name-verdict-comparison > div > div:first-child) { padding-left: 0; }
+  :global(.name-verdict-comparison > div > div:last-child) { padding-right: 0; border-right: 0; }
+  :global(.name-verdict-comparison span), :global(.name-verdict-comparison small) { display: block; color: var(--bone-faint); font-size: 0.68rem; line-height: 1.45; }
+  :global(.name-verdict-comparison strong) { display: block; margin: 0.35rem 0; color: var(--bone); font-size: 1.15rem; }
+  :global(.name-verdict-comparison .is-winner strong), :global(.name-verdict-comparison .is-winner span) { color: var(--gold-bright); }
   :global(.name-verdict-decision) { display: grid; grid-template-columns: auto 1fr; gap: 0.8rem; align-items: center; padding: 1rem 1.35rem; border-top: 1px solid var(--line-soft); background: rgba(212,175,106,.045); }
   :global(.name-verdict-decision > span) { display: grid; width: 2rem; height: 2rem; place-items: center; border: 1px solid var(--gold-deep); color: var(--gold); font-size: 0.85rem; }
   :global(.name-verdict-decision p) { color: var(--bone-dim); font-size: 0.78rem; line-height: 1.6; }
@@ -324,7 +448,6 @@
   .name-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
   :global(.name-card) { position: relative; display: flex; flex-direction: column; min-width: 0; padding: 0.65rem 1.15rem 1.15rem; border: 1px solid var(--line-strong); border-radius: var(--radius); background: linear-gradient(165deg, rgba(212,175,106,.09), var(--ink-2) 32%, var(--ink-1)); box-shadow: 0 18px 42px -30px rgba(0,0,0,.85); overflow: hidden; }
   :global(.name-card::before) { content: ''; position: absolute; inset: 6px; border: 1px solid var(--line-soft); border-radius: 3px; pointer-events: none; }
-  :global(.name-card.is-primary) { border-color: var(--gold); box-shadow: 0 20px 46px -26px rgba(212,175,106,.45); }
   :global(.name-plaque) { position: relative; min-height: 185px; padding: 1.05rem 0.4rem 1.2rem; border-bottom: 1px solid var(--line); text-align: center; }
   :global(.plaque-corner) { position: absolute; width: 17px; height: 17px; border-color: var(--gold); opacity: .7; }
   :global(.plaque-corner-a) { top: 13px; left: 13px; border-top: 1px solid; border-left: 1px solid; }
@@ -353,7 +476,7 @@
   .surname-mark { color: var(--gold); font-size: 2rem; }
   .surname-note h2 { font-size: 1.35rem; }
   .surname-note p { margin-top: 0.45rem; color: var(--bone-dim); font-size: 0.92rem; }
-  @media (max-width: 820px) { .name-cards { grid-template-columns: 1fr; } .field-grid { grid-template-columns: 1fr 1fr; } .field:first-child { grid-column: 1 / -1; } .unknown-time { grid-column: 2; } :global(.name-verdict-signals) { grid-template-columns: 1fr; } :global(.name-verdict-signals > div) { border-right: 0; border-bottom: 1px solid var(--line-soft); } :global(.name-verdict-signals > div:last-child) { border-bottom: 0; } }
-  @media (max-width: 560px) { .field-grid, .segmented { grid-template-columns: 1fr; } .field:first-child { grid-column: auto; } .unknown-time { grid-column: 1; } .name-tool { padding-inline: 1rem; } .method-note { grid-template-columns: 1fr; } :global(.name-verdict-topline) { align-items: flex-start; flex-direction: column; } :global(.name-verdict-main) { grid-template-columns: 1fr; } :global(.name-verdict-identity) { min-height: 10.5rem; border-right: 0; border-bottom: 1px solid var(--line-soft); } :global(.name-verdict-summary) { padding: 1.25rem; } :global(.name-verdict-decision) { align-items: start; } }
+  @media (max-width: 820px) { .name-cards { grid-template-columns: 1fr; } .field-grid { grid-template-columns: 1fr 1fr; } .field:first-child { grid-column: 1 / -1; } .unknown-time { grid-column: 2; } :global(.name-verdict-signals), :global(.name-verdict-lock-signals), :global(.name-verdict-comparison > div) { grid-template-columns: 1fr; } :global(.name-verdict-signals > div) { border-right: 0; border-bottom: 1px solid var(--line-soft); } :global(.name-verdict-signals > div:last-child) { border-bottom: 0; } :global(.name-verdict-lock-signals span) { border-right: 0; border-bottom: 1px solid var(--line-soft); } :global(.name-verdict-lock-signals span:last-child) { border-bottom: 0; } :global(.name-verdict-comparison > div > div), :global(.name-verdict-comparison > div > div:first-child), :global(.name-verdict-comparison > div > div:last-child) { padding: 0.75rem 0; border-right: 0; border-bottom: 1px solid var(--line-soft); } :global(.name-verdict-comparison > div > div:last-child) { border-bottom: 0; } }
+  @media (max-width: 560px) { .field-grid, .segmented { grid-template-columns: 1fr; } .field:first-child { grid-column: auto; } .unknown-time { grid-column: 1; } .name-tool { padding-inline: 1rem; } .method-note { grid-template-columns: 1fr; } :global(.name-verdict-lock-main) { grid-template-columns: 1fr; } :global(.name-verdict-lock-seal) { width: 3.5rem; height: 3.5rem; font-size: 1.3rem; } :global(.name-verdict-lock-action) { align-items: stretch; flex-direction: column; } :global(.name-verdict-lock-action .btn) { width: 100%; } :global(.name-verdict-topline) { align-items: flex-start; flex-direction: column; } :global(.name-verdict-main) { grid-template-columns: 1fr; } :global(.name-verdict-identity) { min-height: 10.5rem; border-right: 0; border-bottom: 1px solid var(--line-soft); } :global(.name-verdict-summary) { padding: 1.25rem; } :global(.name-verdict-decision) { align-items: start; } }
   @media (prefers-color-scheme: light) { .field input { color-scheme: light; } }
 </style>

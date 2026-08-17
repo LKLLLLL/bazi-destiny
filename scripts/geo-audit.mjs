@@ -36,7 +36,7 @@ requireMatch('src/lib/product-schema.ts', productSchema, /Online digital access;
 if (/aggregateRating|\breview\s*:/.test(productSchema)) errors.push('src/lib/product-schema.ts: unverified ratings or reviews must not be published');
 requireMatch('src/pages/index.astro', index, /alternateName:\s*BRAND_ALIASES/, 'Organization/WebSite aliases are missing');
 requireMatch('src/pages/index.astro', index, /ORGANIZATION_ID/, 'stable Organization identifier is missing');
-requireMatch('src/pages/pricing.astro', pricing, /Basic Reading[\s\S]*9\.90[\s\S]*4\.90/, 'official product prices are incomplete');
+requireMatch('src/pages/pricing.astro', pricing, /Basic Reading[\s\S]*9\.90[\s\S]*4\.90[\s\S]*1\.99/, 'official product prices are incomplete');
 requireMatch('src/pages/pricing.astro', pricing, /no subscription/i, 'no-subscription fact is missing');
 requireMatch('src/pages/pricing.astro', pricing, /No physical item is shipped/, 'visible digital delivery disclosure is missing');
 requireMatch('src/pages/methodology.astro', methodology, /Li Chun[\s\S]*Jie solar terms[\s\S]*23:00 through 00:59/, 'core calculation rules are incomplete');
@@ -45,7 +45,7 @@ requireMatch('src/pages/test-cases.astro', testCases, /TechArticle[\s\S]*Dataset
 requireMatch('src/pages/test-cases.astro', testCases, /does not calculate Hidden Stems/, 'unsupported Hidden Stems scope is not disclosed');
 requireMatch('src/data/public-bazi-test-cases.ts', testCaseData, /li-chun-2024[\s\S]*jing-zhe-2024[\s\S]*zi-hour-2024[\s\S]*chengdu-solar-time-2024/, 'public boundary test vectors are incomplete');
 requireMatch('public/llms.txt', llms, /Canonical website: https:\/\/mybazidestiny\.com\//, 'canonical website is missing');
-requireMatch('public/llms.txt', llms, /USD 9\.90[\s\S]*USD 4\.90/, 'official prices are missing');
+requireMatch('public/llms.txt', llms, /USD 9\.90[\s\S]*USD 4\.90[\s\S]*USD 1\.99/, 'official prices are missing');
 requireMatch('public/llms.txt', llms, /test-cases\.html[\s\S]*test-cases\.json/, 'public test case sources are missing');
 requireMatch('src/pages/sitemap.xml.ts', sitemap, /pricing\.html[\s\S]*methodology\.html[\s\S]*test-cases\.html/, 'fact pages are absent from sitemap');
 requireMatch('src/lib/paypal/products.ts', products, /TEMPORARY_FREE_ACCESS = false/, 'temporary free mode must remain disabled for the published prices');

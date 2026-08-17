@@ -21,6 +21,16 @@ export const DIGITAL_PRODUCTS = {
     purchasePath: '/love-match.html',
     imageSlug: 'synergy-boost-guide',
   },
+  namingVerdict: {
+    id: 'personalized-naming-verdict',
+    name: 'Personalized Naming Verdict',
+    price: '1.99',
+    sku: 'BAZI-NAMING',
+    description:
+      'A one-time verdict selecting the strongest of three generated Chinese names using BaZi symbolism, meaning, pronunciation, cultural source, and modern usage.',
+    purchasePath: '/chinese-name.html',
+    imageSlug: 'naming-verdict',
+  },
 } as const;
 
 export type DigitalProductKey = keyof typeof DIGITAL_PRODUCTS;

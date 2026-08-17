@@ -1,5 +1,5 @@
 ---
-// Shared payment modal for the Life Blueprint and Synergy Guide.
+// Shared payment modal for paid reports and personalized verdicts.
 ---
 
 <div class="pay-modal" id="paymentModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -188,11 +188,27 @@
       ],
       btn: 'Pay $4.90 — Unlock Now',
     },
+    naming: {
+      title: 'Unlock Your Best Chinese Name',
+      desc: 'Reveal which of your three names offers the strongest overall balance of BaZi symbolism, meaning, pronunciation, and modern Chinese usage.',
+      price: '$1.99 <small>one-time</small>',
+      features: [
+        '✓ One clear primary recommendation',
+        '✓ Element-balance reasoning',
+        '✓ Cultural-source assessment',
+        '✓ Native-speaker usage verdict',
+      ],
+      btn: 'Pay $1.99 — Reveal My Best Name',
+    },
   };
 
   function openFreeAccess(tier: Tier, reading?: unknown) {
     if (tier === 'pro') {
       window.location.assign('/calculator.html');
+      return;
+    }
+    if (tier === 'naming') {
+      window.location.assign('/chinese-name.html?checkout=complete');
       return;
     }
     if (!reading || typeof reading !== 'object') {

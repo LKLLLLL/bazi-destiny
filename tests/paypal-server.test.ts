@@ -14,6 +14,14 @@ function completedOrder(overrides: Record<string, unknown> = {}) {
 }
 
 assert.deepEqual(validateCompletedOrder(completedOrder(), 'pro', 'MERCHANT-123'), { captureId: 'CAPTURE-123' });
+assert.deepEqual(validateCompletedOrder({
+  status: 'COMPLETED',
+  purchase_units: [{
+    custom_id: 'naming',
+    payee: { merchant_id: 'MERCHANT-123' },
+    payments: { captures: [{ id: 'CAPTURE-NAMING', amount: { currency_code: 'USD', value: '1.99' } }] },
+  }],
+}, 'naming', 'MERCHANT-123'), { captureId: 'CAPTURE-NAMING' });
 assert.throws(() => validateCompletedOrder(completedOrder({ status: 'APPROVED' }), 'pro'), /verification failed/);
 assert.throws(() => validateCompletedOrder(completedOrder({
   purchase_units: [{ custom_id: 'synergy', payments: { captures: [{ id: 'X', amount: { currency_code: 'USD', value: '9.90' } }] } }],
@@ -36,6 +44,7 @@ const entitlement = createEntitlement({
 });
 assert.deepEqual(parseEntitlement(entitlement, 'pro'), { orderId: 'TESTORDER123' });
 assert.equal(parseEntitlement(entitlement, 'synergy'), null, 'entitlements cannot cross product tiers');
+assert.equal(parseEntitlement(entitlement, 'naming'), null, 'naming entitlements remain isolated');
 assert.equal(parseEntitlement(`${entitlement.slice(0, -1)}x`, 'pro'), null, 'tampered entitlements are rejected');
 
 console.log('paypal-server: order and entitlement validation passed');

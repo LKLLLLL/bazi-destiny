@@ -12,6 +12,9 @@ const productImages = [
   'products/synergy-boost-guide-1x1.png',
   'products/synergy-boost-guide-4x3.png',
   'products/synergy-boost-guide-16x9.png',
+  'products/naming-verdict-1x1.png',
+  'products/naming-verdict-4x3.png',
+  'products/naming-verdict-16x9.png',
 ];
 const requiredFiles = ['index.html', 'pricing.html', 'methodology.html', 'test-cases.html', 'test-cases.json', 'llms.txt', 'sitemap.xml', '272bd5de5baf4ae5b83bf3b043803fa9.txt', ...productImages];
 const errors = [];
@@ -30,13 +33,13 @@ if (errors.length === 0) {
 
   if (!index.includes('MyBaziDestiny')) errors.push('index.html: canonical brand missing');
   if (!index.includes('alternateName')) errors.push('index.html: structured brand aliases missing');
-  if (!pricing.includes('9.90') || !pricing.includes('4.90')) errors.push('pricing.html: official prices missing');
+  if (!pricing.includes('9.90') || !pricing.includes('4.90') || !pricing.includes('1.99')) errors.push('pricing.html: official prices missing');
   if (!pricing.includes('No physical item is shipped')) errors.push('pricing.html: visible digital delivery disclosure missing');
 
   const productJsonLd = [...pricing.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)]
     .map((match) => JSON.parse(match[1]))
     .filter((value) => value['@type'] === 'Product');
-  if (productJsonLd.length !== 2) errors.push(`pricing.html: expected two Product JSON-LD objects, found ${productJsonLd.length}`);
+  if (productJsonLd.length !== 3) errors.push(`pricing.html: expected three Product JSON-LD objects, found ${productJsonLd.length}`);
   for (const product of productJsonLd) {
     if (!Array.isArray(product.image) || product.image.length !== 3) errors.push(`pricing.html: ${product.name} must include three product images`);
     if (product.brand?.['@type'] !== 'Brand' || product.brand?.name !== 'MyBaziDestiny') errors.push(`pricing.html: ${product.name} has an invalid brand object`);

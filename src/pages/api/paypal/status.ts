@@ -6,16 +6,17 @@ export const prerender = false;
 
 export const GET: APIRoute = async (context) => {
   if (TEMPORARY_FREE_ACCESS) {
-    return json({ pro: true, synergy: true, promotion: 'limited-time-free' });
+    return json({ pro: true, synergy: true, naming: true, promotion: 'limited-time-free' });
   }
   try {
-    const [pro, synergy] = await Promise.all([
+    const [pro, synergy, naming] = await Promise.all([
       hasEntitlement(context, 'pro'),
       hasEntitlement(context, 'synergy'),
+      hasEntitlement(context, 'naming'),
     ]);
-    return json({ pro, synergy });
+    return json({ pro, synergy, naming });
   } catch (error) {
     console.error('Payment status error:', error);
-    return json({ pro: false, synergy: false });
+    return json({ pro: false, synergy: false, naming: false });
   }
 };

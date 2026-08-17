@@ -112,6 +112,7 @@ console.log(`generated ${count} OG images → public/og/`);
 const products = [
   { slug: 'life-blueprint', title: 'Life Blueprint', subtitle: 'Your BaZi alignment guide', mark: '命' },
   { slug: 'synergy-boost-guide', title: 'Synergy Boost Guide', subtitle: 'Your relationship alignment guide', mark: '缘' },
+  { slug: 'naming-verdict', title: 'Naming Verdict', subtitle: 'Your strongest Chinese name', mark: '名' },
 ];
 const productSizes = [
   { suffix: '1x1', width: 1200, height: 1200 },

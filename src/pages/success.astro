@@ -3,8 +3,8 @@ import Base from '../layouts/Base.astro';
 ---
 
 <Base
-  title="Payment Successful — Your Reading is Unlocked | MyBaziDestiny"
-  description="Your Life Blueprint reading is unlocked. Return to your chart to see the full analysis."
+  title="Payment Successful — Your Purchase is Unlocked | MyBaziDestiny"
+  description="Your MyBaziDestiny digital purchase is unlocked and ready to view."
   path="/success.html"
   noindex={true}
 >
@@ -33,7 +33,7 @@ import Base from '../layouts/Base.astro';
       var params = new URLSearchParams(window.location.search);
       var tier = params.get('tier');
       var orderId = params.get('token');
-      if ((tier !== 'pro' && tier !== 'synergy') || !orderId) {
+      if ((tier !== 'pro' && tier !== 'synergy' && tier !== 'naming') || !orderId) {
         if (title) title.textContent = 'No active checkout';
         if (sub) sub.textContent = 'No PayPal order was returned to this page. Start from a paid reading to check out.';
         if (features) features.style.display = 'none';
@@ -51,12 +51,15 @@ import Base from '../layouts/Base.astro';
         var result = await response.json().catch(function () { return {}; });
         if (!response.ok || result.success !== true) throw new Error(result.error || 'Payment could not be verified');
 
+        var products = {
+          pro: { id: 'BAZI-PRO', name: 'Life Blueprint - Full BaZi Reading', price: 9.90 },
+          synergy: { id: 'BAZI-SYNERGY', name: 'Synergy Boost Guide - Love Match', price: 4.90 },
+          naming: { id: 'BAZI-NAMING', name: 'Personalized Chinese Naming Verdict', price: 1.99 }
+        };
         try {
           var purchaseKey = 'ga_purchase_' + orderId;
           if (!sessionStorage.getItem(purchaseKey) && typeof window.gtag === 'function') {
-            var product = tier === 'synergy'
-              ? { id: 'BAZI-SYNERGY', name: 'Synergy Boost Guide - Love Match', price: 4.90 }
-              : { id: 'BAZI-PRO', name: 'Life Blueprint - Full BaZi Reading', price: 9.90 };
+            var product = products[tier];
             window.gtag('event', 'purchase', {
               transaction_id: orderId,
               currency: 'USD',
@@ -68,14 +71,30 @@ import Base from '../layouts/Base.astro';
         } catch (_) {}
 
         if (title) title.textContent = 'Payment successful';
-        if (sub) sub.textContent = tier === 'synergy'
-          ? 'Your Synergy Boost Guide is unlocked — taking you there now…'
-          : 'Your Life Blueprint is unlocked — taking you back to your chart…';
-        var dest = tier === 'synergy' ? '/synergy-guide.html?checkout=complete' : '/calculator.html?checkout=complete';
+        var destinations = {
+          pro: '/calculator.html?checkout=complete',
+          synergy: '/synergy-guide.html?checkout=complete',
+          naming: '/chinese-name.html?checkout=complete'
+        };
+        var messages = {
+          pro: 'Your Life Blueprint is unlocked — taking you back to your chart…',
+          synergy: 'Your Synergy Boost Guide is unlocked — taking you there now…',
+          naming: 'Your personalized naming verdict is unlocked — revealing your best name now…'
+        };
+        var buttonLabels = {
+          pro: 'View My Full Reading →',
+          synergy: 'Open My Synergy Guide →',
+          naming: 'Reveal My Best Name →'
+        };
+        if (features && tier === 'naming') {
+          features.innerHTML = '<span>✓ Best-name selection</span><span>✓ Element fit</span><span>✓ Cultural source</span><span>✓ Usage verdict</span>';
+        }
+        if (sub) sub.textContent = messages[tier];
+        var dest = destinations[tier];
         if (btn) {
           btn.hidden = false;
           btn.setAttribute('href', dest);
-          btn.textContent = tier === 'synergy' ? 'Open My Synergy Guide →' : 'View My Full Reading →';
+          btn.textContent = buttonLabels[tier];
         }
         setTimeout(function () { window.location.href = dest; }, 1800);
       } catch (error) {
@@ -84,8 +103,8 @@ import Base from '../layouts/Base.astro';
         if (features) features.style.display = 'none';
         if (btn) {
           btn.hidden = false;
-          btn.textContent = 'Return to Calculator';
-          btn.setAttribute('href', '/calculator.html');
+          btn.textContent = tier === 'naming' ? 'Return to Chinese Names' : 'Return to Calculator';
+          btn.setAttribute('href', tier === 'naming' ? '/chinese-name.html' : '/calculator.html');
         }
       }
     })();

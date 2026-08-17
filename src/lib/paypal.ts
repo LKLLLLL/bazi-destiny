@@ -9,9 +9,10 @@ const PENDING_TIER_KEY = 'bazi_checkout_tier';
 export interface PaymentStatus {
   pro: boolean;
   synergy: boolean;
+  naming: boolean;
 }
 
-const FREE_STATUS: PaymentStatus = { pro: true, synergy: true };
+const FREE_STATUS: PaymentStatus = { pro: true, synergy: true, naming: true };
 let statusCache: PaymentStatus | null = TEMPORARY_FREE_ACCESS ? FREE_STATUS : null;
 let statusRequest: Promise<PaymentStatus> | null = null;
 
@@ -26,10 +27,10 @@ export async function getPaymentStatus(force = false): Promise<PaymentStatus> {
     .then(async (response) => {
       if (!response.ok) throw new Error('Unable to check payment status');
       const body = await response.json();
-      statusCache = { pro: body?.pro === true, synergy: body?.synergy === true };
+      statusCache = { pro: body?.pro === true, synergy: body?.synergy === true, naming: body?.naming === true };
       return statusCache;
     })
-    .catch(() => ({ pro: false, synergy: false }))
+    .catch(() => ({ pro: false, synergy: false, naming: false }))
     .finally(() => { statusRequest = null; });
   return statusRequest;
 }

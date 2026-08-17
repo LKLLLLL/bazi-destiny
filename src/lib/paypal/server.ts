@@ -99,7 +99,12 @@ export async function createOrder(tier: Tier, origin: string): Promise<{ orderId
   const product = PAYPAL_PRODUCTS[tier];
   const returnUrl = new URL('/success.html', origin);
   returnUrl.searchParams.set('tier', tier);
-  const cancelUrl = new URL(tier === 'synergy' ? '/love-match-result.html' : '/calculator.html', origin);
+  const cancelPath = tier === 'synergy'
+    ? '/love-match-result.html'
+    : tier === 'naming'
+      ? '/chinese-name.html'
+      : '/calculator.html';
+  const cancelUrl = new URL(cancelPath, origin);
   cancelUrl.searchParams.set('payment', 'cancel');
 
   const response = await paypalRequest('/v2/checkout/orders', {
