@@ -1,0 +1,212 @@
+---
+import Base from '../layouts/Base.astro';
+import PaymentModal from '../components/PaymentModal.astro';
+import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
+import { productJsonLd } from '../lib/product-schema';
+
+const faqs = [
+  {
+    question: 'What is included in a BaZi reading?',
+    answer:
+      'The free reading includes your Four Pillars, Day Master, Five Elements balance, core personality themes, and favorable directions. The optional Life Blueprint adds twelve personalized sections for career, wealth, relationships, health, daily alignment, and practical guidance.',
+  },
+  {
+    question: 'Do I need my exact birth time?',
+    answer:
+      'A birth time determines the Hour Pillar and makes the reading more specific. If it is unknown, you can still calculate the Year, Month, and Day Pillars; the result will clearly show that the Hour Pillar is unavailable.',
+  },
+  {
+    question: 'Is the BaZi report scientific advice?',
+    answer:
+      'No. BaZi is a traditional Chinese calendrical and metaphysical framework. The chart calculation is reproducible, while the interpretation is cultural guidance for reflection and planning, not medical, financial, or legal advice.',
+  },
+  {
+    question: 'How much does the complete report cost?',
+    answer:
+      'The basic chart and initial reading are free. The optional Life Blueprint is a one-time $9.90 USD digital purchase through PayPal, with no subscription or recurring billing.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE_URL}/bazi-reading.html`,
+    name: 'BaZi Reading and Personal Report',
+    url: `${SITE_URL}/bazi-reading.html`,
+    description:
+      'Understand what a free BaZi chart and the optional Life Blueprint report include, from Four Pillars and Five Elements to practical traditional guidance.',
+    provider: { '@id': ORGANIZATION_ID },
+    isPartOf: { '@id': WEBSITE_ID },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${SITE_URL}/bazi-reading.html#service`,
+    name: `${BRAND_NAME} BaZi Reading`,
+    serviceType: 'Personalized BaZi reading and digital report',
+    description:
+      'A browser-based Four Pillars reading with an optional one-time Life Blueprint report.',
+    provider: { '@id': ORGANIZATION_ID },
+    areaServed: 'Worldwide',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/OnlineOnly',
+      url: `${SITE_URL}/calculator.html`,
+    },
+  },
+  productJsonLd('lifeBlueprint'),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+      { '@type': 'ListItem', position: 2, name: 'BaZi Reading', item: `${SITE_URL}/bazi-reading.html` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  },
+];
+---
+
+<Base
+  title="BaZi Reading & Personal Report | Four Pillars Guide | MyBaziDestiny"
+  description="See what a free BaZi reading includes and how the optional $9.90 Life Blueprint turns your Four Pillars, Day Master, and Five Elements into a practical personal report."
+  keywords="BaZi reading, BaZi report, Four Pillars reading, Chinese astrology reading, personalized BaZi report, Life Blueprint"
+  path="/bazi-reading.html"
+  jsonLd={jsonLd}
+>
+  <header class="reading-hero wrap-narrow">
+    <p class="eyebrow"><span class="han">命书</span> BaZi Reading</p>
+    <h1>Turn your Four Pillars into a <em>clear personal report</em></h1>
+    <p class="hero-copy">
+      Start with a free chart. Then, if you want the full interpretation, unlock a one-time Life Blueprint built from your Day Master, Five Elements, and traditional chart patterns.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-gold btn-lg" href="/calculator.html?from=bazi-reading">Cast My Chart Free</a>
+      <a class="btn btn-ghost btn-lg" href="#life-blueprint">See What Is Included</a>
+    </div>
+    <p class="hero-note">No sign-up required · Calculated in your browser · No subscription</p>
+  </header>
+
+  <section class="reading-band" aria-label="Reading path">
+    <div class="wrap reading-steps">
+      <article>
+        <span>01</span>
+        <h2>Calculate</h2>
+        <p>Enter your birth date, time, and city. The calculator follows the solar-term boundaries used in traditional BaZi practice.</p>
+      </article>
+      <article>
+        <span>02</span>
+        <h2>Understand</h2>
+        <p>See the Eight Characters, Day Master, Five Elements balance, and an initial reading immediately for free.</p>
+      </article>
+      <article>
+        <span>03</span>
+        <h2>Go deeper</h2>
+        <p>Unlock the optional Life Blueprint when you want a longer, more practical interpretation organized around your own chart.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section wrap" id="life-blueprint">
+    <div class="section-head center">
+      <p class="eyebrow center"><span class="han">十二章</span> The Life Blueprint</p>
+      <h2 class="section-title">A report that goes beyond a <em>single lucky element</em></h2>
+      <p class="section-sub">The free result gives you the chart and its foundation. The optional report organizes that foundation into decisions you can actually revisit.</p>
+    </div>
+    <div class="report-grid">
+      <article><span class="report-index">01</span><h3>Core chart reading</h3><p>Day Master, chart balance, seasonal context, and the traditional pattern that gives your reading its center of gravity.</p></article>
+      <article><span class="report-index">02</span><h3>Career and wealth</h3><p>Strengths to develop, working environments that fit your pattern, and practical ways to handle momentum and risk.</p></article>
+      <article><span class="report-index">03</span><h3>Relationships</h3><p>Communication tendencies, partnership needs, and the growth areas suggested by your elemental dynamics.</p></article>
+      <article><span class="report-index">04</span><h3>Daily alignment</h3><p>Traditional guidance for colors, directions, routines, conduct, and personal habits that keep the reading useful after you close the page.</p></article>
+    </div>
+    <div class="blueprint-cta">
+      <div>
+        <span class="han blueprint-seal" aria-hidden="true">知命</span>
+        <h2>Life Blueprint · $9.90 USD</h2>
+        <p>One-time digital access after you generate your free chart. Your birth data stays in the browser during calculation.</p>
+      </div>
+      <a class="btn btn-gold" href="/calculator.html?from=bazi-reading">Start My Free Reading</a>
+    </div>
+  </section>
+
+  <section class="method-band">
+    <div class="wrap method-grid">
+      <div>
+        <p class="eyebrow"><span class="han">有据</span> A transparent method</p>
+        <h2>Traditional symbols, explained in plain English</h2>
+      </div>
+      <div class="method-copy">
+        <p>BaZi is not a generic horoscope based only on an animal sign. The reading starts with the Year, Month, Day, and Hour Pillars, then uses the Day Master and seasonal Five Elements context to explain the result.</p>
+        <p>Review the <a href="/methodology.html">calculation methodology</a> and <a href="/test-cases.html">public test cases</a> before you begin. The report is a cultural interpretation, not a promise about an unavoidable future.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap-narrow faq-section" aria-labelledby="reading-faq-title">
+    <p class="eyebrow"><span class="han">问答</span> Common questions</p>
+    <h2 id="reading-faq-title">BaZi reading questions</h2>
+    <div class="faq-list">
+      {faqs.map((faq) => (
+        <details>
+          <summary>{faq.question}</summary>
+          <p>{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <PaymentModal />
+</Base>
+
+<style>
+  .reading-hero { padding-top: calc(68px + clamp(3.5rem, 10vh, 7rem)); padding-bottom: clamp(3rem, 8vh, 6rem); text-align: center; }
+  .reading-hero .eyebrow { justify-content: center; }
+  .reading-hero h1 { max-width: 18ch; margin: 0.8rem auto 1.1rem; font-size: clamp(2.6rem, 6vw, 5rem); line-height: 0.98; }
+  .reading-hero h1 em { color: var(--gold); }
+  .hero-copy { max-width: 62ch; margin: 0 auto; color: var(--bone-dim); font-size: 1.08rem; line-height: 1.8; }
+  .hero-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.8rem; }
+  .hero-note { margin-top: 1.1rem; color: var(--bone-faint); font-size: 0.8rem; }
+  .reading-band { border-block: 1px solid var(--line-soft); background: rgba(212, 175, 106, 0.05); }
+  .reading-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; padding-block: 3rem; }
+  .reading-steps article { padding-right: 2rem; border-right: 1px solid var(--line-soft); }
+  .reading-steps article:last-child { border-right: 0; }
+  .reading-steps span, .report-index { color: var(--gold); font-family: var(--font-display); font-size: 1rem; }
+  .reading-steps h2 { margin: 0.6rem 0 0.5rem; font-size: 1.35rem; }
+  .reading-steps p, .report-grid p, .blueprint-cta p, .method-copy p, .faq-list p { color: var(--bone-dim); line-height: 1.75; }
+  .report-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); }
+  .report-grid article { padding: 2rem; background: rgba(18, 20, 32, 0.78); }
+  .report-grid h3 { margin: 0.55rem 0 0.5rem; font-size: 1.35rem; }
+  .blueprint-cta { display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 1.4rem; padding: 2rem; border: 1px solid var(--gold-deep); background: rgba(212, 175, 106, 0.08); }
+  .blueprint-cta h2 { margin: 0.3rem 0 0.4rem; font-size: 1.6rem; }
+  .blueprint-seal { float: left; margin-right: 1rem; color: var(--gold); font-size: 2.3rem; line-height: 1; }
+  .method-band { border-block: 1px solid var(--line-soft); background: rgba(10, 12, 21, 0.72); }
+  .method-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 4rem; padding-block: 4.5rem; }
+  .method-grid h2 { max-width: 14ch; font-size: clamp(2rem, 4vw, 3.2rem); }
+  .method-copy { display: grid; gap: 1rem; }
+  .method-copy a { color: var(--gold-bright); text-decoration: underline; text-underline-offset: 3px; }
+  .faq-section { padding-bottom: 1rem; }
+  .faq-section h2 { margin: 0.6rem 0 1.5rem; font-size: 2rem; }
+  .faq-list { border-top: 1px solid var(--line-soft); }
+  .faq-list details { border-bottom: 1px solid var(--line-soft); padding: 1rem 0; }
+  .faq-list summary { cursor: pointer; font-weight: 600; color: var(--bone); }
+  .faq-list p { margin: 0.8rem 0 0; }
+  @media (max-width: 760px) {
+    .reading-steps, .method-grid { grid-template-columns: 1fr; gap: 1.6rem; }
+    .reading-steps article { padding: 0 0 1.6rem; border-right: 0; border-bottom: 1px solid var(--line-soft); }
+    .reading-steps article:last-child { padding-bottom: 0; border-bottom: 0; }
+    .report-grid { grid-template-columns: 1fr; }
+    .blueprint-cta { align-items: flex-start; flex-direction: column; }
+    .method-grid { gap: 2rem; }
+  }
+</style>

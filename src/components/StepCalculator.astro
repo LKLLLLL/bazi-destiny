@@ -325,6 +325,11 @@ const isZh = lang === 'zh';
               <span><strong>Find Your Chinese Name</strong><small>Turn your birth chart into a meaningful given name.</small></span>
               <b aria-hidden="true">→</b>
             </a>}
+            {!isZh && <a href="/bazi-reading.html" class="next-tool">
+              <span class="han" aria-hidden="true">命</span>
+              <span><strong>See the Full BaZi Reading</strong><small>Compare the free chart with the optional Life Blueprint report.</small></span>
+              <b aria-hidden="true">→</b>
+            </a>}
             <a href={isZh ? '/zh/love-match.html' : '/love-match.html'} class="next-tool">
               <span class="han" aria-hidden="true">缘</span>
               <span><strong>{isZh ? '八字合盘' : 'Try Love Match'}</strong><small>{isZh ? '比较两个人的日柱、五行与相处模式。' : 'Compare your Five Elements with someone special.'}</small></span>
