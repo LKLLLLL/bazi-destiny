@@ -6,6 +6,19 @@ emoji: "☯"
 tag: "Zodiac"
 pubDate: 2026-08-18
 readTime: "8 min read"
+faq:
+  - q: "Which Chinese zodiac signs are most compatible?"
+    a: >-
+      Traditional lists usually highlight the Six Harmony pairs and Three Harmony groups, including Rat–Ox, Tiger–Pig, Rabbit–Dog, Dragon–Rooster, Snake–Monkey, Horse–Goat, and the four Three Harmony circles. These are broad cultural associations; full BaZi charts and real-world behavior provide more context than a year sign alone.
+  - q: "What zodiac pairs clash?"
+    a: >-
+      The Six Clashes are Rat–Horse, Ox–Goat, Tiger–Monkey, Rabbit–Rooster, Dragon–Dog, and Snake–Pig. A clash is traditionally a theme of friction, not a prediction that a relationship must end or should never begin.
+  - q: "Is zodiac compatibility accurate?"
+    a: >-
+      It can be meaningful as cultural language or a reflection prompt, but it is not a scientifically validated way to measure relationship outcomes. Use it to start a conversation, then rely on communication, consent, safety, shared values, and observable conduct.
+  - q: "Is BaZi more detailed than zodiac compatibility?"
+    a: >-
+      Yes. Zodiac matching usually compares the birth-year branches, while BaZi can compare four pillars and their elemental relationships. More detail does not make a chart a guarantee; it simply makes the framework more specific about what it is interpreting.
 ---
 
 MyBaziDestiny · Knowledge Base
