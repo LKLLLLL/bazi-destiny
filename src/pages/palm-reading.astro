@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PalmReadingPage from '../components/PalmReadingPage.astro';
+import ToolSeoContent from '../components/ToolSeoContent.astro';
 import { SITE_URL } from '../lib/brand';
 
 const jsonLd = [
@@ -24,6 +25,10 @@ const jsonLd = [
       { '@type': 'Question', name: 'Is my palm photo uploaded or stored?', acceptedAnswer: { '@type': 'Answer', text: 'No. The photo is processed locally in your browser and is not sent to a server by the palm-reading tool.' } },
       { '@type': 'Question', name: 'Can a palm line predict lifespan or illness?', acceptedAnswer: { '@type': 'Answer', text: 'No. Line length is not a measure of lifespan and palmistry should not be used for medical conclusions. This experience is for cultural interest and self-reflection only.' } },
       { '@type': 'Question', name: 'How is palmistry different from BaZi?', acceptedAnswer: { '@type': 'Answer', text: 'BaZi uses birth date and time to construct the Four Pillars. Palmistry interprets visible hand features. They are separate traditional frameworks.' } },
+      { '@type': 'Question', name: 'What does the life line mean?', acceptedAnswer: { '@type': 'Answer', text: 'In traditional palmistry, the life line is read as a symbol of vitality, grounding, and the way a person meets change. Its length does not predict lifespan, and a photograph cannot provide a medical conclusion.' } },
+      { '@type': 'Question', name: 'Which palm should I read?', acceptedAnswer: { '@type': 'Answer', text: 'This page uses one fixed convention: men are read from the left palm and women are read from the right palm. There is no second-hand selection in this experience.' } },
+      { '@type': 'Question', name: 'Is palm reading real?', acceptedAnswer: { '@type': 'Answer', text: 'Palm reading is a traditional interpretive framework and a form of cultural exploration, not a scientific test. Use it for reflection and conversation, never as medical advice or the sole basis for an important decision.' } },
+      { '@type': 'Question', name: 'How do I read my palm lines?', acceptedAnswer: { '@type': 'Answer', text: 'Start with a clear photo of the full palm, then use this tool to check visible line patterns and read the traditional explanations. The result is a broad visual prompt, not a complete in-person palmistry consultation.' } },
     ],
   },
 ];
@@ -31,7 +36,7 @@ const jsonLd = [
 
 <Base
   title="Free Online Palm Reading from a Photo | MyBaziDestiny"
-  description="Upload a palm photo for a private, instant traditional Chinese palmistry reading of your life, head, heart and fate lines. Male-left, female-right guidance included."
+  description="Upload a palm photo for a private traditional Chinese palmistry reading of life, head, heart and fate lines. Includes male-left, female-right guidance."
   keywords="palm reading, Chinese palmistry, palm reading from photo, male left female right, traditional palm lines"
   lang="en"
   path="/palm-reading.html"
@@ -40,4 +45,88 @@ const jsonLd = [
   jsonLd={jsonLd}
 >
   <PalmReadingPage lang="en" />
+
+  <ToolSeoContent
+    eyebrow="Read the lines with context"
+    title="A practical guide to traditional palm reading"
+    summary="Explore the major lines, hand-selection customs, and the difference between Chinese palm reading and Western chiromancy before you interpret a photograph. This is a cultural framework for reflection, not a scientific diagnosis or a promise about the future."
+    headingId="palm-reading-guide"
+  >
+    <div class="tool-seo-grid">
+      <section>
+        <h3>The life line</h3>
+        <p>The life line curves around the base of the thumb toward the wrist. In traditional palmistry it is associated with vitality, grounding, physical rhythm, and the way someone responds to changes in their environment. It is not a countdown clock and does not measure how long a person will live.</p>
+        <p>A long, clearly traced arc is often described as steady reserves or a strong attachment to familiar places. A shorter line can simply reflect the angle of a photograph or a different hand shape; traditional readers may instead look at its depth and supporting markings. Breaks, islands, and small branches are interpreted as periods of transition, rest, travel, or renewed direction, not as illness.</p>
+      </section>
+      <section>
+        <h3>The head line, or Wisdom Line</h3>
+        <p>The head line runs across the middle of the palm and is also called the Wisdom Line in some English-language guides. Traditionally it represents attention, learning style, judgment, and the balance between practical reasoning and imagination. A relatively straight line is often read as focused and methodical, while a gentle slope is associated with visual thinking or a reflective mind.</p>
+        <p>Length is considered alongside clarity: a long line may suggest sustained concentration, but it does not prove intelligence. A visible fork can symbolize an ability to hold two viewpoints, and a soft break may be read as a change in study, work, or priorities. These are symbolic observations, not personality tests; lighting, skin texture, and camera angle can change what appears visible.</p>
+      </section>
+      <section>
+        <h3>The heart line, or Love Line</h3>
+        <p>The heart line sits below the fingers and is often called the Love Line. In the traditional vocabulary it relates to emotional expression, affection, trust, and the way a person seeks closeness. A clear, gently curved line may be described as open-hearted, while a straighter line is sometimes linked with a more measured way of showing care.</p>
+        <p>Readers may note whether the line reaches toward the index finger, middle finger, or the space between them, but no position guarantees a relationship outcome. A fork near the end can represent nuance or an ability to balance feeling with reason. Small breaks or cross-lines are treated as chapters of emotional learning, never as proof of heartbreak, diagnosis, or a fixed destiny.</p>
+      </section>
+      <section>
+        <h3>Supporting lines and palm shape</h3>
+        <p>Traditional Chinese palm reading considers the three major lines together with the fate line, sun line, thumb, fingers, mounts, and overall palm shape. The fate line is commonly discussed as a sense of direction or changing responsibility; the sun line as craft, pleasure, or recognition. Their absence is ordinary and carries no negative verdict.</p>
+        <p>Hand proportions and flexible or firm fingers provide context for the lines, yet a single phone image cannot show depth, temperature, or movement reliably. This tool therefore focuses on broad, visible features and explains the traditional association beside each observation. Treat the result like a journaling prompt: useful for asking what feels true today, not for outsourcing a choice.</p>
+      </section>
+    </div>
+
+    <section>
+      <h3>Chinese palm reading vs Western chiromancy</h3>
+      <p>Chinese palm reading (手相, shǒuxiàng) developed alongside other systems of character observation and often reads the palm shape, finger joints, mounts, and lines as one connected picture. Western chiromancy commonly gives more attention to named lines, their mounts, and a hand's elemental type, with its own vocabulary and historical schools. Neither tradition has a single fixed method, and practitioners may disagree about the same crease.</p>
+      <p>MyBaziDestiny uses a restrained blend: traditional Chinese references provide the cultural lens, while an instant photo check keeps the experience concrete and transparent. The browser identifies visible contrast and continuity; it does not claim to identify a person or reveal hidden facts. Comparing the two perspectives can be interesting, but it should not turn a symbolic reading into a medical, legal, or financial conclusion.</p>
+      <p>That distinction is useful when reading online. A camera can show a dark groove, a pale ridge, or a fork that catches the light, but it cannot establish when a change happened or what caused it. Traditional language gives those shapes a theme; careful wording keeps the theme proportional to the evidence. The best result is therefore specific about what is visible and open about what remains unknown.</p>
+    </section>
+
+    <section>
+      <h3>Which palm to read: the fixed male-left, female-right rule</h3>
+      <p>This page uses one fixed traditional convention: men are read from the left palm and women are read from the right palm. The gender choice determines the representative hand automatically, so there is no second-hand selection or comparison step in this experience.</p>
+      <p>Keep the entire selected palm and all five fingers in frame, use even light, and avoid a heavy filter. A clean image makes line continuity easier to discuss, but it cannot make the interpretation objective. The tool's guidance stays within traditional symbolism and should be read with curiosity and healthy skepticism.</p>
+      <p>For a repeat reading, use similar lighting and distance so that changes in the image do not look like changes in the hand. You can save the result as a reflection note and return later, but do not use a line comparison to monitor health or make a high-stakes decision. The point of the exercise is to notice a story you can question, not to hand authority to a crease.</p>
+    </section>
+
+    <div class="tool-seo-links">
+      <p><strong>Keep exploring:</strong> review the <a href="/methodology.html">MyBaziDestiny methodology</a>, compare this visual tradition with a <a href="/calculator.html">Four Pillars chart</a>, or browse the <a href="/blog.html">cultural reading guide</a>.</p>
+    </div>
+
+    <section class="tool-faq" aria-labelledby="palm-seo-faq-title">
+      <h3 id="palm-seo-faq-title">Palm reading questions</h3>
+      <details>
+        <summary>Which hand should a man or woman use for palm reading?</summary>
+        <p>This experience follows the traditional male-left, female-right convention: men are read from the left palm and women from the right palm.</p>
+      </details>
+      <details>
+        <summary>Is my palm photo uploaded or stored?</summary>
+        <p>No. The photo is processed locally in your browser and is not sent to a server by the palm-reading tool.</p>
+      </details>
+      <details>
+        <summary>Can a palm line predict lifespan or illness?</summary>
+        <p>No. Line length is not a measure of lifespan and palmistry should not be used for medical conclusions. This experience is for cultural interest and self-reflection only.</p>
+      </details>
+      <details>
+        <summary>How is palmistry different from BaZi?</summary>
+        <p>BaZi uses birth date and time to construct the Four Pillars. Palmistry interprets visible hand features. They are separate traditional frameworks.</p>
+      </details>
+      <details>
+        <summary>What does the life line mean?</summary>
+        <p>In traditional palmistry, the life line is read as a symbol of vitality, grounding, and the way a person meets change. Its length does not predict lifespan, and a photograph cannot provide a medical conclusion.</p>
+      </details>
+      <details>
+        <summary>Which palm should I read?</summary>
+        <p>This page uses one fixed convention: men are read from the left palm and women are read from the right palm. There is no second-hand selection in this experience.</p>
+      </details>
+      <details>
+        <summary>Is palm reading real?</summary>
+        <p>Palm reading is a traditional interpretive framework and a form of cultural exploration, not a scientific test. Use it for reflection and conversation, never as medical advice or the sole basis for an important decision.</p>
+      </details>
+      <details>
+        <summary>How do I read my palm lines?</summary>
+        <p>Start with a clear photo of the full palm, then use this tool to check visible line patterns and read the traditional explanations. The result is a broad visual prompt, not a complete in-person palmistry consultation.</p>
+      </details>
+    </section>
+  </ToolSeoContent>
 </Base>
