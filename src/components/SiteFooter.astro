@@ -35,7 +35,7 @@ const { lang } = Astro.props;
         <a href="/faq.html">{t(lang, 'footer.faq')}{lang === 'zh' && ' (EN)'}</a>
         <a href="/about.html">{t(lang, 'footer.about')}</a>
         <a href="/pricing.html">{lang === 'zh' ? '价格 (EN)' : 'Pricing'}</a>
-        <a href="/bazi-reading.html">{lang === 'zh' ? '八字命书 (EN)' : 'BaZi Reading'}</a>
+        <a href={lang === 'zh' ? '/zh/bazi-reading.html' : '/bazi-reading.html'}>{lang === 'zh' ? '八字命书' : 'BaZi Reading'}</a>
         <a href="/methodology.html">{lang === 'zh' ? '方法论 (EN)' : 'Methodology'}</a>
         <a href="/test-cases.html">{lang === 'zh' ? '测试案例 (EN)' : 'Test Cases'}</a>
       </nav>

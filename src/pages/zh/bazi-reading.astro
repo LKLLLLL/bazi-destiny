@@ -1,0 +1,216 @@
+---
+import Base from '../../layouts/Base.astro';
+import PaymentModal from '../../components/PaymentModal.astro';
+import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../../lib/brand';
+import { productJsonLd } from '../../lib/product-schema';
+
+const faqs = [
+  {
+    question: '八字命书包含哪些内容？',
+    answer: '免费排盘会显示四柱、日主、五行分布和基础命理解读。可选的 Life Blueprint 八字命书会围绕你的命局，展开事业、财富、关系、健康、日常取用与行动建议等十二个章节。',
+  },
+  {
+    question: '不知道出生时辰还能看吗？',
+    answer: '可以。系统会先排出年柱、月柱和日柱，并明确标记时柱未知；补充准确出生时辰后，晚运和细节判断会更完整。',
+  },
+  {
+    question: '完整八字命书多少钱？',
+    answer: '基础排盘和初步解读免费。Life Blueprint 为一次性 9.90 美元数字产品，不订阅、不自动续费。',
+  },
+  {
+    question: '付款前能先看看命书样式吗？',
+    answer: '可以。本页展示了一个虚构命盘的结构、五行比例和章节示例。正式命书会根据你自己的出生信息生成。',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE_URL}/zh/bazi-reading.html`,
+    name: '八字命书与个人命理解读',
+    url: `${SITE_URL}/zh/bazi-reading.html`,
+    description: '了解免费八字排盘与一次性 Life Blueprint 八字命书如何从四柱、日主和五行展开传统命理解读。',
+    inLanguage: 'zh-CN',
+    provider: { '@id': ORGANIZATION_ID },
+    isPartOf: { '@id': WEBSITE_ID },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${SITE_URL}/zh/bazi-reading.html#service`,
+    name: `${BRAND_NAME} 八字命书`,
+    serviceType: '个性化八字命理解读与数字报告',
+    description: '基于四柱、日主和五行的在线八字解读，可选一次性 Life Blueprint 命书。',
+    provider: { '@id': ORGANIZATION_ID },
+    areaServed: 'Worldwide',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/OnlineOnly', url: `${SITE_URL}/zh/calculator.html` },
+  },
+  productJsonLd('lifeBlueprint'),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: `${SITE_URL}/zh` },
+      { '@type': 'ListItem', position: 2, name: '八字命书', item: `${SITE_URL}/zh/bazi-reading.html` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })),
+  },
+];
+---
+
+<Base
+  title="八字命书与个人命理解读｜四柱五行分析 | MyBaziDestiny"
+  description="先免费排出四柱八字，再用一次性 Life Blueprint 命书深入解读日主、五行、事业、财富与关系。"
+  keywords="八字命书,八字解读,四柱命理,五行分析,八字报告,八字算命"
+  lang="zh"
+  path="/zh/bazi-reading.html"
+  altPath="/bazi-reading.html"
+  jsonLd={jsonLd}
+>
+  <header class="reading-hero wrap-narrow">
+    <p class="eyebrow"><span class="han">命书</span> 八字命理解读</p>
+    <h1>把你的四柱八字，读成一份<em>清晰命书</em></h1>
+    <p class="hero-copy">先免费排盘，查看四柱、日主和五行主线；如果想继续深挖，再解锁一份围绕你自己命局展开的 Life Blueprint。</p>
+    <div class="hero-actions">
+      <a class="btn btn-gold btn-lg" href="/zh/calculator.html?from=bazi-reading">免费排我的八字</a>
+      <a class="btn btn-ghost btn-lg" href="#life-blueprint">查看命书内容</a>
+    </div>
+    <p class="hero-note">无需注册 · 浏览器内完成排盘 · 一次性购买</p>
+  </header>
+
+  <section class="reading-band" aria-label="八字阅读步骤">
+    <div class="wrap reading-steps">
+      <article><span>01</span><h2>排盘</h2><p>输入出生日期、时辰与城市，按节气边界排出年、月、日、时四柱。</p></article>
+      <article><span>02</span><h2>看懂</h2><p>免费查看八个字、日主、五行强弱和命局主势，先抓住自己的命理主线。</p></article>
+      <article><span>03</span><h2>深入</h2><p>需要更完整的传统解读时，再解锁按个人命局生成的十二章 Life Blueprint。</p></article>
+    </div>
+  </section>
+
+  <section class="section wrap" id="life-blueprint">
+    <div class="section-head center">
+      <p class="eyebrow center"><span class="han">十二章</span> Life Blueprint 八字命书</p>
+      <h2 class="section-title">不只看一个<em>幸运五行</em></h2>
+      <p class="section-sub">免费结果给你命盘骨架，命书把骨架整理成可以反复查看的事业、关系与日常选择参考。</p>
+    </div>
+    <div class="report-grid">
+      <article><span class="report-index">01</span><h3>命局主线</h3><p>日主、旺衰、季节气势与命局格局，找到整份解读的中心。</p></article>
+      <article><span class="report-index">02</span><h3>事业与财富</h3><p>适合发展的能力、工作环境与处理机会和风险的传统视角。</p></article>
+      <article><span class="report-index">03</span><h3>关系模式</h3><p>沟通倾向、亲密关系需求，以及五行互动中值得主动成长的地方。</p></article>
+      <article><span class="report-index">04</span><h3>日常取用</h3><p>颜色、方向、作息与行动提示，让命理参考延伸到每天的选择。</p></article>
+    </div>
+
+    <div class="sample-report-wrap">
+      <div class="sample-report-intro">
+        <p class="eyebrow"><span class="han">一览</span> 先看一眼命书</p>
+        <h2>付款前，先看它如何<em>展开你的命局</em></h2>
+        <p>以下为虚构示例，用来展示结构、信息密度和写法。正式命书会使用你自己的出生信息。</p>
+      </div>
+      <article class="sample-report" aria-label="虚构八字命书示例">
+        <header class="sample-report-head"><div><span class="sample-kicker">示例命盘 · 虚构数据</span><h3>个人八字命书</h3><p>四柱 · 日主 · 五行平衡</p></div><span class="han sample-seal" aria-hidden="true">命书</span></header>
+        <div class="sample-meta"><div><span>日主</span><strong>甲木 · 阳木</strong></div><div><span>命局主势</span><strong>木</strong></div><div><span>成长五行</span><strong>金</strong></div><div><span>章节</span><strong>12</strong></div></div>
+        <div class="sample-grid">
+          <section><div class="sample-subhead"><span>命盘概览</span><span>四柱</span></div><div class="pillar-row"><div><span>年</span><strong>乙亥</strong><small>木 · 水</small></div><div><span>月</span><strong>丁卯</strong><small>火 · 木</small></div><div><span>日</span><strong>甲辰</strong><small>木 · 土</small></div><div><span>时</span><strong>丙寅</strong><small>火 · 木</small></div></div><div class="sample-verdict"><span>命局主断</span><p>木气偏旺，行动力和远见是底色。真正的功课，是把想法落成别人愿意信任的结构。</p></div></section>
+          <section><div class="sample-subhead"><span>五行比例</span><span>五行</span></div>{[['木','32%','var(--wood)'],['水','24%','var(--water)'],['火','20%','var(--fire)'],['土','14%','var(--earth)'],['金','10%','var(--metal)']].map(([name, value, color]) => <div class="balance-row"><div><span>{name}</span><strong>{value}</strong></div><span class="balance-track"><i style={`--bar:${value};--bar-color:${color}`}></i></span></div>)}</section>
+        </div>
+        <section class="sample-excerpt"><span class="sample-kicker">第 04 章 · 事业与方向</span><h4>把想法变成可以执行的桥</h4><p>你的命局适合长期搭建一个系统：产品、教学、设计、研究，或一项有清晰使命的事业。确定下一个看得见的里程碑，气势会比独自扛住全部愿景更容易流动。</p><div class="sample-guidance"><span>行动提示</span><strong>这个月，选一个项目把它真正落地。</strong></div></section>
+        <footer class="sample-report-foot">示例内容仅用于展示 · 正式命书根据你的出生信息生成</footer>
+      </article>
+    </div>
+
+    <div class="blueprint-cta"><div><span class="han blueprint-seal" aria-hidden="true">知命</span><h2>Life Blueprint · 9.90 美元</h2><p>先生成免费命盘，再决定是否一次性解锁完整数字命书，不订阅、不自动续费。</p></div><a class="btn btn-gold" href="/zh/calculator.html?from=bazi-reading">开始免费排盘</a></div>
+  </section>
+
+  <section class="method-band"><div class="wrap method-grid"><div><p class="eyebrow"><span class="han">有据</span> 透明的排盘方法</p><h2>传统符号，也能用白话讲清</h2></div><div class="method-copy"><p>八字不是只按生肖判断的泛泛星座。排盘从年、月、日、时四柱开始，再以日主和节气五行观察命局气势。</p><p>你可以先查看<a href="/methodology.html">排盘方法论</a>和<a href="/test-cases.html">公开测试案例</a>，再开始自己的命盘。命书提供传统文化参考，不替你做不可逆的决定。</p></div></div></section>
+
+  <section class="section wrap-narrow faq-section" aria-labelledby="reading-faq-title"><p class="eyebrow"><span class="han">问答</span> 常见问题</p><h2 id="reading-faq-title">八字命书常见问题</h2><div class="faq-list">{faqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>
+  <PaymentModal />
+</Base>
+
+<style>
+  .reading-hero { padding-top: calc(68px + clamp(3.5rem, 10vh, 7rem)); padding-bottom: clamp(3rem, 8vh, 6rem); text-align: center; }
+  .reading-hero .eyebrow { justify-content: center; }
+  .reading-hero h1 { max-width: 18ch; margin: .8rem auto 1.1rem; font-family: var(--font-han); font-size: clamp(2.35rem, 6vw, 4.8rem); line-height: 1.15; }
+  .reading-hero h1 em, .sample-report-intro h2 em, .section-title em { color: var(--gold); font-style: normal; }
+  .hero-copy { max-width: 46rem; margin: 0 auto; color: var(--bone-dim); font-size: 1.08rem; line-height: 1.9; }
+  .hero-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem; }
+  .hero-note { margin-top: 1.1rem; color: var(--bone-faint); font-size: .8rem; }
+  .reading-band, .method-band { border-block: 1px solid var(--line-soft); background: rgba(212,175,106,.05); }
+  .reading-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; padding-block: 3rem; }
+  .reading-steps article { padding-right: 2rem; border-right: 1px solid var(--line-soft); }
+  .reading-steps article:last-child { border-right: 0; }
+  .reading-steps span, .report-index { color: var(--gold); font-family: var(--font-display); }
+  .reading-steps h2 { margin: .6rem 0 .5rem; font-family: var(--font-han); font-size: 1.35rem; }
+  .reading-steps p, .report-grid p, .blueprint-cta p, .method-copy p, .faq-list p { color: var(--bone-dim); line-height: 1.85; }
+  .section-head.center, .center { text-align: center; }
+  .report-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); }
+  .report-grid article { padding: 2rem; background: rgba(18,20,32,.78); }
+  .report-grid h3 { margin: .55rem 0 .5rem; font-family: var(--font-han); font-size: 1.35rem; }
+  .sample-report-wrap { display: grid; grid-template-columns: minmax(180px,.55fr) minmax(0,1.45fr); gap: 2rem; align-items: start; margin-top: clamp(3rem,7vw,5.5rem); }
+  .sample-report-intro { padding-top: 1rem; }
+  .sample-report-intro h2 { margin: .6rem 0 .8rem; font-family: var(--font-han); font-size: clamp(1.8rem,3.5vw,2.7rem); line-height: 1.3; }
+  .sample-report-intro > p:last-child { color: var(--bone-dim); line-height: 1.85; }
+  .sample-report { border: 1px solid var(--gold-deep); background: #f5f0e7; color: #26231f; box-shadow: 0 18px 48px rgba(0,0,0,.18); }
+  .sample-report-head { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1.5rem 1.6rem 1.15rem; border-bottom:1px solid #d8cdbb; background:linear-gradient(135deg,#faf7f0,#ece3d4); }
+  .sample-kicker { display:block; color:#8d6a34; font-size:.66rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+  .sample-report-head h3 { margin:.35rem 0 .25rem; color:#2d2924; font-family:var(--font-han); font-size:1.55rem; }
+  .sample-report-head p { margin:0; color:#756b5d; font-size:.78rem; }
+  .sample-seal { display:grid; width:3.2rem; height:3.2rem; place-items:center; border:2px double #a5473c; color:#8b2d23; font-size:1.4rem; transform:rotate(-3deg); }
+  .sample-meta { display:grid; grid-template-columns:repeat(4,1fr); border-bottom:1px solid #d8cdbb; }
+  .sample-meta > div { min-width:0; padding:.75rem .8rem; border-right:1px solid #d8cdbb; }
+  .sample-meta > div:last-child { border-right:0; }
+  .sample-meta span { display:block; margin-bottom:.25rem; color:#817568; font-size:.56rem; letter-spacing:.08em; text-transform:uppercase; }
+  .sample-meta strong { display:block; color:#383128; font-size:.78rem; overflow-wrap:anywhere; }
+  .sample-grid { display:grid; grid-template-columns:1.15fr .85fr; gap:1.2rem; padding:1.35rem 1.6rem; }
+  .sample-subhead { display:flex; justify-content:space-between; margin-bottom:.75rem; color:#8d6a34; font-size:.66rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .pillar-row { display:grid; grid-template-columns:repeat(4,1fr); border-block:1px solid #d8cdbb; }
+  .pillar-row > div { min-width:0; padding:.65rem .4rem; text-align:center; border-right:1px solid #d8cdbb; }
+  .pillar-row > div:last-child { border-right:0; }
+  .pillar-row span, .pillar-row small { display:block; color:#817568; font-size:.58rem; }
+  .pillar-row strong { display:block; margin:.18rem 0; color:#8b2d23; font-family:var(--font-han); font-size:1.3rem; }
+  .sample-verdict { margin-top:1rem; padding:.75rem .85rem; border-left:2px solid #c8a467; background:rgba(200,164,103,.12); }
+  .sample-verdict span, .sample-guidance span { display:block; color:#8d6a34; font-size:.62rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+  .sample-verdict p { margin:.35rem 0 0; color:#53493d; font-size:.8rem; line-height:1.7; }
+  .balance-row { margin-bottom:.65rem; }
+  .balance-row > div { display:flex; justify-content:space-between; color:#53493d; font-size:.72rem; }
+  .balance-row strong { color:#8d6a34; }
+  .balance-track { display:block; height:.36rem; margin-top:.28rem; overflow:hidden; background:#ded5c8; }
+  .balance-track i { display:block; width:var(--bar); height:100%; background:var(--bar-color); }
+  .sample-excerpt { margin:0 1.6rem; padding:1.2rem 0 1.35rem; border-top:1px solid #d8cdbb; }
+  .sample-excerpt h4 { margin:.4rem 0 .45rem; color:#302a23; font-family:var(--font-han); font-size:1.25rem; }
+  .sample-excerpt > p { margin:0; color:#53493d; font-size:.82rem; line-height:1.8; }
+  .sample-guidance { margin-top:.9rem; padding:.65rem .8rem; background:#ebe2d4; }
+  .sample-guidance strong { display:block; margin-top:.2rem; color:#473d32; font-size:.78rem; }
+  .sample-report-foot { padding:.7rem 1.6rem; border-top:1px solid #d8cdbb; color:#817568; font-size:.65rem; }
+  .blueprint-cta { display:flex; align-items:center; justify-content:space-between; gap:2rem; margin-top:1.4rem; padding:2rem; border:1px solid var(--gold-deep); background:rgba(212,175,106,.08); }
+  .blueprint-cta h2 { margin:.3rem 0 .4rem; font-family:var(--font-han); font-size:1.6rem; }
+  .blueprint-seal { float:left; margin-right:1rem; color:var(--gold); font-size:2.3rem; line-height:1; }
+  .method-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:4rem; padding-block:4.5rem; }
+  .method-grid h2 { max-width:14ch; font-family:var(--font-han); font-size:clamp(2rem,4vw,3.2rem); }
+  .method-copy { display:grid; gap:1rem; }
+  .method-copy a { color:var(--gold-bright); text-decoration:underline; text-underline-offset:3px; }
+  .faq-section { padding-bottom:1rem; }
+  .faq-section h2 { margin:.6rem 0 1.5rem; font-family:var(--font-han); font-size:2rem; }
+  .faq-list { border-top:1px solid var(--line-soft); }
+  .faq-list details { padding:1rem 0; border-bottom:1px solid var(--line-soft); }
+  .faq-list summary { cursor:pointer; color:var(--bone); font-weight:600; }
+  .faq-list p { margin:.8rem 0 0; }
+  @media (max-width:760px) {
+    .reading-steps, .method-grid, .sample-report-wrap, .sample-grid { grid-template-columns:1fr; gap:1.6rem; }
+    .reading-steps article { padding:0 0 1.6rem; border-right:0; border-bottom:1px solid var(--line-soft); }
+    .reading-steps article:last-child { padding-bottom:0; border-bottom:0; }
+    .report-grid { grid-template-columns:1fr; }
+    .sample-report-head, .sample-grid, .sample-excerpt { padding-left:1rem; padding-right:1rem; }
+    .sample-meta { grid-template-columns:repeat(2,1fr); }
+    .sample-meta > div:nth-child(2) { border-right:0; }
+    .sample-meta > div:nth-child(-n+2) { border-bottom:1px solid #d8cdbb; }
+    .sample-excerpt { margin-inline:1rem; }
+    .sample-report-foot { padding-inline:1rem; }
+    .blueprint-cta { align-items:flex-start; flex-direction:column; }
+    .method-grid { gap:2rem; }
+  }
+</style>
