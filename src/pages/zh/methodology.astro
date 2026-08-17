@@ -1,0 +1,113 @@
+---
+import Base from '../../layouts/Base.astro';
+import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../../lib/brand';
+
+const jsonLd = [{
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  '@id': `${SITE_URL}/zh/methodology.html#article`,
+  headline: `${BRAND_NAME} 八字排盘方法论`,
+  description: 'MyBaziDestiny 中文八字排盘方法：立春换年、节气定月、干支日、子时、真太阳时与数据范围。',
+  url: `${SITE_URL}/zh/methodology.html`,
+  inLanguage: 'zh-CN',
+  author: { '@id': ORGANIZATION_ID },
+  publisher: { '@id': ORGANIZATION_ID },
+  isPartOf: { '@id': WEBSITE_ID },
+  dateModified: '2026-08-18',
+}];
+---
+
+<Base
+  title="八字排盘方法论：立春、节气、子时与真太阳时 | MyBaziDestiny"
+  description="查看 MyBaziDestiny 如何计算八字四柱：立春换年、节气定月、干支日、子时、真太阳时校正、支持日期与计算边界。"
+  keywords="八字排盘方法,四柱计算,立春换年,节气定月,真太阳时,子时"
+  lang="zh"
+  path="/zh/methodology.html"
+  altPath="/methodology.html"
+  ogType="article"
+  jsonLd={jsonLd}
+>
+  <header class="method-hero wrap-narrow">
+    <p class="eyebrow"><span class="han">算法</span> 排盘方法论</p>
+    <h1>你的四柱是<em>怎样算出来的</em></h1>
+    <p>我们把可复核的历法计算与传统命理解读分开说明，让你知道每一柱如何确定、哪些地方存在边界。</p>
+  </header>
+
+  <div class="method-layout wrap">
+    <aside aria-label="方法摘要">
+      <p class="aside-label">快速查看</p>
+      <dl>
+        <div><dt>年界</dt><dd>立春</dd></div>
+        <div><dt>月界</dt><dd>十二节气</dd></div>
+        <div><dt>子时</dt><dd>23:00–00:59</dd></div>
+        <div><dt>农历表</dt><dd>1900–2049</dd></div>
+        <div><dt>节气范围</dt><dd>1900–2100</dd></div>
+      </dl>
+    </aside>
+
+    <article class="method-body">
+      <section>
+        <p class="step-label">01 / 四柱</p>
+        <h2>年柱和月柱按节气边界计算</h2>
+        <p>年柱在<strong>立春</strong>交接，而不是公历 1 月 1 日或农历春节。出生时间早于当年立春时，本次排盘仍按上一干支年处理。</p>
+        <p>月柱按照十二个<strong>月令节气</strong>交接。它不会简单地在公历月初或农历初一切换，因此临近节气出生的人尤其需要准确的日期与时间。</p>
+      </section>
+
+      <section>
+        <p class="step-label">02 / 日柱与时柱</p>
+        <h2>干支日与传统两小时地支</h2>
+        <p>日柱使用固定的六十甲子参考日配合公历日期计算，并采用 UTC 日期运算，避免浏览器夏令时造成日期偏移。</p>
+        <p>时柱使用传统两小时地支，<strong>子时覆盖 23:00 至次日 00:59</strong>。如果不知道出生时辰，系统会生成三柱命盘，不会虚构时柱。</p>
+      </section>
+
+      <section>
+        <p class="step-label">03 / 出生地点</p>
+        <h2>可选的真太阳时校正</h2>
+        <p>选择支持的城市并开启真太阳时后，系统按出生地经度估算当地太阳时，使用以下近似关系：</p>
+        <pre><code>（城市经度 − 时区标准经线）× 每度 4 分钟</code></pre>
+        <p>校正可能让时间跨过时辰边界，从而影响时柱；它不会改变你输入的公历出生日期。</p>
+        <div class="limitation"><h3>时区限制</h3><p>城市列表使用静态 UTC 偏移，不查询历史夏令时和政治时区变更。若出生地曾经历夏令时、时区调整或不在列表中，请自行核对当时的民用时间。</p></div>
+      </section>
+
+      <section>
+        <p class="step-label">04 / 数据范围</p>
+        <h2>支持日期与近似值</h2>
+        <p>农历换算表覆盖<strong>1900 至 2049 年</strong>；节气计算用于<strong>1900 至 2100 年</strong>的排盘边界。节气采用平均时刻，适合本工具的历法判断，但不等同于高精度天文星历。</p>
+        <p>你可以查看<a href="/test-cases.html">公开排盘测试案例（英文）</a>，复核立春、节气和子时边界的输出。</p>
+      </section>
+
+      <section>
+        <p class="step-label">05 / 传统解读</p>
+        <h2>传统文化框架，不是科学预测</h2>
+        <p>天干地支、五行、日主、合盘和生活建议来自中国传统命理框架，属于文化与象征性解读，不是经过科学验证的个性、健康、财富、关系或未来预测。</p>
+        <p>当前公开排盘不会计算藏干权重、完整格局强弱、用神定夺或个性化大运起运岁数。健康内容也不构成医疗建议。</p>
+      </section>
+
+      <section>
+        <p class="step-label">06 / 隐私</p>
+        <h2>排盘在浏览器本地运行</h2>
+        <p>出生资料与排盘计算主要在浏览器中完成。浏览器可能使用本地存储保留输入或付费状态；付款信息由 PayPal 处理，MyBaziDestiny 不接收银行卡信息。</p>
+        <p>如需了解完整规则，请查看<a href="/zh/faq.html">中文常见问题</a>和<a href="/privacy-policy.html">隐私政策（英文）</a>。</p>
+      </section>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .method-hero { padding-top: calc(68px + 5rem); padding-bottom: 4rem; }
+  .method-hero h1 { font-size: clamp(2.6rem, 6vw, 4.8rem); margin: 0.55rem 0 1rem; }
+  .method-hero h1 em { color: var(--gold); font-style: normal; }
+  .method-hero > p:last-child { color: var(--bone-dim); font-size: 1.08rem; max-width: 68ch; line-height: 1.8; }
+  .method-layout { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 5rem; align-items: start; }
+  .method-layout > * { min-width: 0; }
+  aside { position: sticky; top: 100px; border-top: 1px solid var(--gold); padding-top: 1.2rem; }
+  .aside-label, .step-label { color: var(--gold); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; }
+  dl { margin-top: 1rem; } dl div { padding: 0.85rem 0; border-bottom: 1px solid var(--line-soft); }
+  dt { color: var(--bone-faint); font-size: 0.75rem; } dd { color: var(--bone); margin-top: 0.2rem; }
+  .method-body { max-width: 760px; } .method-body section { padding: 0 0 4.5rem; margin-bottom: 4.5rem; border-bottom: 1px solid var(--line-soft); }
+  .method-body h2 { font-family: var(--font-han); font-size: 2rem; margin: 0.65rem 0 1.2rem; }
+  .method-body p { color: var(--bone-dim); margin-top: 1rem; line-height: 1.9; }
+  .method-body a { color: var(--gold-bright); } pre { margin-top: 1.4rem; padding: 1.2rem; max-width: 100%; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; border: 1px solid var(--line); border-radius: var(--radius-s); color: var(--gold-bright); background: var(--ink-2); }
+  .limitation { margin-top: 1.8rem; padding: 1.5rem 0 0 1.5rem; border-left: 2px solid var(--gold-deep); } .limitation h3 { font-family: var(--font-han); font-size: 1.15rem; } .limitation p { margin-top: 0.55rem; }
+  @media (max-width: 800px) { .method-hero { padding-top: calc(68px + 3.5rem); } .method-layout { grid-template-columns: 1fr; gap: 3rem; } aside { position: static; } dl { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 1rem; } }
+</style>

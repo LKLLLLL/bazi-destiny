@@ -1,0 +1,110 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const groups = [
+  {
+    name: '八字基础',
+    items: [
+      { q: '什么是八字（四柱命理）？', a: '八字又称四柱，由出生年、月、日、时四组天干地支组成，共八个字。传统命理以日主为中心，观察五行生克、十神关系与运势节奏。' },
+      { q: '八字和西方星座有什么不同？', a: '西方占星主要观察出生时刻的行星位置；八字以中国节气历法排出四柱，重点看五行气势、日主与时间变化。两者属于不同的传统文化体系。' },
+      { q: '不知道出生时辰还能排盘吗？', a: '可以。系统会生成三柱命盘，并明确标出时柱未知；出生时辰越准确，关于晚运、潜能和具体节奏的参考越完整。' },
+      { q: '八字能不能决定一个人的一生？', a: '传统八字用于观察倾向、节奏和可借力的方向，不等于不可改变的结论。把命盘当作认识自己和安排行动的文化工具，仍要结合现实信息与个人选择。' },
+    ],
+  },
+  {
+    name: '工具与付费内容',
+    items: [
+      { q: '免费排盘包含哪些内容？', a: '免费结果包含四柱、日主、五行分布、性格侧重、幸运颜色与方向，以及基础的事业、感情和流年参考。无需注册即可使用。' },
+      { q: 'Life Blueprint 八字命书是什么？', a: 'Life Blueprint 是一次性解锁的长篇命书，围绕你的命盘整理五行取向、颜色、数字、方位、生活习惯与行动建议，价格为 9.90 美元，不订阅、不自动续费。' },
+      { q: '付款后如何获得内容？', a: '付款由 PayPal 处理，完成后在同一浏览器中返回工具即可查看已解锁内容。网站不接触你的银行卡信息；如果清除了浏览器数据，请保留 PayPal 收据以便联系客服。' },
+    ],
+  },
+  {
+    name: '隐私与安全',
+    items: [
+      { q: '我的出生资料会被保存吗？', a: '排盘和手相工具主要在浏览器本地运行，出生资料不会作为账户资料上传保存。浏览器可能使用本地存储保留当前设备上的输入或已购买状态。' },
+      { q: '手掌照片会上传到服务器吗？', a: '不会。手相工具在浏览器本地完成照片检查与参考分析，照片不会发送到服务器。传统手相固定遵循男左女右：男性看左手，女性看右手。' },
+      { q: '需要注册账号吗？', a: '不需要。免费工具无需账号；付费解锁通过完成付款的浏览器识别，付款信息由 PayPal 处理。' },
+    ],
+  },
+  {
+    name: '如何使用结果',
+    items: [
+      { q: '应该怎样理解命理结果？', a: '先看命盘的主线，再把建议落实为可执行的小行动。传统解读适合用于自我观察、关系沟通和节奏规划，不替代医疗、法律、投资或其他专业意见。' },
+      { q: '可以为家人或朋友排盘吗？', a: '可以，只要你获得对方同意并正确填写出生资料。合盘时请分别输入双方信息，结果会从日柱、阴阳和五行关系提供相处参考。' },
+      { q: '我的八字会随时间改变吗？', a: '出生四柱本身不会改变；传统命理还会观察大运、流年等时间层次。网站当前结果以本命盘和当下流年参考为主，并会明确说明计算范围。' },
+    ],
+  },
+];
+
+const allQuestions = groups.flatMap((group) => group.items);
+const jsonLd = [{
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: allQuestions.map((item) => ({
+    '@type': 'Question', name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+}];
+---
+
+<Base
+  title="八字常见问题：排盘、五行、合盘与隐私 | MyBaziDestiny"
+  description="MyBaziDestiny 中文常见问题：了解八字四柱、出生时辰、五行、合盘、手相、隐私和一次性付费命书。"
+  keywords="八字常见问题,四柱命理,八字排盘,五行,八字合盘,看手相,命书"
+  lang="zh"
+  path="/zh/faq.html"
+  altPath="/faq.html"
+  jsonLd={jsonLd}
+>
+  <header class="faq-hero">
+    <div class="wrap-narrow center">
+      <p class="eyebrow center"><span class="han">解惑</span> 常见问题</p>
+      <h1>关于八字与工具的<em>问题</em></h1>
+      <p>从排盘规则、传统解读到隐私和付费内容，一次了解使用 MyBaziDestiny 前最重要的信息。</p>
+    </div>
+  </header>
+
+  <div class="wrap-narrow faq-body">
+    {groups.map((group) => (
+      <section class="faq-group">
+        <h2>{group.name}</h2>
+        <div class="faq-list">
+          {group.items.map((item) => (
+            <details class="faq-item">
+              <summary>{item.q}<span aria-hidden="true">＋</span></summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <div class="faq-cta panel" data-reveal>
+      <h2>想直接看看自己的命盘？</h2>
+      <p>输入出生日期与时辰，免费生成四柱、日主和五行分析。</p>
+      <a href="/zh/calculator.html" class="btn btn-gold btn-lg">开始免费排盘</a>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .faq-hero { padding: calc(68px + clamp(2.5rem, 6vh, 4.5rem)) 0 clamp(1.4rem, 3vh, 2.2rem); text-align: center; }
+  .faq-hero h1 { font-size: clamp(2rem, 4.4vw, 3rem); margin: 0.55rem 0 0.8rem; }
+  .faq-hero h1 em { font-style: normal; color: var(--gold); }
+  .faq-hero > div > p:last-child { color: var(--bone-dim); line-height: 1.8; }
+  .center { text-align: center; }
+  .faq-body { display: grid; gap: 2.2rem; }
+  .faq-group h2 { font-family: var(--font-han); font-size: 1.45rem; margin-bottom: 1rem; color: var(--gold-bright); }
+  .faq-list { display: grid; gap: 0.7rem; }
+  .faq-item { border: 1px solid var(--line-soft); border-radius: var(--radius); background: linear-gradient(172deg, var(--ink-2), var(--ink-1)); overflow: hidden; }
+  .faq-item summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.05rem 1.25rem; cursor: pointer; font-weight: 500; line-height: 1.5; list-style: none; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary:hover { color: var(--gold-bright); }
+  .faq-item summary span { flex: none; color: var(--gold); font-size: 1.2rem; transition: transform 0.3s var(--ease-out); }
+  .faq-item[open] summary span { transform: rotate(45deg); }
+  .faq-item p { padding: 0 1.25rem 1.15rem; color: var(--bone-dim); font-size: 0.92rem; line-height: 1.85; }
+  .faq-cta { text-align: center; padding: 2.2rem 1.6rem; }
+  .faq-cta h2 { font-family: var(--font-han); font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .faq-cta p { color: var(--bone-dim); font-size: 0.92rem; margin-bottom: 1.4rem; }
+</style>

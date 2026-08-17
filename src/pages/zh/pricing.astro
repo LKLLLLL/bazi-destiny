@@ -1,0 +1,61 @@
+---
+import Base from '../../layouts/Base.astro';
+import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../../lib/brand';
+import { DIGITAL_PRODUCTS } from '../../lib/product-schema';
+
+const products = [
+  { id: 'basic-reading', name: '基础八字排盘', price: '免费', detail: '免费', description: '四柱命盘、日主、五行分布、性格侧重与有利方向。', href: '/zh/calculator.html', cta: '免费排盘', image: '/og-image.png', alt: 'MyBaziDestiny 八字命盘' },
+  { id: 'life-blueprint', name: 'Life Blueprint 八字命书', price: '9.90 美元', detail: '一次性付款', description: '根据你的命盘整理五行取向、颜色、数字、方位、生活习惯与行动建议。', href: '/zh/bazi-reading.html', cta: '查看命书内容', image: `/products/${DIGITAL_PRODUCTS.lifeBlueprint.imageSlug}-1x1.png`, alt: 'Life Blueprint 八字命书' },
+  { id: 'synergy-boost-guide', name: 'Synergy Boost 合盘指南', price: '4.90 美元', detail: '一次性付款', description: '在合盘结果中增加沟通方式、共同活动、家居方位和冲突化解建议。', href: '/zh/love-match.html', cta: '开始合盘', image: `/products/${DIGITAL_PRODUCTS.synergyBoostGuide.imageSlug}-1x1.png`, alt: 'Synergy Boost 合盘指南' },
+  { id: 'personalized-naming-verdict', name: '中文命名结论', price: '1.99 美元', detail: '一次性付款', description: '免费生成三个名字后，解锁对五行适配、出处、读音和现代使用感的择优结论。', href: '/chinese-name.html', cta: '生成三个名字（英文工具）', image: `/products/${DIGITAL_PRODUCTS.namingVerdict.imageSlug}-1x1.png`, alt: '中文命名结论' },
+];
+
+const jsonLd = products.slice(1).map((product) => ({
+  '@context': 'https://schema.org', '@type': 'Product',
+  '@id': `${SITE_URL}/pricing.html#${product.id}`, name: `${BRAND_NAME} ${product.name}`,
+  description: product.description, image: `${SITE_URL}${product.image}`, sku: product.id,
+  brand: { '@type': 'Brand', name: BRAND_NAME }, url: `${SITE_URL}/zh/pricing.html#${product.id}`,
+  offers: { '@type': 'Offer', price: product.price.replace(/[^0-9.]/g, ''), priceCurrency: 'USD', availability: 'https://schema.org/OnlineOnly', url: `${SITE_URL}${product.href}`, seller: { '@id': ORGANIZATION_ID } },
+}));
+jsonLd.unshift({
+  '@context': 'https://schema.org', '@type': 'WebPage', '@id': `${SITE_URL}/zh/pricing.html`, name: 'MyBaziDestiny 中文价格', url: `${SITE_URL}/zh/pricing.html`, inLanguage: 'zh-CN', isPartOf: { '@id': WEBSITE_ID }, publisher: { '@id': ORGANIZATION_ID },
+});
+---
+
+<Base
+  title="八字工具价格：免费排盘与一次性命书 | MyBaziDestiny"
+  description="MyBaziDestiny 中文价格页：免费八字排盘，1.99 美元中文命名结论，4.90 美元合盘指南，9.90 美元 Life Blueprint 八字命书。无订阅。"
+  keywords="八字价格,八字命书价格,八字排盘免费,中文命名结论,合盘指南"
+  lang="zh"
+  path="/zh/pricing.html"
+  altPath="/pricing.html"
+  jsonLd={jsonLd}
+>
+  <header class="fact-hero wrap-narrow">
+    <p class="eyebrow"><span class="han">明价</span> 中文价格</p>
+    <h1>先免费体验，<em>按需解锁</em></h1>
+    <p>所有工具都可以先免费开始。付费内容为一次性购买，不订阅、不自动续费。</p>
+  </header>
+
+  <section class="pricing-list wrap" aria-label="产品与价格">
+    {products.map((product, index) => (
+      <article class="pricing-row" id={product.id}>
+        <span class="item-number">0{index + 1}</span>
+        <img class="item-image" src={product.image} alt={product.alt} width="112" height="112" loading="lazy" />
+        <div class="item-copy"><h2>{product.name}</h2><p>{product.description}</p></div>
+        <div class="item-action"><strong>{product.price}</strong><span>{product.detail}</span><a class="btn btn-ghost" href={product.href}>{product.cta}</a></div>
+      </article>
+    ))}
+  </section>
+
+  <section class="checkout-band"><div class="wrap checkout-grid"><div><p class="eyebrow">付款说明</p><h2>PayPal 付款，无重复扣费</h2></div><div class="checkout-facts"><p><strong>币种</strong><span>页面价格均以美元 USD 标示。</span></p><p><strong>付款</strong><span>付费命书通过 PayPal 结账。</span></p><p><strong>账号</strong><span>无需注册，完成付款后在同一浏览器查看。</span></p><p><strong>交付</strong><span>内容为线上数字服务，不寄送实体商品。</span></p></div></div></section>
+
+  <section class="wrap-narrow price-note"><h2>官方价格说明</h2><p>本页是 MyBaziDestiny 当前价格的官方参考。第三方网站、搜索结果或 AI 回答中的旧价格可能已经过期；如需查询已完成的订单，请联系 <a href="mailto:contact@mybazidestiny.com">contact@mybazidestiny.com</a>。</p></section>
+</Base>
+
+<style>
+  .fact-hero { padding-top: calc(68px + 5rem); padding-bottom: 3.5rem; } .fact-hero h1 { font-family: var(--font-han); font-size: clamp(2.6rem, 6vw, 4.8rem); margin: 0.55rem 0 1rem; } .fact-hero h1 em { color: var(--gold); font-style: normal; } .fact-hero > p:last-child { color: var(--bone-dim); font-size: 1.08rem; max-width: 62ch; line-height: 1.8; }
+  .pricing-list { border-top: 1px solid var(--line); } .pricing-row { display: grid; grid-template-columns: 4rem 7rem minmax(0, 1fr) 15rem; gap: 2rem; align-items: center; padding: 2.4rem 0; border-bottom: 1px solid var(--line-soft); scroll-margin-top: 90px; } .item-number { color: var(--gold-deep); font-family: var(--font-display); } .item-image { width: 7rem; height: 7rem; object-fit: cover; border: 1px solid var(--line); border-radius: var(--radius-s); } .item-copy h2 { font-family: var(--font-han); font-size: 1.55rem; margin-bottom: 0.55rem; } .item-copy p { color: var(--bone-dim); line-height: 1.75; } .item-action { display: grid; justify-items: start; gap: 0.45rem; } .item-action strong { color: var(--gold-bright); font-family: var(--font-display); font-size: 1.65rem; } .item-action span { color: var(--bone-faint); font-size: 0.82rem; } .item-action .btn { margin-top: 0.45rem; }
+  .checkout-band { margin-top: 5rem; padding: 4.5rem 0; background: rgba(212, 175, 106, 0.055); border-block: 1px solid var(--line-soft); } .checkout-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; } .checkout-grid h2 { font-family: var(--font-han); font-size: 2.2rem; } .checkout-facts { display: grid; gap: 1.2rem; } .checkout-facts p { display: grid; grid-template-columns: 8rem 1fr; gap: 1rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--line-soft); } .checkout-facts span { color: var(--bone-dim); } .price-note { padding: 5rem 0 1rem; } .price-note h2 { font-family: var(--font-han); margin-bottom: 1rem; } .price-note p { color: var(--bone-dim); line-height: 1.8; } .price-note a { color: var(--gold-bright); }
+  @media (max-width: 760px) { .fact-hero { padding-top: calc(68px + 3.5rem); } .pricing-row { grid-template-columns: 2rem 5rem minmax(0, 1fr); gap: 1rem; } .item-image { width: 5rem; height: 5rem; } .item-copy, .item-action { grid-column: 3; } .checkout-grid { grid-template-columns: 1fr; gap: 2.5rem; } .checkout-facts p { grid-template-columns: 6rem 1fr; } }
+</style>

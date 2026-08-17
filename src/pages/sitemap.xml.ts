@@ -42,6 +42,9 @@ export const GET: APIRoute = async () => {
     { loc: '/zh/bazi-reading.html', alt: '/bazi-reading.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/zh/love-match.html', alt: '/love-match.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/zh/palm-reading.html', alt: '/palm-reading.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
+    { loc: '/zh/faq.html', alt: '/faq.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
+    { loc: '/zh/pricing.html', alt: '/pricing.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
+    { loc: '/zh/methodology.html', alt: '/methodology.html', priority: '0.8', changefreq: 'monthly', lastmod: LAST_BUILD },
   ];
   for (const p of posts) {
     urls.push({
