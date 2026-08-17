@@ -43,7 +43,7 @@
       analyzing: "Reading visible palm structure...",
       resultEyebrow: "Traditional palm reading",
       resultTitle: "Your {hand} palm profile",
-      resultIntro: "This reflective reading compares visible line contrast, continuity and palm structure with traditional Chinese palmistry patterns.",
+      resultIntro: "Your visible line contrast, continuity and palm structure point to a clear traditional palmistry pattern.",
       left: "left",
       right: "right",
       scores: ["Inner drive", "Clarity", "Relationships", "Career rhythm"],
@@ -95,11 +95,16 @@
         { title: "Current phase: communicate with clarity", text: "The strongest emphasis sits around the upper-palm pattern. Say what you need plainly, keep boundaries visible, and let steady contact prove what matters." },
         { title: "Current phase: commit to a direction", text: "The vertical structure carries the strongest signal. Choose one or two durable priorities, test them in real work, and adjust from evidence rather than prediction." }
       ],
-      signalIntro: "Visible pattern: {clarity} line contrast, {texture} palm texture, and {balance} left-right balance.",
+      verdictVariants: [
+        { title: "Your momentum is the main force", text: "This palm is built to move through action. You recover direction by doing, not by waiting for certainty, and your best outcomes come when effort is concentrated on one durable goal.", action: "Choose the one commitment that deserves your full energy and give it a fixed weekly rhythm.", maxim: "Your path opens when strength becomes consistency." },
+        { title: "Clarity is your decisive advantage", text: "This palm is led by judgment and mental structure. You are at your best when you reduce noise, name the real problem, and make a clean decision before others are ready.", action: "Write down the next decision, the evidence that matters, and the deadline for acting on it.", maxim: "Your path opens when thought becomes a decision." },
+        { title: "Relationships are shaping the next chapter", text: "This palm is led by the upper-palm pattern: trust, boundaries, and communication now influence the rest of your fortune more than isolated effort does.", action: "Have the direct conversation you have been postponing and make expectations visible.", maxim: "Your path opens when feeling becomes clear language." },
+        { title: "Direction is becoming destiny", text: "This palm is led by its vertical structure. The next chapter rewards commitment, responsibility, and the willingness to stay with one path long enough for it to compound.", action: "Select one long-term priority and remove the competing obligation that weakens it.", maxim: "Your path opens when direction becomes devotion." }
+      ],
+      signalIntro: "Visible pattern: {clarity} line contrast, {texture} palm texture, and {balance} visual balance.",
       signalClarity: ["soft", "moderate", "defined"],
       signalTexture: ["quiet", "mixed", "pronounced"],
-      signalBalance: ["asymmetrical", "fairly even", "well balanced"],
-      disclaimer: "For cultural interest and self-reflection only. Palmistry is not scientifically validated and this reading is not medical, legal, financial or mental-health advice.",
+      signalBalance: ["uneven", "fairly even", "strong"],
       downloadTitle: "My BaZi Destiny - Palm Reading",
       handLabel: "Selected hand",
       generated: "Generated locally in your browser"
@@ -117,7 +122,7 @@
       analyzing: "正在读取可见掌纹结构……",
       resultEyebrow: "中国传统手相参考",
       resultTitle: "你的{hand}手掌画像",
-      resultIntro: "本次解读将照片中可见的线条对比度、连续性与掌面结构，与传统手相学的常见说法进行对照。",
+      resultIntro: "照片中可见的线条对比度、连续性与掌面结构，已经形成一条清楚的传统手相主线。",
       left: "左",
       right: "右",
       scores: ["内在动力", "思路清晰", "情感互动", "事业节奏"],
@@ -169,11 +174,16 @@
         { title: "近期主题：把话说清楚", text: "上掌区的视觉强调更明显，适合直接表达需要与边界，让稳定的联系代替猜测。" },
         { title: "近期主题：确定一条方向", text: "纵向结构的信号更突出，可守住一至两个长期目标，以真实行动和反馈调整方向，而不是交给预测。" }
       ],
-      signalIntro: "可见结构：掌纹对比度{clarity}，掌面纹理{texture}，左右分布{balance}。",
+      verdictVariants: [
+        { title: "你的主运在行动力", text: "这只手掌的核心力量是推进。你不是靠等待确定性找到方向的人，而是在行动中把局面做清楚；力量集中到一个长期目标时，运势最容易打开。", action: "选出当前最值得投入的一件事，为它建立固定的每周节奏。", maxim: "力气变成持续，路自然会开。" },
+        { title: "你的关键优势是判断力", text: "这只手掌由思考与结构感主导。真正适合你的不是同时保留所有可能，而是减少噪音、抓住关键，并在别人还犹豫时做出清楚决定。", action: "把下一项决定、真正重要的证据和行动期限写下来。", maxim: "想法落成决定，运才开始转。" },
+        { title: "关系正在决定下一阶段", text: "上掌区是这只手最有分量的部分。近期的信任、边界和表达，会比一个人硬撑更直接地影响事业与生活节奏。", action: "完成那场一直拖延的直接沟通，把双方期待说清楚。", maxim: "情意说得清楚，关系才能带来助力。" },
+        { title: "方向正在沉淀成命运", text: "这只手掌由纵向结构主导。下一阶段真正有利的是承诺、责任和长期积累；守住一条路，比不断寻找新答案更重要。", action: "确定一个长期目标，同时删掉那个持续分散精力的次要承诺。", maxim: "方向守得住，时间就会替你加力。" }
+      ],
+      signalIntro: "可见结构：掌纹对比度{clarity}，掌面纹理{texture}，左右视觉平衡{balance}。",
       signalClarity: ["偏柔和", "中等", "较清楚"],
       signalTexture: ["较安静", "有变化", "较突出"],
-      signalBalance: ["不对称", "相对均匀", "较平衡"],
-      disclaimer: "仅供传统文化体验与自我反思。手相学未经科学验证，本结果不构成医疗、法律、金融或心理健康建议。",
+      signalBalance: ["偏弱", "中等", "较强"],
       downloadTitle: "MyBaZiDestiny 手相参考解读",
       handLabel: "所选手掌",
       generated: "在你的浏览器中本地生成"
@@ -430,6 +440,16 @@
     return copy.phaseVariants[index];
   }
 
+  function getVerdict(scores) {
+    var strongest = 0;
+    var weakest = 0;
+    scores.forEach(function (score, index) {
+      if (score > scores[strongest]) strongest = index;
+      if (score < scores[weakest]) weakest = index;
+    });
+    return { content: copy.verdictVariants[strongest], strongest: strongest, weakest: weakest };
+  }
+
   function getSignalSummary(metrics) {
     var clarity = scoreBand(getScores(metrics)[1]);
     var texture = scoreBand(Math.round(normalize(metrics.texture, 7, 56) * 100));
@@ -488,6 +508,7 @@
     var scores = getScores(state.metrics);
     var readingScores = lineScores(scores);
     var phase = getPhase(scores);
+    var verdict = getVerdict(scores);
     var hand = state.hand === "left" ? copy.left : copy.right;
     var lineHtml = copy.lineNames.map(function (name, index) {
       var band = scoreBand(readingScores[index]);
@@ -496,10 +517,10 @@
     }).join("");
     els.resultBody.innerHTML =
       '<div class="result-header"><div class="result-eyebrow">' + copy.resultEyebrow + '</div><h2>' + interpolateText(copy.resultTitle, { hand: hand }) + '</h2><p>' + copy.resultIntro + '</p><p class="signal-summary">' + getSignalSummary(state.metrics) + "</p></div>" +
+      '<article class="palm-verdict"><span>' + (lang === "zh" ? "掌相主断" : "Core palm verdict") + '</span><h3>' + verdict.content.title + '</h3><p>' + verdict.content.text + '</p><div class="palm-verdict-basis"><strong>' + (lang === "zh" ? "最强维度" : "Strongest dimension") + ':</strong> ' + copy.scores[verdict.strongest] + ' ' + scores[verdict.strongest] + '/100 · <strong>' + (lang === "zh" ? "需要补足" : "Growth edge") + ':</strong> ' + copy.scores[verdict.weakest] + ' ' + scores[verdict.weakest] + '/100</div><p class="palm-verdict-action"><strong>' + (lang === "zh" ? "现在要做" : "What to do now") + ':</strong> ' + verdict.content.action + '</p><blockquote>“' + verdict.content.maxim + '”</blockquote></article>' +
       renderRadar(scores) +
       '<div class="reading-grid">' + lineHtml + "</div>" +
-      '<div class="phase-reading"><h3>' + phase.title + "</h3><p>" + phase.text + "</p></div>" +
-      '<p class="disclaimer">' + copy.disclaimer + "</p>";
+      '<div class="phase-reading"><h3>' + phase.title + "</h3><p>" + phase.text + "</p></div>";
     iconRefresh();
   }
 
@@ -523,14 +544,14 @@
     var scores = getScores(state.metrics);
     var readingScores = lineScores(scores);
     var phase = getPhase(scores);
+    var verdict = getVerdict(scores);
     var lines = [copy.downloadTitle, "", copy.handLabel + ": " + hand, copy.generated, ""];
     copy.scores.forEach(function (label, index) { lines.push(label + ": " + scores[index] + "/100"); });
-    lines.push("", getSignalSummary(state.metrics), "", phase.title, phase.text, "");
+    lines.push("", getSignalSummary(state.metrics), "", verdict.content.title, verdict.content.text, verdict.content.action, verdict.content.maxim, "", phase.title, phase.text, "");
     copy.lineNames.forEach(function (name, index) {
       var band = scoreBand(readingScores[index]);
       lines.push(name + " - " + copy.lineTagVariants[index][band], copy.lineVariants[index][band], "");
     });
-    lines.push(copy.disclaimer);
     var blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
     var url = URL.createObjectURL(blob);
     var link = document.createElement("a");

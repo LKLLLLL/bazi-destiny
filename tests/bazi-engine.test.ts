@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import BaZiEngine from '../src/lib/bazi/engine.ts';
+import { getExpertVerdict } from '../src/lib/bazi/expert-reading.ts';
 import { PUBLIC_BAZI_TEST_CASES } from '../src/data/public-bazi-test-cases.ts';
 import { CITIES, solarTimeCorrection } from '../src/data/cities.ts';
 
@@ -55,5 +56,19 @@ const chengdu = CITIES.find((city) => city.name === 'Chengdu');
 assert.ok(chengdu, 'Chengdu public solar-time test city');
 assert.ok(Math.abs(solarTimeCorrection(chengdu) - -63.6) < 1e-9, 'Chengdu longitude correction');
 
+const referencePillars = BaZiEngine.calculateFourPillars(2025, 12, 15, 3).pillars;
+const referenceVerdict = getExpertVerdict({
+  pillars: referencePillars,
+  elements: {
+    percentages: { '木': 36, '火': 14, '土': 43, '金': 0, '水': 7 },
+    dominant: '土',
+    deficient: '金',
+  },
+}, 2026);
+assert.equal(referenceVerdict.title, 'Pressure Is Meant to Become Authority');
+assert.match(referenceVerdict.evidence[0], /杀印相生/);
+assert.equal(referenceVerdict.timingTitle, '2026 丙午: A Year of Decisive Movement');
+assert.match(referenceVerdict.timing, /午 directly clashes with the 戊子 pillar/);
+
 const publicObservations = PUBLIC_BAZI_TEST_CASES.reduce((total, testCase) => total + testCase.observations.length, 0);
-console.log(`bazi-engine: 8 anchors and ${publicObservations} public boundary observations passed (${process.env.TZ || 'system timezone'})`);
+console.log(`bazi-engine: 8 anchors, ${publicObservations} public boundary observations, and the expert-reading reference case passed (${process.env.TZ || 'system timezone'})`);

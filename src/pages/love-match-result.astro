@@ -43,6 +43,14 @@ import PaymentModal from '../components/PaymentModal.astro';
   .lmr-loading { text-align: center; padding: 3rem; color: var(--bone-dim); font-size: 0.95rem; }
   #lmrResults[hidden] { display: none; }
   #lmrExtras { max-width: 720px; margin: 0 auto; }
+  .lmr-verdict { margin: 1.4rem 0 1.8rem; padding: 1.25rem; border: 1px solid rgba(212,175,106,.35); border-left: 3px solid var(--gold); border-radius: var(--radius-s); background: linear-gradient(135deg, rgba(212,175,106,.1), rgba(212,175,106,.025)); }
+  .lmr-verdict-kicker { display: block; color: var(--cinnabar-light); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+  .lmr-verdict h3 { margin: 0.35rem 0 0.55rem; font-family: var(--font-display); font-size: 1.3rem; }
+  .lmr-verdict-lead { color: var(--bone); font-family: var(--font-display); font-size: 1rem; line-height: 1.7; }
+  .lmr-verdict-grid { display: grid; gap: 0.6rem; margin-top: 1rem; }
+  .lmr-verdict-grid p { margin: 0; color: var(--bone-dim); font-size: 0.82rem; line-height: 1.65; }
+  .lmr-verdict-grid strong { color: var(--gold-bright); }
+  .lmr-verdict-maxim { margin: 1rem 0 0; color: var(--gold-bright); font-family: var(--font-display); font-style: italic; }
 
   .lmr-extras-grid { display: grid; grid-template-columns: 1fr; gap: 1.2rem; margin-top: 2rem; }
   .lmr-wall {
@@ -133,8 +141,29 @@ import PaymentModal from '../components/PaymentModal.astro';
   }
 
   function renderGuidance(r, e1, e2) {
+    const verdict = r.overall >= 75
+      ? 'This is a relationship with enough natural support to build something lasting.'
+      : r.overall >= 60
+        ? 'This relationship has real potential, but it becomes strong only when both of you practice the right habits consistently.'
+        : 'This is a growth relationship: the attraction is real, but the pattern demands maturity rather than wishful thinking.';
+    const action = r.overall >= 75
+      ? 'Protect the bond by turning shared strengths into a shared routine, project, or home rhythm.'
+      : r.overall >= 60
+        ? 'Name the friction early and give each person a clear role; ambiguity is what turns manageable tension into distance.'
+        : 'Do not rely on chemistry alone. Keep boundaries visible, slow the pace, and judge the relationship by repeated behavior.';
     let html =
       '<div style="margin-top:2rem;padding-bottom:2rem;border-bottom:1px solid var(--line-soft)">' +
+      '<article class="lmr-verdict">' +
+      '<span class="lmr-verdict-kicker">Traditional relationship verdict</span>' +
+      '<h3>' + esc(r.dayPillar.title) + '</h3>' +
+      '<p class="lmr-verdict-lead">' + esc(verdict) + '</p>' +
+      '<div class="lmr-verdict-grid">' +
+      '<p><strong>Day Pillar basis.</strong> ' + esc(r.dayPillar.desc) + '</p>' +
+      '<p><strong>Element dynamic.</strong> ' + esc(r.element.harmonyDesc) + '</p>' +
+      '<p><strong>What to do now.</strong> ' + esc(action) + '</p>' +
+      '</div>' +
+      '<p class="lmr-verdict-maxim">“' + esc(r.tier.label) + ' is a pattern to practice, not a label to hide behind.”</p>' +
+      '</article>' +
       '<div style="text-align:center;margin-bottom:1.4rem">' +
       '<h3 style="font-family:var(--font-display);font-size:1.45rem;font-weight:600;margin:0;letter-spacing:0.02em">Relationship Guidance</h3>' +
       '<p style="color:var(--bone-dim);font-size:0.85rem;margin-top:0.5rem;line-height:1.6;max-width:44ch;margin-inline:auto">' +
@@ -156,10 +185,15 @@ import PaymentModal from '../components/PaymentModal.astro';
     const extras = document.getElementById('lmrExtras');
     if (!extras) return;
 
+    const leaderboardCopy = r.overall >= 75
+      ? 'This is a strong score. Add your match to the global board and see where it stands.'
+      : r.overall >= 60
+        ? 'This score shows workable potential. Add your match to compare its balance with other couples.'
+        : 'This score is an honest baseline, not a final sentence. Add your match and track how it compares.';
     const synergyCta = TEMPORARY_FREE_ACCESS ? 'Open Free Guide \u2014 Limited Time' : 'Unlock Guide \u2014 $4.90';
     extras.innerHTML =
       '<div class="lmr-extras-grid">' +
-      '<div class="lmr-wall"><div class="lmr-wall-icon"></div><div class="lmr-wall-label">World Leaderboard</div><p class="lmr-wall-desc">Your <strong>' + r.overall + '/100</strong> score outranks most couples. Add your match to the global board.</p><button class="btn btn-gold lmr-wall-btn" id="lmrBoardBtn">Add to Leaderboard</button></div>' +
+      '<div class="lmr-wall"><div class="lmr-wall-icon"></div><div class="lmr-wall-label">World Leaderboard</div><p class="lmr-wall-desc">Your score is <strong>' + r.overall + '/100</strong>. ' + esc(leaderboardCopy) + '</p><button class="btn btn-gold lmr-wall-btn" id="lmrBoardBtn">Add to Leaderboard</button></div>' +
       '<div class="lmr-wall"><div class="lmr-wall-icon"></div><div class="lmr-wall-label">Synergy Boost Guide</div><p class="lmr-wall-desc">Open your personalized aura alignment guide for ' + e1 + ' \u00D7 ' + e2 + ' \u2014 morning rituals, communication, shared activities, home energy &amp; conflict resolution.</p><button class="btn btn-gold lmr-wall-btn" id="lmrUpgradeBtn">' + synergyCta + '</button></div>' +
       '</div>';
 

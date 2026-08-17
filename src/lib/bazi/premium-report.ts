@@ -1,5 +1,6 @@
 import Readings from './readings.ts';
 import { getLifestyleGuide } from './lifestyle.ts';
+import { getExpertVerdict } from './expert-reading.ts';
 
 export interface PremiumReportGroup {
   label: string;
@@ -17,10 +18,10 @@ export interface PremiumReportSection {
 
 interface PremiumReadingData {
   pillars: {
-    year: { stem: string; branch: string };
-    month: { stem: string; branch: string };
+    year: { stem: string; branch: string; element: string };
+    month: { stem: string; branch: string; element: string };
     day: { stem: string; branch: string; element: string };
-    hour?: { stem: string; branch: string };
+    hour?: { stem: string; branch: string; element: string };
   };
   elements: {
     percentages: Record<string, number>;
@@ -67,6 +68,7 @@ export function getPremiumReport(data: PremiumReadingData): PremiumReportSection
   const fengShui = Readings.getFengShui(dominant, pillars.day.stem, dominant);
   const lifestyle = getLifestyleGuide(dominant, pillars.day.stem);
   const balanceLifestyle = getLifestyleGuide(deficient, '');
+  const verdict = getExpertVerdict(data);
   const percentageEntries = Object.entries(elements.percentages)
     .sort((a, b) => b[1] - a[1])
     .map(([element, value]) => `${ELEMENT_EN[element] || element}: ${value}%`);
@@ -82,7 +84,7 @@ export function getPremiumReport(data: PremiumReadingData): PremiumReportSection
       number: 1,
       icon: '命',
       title: 'Chart Overview',
-      intro: `Your chart is led by ${dominantEn} energy, with ${deficientEn} as the main area to strengthen. This creates the central rhythm for the reading below.`,
+      intro: verdict.lead,
       groups: [
         group('Four Pillars', [
           `Year Pillar: ${pillars.year.stem}${pillars.year.branch}`,
@@ -90,6 +92,8 @@ export function getPremiumReport(data: PremiumReadingData): PremiumReportSection
           `Day Pillar: ${pillars.day.stem}${pillars.day.branch} - your Day Master is ${pillars.day.stem} ${dayMasterEn}`,
           hourPillar,
         ]),
+        group('Structural Verdict', [verdict.title, ...verdict.evidence]),
+        group(verdict.timingTitle, [verdict.timing]),
       ],
     },
     {
@@ -172,10 +176,11 @@ export function getPremiumReport(data: PremiumReadingData): PremiumReportSection
       number: 9,
       icon: '长',
       title: 'Personal Growth',
-      intro: `Your next stage of growth is less about changing who you are and more about balancing ${dominantEn}'s natural force with the qualities of ${deficientEn}.`,
+      intro: verdict.action,
       groups: [
         group('Growth Focus', [persona.weakness, ...relationship.growthAreas]),
         group('Development Path', [persona.idealPath]),
+        group('Three-Line Destiny Summary', [verdict.title, verdict.timingTitle, verdict.maxim]),
       ],
     },
     {
