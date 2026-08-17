@@ -25,6 +25,11 @@ const faqs = [
     answer:
       'The basic chart and initial reading are free. The optional Life Blueprint is a one-time $9.90 USD digital purchase through PayPal, with no subscription or recurring billing.',
   },
+  {
+    question: 'Can I see what the Life Blueprint looks like before I pay?',
+    answer:
+      'Yes. This page includes an illustrative preview of the report structure and writing style. The paid version is generated from your own Four Pillars and includes twelve personalized sections plus a print-ready PDF view.',
+  },
 ];
 
 const jsonLd = [
@@ -130,6 +135,66 @@ const jsonLd = [
       <article><span class="report-index">03</span><h3>Relationships</h3><p>Communication tendencies, partnership needs, and the growth areas suggested by your elemental dynamics.</p></article>
       <article><span class="report-index">04</span><h3>Daily alignment</h3><p>Traditional guidance for colors, directions, routines, conduct, and personal habits that keep the reading useful after you close the page.</p></article>
     </div>
+    <div class="sample-report-wrap">
+      <div class="sample-report-intro">
+        <p class="eyebrow"><span class="han">一览</span> A look inside</p>
+        <h2 id="sample-report-title">See the report before you <em>unlock it</em></h2>
+        <p>This fictional example shows the structure, level of detail, and practical tone of a Life Blueprint. Your report uses your own chart instead.</p>
+      </div>
+      <article class="sample-report" aria-labelledby="sample-report-title">
+        <header class="sample-report-head">
+          <div>
+            <span class="sample-kicker">Illustrative profile · Fictional data</span>
+            <h3>Personal BaZi Dossier</h3>
+            <p>Four Pillars · Day Master · Five-Element balance</p>
+          </div>
+          <span class="han sample-seal" aria-hidden="true">命书</span>
+        </header>
+        <div class="sample-meta" aria-label="Example report profile">
+          <div><span>Day Master</span><strong>甲木 · Yang Wood</strong></div>
+          <div><span>Core current</span><strong>Wood</strong></div>
+          <div><span>Growth element</span><strong>Metal</strong></div>
+          <div><span>Chapters</span><strong>12</strong></div>
+        </div>
+        <div class="sample-grid">
+          <section class="sample-pillars" aria-label="Example Four Pillars">
+            <div class="sample-subhead"><span>Chart overview</span><span>四柱</span></div>
+            <div class="pillar-row">
+              <div><span>Year</span><strong>乙亥</strong><small>Wood · Water</small></div>
+              <div><span>Month</span><strong>丁卯</strong><small>Fire · Wood</small></div>
+              <div><span>Day</span><strong>甲辰</strong><small>Wood · Earth</small></div>
+              <div><span>Hour</span><strong>丙寅</strong><small>Fire · Wood</small></div>
+            </div>
+            <div class="sample-verdict">
+              <span>Structural verdict</span>
+              <p>Strong Wood gives this chart initiative and a long horizon. The useful work is turning vision into a structure that other people can trust.</p>
+            </div>
+          </section>
+          <section class="sample-balance" aria-label="Example Five-Element balance">
+            <div class="sample-subhead"><span>Element balance</span><span>五行</span></div>
+            {[
+              ['Wood', '32%', 'var(--wood)'],
+              ['Water', '24%', 'var(--water)'],
+              ['Fire', '20%', 'var(--fire)'],
+              ['Earth', '14%', 'var(--earth)'],
+              ['Metal', '10%', 'var(--metal)'],
+            ].map(([name, value, color]) => (
+              <div class="balance-row">
+                <div><span>{name}</span><strong>{value}</strong></div>
+                <span class="balance-track"><i style={`--bar:${value};--bar-color:${color}`}></i></span>
+              </div>
+            ))}
+          </section>
+        </div>
+        <section class="sample-excerpt">
+          <span class="sample-kicker">Chapter 04 · Career &amp; Vocation</span>
+          <h4>Build the bridge between idea and execution</h4>
+          <p>Your chart favors work where you can grow a system over time: product direction, teaching, design, research, or a venture with a clear mission. Momentum improves when you define the next visible milestone instead of carrying the whole vision alone.</p>
+          <div class="sample-guidance"><span>Practical prompt</span><strong>Choose one project to make concrete this month.</strong></div>
+        </section>
+        <footer class="sample-report-foot">Illustrative content only · Your Life Blueprint is calculated from your own birth details.</footer>
+      </article>
+    </div>
     <div class="blueprint-cta">
       <div>
         <span class="han blueprint-seal" aria-hidden="true">知命</span>
@@ -187,6 +252,43 @@ const jsonLd = [
   .report-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); }
   .report-grid article { padding: 2rem; background: rgba(18, 20, 32, 0.78); }
   .report-grid h3 { margin: 0.55rem 0 0.5rem; font-size: 1.35rem; }
+  .sample-report-wrap { display: grid; grid-template-columns: minmax(180px, 0.55fr) minmax(0, 1.45fr); gap: 2rem; align-items: start; margin-top: clamp(3rem, 7vw, 5.5rem); }
+  .sample-report-intro { padding-top: 1rem; }
+  .sample-report-intro h2 { margin: 0.6rem 0 0.8rem; font-size: clamp(1.8rem, 3.5vw, 2.7rem); line-height: 1.05; }
+  .sample-report-intro h2 em { color: var(--gold); }
+  .sample-report-intro > p:last-child { color: var(--bone-dim); line-height: 1.75; }
+  .sample-report { border: 1px solid var(--gold-deep); background: #f5f0e7; color: #26231f; box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18); }
+  .sample-report-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem 1.6rem 1.15rem; border-bottom: 1px solid #d8cdbb; background: linear-gradient(135deg, #faf7f0, #ece3d4); }
+  .sample-kicker { display: block; color: #8d6a34; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  .sample-report-head h3 { margin: 0.35rem 0 0.25rem; color: #2d2924; font-family: var(--font-display); font-size: 1.55rem; }
+  .sample-report-head p { margin: 0; color: #756b5d; font-size: 0.78rem; }
+  .sample-seal { display: grid; width: 3.2rem; height: 3.2rem; place-items: center; border: 2px double #a5473c; color: #8b2d23; font-size: 1.4rem; transform: rotate(-3deg); }
+  .sample-meta { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid #d8cdbb; }
+  .sample-meta > div { min-width: 0; padding: 0.75rem 0.8rem; border-right: 1px solid #d8cdbb; }
+  .sample-meta > div:last-child { border-right: 0; }
+  .sample-meta span { display: block; margin-bottom: 0.25rem; color: #817568; font-size: 0.56rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .sample-meta strong { display: block; color: #383128; font-size: 0.78rem; overflow-wrap: anywhere; }
+  .sample-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 1.2rem; padding: 1.35rem 1.6rem; }
+  .sample-subhead { display: flex; justify-content: space-between; margin-bottom: 0.75rem; color: #8d6a34; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .pillar-row { display: grid; grid-template-columns: repeat(4, 1fr); border-block: 1px solid #d8cdbb; }
+  .pillar-row > div { min-width: 0; padding: 0.65rem 0.4rem; text-align: center; border-right: 1px solid #d8cdbb; }
+  .pillar-row > div:last-child { border-right: 0; }
+  .pillar-row span, .pillar-row small { display: block; color: #817568; font-size: 0.58rem; }
+  .pillar-row strong { display: block; margin: 0.18rem 0; color: #8b2d23; font-family: var(--font-han); font-size: 1.3rem; }
+  .sample-verdict { margin-top: 1rem; padding: 0.75rem 0.85rem; border-left: 2px solid #c8a467; background: rgba(200, 164, 103, 0.12); }
+  .sample-verdict span, .sample-guidance span { display: block; color: #8d6a34; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .sample-verdict p { margin: 0.35rem 0 0; color: #53493d; font-size: 0.8rem; line-height: 1.65; }
+  .balance-row { margin-bottom: 0.65rem; }
+  .balance-row > div { display: flex; justify-content: space-between; color: #53493d; font-size: 0.72rem; }
+  .balance-row strong { color: #8d6a34; }
+  .balance-track { display: block; height: 0.36rem; margin-top: 0.28rem; overflow: hidden; background: #ded5c8; }
+  .balance-track i { display: block; width: var(--bar); height: 100%; background: var(--bar-color); }
+  .sample-excerpt { margin: 0 1.6rem; padding: 1.2rem 0 1.35rem; border-top: 1px solid #d8cdbb; }
+  .sample-excerpt h4 { margin: 0.4rem 0 0.45rem; color: #302a23; font-family: var(--font-display); font-size: 1.25rem; }
+  .sample-excerpt > p { margin: 0; color: #53493d; font-size: 0.82rem; line-height: 1.7; }
+  .sample-guidance { margin-top: 0.9rem; padding: 0.65rem 0.8rem; background: #ebe2d4; }
+  .sample-guidance strong { display: block; margin-top: 0.2rem; color: #473d32; font-size: 0.78rem; }
+  .sample-report-foot { padding: 0.7rem 1.6rem; border-top: 1px solid #d8cdbb; color: #817568; font-size: 0.65rem; }
   .blueprint-cta { display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 1.4rem; padding: 2rem; border: 1px solid var(--gold-deep); background: rgba(212, 175, 106, 0.08); }
   .blueprint-cta h2 { margin: 0.3rem 0 0.4rem; font-size: 1.6rem; }
   .blueprint-seal { float: left; margin-right: 1rem; color: var(--gold); font-size: 2.3rem; line-height: 1; }
@@ -206,6 +308,13 @@ const jsonLd = [
     .reading-steps article { padding: 0 0 1.6rem; border-right: 0; border-bottom: 1px solid var(--line-soft); }
     .reading-steps article:last-child { padding-bottom: 0; border-bottom: 0; }
     .report-grid { grid-template-columns: 1fr; }
+    .sample-report-wrap, .sample-grid { grid-template-columns: 1fr; }
+    .sample-report-head, .sample-grid, .sample-excerpt { padding-left: 1rem; padding-right: 1rem; }
+    .sample-meta { grid-template-columns: repeat(2, 1fr); }
+    .sample-meta > div:nth-child(2) { border-right: 0; }
+    .sample-meta > div:nth-child(-n+2) { border-bottom: 1px solid #d8cdbb; }
+    .sample-excerpt { margin-inline: 1rem; }
+    .sample-report-foot { padding-inline: 1rem; }
     .blueprint-cta { align-items: flex-start; flex-direction: column; }
     .method-grid { gap: 2rem; }
   }
