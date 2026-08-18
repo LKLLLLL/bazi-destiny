@@ -107,13 +107,16 @@ const faqs = [
         <h1 data-reveal style="--reveal-delay:.08s">
           Discover your<br /><em>BaZi</em> destiny
         </h1>
+      </div>
+      <div class="hero-side">
         <p class="hero-lead" data-reveal style="--reveal-delay:.16s">
-          The ancient Chinese Four Pillars of Destiny — translated into clear, powerful English.
-          Your birth chart, Five Elements reading, and love compatibility in seconds.
+          BaZi maps your birth date and time through the Five Elements and seasonal cycles. Explore
+          near-term outlooks, relationship compatibility, traditional palmistry, and names inspired by
+          Chinese classics.
         </p>
-        <div class="hero-ctas center" data-reveal style="--reveal-delay:.24s">
-          <a href="/tools.html" class="btn btn-gold">Explore Tools</a>
-        </div>
+      </div>
+      <div class="hero-actions hero-ctas" data-reveal style="--reveal-delay:.24s">
+        <a href="/tools.html" class="btn btn-gold btn-lg">Explore Tools</a>
       </div>
     </div>
     <div class="hero-scrollhint" aria-hidden="true">
@@ -122,17 +125,18 @@ const faqs = [
   </section>
 
   <!-- ================= HOW IT WORKS ================= -->
-  <section class="section">
+  <section class="section process-section">
     <div class="wrap">
       <div class="section-head center" data-reveal>
         <p class="eyebrow center"><span class="han">古法今译</span> The Process</p>
         <h2 class="section-title">Ancient tradition, <em>modern clarity</em></h2>
       </div>
-      <div class="steps-grid">
+      <div class="process-grid">
         {steps.map((s, i) => (
-          <article class="step-card card" data-reveal style={`--reveal-delay:${i * 0.09}s`}>
-            <span class="step-num">0{i + 1}</span>
-            <span class="step-han" aria-hidden="true">{s.han}</span>
+          <article class="process-step" data-reveal style={`--reveal-delay:${i * 0.09}s`}>
+            <div class="process-step-head">
+              <span class="process-han han" aria-hidden="true">{s.han}</span>
+            </div>
             <h3>{s.title}</h3>
             <p>{s.desc}</p>
           </article>
@@ -147,7 +151,7 @@ const faqs = [
       <div class="section-head center" data-reveal>
         <p class="eyebrow center"><span class="han">五行</span> The Five Elements</p>
         <h2 class="section-title">Your element <em>shapes your world</em></h2>
-        <p class="section-sub">Every chart is a unique balance of five energies, forever generating and tempering one another. Which one leads yours?</p>
+        <p class="section-sub">Each chart is a changing balance of Wood, Fire, Earth, Metal, and Water. The generating cycle shows how elements support one another; the controlling cycle shows where balance and restraint matter.</p>
       </div>
       <div class="elements-grid">
         <div class="elements-viz" data-reveal>
@@ -158,7 +162,7 @@ const faqs = [
         </div>
         <div class="elements-cards">
           {elements.map((el, i) => (
-            <article class="element-card card" data-reveal style={`--reveal-delay:${i * 0.07}s;--ec:${el.color}`}>
+            <article class="element-card" data-reveal style={`--reveal-delay:${i * 0.07}s;--ec:${el.color}`}>
               <span class="element-han han">{el.han}</span>
               <div>
                 <h3>{el.en}</h3>
@@ -243,7 +247,7 @@ const faqs = [
     display: flex;
     align-items: center;
     min-height: calc(100vh - 68px);
-    min-height: calc(100svh - 68px);
+    min-height: min(680px, calc(100svh - 120px));
     padding-top: calc(68px + clamp(2.5rem, 6vh, 4.5rem));
     padding-bottom: clamp(2.5rem, 5vh, 4rem);
     overflow: hidden;
@@ -251,19 +255,37 @@ const faqs = [
   .hero-armillary {
     position: absolute;
     top: 50%;
-    right: -6%;
-    width: clamp(26rem, 44vw, 40rem);
+    right: -10%;
+    width: clamp(24rem, 40vw, 36rem);
     transform: translateY(-52%);
-    opacity: 0.85;
+    opacity: 0.42;
     pointer-events: none;
   }
   .hero-grid {
     position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "copy side"
+      "actions side";
+    align-items: center;
+    column-gap: clamp(2rem, 5vw, 4.5rem);
+    row-gap: 2.2rem;
   }
+  .hero-copy {
+    grid-area: copy;
+    max-width: 44rem;
+    text-align: left;
+  }
+  .hero-side {
+    grid-area: side;
+    width: 100%;
+    max-width: 42ch;
+    align-self: center;
+    justify-self: start;
+    text-align: left;
+  }
+  .hero-actions { grid-area: actions; margin-top: 0; }
   .hero-eyebrow {
     display: inline-flex;
     align-items: center;
@@ -273,11 +295,7 @@ const faqs = [
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--gold);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 0.45rem 1.05rem;
-    background: rgba(212, 175, 106, 0.06);
-    margin-bottom: 1.6rem;
+    margin-bottom: 1.45rem;
   }
   .hero-eyebrow .han { letter-spacing: 0.3em; }
   .pulse-dot {
@@ -290,24 +308,32 @@ const faqs = [
   }
   @keyframes pulse { 50% { opacity: 0.35; } }
   .hero h1 {
-    font-size: clamp(2.7rem, 5.6vw, 4.6rem);
-    line-height: 1.04;
+    font-family: var(--font-body);
+    font-size: clamp(3.4rem, 6.5vw, 6rem);
+    line-height: 0.98;
     font-weight: 600;
+    letter-spacing: -0.055em;
   }
   .hero h1 em {
+    font-family: var(--font-display);
     font-style: italic;
+    letter-spacing: -0.025em;
     background: linear-gradient(115deg, var(--gold-bright) 20%, var(--gold) 60%, var(--gold-deep));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   .hero-lead {
-    margin-top: 1.4rem;
-    font-size: 1.08rem;
-    color: var(--bone-dim);
-    max-width: 46ch;
+    font-family: var(--font-display);
+    margin-top: 0;
+    font-size: clamp(1.25rem, 1.55vw, 1.5rem);
+    font-weight: 500;
+    line-height: 1.36;
+    color: var(--bone);
+    max-width: 42ch;
   }
   .hero-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 1.15rem; margin-top: 1.8rem; }
+  .hero-actions.hero-ctas { margin-top: 0; }
   .hero-ctas.center { justify-content: center; }
   .hero-scrollhint {
     position: absolute;
@@ -318,45 +344,64 @@ const faqs = [
   }
 
   @media (max-width: 1024px) {
-    .hero-armillary { width: clamp(20rem, 36vw, 30rem); right: -4%; }
+    .hero-armillary { width: clamp(20rem, 36vw, 30rem); right: -8%; }
   }
   @media (max-width: 900px) {
-    .hero-armillary { right: 50%; transform: translate(50%, -52%); opacity: 0.3; width: 90%; max-width: 32rem; }
+    .hero-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas: "copy" "side" "actions";
+      gap: 1.55rem;
+    }
+    .hero-copy { max-width: 40rem; margin-inline: auto; text-align: center; }
+    .hero-side { max-width: 40rem; margin-inline: auto; text-align: left; justify-self: stretch; }
+    .hero-side { align-self: auto; }
+    .hero-lead { max-width: 38ch; font-size: 1.15rem; line-height: 1.5; }
+    .hero-actions { justify-content: center; }
+    .hero-armillary { right: 50%; transform: translate(50%, -52%); opacity: 0.2; width: 90%; max-width: 32rem; }
     .hero-scrollhint { display: none; }
+  }
+  @media (max-width: 600px) {
+    .hero {
+      min-height: min(620px, calc(100svh - 170px));
+      padding-top: calc(68px + 2.4rem);
+      padding-bottom: 2rem;
+    }
+    .hero-grid { gap: 2rem; }
+    .hero-eyebrow { margin-bottom: 1.3rem; font-size: 0.7rem; }
+    .hero h1 { font-size: clamp(3rem, 13vw, 3.6rem); line-height: 0.94; }
+    .hero-lead { font-size: 1.2rem; line-height: 1.5; }
   }
   @media (min-width: 901px) {
     .hero-grid { transform: translateY(clamp(0.75rem, 3vh, 1.5rem)); }
   }
 
-  /* ---------- steps ---------- */
-  .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
-  @media (max-width: 1024px) { .steps-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 480px) { .steps-grid { grid-template-columns: 1fr; } }
-  .step-card { padding: 1.7rem 1.5rem; position: relative; overflow: hidden; }
-  .step-num {
-    position: absolute;
-    top: 0.9rem;
-    right: 1.1rem;
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 1.5rem;
-    color: rgba(212, 175, 106, 0.35);
+  /* ---------- process ---------- */
+  .process-section {
+    padding-block: clamp(4rem, 7vw, 6.25rem);
   }
-  .step-han {
+  .process-grid {
     display: grid;
-    place-items: center;
-    width: 3rem;
-    height: 3rem;
-    border-radius: var(--radius-s);
-    border: 1px solid var(--line);
-    background: rgba(212, 175, 106, 0.07);
-    color: var(--gold-bright);
-    font-family: var(--font-han);
-    font-size: 1.35rem;
-    margin-bottom: 1.15rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--line-soft);
+    border-bottom: 1px solid var(--line-soft);
   }
-  .step-card h3 { font-size: 1.22rem; margin-bottom: 0.5rem; }
-  .step-card p { font-size: 0.87rem; color: var(--bone-dim); }
+  .process-step { min-width: 0; padding: 1.35rem 1.25rem 1.55rem; }
+  .process-step + .process-step { border-left: 1px solid var(--line-soft); }
+  .process-step-head { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 1.1rem; }
+  .process-han { color: var(--gold-bright); font-size: 1.55rem; }
+  .process-step h3 { font-size: 1.12rem; margin-bottom: 0.45rem; }
+  .process-step p { color: var(--bone-dim); font-size: 0.84rem; line-height: 1.65; }
+  @media (max-width: 1024px) {
+    .process-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .process-step:nth-child(3), .process-step:nth-child(4) { border-top: 1px solid var(--line-soft); }
+    .process-step:nth-child(3) { border-left: 0; }
+  }
+  @media (max-width: 480px) {
+    .process-section { padding-block: 4rem; }
+    .process-grid { grid-template-columns: 1fr; }
+    .process-step + .process-step { border-left: 0; border-top: 1px solid var(--line-soft); }
+    .process-step:nth-child(3) { border-top: 1px solid var(--line-soft); }
+  }
 
   /* ---------- elements ---------- */
   .elements-grid {
@@ -366,14 +411,20 @@ const faqs = [
     align-items: center;
   }
   @media (max-width: 900px) { .elements-grid { grid-template-columns: 1fr; } }
+  .elements-viz :global(.wuxing) { max-width: 330px; }
   .cycle-note { text-align: center; margin-top: 1rem; font-size: 0.78rem; color: var(--bone-faint); }
-  .elements-cards { display: grid; gap: 0.75rem; }
+  .elements-cards { display: grid; gap: 0; border-block: 1px solid var(--line-soft); }
   .element-card {
     display: flex;
     align-items: center;
     gap: 1.1rem;
     padding: 1.05rem 1.3rem;
-    border-left: 2px solid var(--ec, var(--line));
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .element-card:last-child { border-bottom: 0; }
+  .element-card:hover { background: rgba(212, 175, 106, 0.03); }
+  .element-card .element-han { border-left: 2px solid var(--ec, var(--line)); }
+  .element-card .element-han { margin-left: -1.3rem; padding-left: 1.3rem; }
   }
   .element-han { font-size: 1.9rem; color: var(--ec); text-shadow: 0 0 18px color-mix(in srgb, var(--ec) 45%, transparent); width: 2.2rem; text-align: center; }
   .element-card h3 { font-size: 1.1rem; margin-bottom: 0.15rem; }
