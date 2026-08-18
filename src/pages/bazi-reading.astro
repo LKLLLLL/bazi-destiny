@@ -250,7 +250,7 @@ const jsonLd = [
   .reading-steps h2 { margin: 0.6rem 0 0.5rem; font-size: 1.35rem; }
   .reading-steps p, .report-grid p, .blueprint-cta p, .method-copy p, .faq-list p { color: var(--bone-dim); line-height: 1.75; }
   .report-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); }
-  .report-grid article { padding: 2rem; background: rgba(18, 20, 32, 0.78); }
+  .report-grid article { padding: 2rem; background: linear-gradient(160deg, var(--ink-2), var(--ink-1)); }
   .report-grid h3 { margin: 0.55rem 0 0.5rem; font-size: 1.35rem; }
   .sample-report-wrap { display: grid; grid-template-columns: minmax(180px, 0.55fr) minmax(0, 1.45fr); gap: 2rem; align-items: start; margin-top: clamp(3rem, 7vw, 5.5rem); }
   .sample-report-intro { padding-top: 1rem; }
@@ -262,7 +262,7 @@ const jsonLd = [
   .sample-kicker { display: block; color: #8d6a34; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
   .sample-report-head h3 { margin: 0.35rem 0 0.25rem; color: #2d2924; font-family: var(--font-display); font-size: 1.55rem; }
   .sample-report-head p { margin: 0; color: #756b5d; font-size: 0.78rem; }
-  .sample-seal { display: grid; width: 3.2rem; height: 3.2rem; place-items: center; border: 2px double #a5473c; color: #8b2d23; font-size: 1.4rem; transform: rotate(-3deg); }
+  .sample-seal { display: grid; flex: 0 0 3.2rem; width: 3.2rem; height: 3.2rem; box-sizing: border-box; place-items: center; border: 2px double #a5473c; color: #8b2d23; font-size: 1.05rem; line-height: 1; white-space: nowrap; transform: rotate(-3deg); }
   .sample-meta { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid #d8cdbb; }
   .sample-meta > div { min-width: 0; padding: 0.75rem 0.8rem; border-right: 1px solid #d8cdbb; }
   .sample-meta > div:last-child { border-right: 0; }
@@ -292,24 +292,30 @@ const jsonLd = [
   .blueprint-cta { display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 1.4rem; padding: 2rem; border: 1px solid var(--gold-deep); background: rgba(212, 175, 106, 0.08); }
   .blueprint-cta h2 { margin: 0.3rem 0 0.4rem; font-size: 1.6rem; }
   .blueprint-seal { float: left; margin-right: 1rem; color: var(--gold); font-size: 2.3rem; line-height: 1; }
-  .method-band { border-block: 1px solid var(--line-soft); background: rgba(10, 12, 21, 0.72); }
-  .method-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 4rem; padding-block: 4.5rem; }
-  .method-grid h2 { max-width: 14ch; font-size: clamp(2rem, 4vw, 3.2rem); }
+  .method-band { border-block: 1px solid #d4c7ae; background: #f0ede4; color: #2a2620; }
+  .method-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 4rem; padding-block: 4.5rem; }
+  .method-grid h2 { max-width: 22ch; color: #2a2620; font-size: clamp(2rem, 4vw, 3.2rem); text-wrap: balance; }
   .method-copy { display: grid; gap: 1rem; }
-  .method-copy a { color: var(--gold-bright); text-decoration: underline; text-underline-offset: 3px; }
+  .method-copy p { color: #5c554a; }
+  .method-copy a { color: #8b6914; text-decoration: underline; text-underline-offset: 3px; }
   .faq-section { padding-bottom: 1rem; }
   .faq-section h2 { margin: 0.6rem 0 1.5rem; font-size: 2rem; }
   .faq-list { border-top: 1px solid var(--line-soft); }
   .faq-list details { border-bottom: 1px solid var(--line-soft); padding: 1rem 0; }
   .faq-list summary { cursor: pointer; font-weight: 600; color: var(--bone); }
   .faq-list p { margin: 0.8rem 0 0; }
+  @media (prefers-color-scheme: light) {
+    .report-grid article { background: linear-gradient(160deg, #f6f2e9, #ebe6da); }
+  }
   @media (max-width: 760px) {
     .reading-steps, .method-grid { grid-template-columns: 1fr; gap: 1.6rem; }
     .reading-steps article { padding: 0 0 1.6rem; border-right: 0; border-bottom: 1px solid var(--line-soft); }
     .reading-steps article:last-child { padding-bottom: 0; border-bottom: 0; }
     .report-grid { grid-template-columns: 1fr; }
     .sample-report-wrap, .sample-grid { grid-template-columns: 1fr; }
+    .sample-report-head { align-items: flex-start; }
     .sample-report-head, .sample-grid, .sample-excerpt { padding-left: 1rem; padding-right: 1rem; }
+    .sample-seal { flex-basis: 2.8rem; width: 2.8rem; height: 2.8rem; font-size: 0.95rem; }
     .sample-meta { grid-template-columns: repeat(2, 1fr); }
     .sample-meta > div:nth-child(2) { border-right: 0; }
     .sample-meta > div:nth-child(-n+2) { border-bottom: 1px solid #d8cdbb; }
