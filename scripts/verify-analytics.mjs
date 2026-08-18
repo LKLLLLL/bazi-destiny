@@ -3,10 +3,10 @@ import fs from 'node:fs';
 const measurementId = 'G-LSKG39NRGF';
 const requiredByFile = new Map([
   ['src/layouts/Base.astro', [measurementId]],
-  ['src/components/ChineseNameGenerator.astro', ['generate_chinese_name']],
-  ['src/components/StepCalculator.astro', ['generate_bazi_chart']],
-  ['src/pages/love-match-result.astro', ['generate_love_match']],
-  ['src/components/PaymentModal.astro', ['click_payment', 'begin_checkout']],
+  ['src/components/ChineseNameGenerator.astro', ['generate_chinese_name', 'view_paywall', 'checkout_cancel']],
+  ['src/components/StepCalculator.astro', ['generate_bazi_chart', 'view_paywall', 'checkout_cancel']],
+  ['src/pages/love-match-result.astro', ['generate_love_match', 'view_offer', 'checkout_cancel']],
+  ['src/components/PaymentModal.astro', ['click_payment', 'begin_checkout', 'view_paywall', 'checkout_error']],
   ['src/pages/success.astro', ['purchase']],
 ]);
 
@@ -28,4 +28,5 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Analytics audit passed: ${measurementId} and 6 funnel events verified.`);
+const requiredEventCount = new Set([...requiredByFile.values()].flat()).size;
+console.log(`Analytics audit passed: ${measurementId} and ${requiredEventCount} funnel events verified.`);

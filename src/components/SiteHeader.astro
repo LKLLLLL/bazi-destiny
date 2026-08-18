@@ -10,6 +10,9 @@ interface Props {
 const { lang, altUrl } = Astro.props;
 const langToggleUrl = altUrl ?? (lang === 'en' ? '/zh' : '/');
 const homeUrl = lang === 'zh' ? '/zh' : '/';
+const targetLang = lang === 'en' ? 'zh-CN' : 'en';
+const targetHreflang = lang === 'en' ? 'zh-Hans' : 'en';
+const langToggleLabel = lang === 'en' ? '切换到中文' : 'Switch to English';
 ---
 
 <header class="site-header" id="siteHeader">
@@ -25,11 +28,17 @@ const homeUrl = lang === 'zh' ? '/zh' : '/';
           <a href="/">Home</a>
           <a href="/chinese-name.html">My Chinese Name</a>
           <div class="nav-drop">
-            <a href="/love-match.html" class="nav-drop-toggle">
+            <a
+              href="/love-match.html"
+              class="nav-drop-toggle"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="loveMatchMenu"
+            >
               Love Match
-              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l4 4 4-4"/></svg>
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
             </a>
-            <div class="nav-drop-menu">
+            <div class="nav-drop-menu" id="loveMatchMenu">
               <a href="/love-match.html"><span class="drop-ico love">💕</span> Love Match</a>
               <a href="/leaderboard.html"><span class="drop-ico">🏆</span> Leaderboard</a>
             </div>
@@ -49,7 +58,7 @@ const homeUrl = lang === 'zh' ? '/zh' : '/';
           <a href="/zh/faq.html">常见问题</a>
         </>
       )}
-      <a href={langToggleUrl} class="lang-toggle">{lang === 'en' ? '中文' : 'English'}</a>
+      <a href={langToggleUrl} class="lang-toggle" lang={targetLang} hreflang={targetHreflang} aria-label={langToggleLabel}>{lang === 'en' ? '中文' : 'English'}</a>
       <a href={lang === 'zh' ? '/zh/calculator.html' : '/calculator.html'} class="btn btn-gold btn-nav">{lang === 'en' ? 'Free Reading' : '免费排盘'}</a>
     </nav>
 
@@ -84,7 +93,7 @@ const homeUrl = lang === 'zh' ? '/zh' : '/';
       </>
     )}
     <div class="m-row">
-      <a href={langToggleUrl} class="btn btn-ghost">{lang === 'en' ? '中文版本' : 'English'}</a>
+      <a href={langToggleUrl} class="btn btn-ghost" lang={targetLang} hreflang={targetHreflang} aria-label={langToggleLabel}>{lang === 'en' ? '中文版本' : 'English'}</a>
       <a href={lang === 'zh' ? '/zh/calculator.html' : '/calculator.html'} class="btn btn-gold">{lang === 'en' ? 'Free Reading' : '免费排盘'}</a>
     </div>
   </nav>
@@ -331,6 +340,18 @@ const homeUrl = lang === 'zh' ? '/zh' : '/';
   const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 30);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
+
+  const navDrop = document.querySelector<HTMLElement>('.nav-drop');
+  const navDropToggle = navDrop?.querySelector<HTMLElement>('.nav-drop-toggle');
+  const setNavDropExpanded = (expanded: boolean) => {
+    navDropToggle?.setAttribute('aria-expanded', String(expanded));
+  };
+  navDrop?.addEventListener('pointerenter', () => setNavDropExpanded(true));
+  navDrop?.addEventListener('pointerleave', () => setNavDropExpanded(false));
+  navDrop?.addEventListener('focusin', () => setNavDropExpanded(true));
+  navDrop?.addEventListener('focusout', (event) => {
+    if (!navDrop.contains(event.relatedTarget as Node | null)) setNavDropExpanded(false);
+  });
 
   const btn = document.getElementById('menuBtn');
   const menu = document.getElementById('mobileMenu');

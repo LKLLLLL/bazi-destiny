@@ -301,6 +301,13 @@
     if (isUnlocked('naming')) {
       nameVerdict.classList.remove('is-locked');
       nameVerdict.innerHTML = unlockedVerdictHtml(generated);
+    } else {
+      trackEvent('view_paywall', {
+        product_tier: 'naming',
+        currency: 'USD',
+        value: 1.99,
+        page_path: window.location.pathname,
+      });
     }
 
     trackEvent('generate_chinese_name', {
@@ -340,7 +347,15 @@
     const completed = params.get('checkout') === 'complete';
     const cancelled = params.get('payment') === 'cancel';
     if (!completed && !cancelled) return;
+    if (cancelled) {
+      trackEvent('checkout_cancel', {
+        product_tier: 'naming',
+        currency: 'USD',
+        value: 1.99,
+      });
+    }
     const pending = readPendingCheckout('naming') as Partial<NameFormState> | null;
+    if (cancelled) clearPendingCheckout();
     if (!pending?.birthDate || !['neutral', 'feminine', 'masculine'].includes(String(pending.gender))) return;
     const state: NameFormState = {
       birthDate: String(pending.birthDate),

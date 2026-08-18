@@ -21,6 +21,7 @@ export const GET: APIRoute = async () => {
 
   const urls: { loc: string; alt?: string; priority: string; changefreq: string; lastmod?: string }[] = [
     { loc: '/', alt: '/zh', priority: '1.0', changefreq: 'weekly', lastmod: LAST_BUILD },
+    { loc: '/tools.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/calculator.html', alt: '/zh/calculator.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/bazi-reading.html', alt: '/zh/bazi-reading.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },
     { loc: '/chinese-name.html', priority: '0.9', changefreq: 'monthly', lastmod: LAST_BUILD },

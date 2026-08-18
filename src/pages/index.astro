@@ -111,6 +111,9 @@ const faqs = [
           The ancient Chinese Four Pillars of Destiny — translated into clear, powerful English.
           Your birth chart, Five Elements reading, and love compatibility in seconds.
         </p>
+        <div class="hero-ctas center" data-reveal style="--reveal-delay:.24s">
+          <a href="/tools.html" class="btn btn-gold">Explore Tools</a>
+        </div>
       </div>
     </div>
     <div class="hero-scrollhint" aria-hidden="true">
@@ -118,44 +121,11 @@ const faqs = [
     </div>
   </section>
 
-  <!-- ================= FREE TOOLS ================= -->
-  <section class="section tool-hub">
-    <div class="wrap">
-      <div class="section-head center" data-reveal>
-        <p class="eyebrow center"><span class="han">四门</span> Explore</p>
-        <h2 class="section-title">Four ways to begin</h2>
-        <p class="section-sub">Start with the question that brought you here. Every tool is free.</p>
-      </div>
-      <div class="tool-grid">
-        <a href="/calculator.html" class="tool-card card" data-reveal>
-          <span class="tool-han han" aria-hidden="true">命</span>
-          <div><h3>Free BaZi Calculator</h3><p>Four Pillars chart, Day Master, Five Elements, and a clear free analysis.</p></div>
-          <span class="tool-arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="/chinese-name.html" class="tool-card card" data-reveal style="--reveal-delay:.08s">
-          <span class="tool-han han" aria-hidden="true">名</span>
-          <div><h3>Chinese Given Name</h3><p>A meaningful name drawn from your birth season and classical culture.</p></div>
-          <span class="tool-arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="/love-match.html" class="tool-card card" data-reveal style="--reveal-delay:.16s">
-          <span class="tool-han han" aria-hidden="true">缘</span>
-          <div><h3>Love Match</h3><p>Compare two birth charts for elemental harmony and relationship insight.</p></div>
-          <span class="tool-arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="/palm-reading.html" class="tool-card card" data-reveal style="--reveal-delay:.24s">
-          <span class="tool-han han" aria-hidden="true">掌</span>
-          <div><h3>Palm Reading</h3><p>Explore visible palm lines through a private, traditional Chinese palmistry reference.</p></div>
-          <span class="tool-arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
   <!-- ================= HOW IT WORKS ================= -->
   <section class="section">
     <div class="wrap">
-      <div class="section-head" data-reveal>
-        <p class="eyebrow"><span class="han">古法今译</span> The Process</p>
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow center"><span class="han">古法今译</span> The Process</p>
         <h2 class="section-title">Ancient tradition, <em>modern clarity</em></h2>
       </div>
       <div class="steps-grid">
@@ -241,7 +211,7 @@ const faqs = [
           <details class="faq-item">
             <summary>
               {f.q}
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 1v12M1 7h12"/></svg>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M7 1v12M1 7h12"/></svg>
             </summary>
             <p>{f.a}</p>
           </details>
@@ -270,8 +240,8 @@ const faqs = [
   /* ---------- hero ---------- */
   .hero {
     position: relative;
-    padding-top: calc(68px + clamp(3rem, 8vh, 6rem));
-    padding-bottom: clamp(3rem, 7vh, 5.5rem);
+    padding-top: calc(68px + clamp(2.5rem, 6vh, 4.5rem));
+    padding-bottom: clamp(2.5rem, 5vh, 4rem);
     overflow: hidden;
   }
   .hero-armillary {
@@ -333,20 +303,8 @@ const faqs = [
     color: var(--bone-dim);
     max-width: 46ch;
   }
-  .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 2.2rem; }
+  .hero-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 1.15rem; margin-top: 1.8rem; }
   .hero-ctas.center { justify-content: center; }
-  /* ---------- free tools ---------- */
-  .tool-hub { border-top: 1px solid var(--line-soft); }
-  .tool-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
-  .tool-card { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; min-width: 0; padding: 1.35rem; color: var(--bone); }
-  .tool-card:hover { color: var(--bone); border-color: var(--line-strong); transform: translateY(-3px); }
-  .tool-han { display: grid; width: 3rem; height: 3rem; place-items: center; border: 1px solid var(--line-strong); border-radius: var(--radius-s); color: var(--gold); font-size: 1.45rem; }
-  .tool-card h3 { font-size: 1.2rem; }
-  .tool-card p { margin-top: 0.3rem; color: var(--bone-dim); font-size: 0.8rem; line-height: 1.55; }
-  .tool-arrow { color: var(--gold); font-size: 1.2rem; transition: transform .25s var(--ease-out); }
-  .tool-card:hover .tool-arrow { transform: translateX(3px); }
-  @media (max-width: 1024px) { .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 640px) { .tool-grid { grid-template-columns: 1fr; } }
   .hero-scrollhint {
     position: absolute;
     left: clamp(0.8rem, 3vw, 2.2rem);

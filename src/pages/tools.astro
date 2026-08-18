@@ -1,0 +1,219 @@
+---
+import Base from '../layouts/Base.astro';
+import Armillary from '../components/Armillary.astro';
+import { SITE_URL } from '../lib/brand';
+
+const tools = [
+  {
+    han: '命',
+    label: 'Birth chart',
+    title: 'Free BaZi Calculator',
+    description: 'Calculate your Four Pillars, Day Master, Five Elements balance, and a clear introductory reading from your birth details.',
+    href: '/calculator.html',
+    action: 'Calculate my chart',
+  },
+  {
+    han: '名',
+    label: 'Chinese name',
+    title: 'Chinese Given Name',
+    description: 'Find a meaningful Chinese given name inspired by your birth season, Five Elements context, and classical cultural sources.',
+    href: '/chinese-name.html',
+    action: 'Find my name',
+  },
+  {
+    han: '缘',
+    label: 'Relationships',
+    title: 'Love Match',
+    description: 'Compare two birth charts through Day Pillars, Five Elements, and traditional compatibility patterns.',
+    href: '/love-match.html',
+    action: 'Compare two charts',
+  },
+  {
+    han: '掌',
+    label: 'Palmistry',
+    title: 'Palm Reading',
+    description: 'Explore visible palm lines through a private photo-based tool and a traditional Chinese palmistry reference.',
+    href: '/palm-reading.html',
+    action: 'Read my palm',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Four ways to begin with MyBaziDestiny',
+    itemListElement: tools.map((tool, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: tool.title,
+      url: `${SITE_URL}${tool.href}`,
+    })),
+  },
+];
+---
+
+<Base
+  title="Four BaZi Tools to Begin Your Reading | MyBaziDestiny"
+  description="Choose how to begin with MyBaziDestiny: calculate your Four Pillars, find a Chinese name, compare love compatibility, or explore your palm lines."
+  keywords="BaZi tools, Four Pillars calculator, Chinese name generator, love compatibility, palm reading"
+  path="/tools.html"
+  jsonLd={jsonLd}
+>
+  <section class="start-page">
+    <div class="start-armillary" aria-hidden="true"><Armillary /></div>
+    <div class="wrap start-inner">
+      <header class="start-head" data-reveal>
+        <p class="eyebrow center"><span class="han">四门</span> Choose a Tool</p>
+        <h1>Four ways to begin</h1>
+        <p>Start with the question that brought you here. Each tool offers a free first step, with no account required.</p>
+      </header>
+
+      <div class="start-grid">
+        {tools.map((tool, index) => (
+          <a
+            href={tool.href}
+            class="start-card card"
+            data-reveal
+            style={`--reveal-delay:${index * 0.08}s`}
+          >
+            <div class="start-card-top">
+              <span class="start-han han" aria-hidden="true">{tool.han}</span>
+              <span class="start-index" aria-hidden="true">0{index + 1}</span>
+            </div>
+            <p class="start-label">{tool.label}</p>
+            <h2>{tool.title}</h2>
+            <p class="start-description">{tool.description}</p>
+            <span class="start-action">{tool.action} <span aria-hidden="true">→</span></span>
+          </a>
+        ))}
+      </div>
+
+      <p class="start-note" data-reveal>
+        These tools present traditional interpretive frameworks for cultural exploration. They are not medical, legal, financial, or scientific predictions.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .start-page {
+    position: relative;
+    min-height: 100vh;
+    padding-top: calc(68px + clamp(3rem, 7vh, 5rem));
+    padding-bottom: clamp(4rem, 8vh, 6rem);
+    overflow: hidden;
+  }
+  .start-armillary {
+    position: absolute;
+    top: 7rem;
+    right: -10rem;
+    width: clamp(28rem, 46vw, 44rem);
+    opacity: 0.22;
+    pointer-events: none;
+  }
+  .start-inner { position: relative; }
+  .start-head {
+    max-width: 44rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .start-head .eyebrow { justify-content: center; }
+  .start-head h1 {
+    margin-top: 1rem;
+    font-size: clamp(2.8rem, 6vw, 4.8rem);
+    line-height: 1;
+  }
+  .start-head > p:last-child {
+    max-width: 38rem;
+    margin: 1.1rem auto 0;
+    color: var(--bone-dim);
+    font-size: 1.03rem;
+  }
+  .start-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: clamp(2.5rem, 5vh, 3.5rem);
+  }
+  .start-card {
+    display: flex;
+    min-width: 0;
+    min-height: 19rem;
+    flex-direction: column;
+    padding: 1.5rem;
+    color: var(--bone);
+  }
+  .start-card:hover {
+    color: var(--bone);
+    border-color: var(--line-strong);
+    transform: translateY(-4px);
+  }
+  .start-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .start-han {
+    display: grid;
+    width: 3.25rem;
+    height: 3.25rem;
+    place-items: center;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-s);
+    color: var(--gold);
+    font-size: 1.55rem;
+  }
+  .start-index {
+    color: rgba(212, 175, 106, 0.38);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-style: italic;
+  }
+  .start-label {
+    margin-top: 1.5rem;
+    color: var(--gold);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .start-card h2 { margin-top: 0.35rem; font-size: 1.5rem; }
+  .start-description {
+    margin-top: 0.75rem;
+    color: var(--bone-dim);
+    font-size: 0.86rem;
+    line-height: 1.65;
+  }
+  .start-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: auto;
+    padding-top: 1.4rem;
+    color: var(--gold);
+    font-size: 0.83rem;
+    font-weight: 600;
+  }
+  .start-action span { transition: transform 0.25s var(--ease-out); }
+  .start-card:hover .start-action span { transform: translateX(3px); }
+  .start-note {
+    max-width: 48rem;
+    margin: 1.8rem auto 0;
+    color: var(--bone-faint);
+    font-size: 0.76rem;
+    text-align: center;
+  }
+  @media (max-width: 1024px) {
+    .start-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .start-card { min-height: 17rem; }
+  }
+  @media (max-width: 640px) {
+    .start-page { padding-top: calc(68px + 2.5rem); }
+    .start-armillary { top: 5rem; right: 50%; width: 32rem; transform: translateX(50%); opacity: 0.15; }
+    .start-head h1 { font-size: 2.75rem; }
+    .start-grid { grid-template-columns: 1fr; }
+    .start-card { min-height: 15.5rem; }
+  }
+</style>

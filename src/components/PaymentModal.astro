@@ -177,8 +177,8 @@
     },
     synergy: {
       title: 'Unlock Synergy Boost Guide',
-      desc: '',
-      price: '',
+      desc: 'A practical five-part relationship guide for communication, shared routines, home energy, and conflict repair — based on the match you just calculated.',
+      price: '$4.90 <small>one-time</small>',
       features: [
         '✓ Morning Ritual — daily sync practice',
         '✓ Communication Style — speak each other\'s language',
@@ -244,6 +244,12 @@
     if (modal) {
       lockPage();
       modal.hidden = false;
+      trackEvent('view_paywall', {
+        product_tier: tier,
+        currency: 'USD',
+        value: Number(PAYPAL_PRODUCTS[tier].price),
+        page_path: window.location.pathname,
+      });
       requestAnimationFrame(() => document.getElementById('modalClose')?.focus());
     }
   }
@@ -265,10 +271,13 @@
       product_tier: selectedTier,
       currency: 'USD',
       value,
+      page_path: window.location.pathname,
     });
     trackEvent('begin_checkout', {
+      product_tier: selectedTier,
       currency: 'USD',
       value,
+      page_path: window.location.pathname,
       items: [item],
     });
     checkoutBtn.disabled = true;
@@ -277,6 +286,12 @@
     try {
       await startCheckout(selectedTier, pendingReading);
     } catch (error) {
+      trackEvent('checkout_error', {
+        product_tier: selectedTier,
+        currency: 'USD',
+        value,
+        error_message: error instanceof Error ? error.message : 'Checkout is temporarily unavailable.',
+      });
       checkoutBtn.disabled = false;
       checkoutBtn.textContent = `💳 ${COPY[selectedTier].btn}`;
       if (checkoutNote) checkoutNote.textContent = error instanceof Error ? error.message : 'Checkout is temporarily unavailable.';
