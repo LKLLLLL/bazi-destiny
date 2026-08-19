@@ -159,7 +159,7 @@ const jsonLd = [
     </div>
     <div class="offer-compare" aria-label="Free chart and Life Blueprint comparison">
       <article><span class="compare-label">Included free</span><h3>BaZi chart foundation</h3><ul><li>Four Pillars and Eight Characters</li><li>Day Master and Five Elements balance</li><li>Initial personality themes</li><li>Favorable directions</li></ul><a class="btn btn-ghost" href="/calculator.html?from=bazi-reading">Get the Free Chart</a></article>
-      <article class="compare-paid"><span class="compare-label">Optional one-time upgrade</span><h3>Life Blueprint · $9.90</h3><ul><li>Everything in the free chart</li><li>All 12 personalized chapters</li><li>Career, wealth, relationships, and daily guidance</li><li>Print-ready PDF access</li></ul><a class="btn btn-gold" href="/calculator.html?from=bazi-reading">Start with Free, Then Unlock</a></article>
+      <article class="compare-paid"><span class="compare-label">Optional one-time upgrade</span><h3>Life Blueprint · $9.90</h3><ul><li>Everything in the free chart</li><li>All 12 personalized chapters</li><li>Career, wealth, relationships, and daily guidance</li><li>Print-ready PDF access</li></ul><p class="chapter-list-label">Complete 12-chapter PDF includes:</p><ol class="chapter-list" aria-label="Life Blueprint chapter titles">{blueprintChapters.map(([number, title]) => <li><span>{number}</span>{title}</li>)}</ol><a class="btn btn-gold" href="/calculator.html?from=bazi-reading">Start with Free, Then Unlock</a></article>
     </div>
     <div class="sample-report-wrap">
       <div class="sample-preview-banner" role="note">
@@ -299,6 +299,11 @@ const jsonLd = [
   .offer-compare li { position: relative; padding-left: 1.1rem; }
   .offer-compare li::before { position: absolute; left: 0; color: var(--gold); content: '✓'; }
   .offer-compare .btn { align-self: flex-start; margin-top: auto; }
+  .chapter-list-label { margin: 0 0 0.55rem; color: var(--bone); font-size: 0.78rem; font-weight: 700; }
+  .chapter-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.3rem 1rem; margin: 0 0 1.25rem; padding: 0; list-style: none; color: var(--bone-dim); font-size: 0.76rem; line-height: 1.45; }
+  .chapter-list li { display: flex; gap: 0.45rem; min-width: 0; padding: 0; }
+  .chapter-list li::before { content: none; }
+  .chapter-list li span { flex: 0 0 auto; color: var(--gold); font-variant-numeric: tabular-nums; }
   .sample-report-wrap { display: grid; grid-template-columns: minmax(180px, 0.55fr) minmax(0, 1.45fr); gap: 2rem; align-items: start; margin-top: clamp(3rem, 7vw, 5.5rem); }
   .sample-preview-banner { grid-column: 1 / -1; display: grid; gap: 0.25rem; padding: 1.1rem 1.3rem; border: 2px solid var(--gold); background: linear-gradient(105deg, rgba(212, 175, 106, 0.2), rgba(212, 175, 106, 0.07)); color: var(--bone); }
   .sample-preview-banner strong { font-size: clamp(1.05rem, 2vw, 1.35rem); line-height: 1.3; }
@@ -367,6 +372,8 @@ const jsonLd = [
     .offer-compare article { background: #f6f2e9; border-color: #d4c7ae; }
     .offer-compare .compare-paid { background: #f4ead6; border-color: #c8a467; }
     .offer-compare ul { color: #5c554a; }
+    .chapter-list-label { color: #2a2620; }
+    .chapter-list { color: #5c554a; }
     .sample-disclaimer { background: #f4ead6; color: #5c554a; }
     .sample-disclaimer strong { color: #2a2620; }
   }
@@ -378,6 +385,7 @@ const jsonLd = [
     .reading-steps article:last-child { padding-bottom: 0; border-bottom: 0; }
     .report-grid { grid-template-columns: 1fr; }
     .offer-compare { grid-template-columns: 1fr; }
+    .chapter-list { grid-template-columns: 1fr; }
     .sample-report-wrap, .sample-grid { grid-template-columns: 1fr; }
     .sample-report-head { align-items: flex-start; }
     .sample-report-head, .sample-grid, .sample-excerpt { padding-left: 1rem; padding-right: 1rem; }
