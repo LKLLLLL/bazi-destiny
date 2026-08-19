@@ -32,6 +32,21 @@ const faqs = [
   },
 ];
 
+const blueprintChapters = [
+  ['01', 'Core chart reading', 'Day Master, chart balance, seasonal context, and the pattern at the center of your reading.'],
+  ['02', 'Career and vocation', 'Strengths to develop, working environments that fit your pattern, and practical next moves.'],
+  ['03', 'Wealth and resources', 'How your chart approaches opportunity, risk, savings, and sustainable momentum.'],
+  ['04', 'Relationships', 'Communication tendencies, partnership needs, and growth areas suggested by your elements.'],
+  ['05', 'Health and vitality', 'Traditional wellbeing themes and habits to discuss with qualified professionals.'],
+  ['06', 'Daily alignment', 'Guidance for colors, directions, routines, conduct, and personal habits.'],
+  ['07', 'Favorable elements', 'The elements that traditionally support balance, clarity, and useful action.'],
+  ['08', 'Timing and cycles', 'A practical way to read changing seasons and longer cycles through your chart.'],
+  ['09', 'What to wear', 'Color and material suggestions translated into simple everyday choices.'],
+  ['10', 'What to carry', 'Small symbolic and practical cues for keeping your intentions visible.'],
+  ['11', 'Home and environment', 'Living-space directions and atmosphere ideas aligned with your chart.'],
+  ['12', 'Personal action plan', 'A concise set of prompts that turns the reading into decisions you can revisit.'],
+] as const;
+
 const jsonLd = [
   {
     '@context': 'https://schema.org',
@@ -101,6 +116,7 @@ const jsonLd = [
       <a class="btn btn-ghost btn-lg" href="#life-blueprint">See What Is Included</a>
     </div>
     <p class="hero-note">No sign-up required · Calculated in your browser · No subscription</p>
+    <div class="privacy-note"><span aria-hidden="true">⌁</span><div><strong>Your birth data stays on your device</strong><span>Calculations run locally in your browser. We do not upload or store your birth details.</span></div></div>
   </header>
 
   <section class="reading-band" aria-label="Reading path">
@@ -108,17 +124,17 @@ const jsonLd = [
       <article>
         <span>01</span>
         <h2>Calculate</h2>
-        <p>Enter your birth date, time, and city. The calculator follows the solar-term boundaries used in traditional BaZi practice.</p>
+        <p><b>Free</b> · Enter your birth date, time, and city. The calculator follows the solar-term boundaries used in traditional BaZi practice.</p>
       </article>
       <article>
         <span>02</span>
         <h2>Understand</h2>
-        <p>See the Eight Characters, Day Master, Five Elements balance, and an initial reading immediately for free.</p>
+        <p><b>Free result</b> · See the Eight Characters, Day Master, Five Elements balance, and an initial reading immediately.</p>
       </article>
       <article>
         <span>03</span>
         <h2>Go deeper</h2>
-        <p>Unlock the optional Life Blueprint when you want a longer, more practical interpretation organized around your own chart.</p>
+        <p><b>Optional $9.90</b> · Unlock the 12-chapter Life Blueprint when you want a longer, practical interpretation.</p>
       </article>
     </div>
   </section>
@@ -129,22 +145,25 @@ const jsonLd = [
       <h2 class="section-title">A report that goes beyond a <em>single lucky element</em></h2>
       <p class="section-sub">The free result gives you the chart and its foundation. The optional report organizes that foundation into decisions you can actually revisit.</p>
     </div>
-    <div class="report-grid">
-      <article><span class="report-index">01</span><h3>Core chart reading</h3><p>Day Master, chart balance, seasonal context, and the traditional pattern that gives your reading its center of gravity.</p></article>
-      <article><span class="report-index">02</span><h3>Career and wealth</h3><p>Strengths to develop, working environments that fit your pattern, and practical ways to handle momentum and risk.</p></article>
-      <article><span class="report-index">03</span><h3>Relationships</h3><p>Communication tendencies, partnership needs, and the growth areas suggested by your elemental dynamics.</p></article>
-      <article><span class="report-index">04</span><h3>Daily alignment</h3><p>Traditional guidance for colors, directions, routines, conduct, and personal habits that keep the reading useful after you close the page.</p></article>
+    <div class="report-grid" aria-label="All twelve Life Blueprint chapters">
+      {blueprintChapters.map(([number, title, description]) => (
+        <article><span class="report-index">{number}</span><h3>{title}</h3><p>{description}</p></article>
+      ))}
+    </div>
+    <div class="offer-compare" aria-label="Free chart and Life Blueprint comparison">
+      <article><span class="compare-label">Included free</span><h3>BaZi chart foundation</h3><ul><li>Four Pillars and Eight Characters</li><li>Day Master and Five Elements balance</li><li>Initial personality themes</li><li>Favorable directions</li></ul><a class="btn btn-ghost" href="/calculator.html?from=bazi-reading">Get the Free Chart</a></article>
+      <article class="compare-paid"><span class="compare-label">Optional one-time upgrade</span><h3>Life Blueprint · $9.90</h3><ul><li>Everything in the free chart</li><li>All 12 personalized chapters</li><li>Career, wealth, relationships, and daily guidance</li><li>Print-ready PDF access</li></ul><a class="btn btn-gold" href="/calculator.html?from=bazi-reading">Start with Free, Then Unlock</a></article>
     </div>
     <div class="sample-report-wrap">
       <div class="sample-report-intro">
         <p class="eyebrow"><span class="han">一览</span> A look inside</p>
         <h2 id="sample-report-title">See the report before you <em>unlock it</em></h2>
-        <p>This fictional example shows the structure, level of detail, and practical tone of a Life Blueprint. Your report uses your own chart instead.</p>
+        <div class="sample-disclaimer"><strong>Fictional preview — not your result</strong><span>This is one illustrative excerpt from a 12-chapter report. Your Life Blueprint is generated from your own birth details.</span></div>
       </div>
       <article class="sample-report" aria-labelledby="sample-report-title">
         <header class="sample-report-head">
           <div>
-            <span class="sample-kicker">Illustrative profile · Fictional data</span>
+            <span class="sample-kicker">Illustrative profile · Fictional data · Chapter 04 of 12</span>
             <h3>Personal BaZi Dossier</h3>
             <p>Four Pillars · Day Master · Five-Element balance</p>
           </div>
@@ -242,6 +261,10 @@ const jsonLd = [
   .hero-copy { max-width: 62ch; margin: 0 auto; color: var(--bone-dim); font-size: 1.08rem; line-height: 1.8; }
   .hero-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.8rem; }
   .hero-note { margin-top: 1.1rem; color: var(--bone-faint); font-size: 0.8rem; }
+  .privacy-note { display: inline-flex; align-items: flex-start; gap: 0.7rem; max-width: 38rem; margin: 1.25rem auto 0; padding: 0.85rem 1rem; border: 1px solid rgba(212, 175, 106, 0.35); background: rgba(212, 175, 106, 0.08); text-align: left; color: var(--bone-dim); font-size: 0.78rem; line-height: 1.5; }
+  .privacy-note > span { color: var(--gold); font-size: 1.35rem; line-height: 1; }
+  .privacy-note strong, .privacy-note span span { display: block; }
+  .privacy-note strong { color: var(--bone); font-size: 0.82rem; }
   .reading-band { border-block: 1px solid var(--line-soft); background: rgba(212, 175, 106, 0.05); }
   .reading-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; padding-block: 3rem; }
   .reading-steps article { padding-right: 2rem; border-right: 1px solid var(--line-soft); }
@@ -252,11 +275,22 @@ const jsonLd = [
   .report-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); }
   .report-grid article { padding: 2rem; background: linear-gradient(160deg, var(--ink-2), var(--ink-1)); }
   .report-grid h3 { margin: 0.55rem 0 0.5rem; font-size: 1.35rem; }
+  .offer-compare { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1.4rem; }
+  .offer-compare article { display: flex; flex-direction: column; padding: 1.6rem; border: 1px solid var(--line-soft); background: var(--ink-2); }
+  .offer-compare .compare-paid { border-color: var(--gold-deep); background: linear-gradient(145deg, rgba(212, 175, 106, 0.14), rgba(212, 175, 106, 0.04)); }
+  .compare-label { color: var(--gold); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  .offer-compare h3 { margin: 0.45rem 0 0.7rem; font-size: 1.35rem; }
+  .offer-compare ul { display: grid; gap: 0.45rem; margin: 0 0 1.25rem; padding: 0; list-style: none; color: var(--bone-dim); line-height: 1.5; }
+  .offer-compare li { position: relative; padding-left: 1.1rem; }
+  .offer-compare li::before { position: absolute; left: 0; color: var(--gold); content: '✓'; }
+  .offer-compare .btn { align-self: flex-start; margin-top: auto; }
   .sample-report-wrap { display: grid; grid-template-columns: minmax(180px, 0.55fr) minmax(0, 1.45fr); gap: 2rem; align-items: start; margin-top: clamp(3rem, 7vw, 5.5rem); }
   .sample-report-intro { padding-top: 1rem; }
   .sample-report-intro h2 { margin: 0.6rem 0 0.8rem; font-size: clamp(1.8rem, 3.5vw, 2.7rem); line-height: 1.05; }
   .sample-report-intro h2 em { color: var(--gold); }
   .sample-report-intro > p:last-child { color: var(--bone-dim); line-height: 1.75; }
+  .sample-disclaimer { display: grid; gap: 0.3rem; margin-top: 1rem; padding: 0.9rem 1rem; border-left: 3px solid var(--gold); background: rgba(212, 175, 106, 0.1); color: var(--bone-dim); font-size: 0.82rem; line-height: 1.55; }
+  .sample-disclaimer strong { color: var(--bone); font-size: 0.86rem; }
   .sample-report { border: 1px solid var(--gold-deep); background: #f5f0e7; color: #26231f; box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18); }
   .sample-report-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem 1.6rem 1.15rem; border-bottom: 1px solid #d8cdbb; background: linear-gradient(135deg, #faf7f0, #ece3d4); }
   .sample-kicker { display: block; color: #8d6a34; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
@@ -306,12 +340,20 @@ const jsonLd = [
   .faq-list p { margin: 0.8rem 0 0; }
   @media (prefers-color-scheme: light) {
     .report-grid article { background: linear-gradient(160deg, #f6f2e9, #ebe6da); }
+    .privacy-note { background: #f5f0e7; border-color: #d4c7ae; color: #5c554a; }
+    .privacy-note strong { color: #2a2620; }
+    .offer-compare article { background: #f6f2e9; border-color: #d4c7ae; }
+    .offer-compare .compare-paid { background: #f4ead6; border-color: #c8a467; }
+    .offer-compare ul { color: #5c554a; }
+    .sample-disclaimer { background: #f4ead6; color: #5c554a; }
+    .sample-disclaimer strong { color: #2a2620; }
   }
   @media (max-width: 760px) {
     .reading-steps, .method-grid { grid-template-columns: 1fr; gap: 1.6rem; }
     .reading-steps article { padding: 0 0 1.6rem; border-right: 0; border-bottom: 1px solid var(--line-soft); }
     .reading-steps article:last-child { padding-bottom: 0; border-bottom: 0; }
     .report-grid { grid-template-columns: 1fr; }
+    .offer-compare { grid-template-columns: 1fr; }
     .sample-report-wrap, .sample-grid { grid-template-columns: 1fr; }
     .sample-report-head { align-items: flex-start; }
     .sample-report-head, .sample-grid, .sample-excerpt { padding-left: 1rem; padding-right: 1rem; }
