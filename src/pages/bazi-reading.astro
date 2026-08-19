@@ -145,6 +145,13 @@ const jsonLd = [
       <h2 class="section-title">A report that goes beyond a <em>single lucky element</em></h2>
       <p class="section-sub">The free result gives you the chart and its foundation. The optional report organizes that foundation into decisions you can actually revisit.</p>
     </div>
+    <div class="chapter-directory-head">
+      <div>
+        <p class="eyebrow"><span class="han">目录</span> Full chapter directory</p>
+        <h3>All 12 chapters are included in the Life Blueprint</h3>
+      </div>
+      <p>What you see below is the complete structure—not just the sample excerpt further down.</p>
+    </div>
     <div class="report-grid" aria-label="All twelve Life Blueprint chapters">
       {blueprintChapters.map(([number, title, description]) => (
         <article><span class="report-index">{number}</span><h3>{title}</h3><p>{description}</p></article>
@@ -155,10 +162,15 @@ const jsonLd = [
       <article class="compare-paid"><span class="compare-label">Optional one-time upgrade</span><h3>Life Blueprint · $9.90</h3><ul><li>Everything in the free chart</li><li>All 12 personalized chapters</li><li>Career, wealth, relationships, and daily guidance</li><li>Print-ready PDF access</li></ul><a class="btn btn-gold" href="/calculator.html?from=bazi-reading">Start with Free, Then Unlock</a></article>
     </div>
     <div class="sample-report-wrap">
+      <div class="sample-preview-banner" role="note">
+        <span class="sample-preview-mark">PREVIEW ONLY</span>
+        <strong>This is one excerpt from Chapter 04 of a 12-chapter report</strong>
+        <span>The card below uses fictional data to show the format and level of detail. Your paid Life Blueprint is personalized from your own chart.</span>
+      </div>
       <div class="sample-report-intro">
         <p class="eyebrow"><span class="han">一览</span> A look inside</p>
         <h2 id="sample-report-title">See the report before you <em>unlock it</em></h2>
-        <div class="sample-disclaimer"><strong>Fictional preview — not your result</strong><span>This is one illustrative excerpt from a 12-chapter report. Your Life Blueprint is generated from your own birth details.</span></div>
+        <div class="sample-disclaimer"><strong>Fictional preview — not your result</strong><span>One excerpt only · Chapter 04 of 12</span></div>
       </div>
       <article class="sample-report" aria-labelledby="sample-report-title">
         <header class="sample-report-head">
@@ -272,6 +284,9 @@ const jsonLd = [
   .reading-steps span, .report-index { color: var(--gold); font-family: var(--font-display); font-size: 1rem; }
   .reading-steps h2 { margin: 0.6rem 0 0.5rem; font-size: 1.35rem; }
   .reading-steps p, .report-grid p, .blueprint-cta p, .method-copy p, .faq-list p { color: var(--bone-dim); line-height: 1.75; }
+  .chapter-directory-head { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin: 3rem 0 1rem; }
+  .chapter-directory-head h3 { margin: 0.45rem 0 0; font-size: clamp(1.45rem, 2.5vw, 2rem); }
+  .chapter-directory-head > p { max-width: 34ch; margin: 0; color: var(--bone-dim); line-height: 1.6; text-align: right; }
   .report-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); }
   .report-grid article { padding: 2rem; background: linear-gradient(160deg, var(--ink-2), var(--ink-1)); }
   .report-grid h3 { margin: 0.55rem 0 0.5rem; font-size: 1.35rem; }
@@ -285,6 +300,10 @@ const jsonLd = [
   .offer-compare li::before { position: absolute; left: 0; color: var(--gold); content: '✓'; }
   .offer-compare .btn { align-self: flex-start; margin-top: auto; }
   .sample-report-wrap { display: grid; grid-template-columns: minmax(180px, 0.55fr) minmax(0, 1.45fr); gap: 2rem; align-items: start; margin-top: clamp(3rem, 7vw, 5.5rem); }
+  .sample-preview-banner { grid-column: 1 / -1; display: grid; gap: 0.25rem; padding: 1.1rem 1.3rem; border: 2px solid var(--gold); background: linear-gradient(105deg, rgba(212, 175, 106, 0.2), rgba(212, 175, 106, 0.07)); color: var(--bone); }
+  .sample-preview-banner strong { font-size: clamp(1.05rem, 2vw, 1.35rem); line-height: 1.3; }
+  .sample-preview-banner > span:last-child { color: var(--bone-dim); font-size: 0.9rem; line-height: 1.55; }
+  .sample-preview-mark { color: var(--gold); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.14em; }
   .sample-report-intro { padding-top: 1rem; }
   .sample-report-intro h2 { margin: 0.6rem 0 0.8rem; font-size: clamp(1.8rem, 3.5vw, 2.7rem); line-height: 1.05; }
   .sample-report-intro h2 em { color: var(--gold); }
@@ -340,6 +359,9 @@ const jsonLd = [
   .faq-list p { margin: 0.8rem 0 0; }
   @media (prefers-color-scheme: light) {
     .report-grid article { background: linear-gradient(160deg, #f6f2e9, #ebe6da); }
+    .chapter-directory-head > p { color: #5c554a; }
+    .sample-preview-banner { background: #f4ead6; color: #2a2620; }
+    .sample-preview-banner > span:last-child { color: #5c554a; }
     .privacy-note { background: #f5f0e7; border-color: #d4c7ae; color: #5c554a; }
     .privacy-note strong { color: #2a2620; }
     .offer-compare article { background: #f6f2e9; border-color: #d4c7ae; }
@@ -350,6 +372,8 @@ const jsonLd = [
   }
   @media (max-width: 760px) {
     .reading-steps, .method-grid { grid-template-columns: 1fr; gap: 1.6rem; }
+    .chapter-directory-head { display: block; }
+    .chapter-directory-head > p { margin-top: 0.75rem; text-align: left; }
     .reading-steps article { padding: 0 0 1.6rem; border-right: 0; border-bottom: 1px solid var(--line-soft); }
     .reading-steps article:last-child { padding-bottom: 0; border-bottom: 0; }
     .report-grid { grid-template-columns: 1fr; }
