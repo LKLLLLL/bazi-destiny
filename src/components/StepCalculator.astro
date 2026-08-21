@@ -302,9 +302,8 @@ const isZh = lang === 'zh';
         <div class="cc-paywall" id="ccPaywall">
           <h4>{isZh ? '完整人生蓝图' : 'Full Life Blueprint'}</h4>
           <p>{isZh ? '解锁 12 章完整命书，深入查看事业、财富、感情、健康、喜用五行、日常开运与个人风水。' : 'Unlock your complete 12-section reading, including Career, Wealth, Relationships, Health, lucky elements, daily alignment, and personalized Feng Shui.'}</p>
-          <div class="cc-paywall-btns"><button class="btn btn-gold btn-lg" id="unlockProBtn">{isZh ? '解锁完整命书 — $9.90' : 'Unlock Full Blueprint — $9.90'}</button><button class="btn btn-ghost" id="previewTimingBtn">{isZh ? '先预览时间层' : 'Preview Timing Layer'}</button></div>
+          <button class="btn btn-gold btn-lg" id="unlockProBtn">{isZh ? '解锁完整命书 — $9.90' : 'Unlock Full Blueprint — $9.90'}</button>
         </div>
-        <div class="cc-timing-preview" id="ccTimingPreview" hidden></div>
 
         <!-- ===== PRO: 12-SECTION LIFE BLUEPRINT ===== -->
         <div class="cc-pro" id="ccPro" hidden>
@@ -1211,21 +1210,6 @@ const isZh = lang === 'zh';
   .cc-paywall h4 { font-size: 1.25rem; margin-bottom: 0.5rem; }
   .cc-paywall p { color: var(--bone-dim); font-size: 0.88rem; max-width: 44ch; margin: 0 auto 1.2rem; }
   .cc-paywall .btn { white-space: normal; max-width: 100%; }
-  .cc-paywall-btns { display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap; }
-  .cc-timing-preview { margin-top: 1rem; padding: 1.25rem; border: 1px solid var(--gold-deep); border-radius: var(--radius-s); background: rgba(212,175,106,.06); }
-  .cc-timing-preview-head { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
-  .cc-timing-preview h4 { margin:.25rem 0 .4rem; font-size:1.2rem; }
-  .cc-timing-preview > p { color:var(--bone-dim); font-size:.86rem; line-height:1.7; margin:0 0 1rem; }
-  .cc-preview-kicker { color:var(--gold); font-size:.65rem; letter-spacing:.14em; font-weight:700; }
-  .cc-preview-close { border:0; background:none; color:var(--bone-faint); font-size:1.5rem; cursor:pointer; }
-  .cc-timing-preview-grid { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:.65rem; }
-  .cc-timing-preview-grid > div { min-width:0; padding:.8rem; border:1px solid var(--line-soft); background:rgba(0,0,0,.12); }
-  .cc-timing-preview-grid span, .cc-timing-months > span { display:block; color:var(--gold); font-size:.65rem; letter-spacing:.08em; text-transform:uppercase; }
-  .cc-timing-preview-grid strong { display:block; margin:.3rem 0; color:var(--bone); font-size:.86rem; }
-  .cc-timing-preview-grid small { display:block; color:var(--bone-dim); line-height:1.55; }
-  .cc-timing-months { margin-top:.7rem; padding-top:.8rem; border-top:1px solid var(--line-soft); }
-  .cc-timing-months strong { display:block; margin-top:.35rem; color:var(--bone-dim); font-size:.78rem; font-weight:500; line-height:1.7; }
-  @media (max-width: 700px) { .cc-timing-preview-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 
   /* Pro — complete report */
   .cc-pro {
@@ -2118,19 +2102,6 @@ const isZh = lang === 'zh';
     $('ccPro')!.hidden = false;
   }
 
-  function renderTimingPreview() {
-    if (!currentData?.timing) return;
-    const timing = currentData.timing;
-    const escapeHtml = (value: unknown) => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
-    const preview = $('ccTimingPreview');
-    if (!preview) return;
-    const cycle = timing.currentLuckPillar;
-    preview.innerHTML = `<div class="cc-timing-preview-head"><div><span class="cc-preview-kicker">${isZh ? '免费预览 · 时间层' : 'FREE PREVIEW · TIMING LAYER'}</span><h4>${isZh ? '大运、流年与流月' : 'Luck Pillars, Annual & Monthly Rhythm'}</h4></div><button class="cc-preview-close" type="button" aria-label="${isZh ? '关闭预览' : 'Close preview'}">×</button></div><p>${isZh ? '这是完整命书第 8 章的预览。付款后将与其余 11 章一起生成完整 PDF。' : 'A preview of Chapter 08 in the full Life Blueprint. The paid PDF includes this layer alongside the other 11 chapters.'}</p><div class="cc-timing-preview-grid"><div><span>${isZh ? '当前大运' : 'Current Luck Pillar'}</span><strong>${cycle ? `${cycle.stem}${cycle.branch}` : (timing.direction === 'forward' ? '顺排' : '逆排')}</strong><small>${cycle ? `${cycle.startYear}–${cycle.endYear} · ${cycle.tenGod}` : `${isZh ? '起运约' : 'Starts around'} ${timing.startAgeYears} ${isZh ? '岁' : 'years'}`}</small></div>${timing.annualOutlook.slice(0, 3).map((annual: any) => `<div><span>${escapeHtml(annual.label)}</span><strong>${escapeHtml(annual.theme)}</strong><small>${escapeHtml(annual.guidance)}</small></div>`).join('')}</div><div class="cc-timing-months"><span>${isZh ? '接下来 6 个月' : 'Next six months'}</span><strong>${timing.monthlyRhythm.slice(0, 6).map((m: any) => `${escapeHtml(m.label)} · ${escapeHtml(m.pillar)}`).join('  /  ')}</strong></div>`;
-    preview.hidden = false;
-    preview.querySelector('.cc-preview-close')?.addEventListener('click', () => { preview.hidden = true; });
-    preview.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
   // ── Share & Recast ──
   $('pdfBtn')?.addEventListener('click', () => {
     if (!currentData) return;
@@ -2274,7 +2245,6 @@ const isZh = lang === 'zh';
 
   // ── PayPal Unlock ──
   $('unlockProBtn')?.addEventListener('click', () => { (window as any).__baziUpgrade?.('pro', currentData); });
-  $('previewTimingBtn')?.addEventListener('click', renderTimingPreview);
   
   // Restore the chart only after the server confirms the PayPal order.
   void paymentStatusReady.then((status) => {
