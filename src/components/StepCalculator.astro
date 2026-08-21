@@ -1286,10 +1286,13 @@ const isZh = lang === 'zh';
   .cc-report-summary::before { content: '命'; position: absolute; top: -0.45rem; right: 0.75rem; color: rgba(212,175,106,0.08); font-family: var(--font-han); font-size: 5.2rem; line-height: 1; pointer-events: none; }
   .cc-summary-kicker { display: inline-flex; align-items: center; gap: 0.45rem; margin-bottom: 0.55rem; color: var(--gold); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
   .cc-summary-kicker::before { content: ''; width: 0.45rem; height: 0.45rem; border: 1px solid var(--gold-deep); transform: rotate(45deg); }
+  .cc-summary-head { position: relative; padding-bottom: 1.05rem; border-bottom: 1px solid var(--line-soft); }
+  .cc-summary-head::after { content: 'PERSONAL CHART SIGNAL'; display: block; margin-top: 0.8rem; color: var(--bone-faint); font-size: 0.53rem; letter-spacing: 0.16em; }
   .cc-report-summary h4 { position: relative; margin: 0 0 0.5rem; color: var(--gold-bright); font-family: var(--font-display); font-size: 1.22rem; }
-  .cc-summary-lead { position: relative; max-width: 72ch; margin: 0 0 1.1rem; color: var(--bone); font-size: 0.86rem; line-height: 1.72; }
+  .cc-summary-lead { position: relative; max-width: 72ch; margin: 0; color: var(--bone); font-size: 0.86rem; line-height: 1.72; }
   .cc-summary-grid { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.7rem; }
-  .cc-summary-item { min-width: 0; min-height: 6.2rem; padding: 0.85rem 0.9rem; border: 1px solid var(--line-soft); border-radius: 4px; background: rgba(0,0,0,0.16); }
+  .cc-summary-item { position: relative; min-width: 0; min-height: 6.2rem; padding: 0.85rem 0.9rem 0.85rem 2.65rem; border: 1px solid var(--line-soft); border-radius: 4px; background: rgba(0,0,0,0.16); }
+  .cc-summary-item::before { content: attr(data-step); position: absolute; top: 0.85rem; left: 0.85rem; color: var(--gold-deep); font-family: var(--font-display); font-size: 0.8rem; font-weight: 700; }
   .cc-summary-item span { display: block; margin-bottom: 0.4rem; color: var(--gold); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; line-height: 1.3; text-transform: uppercase; }
   .cc-summary-item strong { display: block; color: var(--bone); font-size: 0.8rem; font-weight: 650; line-height: 1.5; }
   .cc-summary-item small { display: block; margin-top: 0.4rem; color: var(--bone-dim); font-size: 0.72rem; line-height: 1.55; }
@@ -1380,12 +1383,17 @@ const isZh = lang === 'zh';
   .cc-pro-grid :global(.cc-ls-card ul) { display: grid; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
   .cc-pro-grid :global(.cc-ls-card li) { position: relative; padding-left: 1rem; color: var(--bone-dim); font-size: 0.82rem; line-height: 1.65; }
   .cc-pro-grid :global(.cc-ls-card li::before) { content: '·'; position: absolute; left: 0.15rem; color: var(--gold); font-weight: 700; }
-  .cc-report-close { display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); gap: 1.2rem; margin-top: 1.35rem; padding: 1.3rem 1.35rem; border: 1px solid rgba(212,175,106,0.3); border-radius: var(--radius-s); background: linear-gradient(135deg, rgba(212,175,106,0.075), transparent 70%); }
-  .cc-report-close h4 { grid-column: 1; margin: 0; color: var(--gold-bright); font-family: var(--font-display); font-size: 1.08rem; }
-  .cc-report-close p { grid-column: 2; margin: 0; color: var(--bone-dim); font-size: 0.8rem; line-height: 1.72; }
-  .cc-report-close p:first-of-type { grid-column: 1; grid-row: 2; align-self: start; color: var(--bone); font-family: var(--font-display); font-size: 0.9rem; }
-  .cc-report-close p:last-of-type { grid-column: 1 / -1; padding-top: 0.75rem; border-top: 1px solid var(--line-soft); color: var(--bone-faint); font-size: 0.68rem; }
-  @media (max-width: 700px) { .cc-report-close { grid-template-columns: 1fr; gap: 0.6rem; } .cc-report-close h4, .cc-report-close p, .cc-report-close p:first-of-type, .cc-report-close p:last-of-type { grid-column: 1; grid-row: auto; } }
+  .cc-report-close { display: grid; grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr); gap: 1rem 1.3rem; margin-top: 1.35rem; padding: 1.3rem 1.35rem 1rem; border: 1px solid rgba(212,175,106,0.3); border-radius: var(--radius-s); background: linear-gradient(135deg, rgba(212,175,106,0.075), transparent 70%); }
+  .cc-close-kicker { grid-column: 1 / -1; color: var(--gold); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+  .cc-report-close h4 { grid-column: 1; margin: -0.45rem 0 0; color: var(--gold-bright); font-family: var(--font-display); font-size: 1.08rem; }
+  .cc-close-quote { grid-column: 1; position: relative; padding: 0.8rem 0.85rem 0.8rem 1.8rem; border-left: 2px solid var(--gold-deep); background: rgba(0,0,0,0.14); }
+  .cc-close-quote-mark { position: absolute; top: 0.15rem; left: 0.55rem; color: var(--gold); font-family: Georgia, serif; font-size: 1.5rem; line-height: 1; }
+  .cc-close-quote p { margin: 0; color: var(--bone); font-family: var(--font-display); font-size: 0.9rem; line-height: 1.55; }
+  .cc-close-body { grid-column: 2; grid-row: 3 / span 2; align-self: center; padding-left: 1rem; border-left: 1px solid var(--line-soft); }
+  .cc-close-body p { margin: 0; color: var(--bone-dim); font-size: 0.8rem; line-height: 1.72; }
+  .cc-close-meta { grid-column: 1 / -1; display: flex; align-items: center; gap: 0.5rem; padding-top: 0.75rem; border-top: 1px solid var(--line-soft); color: var(--bone-faint); font-size: 0.68rem; }
+  .cc-close-meta::before { content: '✦'; color: var(--gold); }
+  @media (max-width: 700px) { .cc-report-close { grid-template-columns: 1fr; gap: 0.65rem; } .cc-close-kicker, .cc-report-close h4, .cc-close-quote, .cc-close-body, .cc-close-meta { grid-column: 1; grid-row: auto; } .cc-close-body { padding: 0.7rem 0 0; border-top: 1px solid var(--line-soft); border-left: 0; } }
   @media (max-width: 680px) {
     .cc-report-cover { grid-template-columns: 3.7rem minmax(0, 1fr); gap: 0.9rem; }
     .cc-cover-seal { width: 3.7rem; font-size: 1.2rem; }
@@ -2097,13 +2105,15 @@ const isZh = lang === 'zh';
     const summaryAnnual = timing?.annualOutlook?.[0];
     const summaryMonths = timing?.monthlyRhythm?.slice(0, 3).map((month: any) => month.label).join(' · ');
     $('ccReportSummary')!.innerHTML = `
-      <span class="cc-summary-kicker">${isZh ? '一页结论 · 先看这里' : 'AT A GLANCE · START HERE'}</span>
-      <h4>${escapeHtml(verdict.title)}</h4>
-      <p class="cc-summary-lead">${escapeHtml(verdict.lead)}</p>
+      <div class="cc-summary-head">
+        <span class="cc-summary-kicker">${isZh ? '一页结论 · 先看这里' : 'AT A GLANCE · START HERE'}</span>
+        <h4>${escapeHtml(verdict.title)}</h4>
+        <p class="cc-summary-lead">${escapeHtml(verdict.lead)}</p>
+      </div>
       <div class="cc-summary-grid">
-        <div class="cc-summary-item"><span>${isZh ? '现在的主线' : 'Your central theme'}</span><strong>${escapeHtml(verdict.action)}</strong></div>
-        <div class="cc-summary-item"><span>${isZh ? '近期信号' : 'Near-term signal'}</span><strong>${escapeHtml(summaryAnnual?.label || verdict.timingTitle)}</strong><small>${escapeHtml(summaryAnnual?.theme || verdict.timing)}</small></div>
-        <div class="cc-summary-item"><span>${isZh ? '接下来先做' : 'First practical move'}</span><strong>${escapeHtml(summaryMonths || (isZh ? '先从日常节奏开始' : 'Start with a repeatable daily rhythm'))}</strong><small>${isZh ? '完整依据与行动建议见后续 12 章。' : 'The full evidence and action plan follow across all 12 chapters.'}</small></div>
+        <div class="cc-summary-item" data-step="01"><span>${isZh ? '现在的主线' : 'Your central theme'}</span><strong>${escapeHtml(verdict.action)}</strong></div>
+        <div class="cc-summary-item" data-step="02"><span>${isZh ? '近期信号' : 'Near-term signal'}</span><strong>${escapeHtml(summaryAnnual?.label || verdict.timingTitle)}</strong><small>${escapeHtml(summaryAnnual?.theme || verdict.timing)}</small></div>
+        <div class="cc-summary-item" data-step="03"><span>${isZh ? '接下来先做' : 'First practical move'}</span><strong>${escapeHtml(summaryMonths || (isZh ? '先从日常节奏开始' : 'Start with a repeatable daily rhythm'))}</strong><small>${isZh ? '完整依据与行动建议见后续 12 章。' : 'The full evidence and action plan follow across all 12 chapters.'}</small></div>
       </div>`;
     $('ccReportIndex')!.innerHTML = sections.map((section) => `
       <a class="cc-index-link" href="#report-${escapeHtml(section.key)}">
@@ -2139,10 +2149,11 @@ const isZh = lang === 'zh';
     const generatedDate = new Intl.DateTimeFormat(isZh ? 'zh-CN' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date());
     $('ccReportDate')!.textContent = isZh ? `生成日期 · ${generatedDate}` : `Generated · ${generatedDate}`;
     $('ccReportClose')!.innerHTML = `
+      <span class="cc-close-kicker">${isZh ? '结语 · 下一步' : 'CLOSING NOTE · NEXT MOVE'}</span>
       <h4>${isZh ? '把命局读成行动' : 'Turn the chart into action'}</h4>
-      <p><strong>${escapeHtml(verdict.maxim)}</strong></p>
-      <p>${isZh ? '这份命书将传统符号、命盘证据与时间层整理成可反复查看的个人指南。建议先选一个当下最重要的行动，再用流年与流月节奏复盘。' : 'This dossier turns traditional symbols, chart evidence, and timing signals into a guide you can revisit. Choose one important action now, then use the annual and monthly rhythm to review your progress.'}</p>
-      <p>${isZh ? `生成日期：${generatedDate} · 内容根据本次命盘计算。` : `Generated ${generatedDate} · Calculated from this personal chart.`}</p>`;
+      <div class="cc-close-quote"><span class="cc-close-quote-mark">“</span><p>${escapeHtml(verdict.maxim)}</p></div>
+      <div class="cc-close-body"><p>${isZh ? '这份命书将传统符号、命盘证据与时间层整理成可反复查看的个人指南。先选一个当下最重要的行动，再用流年与流月节奏复盘。' : 'This dossier turns traditional symbols, chart evidence, and timing signals into a guide you can revisit. Choose one important action now, then use the annual and monthly rhythm to review your progress.'}</p></div>
+      <div class="cc-close-meta">${isZh ? `生成日期：${generatedDate} · 内容根据本次命盘计算。` : `Generated ${generatedDate} · Calculated from this personal chart.`}</div>`;
 
     $('ccPro')!.hidden = false;
   }
