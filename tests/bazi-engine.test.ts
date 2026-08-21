@@ -57,6 +57,13 @@ assert.ok(chengdu, 'Chengdu public solar-time test city');
 assert.ok(Math.abs(solarTimeCorrection(chengdu) - -63.6) < 1e-9, 'Chengdu longitude correction');
 
 const referencePillars = BaZiEngine.calculateFourPillars(2025, 12, 15, 3).pillars;
+const timing = BaZiEngine.calculateTiming('1990-06-15', 9, 'female', new Date('2026-08-21T00:00:00Z'));
+assert.ok(['forward', 'backward'].includes(timing.direction));
+assert.ok(timing.startAgeYears > 0 && timing.startAgeYears < 10, 'reasonable Da Yun starting age');
+assert.equal(timing.luckPillars.length, 8);
+assert.deepEqual(timing.annualOutlook.map((item) => item.label), ['2026 丙午', '2027 丁未', '2028 戊申']);
+assert.equal(timing.monthlyRhythm.length, 6);
+
 const referenceVerdict = getExpertVerdict({
   pillars: referencePillars,
   elements: {

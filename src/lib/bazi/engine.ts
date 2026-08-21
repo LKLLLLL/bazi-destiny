@@ -49,6 +49,58 @@ const S_TERM_EPOCH_MS = Date.UTC(1900, 0, 6, 2, 5); // 小寒 1900 (Beijing-cale
 
 const DAY_MS = 864e5;
 
+const ELEMENT_GENERATES: Record<string, string> = { 木: '火', 火: '土', 土: '金', 金: '水', 水: '木' };
+const ELEMENT_CONTROLS: Record<string, string> = { 木: '土', 土: '水', 水: '火', 火: '金', 金: '木' };
+const STEM_POLARITY: Record<string, 'yang' | 'yin'> = {
+  甲: 'yang', 乙: 'yin', 丙: 'yang', 丁: 'yin', 戊: 'yang', 己: 'yin',
+  庚: 'yang', 辛: 'yin', 壬: 'yang', 癸: 'yin',
+};
+
+export interface LuckPillar {
+  index: number;
+  stem: string;
+  branch: string;
+  element: string;
+  startYear: number;
+  endYear: number;
+  ageStart: number;
+  ageEnd: number;
+  tenGod: string;
+  theme: string;
+}
+
+export interface AnnualOutlook {
+  year: number;
+  stem: string;
+  branch: string;
+  label: string;
+  tenGod: string;
+  theme: string;
+  intensity: 'steady' | 'active' | 'turning';
+  guidance: string;
+}
+
+export interface MonthlyRhythm {
+  year: number;
+  month: number;
+  label: string;
+  pillar: string;
+  element: string;
+  theme: string;
+  guidance: string;
+}
+
+export interface TimingAnalysis {
+  direction: 'forward' | 'backward';
+  startAgeYears: number;
+  startDate: string;
+  luckPillars: LuckPillar[];
+  currentLuckPillar: LuckPillar | null;
+  annualOutlook: AnnualOutlook[];
+  monthlyRhythm: MonthlyRhythm[];
+  methodNote: string;
+}
+
 function mod(a: number, b: number): number {
   return ((a % b) + b) % b;
 }
@@ -62,6 +114,97 @@ function civilDays(y1: number, m1: number, d1: number, y2: number, m2: number, d
 function solarTermDay(year: number, n: number): number {
   const ms = TROPICAL_YEAR_MS * (year - 1900) + S_TERM_INFO[n] * 60000 + S_TERM_EPOCH_MS;
   return new Date(ms).getUTCDate();
+}
+
+function solarTermMs(year: number, n: number): number {
+  return TROPICAL_YEAR_MS * (year - 1900) + S_TERM_INFO[n] * 60000 + S_TERM_EPOCH_MS;
+}
+
+function formatDate(date: Date): string {
+  return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
+}
+
+function tenGod(dayStemIdx: number, otherStemIdx: number): string {
+  const dayElement = STEM_ELEMENTS[Math.floor(dayStemIdx / 2)];
+  const otherElement = STEM_ELEMENTS[Math.floor(otherStemIdx / 2)];
+  const samePolarity = dayStemIdx % 2 === otherStemIdx % 2;
+  if (dayElement === otherElement) return samePolarity ? '比肩' : '劫财';
+  if (ELEMENT_GENERATES[dayElement] === otherElement) return samePolarity ? '食神' : '伤官';
+  if (ELEMENT_CONTROLS[dayElement] === otherElement) return samePolarity ? '偏财' : '正财';
+  if (ELEMENT_CONTROLS[otherElement] === dayElement) return samePolarity ? '七杀' : '正官';
+  return samePolarity ? '偏印' : '正印';
+}
+
+function timingTheme(god: string, element: string): { theme: string; guidance: string } {
+  const themes: Record<string, { theme: string; guidance: string }> = {
+    比肩: { theme: 'Self-direction and competition', guidance: 'Choose one priority, lead it directly, and keep comparison from scattering your effort.' },
+    劫财: { theme: 'Alliances and shared resources', guidance: 'Collaborate for momentum, but make ownership, money, and responsibilities explicit.' },
+    食神: { theme: 'Craft and visible output', guidance: 'Finish, publish, or teach something useful. Consistent production opens the next door.' },
+    伤官: { theme: 'Expression and reform', guidance: 'Turn criticism into a proposal or product; precision makes your edge persuasive.' },
+    偏财: { theme: 'Opportunity and circulation', guidance: 'Move toward the clearest real-world return while keeping reserves and terms clear.' },
+    正财: { theme: 'Stewardship and durable income', guidance: 'Strengthen repeatable systems and let reliability compound into resources.' },
+    七杀: { theme: 'Pressure and earned authority', guidance: 'Take the hard responsibility that builds rank or skill; discipline turns pressure into command.' },
+    正官: { theme: 'Standards and recognition', guidance: 'Choose the role that rewards judgment and accountability. Reputation is the asset to build.' },
+    偏印: { theme: 'Independent insight', guidance: 'Protect deep-work time, then turn private insight into a method others can use.' },
+    正印: { theme: 'Learning and support', guidance: 'Consolidate knowledge, credentials, and trusted guidance before rushing into expansion.' },
+  };
+  return themes[god] || { theme: `${element} current`, guidance: 'Work with the season deliberately and turn the strongest signal into one concrete action.' };
+}
+
+function findJie(year: number, index: number): number {
+  return solarTermMs(year, index * 2);
+}
+
+function calculateTiming(year: number, month: number, day: number, hour: number, gender: 'male' | 'female' | '', now = new Date()): TimingAnalysis {
+  const natal = calculateFourPillars(year, month, day, hour);
+  const yearPolarity = STEM_POLARITY[natal.year.stem];
+  const forward = (gender === 'male' && yearPolarity === 'yang') || (gender === 'female' && yearPolarity === 'yin');
+  const direction: 'forward' | 'backward' = forward ? 'forward' : 'backward';
+  const birthMs = Date.UTC(year, month - 1, day, hour);
+  let termMs: number;
+  if (forward) {
+    const next = Array.from({ length: 12 }, (_, index) => findJie(year, index)).find((ms) => ms > birthMs);
+    termMs = next ?? findJie(year + 1, 0);
+  } else {
+    const previous = Array.from({ length: 12 }, (_, index) => findJie(year, 11 - index)).find((ms) => ms <= birthMs);
+    termMs = previous ?? findJie(year - 1, 11);
+  }
+  const days = Math.max(1, Math.abs(termMs - birthMs) / DAY_MS);
+  const startAgeYears = Math.round((days / 3) * 100) / 100;
+  const startDate = new Date(birthMs + startAgeYears * 365.2425 * DAY_MS);
+  const startIndex = forward ? 1 : -1;
+  const luckPillars: LuckPillar[] = [];
+  for (let i = 0; i < 8; i++) {
+    const stemIdx = mod(natal.month.stemIdx + startIndex * (i + 1), 10);
+    const branchIdx = mod(natal.month.branchIdx + startIndex * (i + 1), 12);
+    const ageStart = Math.round((startAgeYears + i * 10) * 100) / 100;
+    const ageEnd = Math.round((ageStart + 10) * 100) / 100;
+    const god = tenGod(natal.dayStemIdx, stemIdx);
+    const detail = timingTheme(god, STEM_ELEMENTS[Math.floor(stemIdx / 2)]);
+    luckPillars.push({ index: i + 1, stem: HEAVENLY_STEMS[stemIdx], branch: EARTHLY_BRANCHES[branchIdx], element: STEM_ELEMENTS[Math.floor(stemIdx / 2)], startYear: Math.floor(year + ageStart), endYear: Math.floor(year + ageEnd), ageStart, ageEnd, tenGod: god, theme: detail.theme });
+  }
+  const nowYear = now.getUTCFullYear();
+  const elapsedAge = (Date.UTC(nowYear, now.getUTCMonth(), now.getUTCDate()) - birthMs) / (365.2425 * DAY_MS);
+  const currentLuckPillar = luckPillars.find((p) => elapsedAge >= p.ageStart && elapsedAge < p.ageEnd) || null;
+  const annualOutlook: AnnualOutlook[] = [];
+  for (let y = nowYear; y < nowYear + 3; y++) {
+    const p = calculateFourPillars(y, 8, 8, 12).year;
+    const god = tenGod(natal.dayStemIdx, p.stemIdx);
+    const detail = timingTheme(god, p.element);
+    const natalBranches = [natal.year.branchIdx, natal.month.branchIdx, natal.day.branchIdx, natal.hour.branchIdx];
+    const clash = natalBranches.some((b) => mod(b - p.branchIdx, 12) === 6);
+    annualOutlook.push({ year: y, stem: p.stem, branch: p.branch, label: `${y} ${p.stem}${p.branch}`, tenGod: god, theme: clash ? 'Turning-point movement' : detail.theme, intensity: clash ? 'turning' : (p.element === natal.day.element ? 'active' : 'steady'), guidance: clash ? `The ${p.branch} year directly opposes a natal branch. Expect movement, restructuring, and decisions that cannot stay postponed. ${detail.guidance}` : detail.guidance });
+  }
+  const monthlyRhythm: MonthlyRhythm[] = [];
+  const cursor = new Date(Date.UTC(nowYear, now.getUTCMonth(), 15));
+  for (let i = 0; i < 6; i++) {
+    const d = new Date(cursor.getTime()); d.setUTCMonth(d.getUTCMonth() + i);
+    const p = calculateFourPillars(d.getUTCFullYear(), d.getUTCMonth() + 1, 15, 12).month;
+    const god = tenGod(natal.dayStemIdx, p.stemIdx);
+    const detail = timingTheme(god, p.element);
+    monthlyRhythm.push({ year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, label: `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`, pillar: `${p.stem}${p.branch}`, element: p.element, theme: detail.theme, guidance: detail.guidance });
+  }
+  return { direction, startAgeYears, startDate: formatDate(startDate), luckPillars, currentLuckPillar, annualOutlook, monthlyRhythm, methodNote: 'Luck Pillars use the common yin-yang year-stem and gender direction convention; starting age is estimated from the nearest Jie solar term at three days per year.' };
 }
 
 /** Day-of-month of the 节 (month-starting term) in Gregorian month `month` (1–12) of `year`. */
@@ -326,6 +469,11 @@ export const BaZiEngine = {
       directions: getLuckyDirections(pillars),
       lucky: getLuckyItems(pillars),
     };
+  },
+
+  calculateTiming(birthDateStr: string, hour: number, gender: 'male' | 'female' | '' = '', now = new Date()) {
+    const [year, month, day] = birthDateStr.split('-').map(Number);
+    return calculateTiming(year, month, day, hour, gender, now);
   },
 
   solarToLunar,

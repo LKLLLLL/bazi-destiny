@@ -1879,6 +1879,8 @@ const isZh = lang === 'zh';
       data.hourUnknown = true;
     }
 
+    data.timing = BaZiEngine.calculateTiming(date, useFourPillars ? hourNum : 12, state.gender, new Date());
+
     currentData = {
       ...data,
       gender: state.gender,
@@ -1887,6 +1889,7 @@ const isZh = lang === 'zh';
       cityName,
       useSolarTime,
       isThreePillar: !useFourPillars,
+      lang: isZh ? 'zh' : 'en',
     };
     (window as any).currentReading = currentData;
 
