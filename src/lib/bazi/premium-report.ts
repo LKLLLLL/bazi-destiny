@@ -152,7 +152,11 @@ export function getPremiumReport(data: PremiumReadingData): PremiumReportSection
       icon: '财',
       title: 'Wealth Pattern',
       intro: `Your ${dominantEn} pattern shapes how you build resources, recognize opportunities, and handle financial momentum. Consistency with your natural working style is the main theme.`,
-      groups: [group('Wealth Strategy', career.wealthTips)],
+      groups: [
+        group('Wealth Strategy', career.wealthTips),
+        group('Chart Evidence', [verdict.evidence[0], verdict.evidence[1]]),
+        group('Money Boundary', [zh ? `以${deficient}行的补足方式建立节奏：先定预算、再定承诺，避免在情绪或压力下做重大决定。` : `Use your ${deficientEn} growth area as a money boundary: set the budget before the commitment, and avoid major decisions under emotional pressure.`]),
+      ],
     },
     {
       key: 'relationships',
@@ -227,10 +231,10 @@ export function getPremiumReport(data: PremiumReadingData): PremiumReportSection
       title: 'Lucky Elements & Directions',
       intro: `Use these chart-aligned details as recurring cues in your workspace, wardrobe, planning, and important activities.`,
       groups: [
-        group('Lucky Palette', [(lucky.colorNames || []).join(' · ')]),
-        group('Lucky Numbers', [(lucky.numbers || []).join(' · ')]),
+        group('Lucky Palette', [(lucky.colorNames || []).join(' · '), zh ? '适合用于衣着、工作区重点色或重要材料。' : 'Use these in clothing, workspace accents, or important materials.']),
+        group('Lucky Numbers', [(lucky.numbers || []).join(' · '), zh ? '把它们当作提醒与节奏线索，而不是孤立的预测。' : 'Treat them as recurring cues and timing prompts, not as isolated predictions.']),
         group('Supportive Element', [`${lucky.element || dominantEn}${lucky.tones ? ` - ${lucky.tones}` : ''}`]),
-        group('Supportive Directions', [(directions.auspicious || []).join(' · ')]),
+        group('Supportive Directions', [(directions.auspicious || []).join(' · '), zh ? '可优先用于工作、谈判、学习或安放书桌。' : 'Prioritize these when working, negotiating, studying, or placing your desk.']),
       ],
     },
     {
@@ -241,6 +245,7 @@ export function getPremiumReport(data: PremiumReadingData): PremiumReportSection
       intro: fengShui.overview,
       groups: [
         group('Space Alignment', fengShui.tips),
+        group('Drain Zones', [(directions.inauspicious || []).join(' · '), zh ? `久处这些方位容易消耗${dominant}气，重要事项可主动调整座位或动线。` : `Extended exposure can drain your ${dominantEn} current; adjust your seat or route for important work.`]),
         group('Personal Enhancements', fengShui.personalCures.map((cure) => `${cure.item} - ${cure.area}: ${cure.purpose}`)),
       ],
     },
