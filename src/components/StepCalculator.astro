@@ -322,6 +322,7 @@ const isZh = lang === 'zh';
             <div><span>{isZh ? '调候五行' : 'Growth Element'}</span><strong id="ccReportGrowth"></strong></div>
             <div><span>{isZh ? '章节' : 'Chapters'}</span><strong>12</strong></div>
           </div>
+          <section class="cc-report-summary" id="ccReportSummary" aria-label="Report at a glance"></section>
           <nav class="cc-report-index" id="ccReportIndex" aria-label="Life Blueprint chapters"></nav>
           <div class="cc-pro-grid" id="ccProGrid"></div>
         </div>
@@ -1278,6 +1279,16 @@ const isZh = lang === 'zh';
   .cc-report-meta > div:last-child { border-right: 0; }
   .cc-report-meta span { display: block; margin-bottom: 0.18rem; color: var(--bone-faint); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.1em; }
   .cc-report-meta strong { display: block; overflow-wrap: anywhere; color: var(--gold-bright); font-family: var(--font-display); font-size: 0.92rem; }
+  .cc-report-summary { margin: 1.15rem 0 1.25rem; padding: 1.1rem 1.15rem; border: 1px solid rgba(212,175,106,0.36); border-radius: var(--radius-s); background: linear-gradient(135deg, rgba(212,175,106,0.10), rgba(212,175,106,0.025)); }
+  .cc-summary-kicker { display: block; margin-bottom: 0.35rem; color: var(--gold); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+  .cc-report-summary h4 { margin: 0 0 0.45rem; color: var(--bone); font-size: 1.08rem; }
+  .cc-summary-lead { margin: 0 0 0.9rem; color: var(--bone-dim); font-size: 0.84rem; line-height: 1.65; }
+  .cc-summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.65rem; }
+  .cc-summary-item { min-width: 0; padding: 0.7rem 0.75rem; border: 1px solid var(--line-soft); background: rgba(0,0,0,0.12); }
+  .cc-summary-item span { display: block; margin-bottom: 0.25rem; color: var(--bone-faint); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .cc-summary-item strong { display: block; color: var(--gold-bright); font-size: 0.78rem; line-height: 1.45; }
+  .cc-summary-item small { display: block; margin-top: 0.25rem; color: var(--bone-dim); font-size: 0.7rem; line-height: 1.45; }
+  @media (max-width: 700px) { .cc-summary-grid { grid-template-columns: 1fr; } }
   .cc-report-index {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2064,9 +2075,22 @@ const isZh = lang === 'zh';
       .replaceAll("'", '&#039;');
 
     const day = currentData.pillars.day;
+    const verdict = getExpertVerdict(currentData);
     $('ccReportDayMaster')!.textContent = `${day.stem}${day.branch}${isZh ? '' : ` · ${STEM_EN[day.stem] || ''}`}`;
     $('ccReportElement')!.textContent = isZh ? `${currentData.elements.dominant}行` : (ELEM_EN[currentData.elements.dominant] || currentData.elements.dominant);
     $('ccReportGrowth')!.textContent = isZh ? `${currentData.elements.deficient}行` : (ELEM_EN[currentData.elements.deficient] || currentData.elements.deficient);
+    const timing = currentData.timing;
+    const summaryAnnual = timing?.annualOutlook?.[0];
+    const summaryMonths = timing?.monthlyRhythm?.slice(0, 3).map((month: any) => month.label).join(' · ');
+    $('ccReportSummary')!.innerHTML = `
+      <span class="cc-summary-kicker">${isZh ? '一页结论 · 先看这里' : 'AT A GLANCE · START HERE'}</span>
+      <h4>${escapeHtml(verdict.title)}</h4>
+      <p class="cc-summary-lead">${escapeHtml(verdict.lead)}</p>
+      <div class="cc-summary-grid">
+        <div class="cc-summary-item"><span>${isZh ? '现在的主线' : 'Your central theme'}</span><strong>${escapeHtml(verdict.action)}</strong></div>
+        <div class="cc-summary-item"><span>${isZh ? '近期信号' : 'Near-term signal'}</span><strong>${escapeHtml(summaryAnnual?.label || verdict.timingTitle)}</strong><small>${escapeHtml(summaryAnnual?.theme || verdict.timing)}</small></div>
+        <div class="cc-summary-item"><span>${isZh ? '接下来先做' : 'First practical move'}</span><strong>${escapeHtml(summaryMonths || (isZh ? '先从日常节奏开始' : 'Start with a repeatable daily rhythm'))}</strong><small>${isZh ? '完整依据与行动建议见后续 12 章。' : 'The full evidence and action plan follow across all 12 chapters.'}</small></div>
+      </div>`;
     $('ccReportIndex')!.innerHTML = sections.map((section) => `
       <a class="cc-index-link" href="#report-${escapeHtml(section.key)}">
         <span class="cc-index-mark han">${escapeHtml(section.icon)}</span>
