@@ -313,6 +313,7 @@ const isZh = lang === 'zh';
               <span class="cc-cover-kicker">{isZh ? '个人八字命书' : 'Personal BaZi Dossier · 八字命书'}</span>
               <h3>{isZh ? '完整人生蓝图' : 'Your Complete Life Blueprint'}</h3>
               <p>{isZh ? '依据四柱、日主与五行强弱生成十二章个人命理解读。' : 'Twelve personalized chapters drawn from your Four Pillars, Day Master, and Five-Element balance.'}</p>
+              <span class="cc-cover-date" id="ccReportDate"></span>
             </div>
             {TEMPORARY_FREE_ACCESS && <span class="cc-free-badge">{isZh ? '限时免费' : 'Limited-Time Free'}</span>}
           </header>
@@ -325,6 +326,7 @@ const isZh = lang === 'zh';
           <section class="cc-report-summary" id="ccReportSummary" aria-label="Report at a glance"></section>
           <nav class="cc-report-index" id="ccReportIndex" aria-label="Life Blueprint chapters"></nav>
           <div class="cc-pro-grid" id="ccProGrid"></div>
+          <footer class="cc-report-close" id="ccReportClose"></footer>
         </div>
 
         <div class="next-tools" aria-label="Continue exploring">
@@ -1258,6 +1260,7 @@ const isZh = lang === 'zh';
   }
   .cc-cover-copy h3 { margin: 0; font-family: var(--font-display); font-size: 1.55rem; letter-spacing: 0; }
   .cc-cover-copy p { max-width: 55ch; margin: 0.35rem 0 0; color: var(--bone-dim); font-size: 0.82rem; line-height: 1.6; }
+  .cc-cover-date { display: block; margin-top: 0.5rem; color: var(--bone-faint); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; }
   .cc-free-badge {
     padding: 0.22rem 0.55rem;
     border: 1px solid rgba(212,175,106,0.35);
@@ -1375,6 +1378,10 @@ const isZh = lang === 'zh';
   .cc-pro-grid :global(.cc-ls-card ul) { display: grid; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
   .cc-pro-grid :global(.cc-ls-card li) { position: relative; padding-left: 1rem; color: var(--bone-dim); font-size: 0.82rem; line-height: 1.65; }
   .cc-pro-grid :global(.cc-ls-card li::before) { content: '·'; position: absolute; left: 0.15rem; color: var(--gold); font-weight: 700; }
+  .cc-report-close { margin-top: 1.2rem; padding: 1.15rem 1.2rem; border-top: 1px solid rgba(212,175,106,0.35); background: linear-gradient(180deg, rgba(212,175,106,0.045), transparent); }
+  .cc-report-close h4 { margin: 0 0 0.45rem; color: var(--gold-bright); font-family: var(--font-display); font-size: 1.02rem; }
+  .cc-report-close p { margin: 0.35rem 0; color: var(--bone-dim); font-size: 0.8rem; line-height: 1.7; }
+  .cc-report-close p strong { color: var(--bone); }
   @media (max-width: 680px) {
     .cc-report-cover { grid-template-columns: 3.7rem minmax(0, 1fr); gap: 0.9rem; }
     .cc-cover-seal { width: 3.7rem; font-size: 1.2rem; }
@@ -2122,6 +2129,14 @@ const isZh = lang === 'zh';
         </div>
       </article>
     `).join('');
+
+    const generatedDate = new Intl.DateTimeFormat(isZh ? 'zh-CN' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date());
+    $('ccReportDate')!.textContent = isZh ? `生成日期 · ${generatedDate}` : `Generated · ${generatedDate}`;
+    $('ccReportClose')!.innerHTML = `
+      <h4>${isZh ? '把命局读成行动' : 'Turn the chart into action'}</h4>
+      <p><strong>${escapeHtml(verdict.maxim)}</strong></p>
+      <p>${isZh ? '这份命书将传统符号、命盘证据与时间层整理成可反复查看的个人指南。建议先选一个当下最重要的行动，再用流年与流月节奏复盘。' : 'This dossier turns traditional symbols, chart evidence, and timing signals into a guide you can revisit. Choose one important action now, then use the annual and monthly rhythm to review your progress.'}</p>
+      <p>${isZh ? `生成日期：${generatedDate} · 内容根据本次命盘计算。` : `Generated ${generatedDate} · Calculated from this personal chart.`}</p>`;
 
     $('ccPro')!.hidden = false;
   }
