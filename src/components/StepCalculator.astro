@@ -1525,6 +1525,8 @@ const isZh = lang === 'zh';
   let currentData: any = null;
   let loadTimer: ReturnType<typeof setInterval> | null = null;
   let loadTimeout: ReturnType<typeof setTimeout> | null = null;
+  // Development-only QA route; import.meta.env.DEV is false in production builds.
+  const localProPreview = import.meta.env.DEV && new URLSearchParams(window.location.search).get('preview') === 'pro';
   const paymentStatusReady = getPaymentStatus();
 
   // ── localStorage ──
@@ -2049,7 +2051,7 @@ const isZh = lang === 'zh';
     // Paywall state — paying customers always see the full blueprint
     const paywall = $('ccPaywall');
     const pro = $('ccPro');
-    if (isUnlocked('pro')) {
+    if (isUnlocked('pro') || localProPreview) {
       if (paywall) paywall.style.display = 'none';
       renderProLifestyle();
     } else {
