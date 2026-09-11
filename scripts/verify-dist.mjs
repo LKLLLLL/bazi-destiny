@@ -52,9 +52,14 @@ if (errors.length === 0) {
   if (!llms.includes('MyBaziDestiny') || !llms.includes('USD 9.90')) errors.push('llms.txt: canonical facts missing');
 
   const urlCount = (sitemap.match(/<url>/g) || []).length;
-  const lastmodCount = (sitemap.match(/<lastmod>/g) || []).length;
-  if (urlCount === 0 || urlCount !== lastmodCount) {
-    errors.push(`sitemap.xml: ${urlCount} URLs but ${lastmodCount} lastmod values`);
+  const lastmods = [...sitemap.matchAll(/<lastmod>(.*?)<\/lastmod>/g)].map((match) => match[1]);
+  if (urlCount === 0) errors.push('sitemap.xml: no URLs found');
+  if (lastmods.length === 0) errors.push('sitemap.xml: no content-backed lastmod values found');
+  if (lastmods.some((value) => !/^\d{4}-\d{2}-\d{2}$/.test(value))) {
+    errors.push('sitemap.xml: lastmod values must use YYYY-MM-DD');
+  }
+  if (!sitemap.includes('<loc>https://mybazidestiny.com/calculator.html</loc>\n    <lastmod>2026-09-12</lastmod>')) {
+    errors.push('sitemap.xml: calculator page is missing its reviewed content update date');
   }
 
   const stalePattern = /Soul Guide|Destiny Master|Explorer(?:'s)? Reading|\$29\.90|Pro\s*\/\s*Ultimate|Limited-Time Free/gi;
@@ -70,7 +75,7 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('verify-dist: GEO outputs, offer text, and sitemap lastmod coverage verified');
+console.log('verify-dist: GEO outputs, offer text, and content-backed sitemap dates verified');
 
 if (!existsSync(URL_FILE)) {
   console.log('verify-dist: urls.txt not found — legacy URL verification skipped');

@@ -34,7 +34,7 @@ We don't just give you a reading — we explain *why*. Our guides teach you how 
 
 #### 🔒 Privacy Respected
 
-Your birth data is personal. We do not sell your information to third parties. Your chart calculations are performed client-side whenever possible.
+Your birth data is personal. We do not sell your information to third parties. The BaZi chart calculation runs locally in your browser; review the privacy policy for details about browser storage, analytics, and payments.
 
 ## Our Methodology
 
@@ -61,4 +61,4 @@ These works have multiple editions and interpretive traditions. We use them as h
 
 Have questions about your reading or our methodology? Check our [FAQ page](/faq.html) or read our [editorial policy](/editorial-policy.html) to learn more about how we create and maintain our content.
 
-Ready to discover your destiny? [**Calculate your free BaZi chart now →**](/)
+Ready to discover your destiny? [**Calculate your free BaZi chart now →**](/calculator.html)

@@ -3,6 +3,25 @@ import { readFile, readdir } from 'node:fs/promises';
 const root = new URL('../', import.meta.url);
 const errors = [];
 
+const [homeSource, calculatorSource, sitemapSource] = await Promise.all([
+  readFile(new URL('src/pages/index.astro', root), 'utf8'),
+  readFile(new URL('src/pages/calculator.astro', root), 'utf8'),
+  readFile(new URL('src/pages/sitemap.xml.ts', root), 'utf8'),
+]);
+
+if (/title="Free BaZi Calculator/i.test(homeSource)) {
+  errors.push('index.astro: homepage must not compete with the calculator page for the primary calculator title');
+}
+if (!/title="Free BaZi Calculator & Analysis \| MyBaziDestiny"/.test(calculatorSource)) {
+  errors.push('calculator.astro: primary calculator search title is missing or changed');
+}
+if (!/>Free BaZi Calculator and Analysis<\/h1>/.test(calculatorSource)) {
+  errors.push('calculator.astro: primary calculator H1 is missing or changed');
+}
+if (/new Date\(\)\.toISOString\(\)/.test(sitemapSource)) {
+  errors.push('sitemap.xml.ts: lastmod must describe content changes, not the build date');
+}
+
 function frontmatter(source) {
   const match = source.match(/^---\n([\s\S]*?)\n---/);
   if (!match) return {};

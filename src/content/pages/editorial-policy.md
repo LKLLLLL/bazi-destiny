@@ -44,7 +44,7 @@ We take factual errors seriously. If we discover an error in our content:
 - We update the visible revision date and structured data when an article is materially revised
 - For significant corrections, we note the change in the article
 
-If you spot an error, please [use our calculator](/) and contact us through the site. We appreciate corrections from our community.
+If you spot an error, please [check the published calculator method](/methodology.html), reproduce the relevant [public test case](/test-cases.html), and contact us through the site. We appreciate corrections from our community.
 
 ### 5. Content Independence
 
@@ -52,7 +52,7 @@ Our educational content is independent of our premium reading products. Free art
 
 ### 6. Privacy & Data
 
-We do not store your birth data on our servers unless you explicitly create an account. Chart calculations are performed client-side whenever possible. We do not sell user data to third parties. See our [Privacy Policy](/privacy-policy.html) for details.
+The BaZi chart calculation runs locally in the browser, and MyBaziDestiny does not currently offer user accounts. Browser storage may preserve entered details or paid access on that device. We do not sell user data to third parties. See our [Privacy Policy](/privacy-policy.html) for details.
 
 ### 7. Advertising & Sponsorship
 
@@ -60,7 +60,7 @@ Any sponsored content or advertisements will be clearly labeled. We do not accep
 
 ### 8. Date & Last Updated
 
-This editorial policy was last updated on **July 29, 2026**. We review this policy at least annually.
+This editorial policy was last updated on **September 12, 2026**. We review this policy at least annually.
 
 ## Questions?
 

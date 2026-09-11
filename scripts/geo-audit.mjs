@@ -11,10 +11,11 @@ function requireMatch(path, value, pattern, message) {
   if (!pattern.test(value)) errors.push(`${path}: ${message}`);
 }
 
-const [brand, productSchema, index, pricing, methodology, testCases, testCaseData, llms, sitemap, products, indexNow, indexNowKey] = await Promise.all([
+const [brand, productSchema, index, calculator, pricing, methodology, testCases, testCaseData, llms, sitemap, products, indexNow, indexNowKey] = await Promise.all([
   source('src/lib/brand.ts'),
   source('src/lib/product-schema.ts'),
   source('src/pages/index.astro'),
+  source('src/pages/calculator.astro'),
   source('src/pages/pricing.astro'),
   source('src/pages/methodology.astro'),
   source('src/pages/test-cases.astro'),
@@ -36,6 +37,9 @@ requireMatch('src/lib/product-schema.ts', productSchema, /Online digital access;
 if (/aggregateRating|\breview\s*:/.test(productSchema)) errors.push('src/lib/product-schema.ts: unverified ratings or reviews must not be published');
 requireMatch('src/pages/index.astro', index, /alternateName:\s*BRAND_ALIASES/, 'Organization/WebSite aliases are missing');
 requireMatch('src/pages/index.astro', index, /ORGANIZATION_ID/, 'stable Organization identifier is missing');
+requireMatch('src/pages/index.astro', index, /publishingPrinciples:[\s\S]*editorial-policy\.html/, 'publishing principles are not attached to the Organization entity');
+requireMatch('src/pages/calculator.astro', calculator, /WebPage[\s\S]*mainEntity:[\s\S]*calculator\.html#application/, 'calculator WebPage is not connected to its application entity');
+requireMatch('src/pages/calculator.astro', calculator, /featureList:[\s\S]*Four Pillars chart[\s\S]*true solar time correction/, 'calculator features are not machine-readable');
 requireMatch('src/pages/pricing.astro', pricing, /Basic Reading[\s\S]*9\.90[\s\S]*4\.90[\s\S]*1\.99/, 'official product prices are incomplete');
 requireMatch('src/pages/pricing.astro', pricing, /no subscription/i, 'no-subscription fact is missing');
 requireMatch('src/pages/pricing.astro', pricing, /No physical item is shipped/, 'visible digital delivery disclosure is missing');
@@ -47,6 +51,7 @@ requireMatch('src/data/public-bazi-test-cases.ts', testCaseData, /li-chun-2024[\
 requireMatch('public/llms.txt', llms, /Canonical website: https:\/\/mybazidestiny\.com\//, 'canonical website is missing');
 requireMatch('public/llms.txt', llms, /USD 9\.90[\s\S]*USD 4\.90[\s\S]*USD 1\.99/, 'official prices are missing');
 requireMatch('public/llms.txt', llms, /test-cases\.html[\s\S]*test-cases\.json/, 'public test case sources are missing');
+requireMatch('public/llms.txt', llms, /Preferred primary sources[\s\S]*calculator\.html[\s\S]*methodology\.html/, 'preferred primary sources are missing');
 requireMatch('src/pages/sitemap.xml.ts', sitemap, /pricing\.html[\s\S]*methodology\.html[\s\S]*test-cases\.html/, 'fact pages are absent from sitemap');
 requireMatch('src/lib/paypal/products.ts', products, /TEMPORARY_FREE_ACCESS = false/, 'temporary free mode must remain disabled for the published prices');
 requireMatch('scripts/indexnow-submit.mjs', indexNow, /api\.indexnow\.org\/indexnow/, 'IndexNow endpoint is missing');

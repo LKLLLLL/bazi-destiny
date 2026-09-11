@@ -24,6 +24,7 @@ const jsonLd = [
     description:
       'Discover your destiny through BaZi (Four Pillars of Destiny) Chinese astrology. Free personalized readings for career, love, wealth, and life path.',
     publisher: { '@id': ORGANIZATION_ID },
+    inLanguage: ['en', 'zh-Hans'],
   },
   {
     '@context': 'https://schema.org',
@@ -36,18 +37,8 @@ const jsonLd = [
     description:
       'Free BaZi (Four Pillars of Destiny) Chinese astrology readings — personality, career, love compatibility, and Feng Shui guidance.',
     email: 'contact@mybazidestiny.com',
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'WebApplication',
-    '@id': `${SITE_URL}/calculator.html#application`,
-    name: `${BRAND_NAME} Free BaZi Calculator`,
-    url: `${SITE_URL}/calculator.html`,
-    applicationCategory: 'LifestyleApplication',
-    operatingSystem: 'Web',
-    provider: { '@id': ORGANIZATION_ID },
-    isPartOf: { '@id': WEBSITE_ID },
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
+    knowsAbout: ['BaZi', 'Four Pillars of Destiny', 'Chinese calendrical calculation', 'Five Elements'],
+    publishingPrinciples: `${SITE_URL}/editorial-policy.html`,
   },
   productJsonLd('lifeBlueprint'),
 ];
@@ -88,9 +79,9 @@ const faqs = [
 ---
 
 <Base
-  title="Free BaZi Calculator & Four Pillars Reading | MyBaziDestiny"
-  description="Generate a free BaZi Four Pillars chart from your birth date and time. Discover your Day Master, Five Elements balance, personality, and lucky directions."
-  keywords="BaZi, Chinese astrology, Four Pillars of Destiny, Feng Shui, Chinese horoscope, bazi reading, fortune telling, destiny, Chinese zodiac"
+  title="Free BaZi Reading & Chinese Astrology Tools | MyBaziDestiny"
+  description="Explore free BaZi readings, Four Pillars guides, Chinese names, and love compatibility tools from MyBaziDestiny. Start with a private browser-based chart."
+  keywords="BaZi reading, Chinese astrology, Four Pillars of Destiny, Chinese names, love compatibility, Five Elements"
   path="/"
   altPath="/zh"
   jsonLd={jsonLd}
@@ -102,21 +93,21 @@ const faqs = [
       <div class="hero-copy">
         <p class="hero-eyebrow" data-reveal>
           <span class="pulse-dot" aria-hidden="true"></span>
-          Free BaZi Calculator · <span class="han">免费排盘</span>
+          Free BaZi Reading · <span class="han">知命</span>
         </p>
         <h1 data-reveal style="--reveal-delay:.08s">
-          Discover your<br /><em>BaZi</em> destiny
+          Discover your<br /><em>BaZi</em> reading
         </h1>
       </div>
       <div class="hero-side">
         <p class="hero-lead" data-reveal style="--reveal-delay:.16s">
-          BaZi maps your birth date and time through the Five Elements and seasonal cycles. Explore
-          near-term outlooks, relationship compatibility, traditional palmistry, and names inspired by
-          Chinese classics.
+          Explore the Four Pillars of Destiny through a free birth chart, Five Elements guides,
+          Chinese naming tools, and relationship compatibility.
         </p>
       </div>
       <div class="hero-actions hero-ctas" data-reveal style="--reveal-delay:.24s">
-        <a href="/tools.html" class="btn btn-gold btn-lg">Explore Tools</a>
+        <a href="/calculator.html" class="btn btn-gold btn-lg">Open the Free BaZi Calculator</a>
+        <a href="/blog.html" class="btn btn-ghost btn-lg">Explore BaZi Guides</a>
       </div>
     </div>
     <div class="hero-scrollhint" aria-hidden="true">
