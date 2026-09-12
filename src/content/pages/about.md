@@ -1,6 +1,6 @@
 ---
 title: "About MyBaziDestiny — Mission & Methodology"
-description: "Learn how MyBaziDestiny calculates Four Pillars charts, explains traditional Chinese astrology concepts, protects birth data, and reviews its educational content."
+description: "Learn about MyBaziDestiny, its BaZi methodology, and cultural editor Daoist Priest Ye Qingchun, abbot of Huizhou Yuanmiao Taoist Temple."
 ---
 
 ## Our Mission
@@ -8,6 +8,12 @@ description: "Learn how MyBaziDestiny calculates Four Pillars charts, explains t
 MyBaziDestiny is an independent educational project built to make **BaZi (Four Pillars of Destiny)** easier to understand in English. We separate what the calculator can determine from birth data from the broader cultural interpretations traditionally associated with a chart.
 
 Our free calculator generates the Four Pillars, identifies the Day Master, and provides a simplified Five Elements overview with general personality and environment guidance. It does not currently calculate Ten Gods or 10-year Luck Pillars. Those concepts are covered as educational material rather than presented as personalized calculations.
+
+## Traditional Culture Editor
+
+**[Daoist Priest Ye Qingchun](/authors/ye-qingchun.html)** (叶青春道长), abbot of Huizhou Yuanmiao Taoist Temple (惠州元妙古观) in Guangdong, China, provides editorial direction and cultural review for the site's Taoist context, BaZi terminology, Heavenly Stems and Earthly Branches, Five Elements, traditional calendrical culture, and Chinese naming material.
+
+A report republished from the Guangdong Taoist Association publicly identifies Ye Qingchun as the abbot of Huizhou Yuanmiao Taoist Temple. MyBaziDestiny is independently operated: it is not the temple's official website, and the temple is not presented as endorsing this site's commercial services.
 
 ## What We Cover
 
@@ -44,6 +50,8 @@ Our BaZi calculator uses the following methodology:
 - **True solar time option** — When a supported birthplace is selected, users may apply a longitude-based time correction.
 - **Heavenly Stems & Earthly Branches** — All Four Pillars (Year, Month, Day, Hour) are calculated using the traditional sexagenary cycle (六十甲子).
 - **Interpretation scope** — Current personalized results cover Four Pillars, Day Master, a simplified Five Elements distribution, and general lifestyle guidance.
+
+Calendar implementation and test outputs are maintained by the MyBaziDestiny product team. Cultural review does not replace reproducible testing; it adds historical and terminological context to the site's explanations.
 
 ## Data Sources & References
 

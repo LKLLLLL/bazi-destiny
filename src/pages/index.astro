@@ -5,7 +5,9 @@ import Pricing from '../components/Pricing.astro';
 import PaymentModal from '../components/PaymentModal.astro';
 import Armillary from '../components/Armillary.astro';
 import WuxingPentagon from '../components/WuxingPentagon.astro';
+import ExpertCredential from '../components/ExpertCredential.astro';
 import { BRAND_ALIASES, BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
+import { YE_QINGCHUN_ID, yeQingchunPersonJsonLd } from '../lib/expert';
 import { productJsonLd } from '../lib/product-schema';
 
 const posts = (await getCollection('blog'))
@@ -39,7 +41,9 @@ const jsonLd = [
     email: 'contact@mybazidestiny.com',
     knowsAbout: ['BaZi', 'Four Pillars of Destiny', 'Chinese calendrical calculation', 'Five Elements'],
     publishingPrinciples: `${SITE_URL}/editorial-policy.html`,
+    member: { '@id': YE_QINGCHUN_ID },
   },
+  yeQingchunPersonJsonLd,
   productJsonLd('lifeBlueprint'),
 ];
 
@@ -112,6 +116,13 @@ const faqs = [
     </div>
     <div class="hero-scrollhint" aria-hidden="true">
       <span class="vertical-han">观象授时</span>
+    </div>
+  </section>
+
+  <section class="expert-section" aria-label="Traditional culture editor">
+    <div class="wrap-narrow" data-reveal>
+      <ExpertCredential variant="card" />
+      <p class="expert-independence">MyBaziDestiny is independently operated and is not the official website of Huizhou Yuanmiao Taoist Temple. <a href="/authors/ye-qingchun.html">Read the editor profile and public identity reference.</a></p>
     </div>
   </section>
 
@@ -333,6 +344,9 @@ const faqs = [
     font-size: 0.8rem;
     opacity: 0.75;
   }
+  .expert-section { padding: 2.1rem 0; border-block: 1px solid var(--line-soft); background: rgba(212, 175, 106, 0.025); }
+  .expert-independence { margin: 0.65rem 0 0 4.2rem; color: var(--bone-faint); font-size: 0.74rem; line-height: 1.55; }
+  @media (max-width: 560px) { .expert-independence { margin-left: 0; } }
 
   @media (max-width: 1024px) {
     .hero-armillary { width: clamp(20rem, 36vw, 30rem); right: -8%; }

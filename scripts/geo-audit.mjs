@@ -11,8 +11,12 @@ function requireMatch(path, value, pattern, message) {
   if (!pattern.test(value)) errors.push(`${path}: ${message}`);
 }
 
-const [brand, productSchema, index, calculator, pricing, methodology, testCases, testCaseData, llms, sitemap, products, indexNow, indexNowKey] = await Promise.all([
+const [brand, expert, authorProfile, authorProfileZh, articleTemplate, productSchema, index, calculator, pricing, methodology, testCases, testCaseData, llms, sitemap, products, indexNow, indexNowKey] = await Promise.all([
   source('src/lib/brand.ts'),
+  source('src/lib/expert.ts'),
+  source('src/pages/authors/ye-qingchun.astro'),
+  source('src/pages/zh/authors/ye-qingchun.astro'),
+  source('src/pages/[slug].astro'),
   source('src/lib/product-schema.ts'),
   source('src/pages/index.astro'),
   source('src/pages/calculator.astro'),
@@ -29,6 +33,10 @@ const [brand, productSchema, index, calculator, pricing, methodology, testCases,
 
 requireMatch('src/lib/brand.ts', brand, /BRAND_NAME = 'MyBaziDestiny'/, 'canonical brand constant is missing');
 requireMatch('src/lib/brand.ts', brand, /BaZi Destiny.*My Bazi Destiny/s, 'brand aliases are missing');
+requireMatch('src/lib/expert.ts', expert, /YE_QINGCHUN_ID[\s\S]*叶青春道长[\s\S]*Huizhou Yuanmiao Taoist Temple[\s\S]*subjectOf/, 'named cultural editor entity or public reference is incomplete');
+requireMatch('src/pages/authors/ye-qingchun.astro', authorProfile, /ProfilePage[\s\S]*YE_QINGCHUN_ID[\s\S]*Independent publication/, 'English cultural editor profile is incomplete');
+requireMatch('src/pages/zh/authors/ye-qingchun.astro', authorProfileZh, /ProfilePage[\s\S]*叶青春道长[\s\S]*独立运营说明/, 'Chinese cultural editor profile is incomplete');
+requireMatch('src/pages/\[slug\].astro', articleTemplate, /editor:\s*\{ '@id': YE_QINGCHUN_ID \}[\s\S]*yeQingchunPersonJsonLd/, 'article editor entity is not connected');
 requireMatch('src/lib/product-schema.ts', productSchema, /'@type': 'Brand'[\s\S]*name: BRAND_NAME/, 'Product brand must be a typed Brand with a name');
 requireMatch('src/lib/product-schema.ts', productSchema, /-1x1\.png[\s\S]*-4x3\.png[\s\S]*-16x9\.png/, 'Product image variants are incomplete');
 requireMatch('src/lib/product-schema.ts', productSchema, /image:\s*productImageUrls\(product\.imageSlug\)/, 'Product schema does not use the image variants');
@@ -52,7 +60,9 @@ requireMatch('public/llms.txt', llms, /Canonical website: https:\/\/mybazidestin
 requireMatch('public/llms.txt', llms, /USD 9\.90[\s\S]*USD 4\.90[\s\S]*USD 1\.99/, 'official prices are missing');
 requireMatch('public/llms.txt', llms, /test-cases\.html[\s\S]*test-cases\.json/, 'public test case sources are missing');
 requireMatch('public/llms.txt', llms, /Preferred primary sources[\s\S]*calculator\.html[\s\S]*methodology\.html/, 'preferred primary sources are missing');
+requireMatch('public/llms.txt', llms, /Named cultural editor[\s\S]*叶青春道长[\s\S]*authors\/ye-qingchun\.html[\s\S]*daoisms\.com\.cn\/2023\/08\/10\/92738/, 'named cultural editor facts or public identity reference are missing');
 requireMatch('src/pages/sitemap.xml.ts', sitemap, /pricing\.html[\s\S]*methodology\.html[\s\S]*test-cases\.html/, 'fact pages are absent from sitemap');
+requireMatch('src/pages/sitemap.xml.ts', sitemap, /authors\/ye-qingchun\.html[\s\S]*zh\/authors\/ye-qingchun\.html/, 'bilingual cultural editor profiles are absent from sitemap');
 requireMatch('src/lib/paypal/products.ts', products, /TEMPORARY_FREE_ACCESS = false/, 'temporary free mode must remain disabled for the published prices');
 requireMatch('scripts/indexnow-submit.mjs', indexNow, /api\.indexnow\.org\/indexnow/, 'IndexNow endpoint is missing');
 requireMatch('public/272bd5de5baf4ae5b83bf3b043803fa9.txt', indexNowKey, /^272bd5de5baf4ae5b83bf3b043803fa9\n?$/, 'IndexNow verification key is invalid');

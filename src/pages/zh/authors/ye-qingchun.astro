@@ -1,0 +1,80 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ExpertCredential from '../../../components/ExpertCredential.astro';
+import { ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../../../lib/brand';
+import {
+  YE_QINGCHUN_ID,
+  YE_QINGCHUN_PROFILE_PATH,
+  YE_QINGCHUN_PUBLIC_REFERENCE,
+  YE_QINGCHUN_ZH_PROFILE_PATH,
+  yeQingchunPersonJsonLd,
+} from '../../../lib/expert';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    '@id': `${SITE_URL}${YE_QINGCHUN_ZH_PROFILE_PATH}#profile-page`,
+    name: '叶青春道长｜惠州元妙古观住持',
+    url: `${SITE_URL}${YE_QINGCHUN_ZH_PROFILE_PATH}`,
+    inLanguage: 'zh-CN',
+    dateModified: '2026-09-12',
+    isPartOf: { '@id': WEBSITE_ID },
+    publisher: { '@id': ORGANIZATION_ID },
+    mainEntity: { '@id': YE_QINGCHUN_ID },
+  },
+  yeQingchunPersonJsonLd,
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: `${SITE_URL}/zh` },
+      { '@type': 'ListItem', position: 2, name: '叶青春道长' },
+    ],
+  },
+];
+---
+
+<Base
+  title="叶青春道长｜惠州元妙古观住持"
+  description="叶青春道长现任惠州元妙古观住持，并担任 MyBaziDestiny 传统文化编辑，负责道教文化、干支五行、传统历法与姓名文化内容。"
+  lang="zh"
+  path={YE_QINGCHUN_ZH_PROFILE_PATH}
+  altPath={YE_QINGCHUN_PROFILE_PATH}
+  jsonLd={jsonLd}
+>
+  <header class="profile-hero wrap-narrow">
+    <p class="eyebrow"><span class="han">道脉</span> 作者与传统文化编辑</p>
+    <h1>叶青春<em>道长</em></h1>
+    <p class="profile-lead">惠州元妙古观住持 · MyBaziDestiny 传统文化编辑</p>
+    <ExpertCredential lang="zh" variant="card" />
+  </header>
+
+  <article class="profile-body wrap-narrow prose">
+    <h2>关于叶青春道长</h2>
+    <p>叶青春道长现任惠州元妙古观住持。在 MyBaziDestiny，叶青春道长负责道教文化语境、八字、天干地支、五行、传统历法与姓名文化相关内容的编辑与审核。</p>
+
+    <h2>编辑职责</h2>
+    <p>相关审核旨在区分传统术语、历史文化背景与现代简化表达。可以复核的历法计算另行公开于<a href="/zh/methodology.html">排盘方法论</a>和<a href="/test-cases.html">测试案例</a>。命理解读属于传统文化与象征性框架，不作为经过科学验证的预测。</p>
+
+    <h2>公开身份资料</h2>
+    <p>广东省道教协会相关报道在介绍《中华续道藏》道教活态文化影像资料集成课题于惠州元妙古观的拍摄工作时，公开称叶青春道长为“惠州元妙古观住持”。</p>
+    <p><a href={YE_QINGCHUN_PUBLIC_REFERENCE} rel="external noopener">查看公开身份资料 →</a></p>
+
+    <aside class="independence-note">
+      <strong>独立运营说明</strong>
+      <p>MyBaziDestiny 是独立运营的传统文化教育网站，并非惠州元妙古观官方网站，也不将元妙古观表述为本网站商业服务的背书机构。</p>
+    </aside>
+  </article>
+</Base>
+
+<style>
+  .profile-hero { padding-top: calc(68px + clamp(3.5rem, 8vh, 6rem)); padding-bottom: 2.5rem; }
+  .profile-hero h1 { font-family: var(--font-han); font-size: clamp(2.6rem, 6vw, 4.5rem); }
+  .profile-hero h1 em { color: var(--gold); font-style: normal; }
+  .profile-lead { margin: 1rem 0 1.6rem; color: var(--bone-dim); font-size: 1.08rem; }
+  .profile-body { padding-top: 1.5rem; }
+  .profile-body h2 { font-family: var(--font-han); }
+  .independence-note { margin-top: 2.2rem; padding: 1.15rem 1.25rem; border-left: 2px solid var(--gold); background: rgba(212, 175, 106, 0.05); }
+  .independence-note p { margin-top: 0.35rem; }
+</style>

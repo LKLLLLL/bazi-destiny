@@ -1,6 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
+import ExpertCredential from '../../components/ExpertCredential.astro';
 import destinyZh from '../../data/destiny-zh.json';
+import { yeQingchunPersonJsonLd } from '../../lib/expert';
 
 const years = destinyZh.map((r) => {
   const m = r.h1.match(/(\d{4})年(\S+)/);
@@ -15,6 +17,7 @@ const years = destinyZh.map((r) => {
   lang="zh"
   path="/zh"
   altPath="/"
+  jsonLd={[yeQingchunPersonJsonLd]}
 >
   <section class="zh-hero">
     <div class="wrap-narrow center">
@@ -23,6 +26,13 @@ const years = destinyZh.map((r) => {
       <p class="zh-lead" data-reveal style="--reveal-delay:.1s">
         输入出生日期与时辰，排出四柱八字、日主与五行强弱；也可以按出生年份查看生肖命理与流年详解。
       </p>
+    </div>
+  </section>
+
+  <section class="expert-section" aria-label="传统文化编辑">
+    <div class="wrap-narrow" data-reveal>
+      <ExpertCredential lang="zh" variant="card" />
+      <p class="expert-independence">MyBaziDestiny 为独立运营网站，并非惠州元妙古观官方网站。<a href="/zh/authors/ye-qingchun.html">查看叶青春道长简介及公开身份资料。</a></p>
     </div>
   </section>
 
@@ -73,6 +83,9 @@ const years = destinyZh.map((r) => {
   .zh-hero h1 span { color: var(--gold); }
   .zh-lead { margin-top: 1.2rem; color: var(--bone-dim); }
   .center { text-align: center; }
+  .expert-section { padding: 2.1rem 0; border-block: 1px solid var(--line-soft); background: rgba(212, 175, 106, 0.025); }
+  .expert-independence { margin: 0.65rem 0 0 4.2rem; color: var(--bone-faint); font-size: 0.74rem; line-height: 1.55; }
+  @media (max-width: 560px) { .expert-independence { margin-left: 0; } }
 
   .years-grid {
     display: grid;

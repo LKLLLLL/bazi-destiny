@@ -1,0 +1,81 @@
+---
+import Base from '../../layouts/Base.astro';
+import ExpertCredential from '../../components/ExpertCredential.astro';
+import { ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../../lib/brand';
+import {
+  YE_QINGCHUN_ID,
+  YE_QINGCHUN_PROFILE_PATH,
+  YE_QINGCHUN_PUBLIC_REFERENCE,
+  YE_QINGCHUN_ZH_PROFILE_PATH,
+  yeQingchunPersonJsonLd,
+} from '../../lib/expert';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    '@id': `${SITE_URL}${YE_QINGCHUN_PROFILE_PATH}#profile-page`,
+    name: 'Daoist Priest Ye Qingchun — Author and Cultural Editor',
+    url: `${SITE_URL}${YE_QINGCHUN_PROFILE_PATH}`,
+    inLanguage: 'en',
+    dateModified: '2026-09-12',
+    isPartOf: { '@id': WEBSITE_ID },
+    publisher: { '@id': ORGANIZATION_ID },
+    mainEntity: { '@id': YE_QINGCHUN_ID },
+  },
+  yeQingchunPersonJsonLd,
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+      { '@type': 'ListItem', position: 2, name: 'About', item: `${SITE_URL}/about.html` },
+      { '@type': 'ListItem', position: 3, name: 'Daoist Priest Ye Qingchun' },
+    ],
+  },
+];
+---
+
+<Base
+  title="Daoist Priest Ye Qingchun | MyBaziDestiny"
+  description="Meet Daoist Priest Ye Qingchun, abbot of Huizhou Yuanmiao Taoist Temple and traditional culture editor for MyBaziDestiny."
+  path={YE_QINGCHUN_PROFILE_PATH}
+  altPath={YE_QINGCHUN_ZH_PROFILE_PATH}
+  jsonLd={jsonLd}
+>
+  <header class="profile-hero wrap-narrow">
+    <p class="eyebrow"><span class="han">道脉</span> Author & Cultural Editor</p>
+    <h1>Daoist Priest <em>Ye Qingchun</em></h1>
+    <p class="profile-lead">Abbot of Huizhou Yuanmiao Taoist Temple · Traditional culture editor for MyBaziDestiny</p>
+    <ExpertCredential variant="card" />
+  </header>
+
+  <article class="profile-body wrap-narrow prose">
+    <h2>About Ye Qingchun</h2>
+    <p>Daoist Priest Ye Qingchun (叶青春道长) is the abbot of Huizhou Yuanmiao Taoist Temple (惠州元妙古观) in Guangdong, China. At MyBaziDestiny, he provides editorial direction and cultural review for material concerning Taoist context, BaZi, Heavenly Stems and Earthly Branches, the Five Elements, traditional Chinese calendrical culture, and naming traditions.</p>
+
+    <h2>Editorial role</h2>
+    <p>His role is to help distinguish traditional terminology and cultural context from modern simplification. Reproducible calendar calculations are documented separately in the <a href="/methodology.html">calculation methodology</a> and <a href="/test-cases.html">public test cases</a>. Traditional interpretations are presented as cultural and symbolic frameworks, not scientifically validated predictions.</p>
+
+    <h2>Public identity reference</h2>
+    <p>A report republished from the Guangdong Taoist Association identifies Ye Qingchun as the abbot of Huizhou Yuanmiao Taoist Temple during the on-site documentation of living Taoist culture for the <cite>Continuation of the Taoist Canon</cite> project.</p>
+    <p><a href={YE_QINGCHUN_PUBLIC_REFERENCE} rel="external noopener">Read the public identity reference (Chinese) →</a></p>
+
+    <aside class="independence-note">
+      <strong>Independent publication</strong>
+      <p>MyBaziDestiny is an independent educational website. It is not the official website of Huizhou Yuanmiao Taoist Temple, and the temple is not presented as endorsing the website's commercial services.</p>
+    </aside>
+
+    <p>See the site's <a href="/about.html">mission and sources</a> and <a href="/editorial-policy.html">editorial standards</a>.</p>
+  </article>
+</Base>
+
+<style>
+  .profile-hero { padding-top: calc(68px + clamp(3.5rem, 8vh, 6rem)); padding-bottom: 2.5rem; }
+  .profile-hero h1 { font-size: clamp(2.6rem, 6vw, 4.5rem); }
+  .profile-hero h1 em { color: var(--gold); font-style: italic; }
+  .profile-lead { margin: 1rem 0 1.6rem; color: var(--bone-dim); font-size: 1.08rem; }
+  .profile-body { padding-top: 1.5rem; }
+  .independence-note { margin-top: 2.2rem; padding: 1.15rem 1.25rem; border-left: 2px solid var(--gold); background: rgba(212, 175, 106, 0.05); }
+  .independence-note p { margin-top: 0.35rem; }
+</style>

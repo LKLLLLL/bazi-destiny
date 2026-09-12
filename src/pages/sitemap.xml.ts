@@ -10,6 +10,8 @@ const STATIC_LASTMOD = new Map<string, string>([
   ['/calculator.html', '2026-09-12'],
   ['/about.html', '2026-09-12'],
   ['/editorial-policy.html', '2026-09-12'],
+  ['/authors/ye-qingchun.html', '2026-09-12'],
+  ['/zh/authors/ye-qingchun.html', '2026-09-12'],
 ]);
 
 export const GET: APIRoute = async () => {
@@ -39,10 +41,12 @@ export const GET: APIRoute = async () => {
     { loc: '/methodology.html', priority: '0.8', changefreq: 'monthly' },
     { loc: '/test-cases.html', priority: '0.8', changefreq: 'monthly' },
     { loc: '/about.html', priority: '0.5', changefreq: 'monthly', lastmod: STATIC_LASTMOD.get('/about.html') },
+    { loc: '/authors/ye-qingchun.html', alt: '/zh/authors/ye-qingchun.html', priority: '0.7', changefreq: 'monthly', lastmod: STATIC_LASTMOD.get('/authors/ye-qingchun.html') },
     { loc: '/editorial-policy.html', priority: '0.3', changefreq: 'yearly', lastmod: STATIC_LASTMOD.get('/editorial-policy.html') },
     { loc: '/privacy-policy.html', priority: '0.3', changefreq: 'yearly' },
     { loc: '/terms-of-service.html', priority: '0.3', changefreq: 'yearly' },
     { loc: '/zh', alt: '/', priority: '0.9', changefreq: 'weekly' },
+    { loc: '/zh/authors/ye-qingchun.html', alt: '/authors/ye-qingchun.html', priority: '0.7', changefreq: 'monthly', lastmod: STATIC_LASTMOD.get('/zh/authors/ye-qingchun.html') },
     { loc: '/zh/calculator.html', alt: '/calculator.html', priority: '0.9', changefreq: 'monthly' },
     { loc: '/zh/bazi-reading.html', alt: '/bazi-reading.html', priority: '0.9', changefreq: 'monthly' },
     { loc: '/zh/love-match.html', alt: '/love-match.html', priority: '0.9', changefreq: 'monthly' },

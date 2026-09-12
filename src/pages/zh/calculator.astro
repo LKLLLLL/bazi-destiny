@@ -3,7 +3,9 @@ import Base from '../../layouts/Base.astro';
 import StepCalculator from '../../components/StepCalculator.astro';
 import PaymentModal from '../../components/PaymentModal.astro';
 import ToolSeoContent from '../../components/ToolSeoContent.astro';
+import ExpertCredential from '../../components/ExpertCredential.astro';
 import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../../lib/brand';
+import { YE_QINGCHUN_ID, yeQingchunPersonJsonLd } from '../../lib/expert';
 
 const jsonLd = [
   {
@@ -20,6 +22,14 @@ const jsonLd = [
       { '@type': 'Question', name: '不知道出生时辰还能排盘吗？', acceptedAnswer: { '@type': 'Answer', text: '可以生成三柱命盘，但时柱相关的晚运、潜能与部分细节无法确定。' } },
     ],
   },
+  {
+    '@context': 'https://schema.org', '@type': 'WebPage',
+    '@id': `${SITE_URL}/zh/calculator.html#webpage`, name: '免费八字排盘与传统命理解读',
+    url: `${SITE_URL}/zh/calculator.html`, inLanguage: 'zh-CN', dateModified: '2026-09-12',
+    isPartOf: { '@id': WEBSITE_ID }, publisher: { '@id': ORGANIZATION_ID },
+    reviewedBy: { '@id': YE_QINGCHUN_ID }, mainEntity: { '@id': `${SITE_URL}/zh/calculator.html#application` },
+  },
+  yeQingchunPersonJsonLd,
 ];
 ---
 
@@ -47,6 +57,7 @@ const jsonLd = [
       <section><h3>五行强弱</h3><p>木、火、土、金、水的分布显示命局气势。强项需要正确引导，偏弱之处则可通过环境、习惯与选择主动补足。</p></section>
       <section><h3>真太阳时</h3><p>民用钟表使用统一时区，真太阳时会按出生地经度估算当地太阳时，用于更精细地确认时柱。</p></section>
     </div>
+    <ExpertCredential lang="zh" variant="card" />
     <section class="tool-faq" aria-labelledby="zh-calculator-faq"><h3 id="zh-calculator-faq">八字排盘常见问题</h3><details><summary>不知道出生时辰怎么办？</summary><p>可以选择“不知道出生时辰”，系统会生成三柱命盘，并明确标出时柱未知。</p></details><details><summary>为什么出生城市会影响排盘？</summary><p>选择真太阳时校正后，出生城市的经度会影响当地太阳时，从而可能改变时柱。</p></details></section>
   </ToolSeoContent>
 </Base>

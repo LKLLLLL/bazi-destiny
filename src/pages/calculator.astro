@@ -3,7 +3,9 @@ import Base from '../layouts/Base.astro';
 import StepCalculator from '../components/StepCalculator.astro';
 import PaymentModal from '../components/PaymentModal.astro';
 import ToolSeoContent from '../components/ToolSeoContent.astro';
+import ExpertCredential from '../components/ExpertCredential.astro';
 import { BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
+import { YE_QINGCHUN_ID, yeQingchunPersonJsonLd } from '../lib/expert';
 
 const jsonLd = [
   {
@@ -78,6 +80,7 @@ const jsonLd = [
     inLanguage: 'en',
     isPartOf: { '@id': WEBSITE_ID },
     publisher: { '@id': ORGANIZATION_ID },
+    reviewedBy: { '@id': YE_QINGCHUN_ID },
     mainEntity: { '@id': `${SITE_URL}/calculator.html#application` },
   },
   {
@@ -88,6 +91,7 @@ const jsonLd = [
       { '@type': 'ListItem', position: 2, name: 'Free BaZi Calculator', item: `${SITE_URL}/calculator.html` },
     ],
   },
+  yeQingchunPersonJsonLd,
 ];
 ---
 
@@ -145,6 +149,8 @@ const jsonLd = [
     <div class="tool-seo-links">
       <p><strong>Verify the method:</strong> review the <a href="/methodology.html">calculation rules and limitations</a>, reproduce the <a href="/test-cases.html">public boundary test cases</a>, or use the <a href="/how-to-choose-bazi-calculator.html">eight-point BaZi calculator checklist</a>. Then learn about the <a href="/bazi-day-master-guide.html">Day Master</a>, <a href="/bazi-ten-gods.html">Ten Gods</a>, and <a href="/bazi-luck-pillars.html">Luck Pillars</a>.</p>
     </div>
+
+    <ExpertCredential variant="card" />
 
     <section class="tool-faq" aria-labelledby="calculator-faq-title">
       <h3 id="calculator-faq-title">BaZi calculator questions</h3>

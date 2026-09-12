@@ -2,8 +2,10 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import DestinyPage from '../components/DestinyPage.astro';
+import ExpertCredential from '../components/ExpertCredential.astro';
 import destinyEn from '../data/destiny-en.json';
 import { BRAND_ALIASES, BRAND_NAME, ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
+import { YE_QINGCHUN_ID, yeQingchunPersonJsonLd } from '../lib/expert';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -59,6 +61,7 @@ const articleLd =
           datePublished: post.data.pubDate.toISOString().slice(0, 10),
           dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString().slice(0, 10),
           author: { '@id': ORGANIZATION_ID },
+          editor: { '@id': YE_QINGCHUN_ID },
           publisher: {
             '@id': ORGANIZATION_ID,
           },
@@ -98,7 +101,27 @@ const articleLd =
           url: `${SITE_URL}/`,
           logo: `${SITE_URL}/og-image.png`,
         },
+        yeQingchunPersonJsonLd,
   ]
+    : [];
+
+const pageLd =
+  kind === 'page' && ['about', 'editorial-policy'].includes(post.id)
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          '@id': `${SITE_URL}/${post.id}.html#webpage`,
+          name: post.data.title,
+          description: post.data.description,
+          url: `${SITE_URL}/${post.id}.html`,
+          dateModified: '2026-09-12',
+          isPartOf: { '@id': WEBSITE_ID },
+          publisher: { '@id': ORGANIZATION_ID },
+          reviewedBy: { '@id': YE_QINGCHUN_ID },
+        },
+        yeQingchunPersonJsonLd,
+      ]
     : [];
 
 const PAGE_ICONS: Record<string, string> = {
@@ -112,7 +135,7 @@ const PAGE_ICONS: Record<string, string> = {
 {kind === 'destiny' ? (
   <DestinyPage rec={rec} lang="en" />
 ) : kind === 'page' ? (
-  <Base title={`${post.data.title} | MyBaziDestiny`} description={post.data.description} path={`/${post.id}.html`}>
+  <Base title={`${post.data.title} | MyBaziDestiny`} description={post.data.description} path={`/${post.id}.html`} jsonLd={pageLd}>
     <header class="art-hero">
       <div class="wrap-narrow">
         <span class="pg-icon" aria-hidden="true">{PAGE_ICONS[post.id] ?? '☯'}</span>
@@ -142,6 +165,7 @@ const PAGE_ICONS: Record<string, string> = {
           {post.data.updatedDate && <><span aria-hidden="true"> · </span>Updated {post.data.updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</>}
           <span aria-hidden="true"> · </span>{post.data.readTime}<span aria-hidden="true"> · </span><a href="/about.html">MyBaziDestiny editorial team</a>
         </p>
+        <ExpertCredential variant="inline" />
       </div>
     </header>
 
@@ -154,6 +178,7 @@ const PAGE_ICONS: Record<string, string> = {
             ? <>This article provides linguistic and cultural context. Chinese names can carry more than one reading, and natural usage varies by person and region. Review our <a href="/editorial-policy.html">editorial standards</a>.</>
             : <>This article explains a traditional cultural framework, not a scientifically validated prediction. Review our <a href="/methodology.html">calculation methodology</a> and <a href="/editorial-policy.html">editorial standards</a>.</>}
         </span>
+        <span>Traditional cultural context is overseen by <a href="/authors/ye-qingchun.html">Daoist Priest Ye Qingchun</a>, abbot of Huizhou Yuanmiao Taoist Temple.</span>
       </aside>
     </article>
 

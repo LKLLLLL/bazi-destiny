@@ -34,6 +34,7 @@ const { lang } = Astro.props;
         {lang === 'en' && <a href="/chinese-zodiac-years.html">Chinese Zodiac Years</a>}
         <a href={lang === 'zh' ? '/zh/faq.html' : '/faq.html'}>{t(lang, 'footer.faq')}</a>
         <a href="/about.html">{t(lang, 'footer.about')}</a>
+        <a href={lang === 'zh' ? '/zh/authors/ye-qingchun.html' : '/authors/ye-qingchun.html'}>{lang === 'zh' ? '叶青春道长' : 'Cultural Editor'}</a>
         <a href={lang === 'zh' ? '/zh/pricing.html' : '/pricing.html'}>{lang === 'zh' ? '价格' : 'Pricing'}</a>
         <a href={lang === 'zh' ? '/zh/bazi-reading.html' : '/bazi-reading.html'}>{lang === 'zh' ? '八字命书' : 'BaZi Reading'}</a>
         <a href={lang === 'zh' ? '/zh/methodology.html' : '/methodology.html'}>{lang === 'zh' ? '方法论' : 'Methodology'}</a>
