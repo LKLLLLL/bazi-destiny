@@ -157,6 +157,8 @@ Names such as 魈 and 白术 carry very specific meanings. Others, such as 晴, 
 
 If you want a name shaped around your own birth season and cultural preferences rather than copied from a character, try the [Chinese Given Name Generator](/chinese-name.html). It provides three names with characters, pinyin, pronunciation, source, and native-speaker context.
 
+If Liyue's references also made words such as *qi*, *Dao*, and *cultivation* feel familiar, see [what cultivation means in Chinese webnovels](/cultivation-meaning-chinese-webnovels.html)—including where fantasy mechanics depart from real cultural ideas.
+
 ## Frequently Asked Questions
 
 ### Are Genshin Impact's Liyue names real Chinese names?
@@ -178,4 +180,3 @@ Yes. 白术 (*báizhú*) is the traditional materia medica name of Atractylodes 
 ### How can I find my own Chinese name with a similar cultural feeling?
 
 Start with natural modern usage, then add an authentic source such as classical poetry, seasonal imagery, or a carefully screened botanical reference. Our [free Chinese name tool](/chinese-name.html) follows that order.
-
