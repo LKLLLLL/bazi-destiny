@@ -16,6 +16,18 @@ const months = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
 ];
+const utcOffsets = [
+  -12, -11, -10, -9.5, -9, -8, -7, -6, -5, -4, -3.5, -3, -2, -1,
+  0, 1, 2, 3, 3.5, 4, 4.5, 5, 5.5, 5.75, 6, 6.5, 7, 8, 8.75,
+  9, 9.5, 10, 10.5, 11, 12, 12.75, 13, 13.75, 14,
+];
+const formatUtcOffset = (offset: number) => {
+  const sign = offset >= 0 ? '+' : '−';
+  const absolute = Math.abs(offset);
+  const hours = Math.floor(absolute);
+  const minutes = Math.round((absolute - hours) * 60);
+  return `UTC${sign}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+};
 ---
 
 <section class="step-calc-section" id="calculator" aria-label={isZh ? '八字排盘' : 'BaZi calculator'} data-step-calculator data-lang={lang}>
@@ -199,6 +211,54 @@ const months = [
               </button>
             </div>
             <ul class="sc-city-list" id="scCityList" role="listbox" hidden></ul>
+            <p class="sc-city-no-results" id="scCityNoResults" role="status" hidden>
+              {isZh ? '快速城市列表中没有找到。' : 'Not found in the quick city list.'}
+            </p>
+          </div>
+
+          <button class="sc-manual-trigger" id="scManualCityOpen" type="button" aria-expanded="false" aria-controls="scManualCity">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+              <circle cx="12" cy="10" r="2.5" />
+            </svg>
+            {isZh ? '找不到城市？手动输入出生地' : "Can't find your city? Enter it manually"}
+          </button>
+
+          <div class="sc-manual-city" id="scManualCity" hidden>
+            <div class="sc-manual-heading">
+              <span class="han" aria-hidden="true">定位</span>
+              <div>
+                <strong>{isZh ? '手动出生地' : 'Manual birthplace'}</strong>
+                <small>{isZh ? '城市名用于标记；经度与出生当时的 UTC 时差用于校正。' : 'The name labels your chart; longitude and the UTC offset at birth power the correction.'}</small>
+              </div>
+            </div>
+            <div class="sc-manual-grid">
+              <label class="sc-manual-field sc-manual-name">
+                <span>{isZh ? '城市或城镇名称' : 'City or town name'}</span>
+                <input id="scManualCityName" type="text" maxlength="80" autocomplete="off" placeholder={isZh ? '例如：景德镇' : 'e.g. Kendal'} />
+              </label>
+              <label class="sc-manual-field">
+                <span>{isZh ? '经度' : 'Longitude'}</span>
+                <input id="scManualCityLon" type="number" min="-180" max="180" step="0.01" inputmode="decimal" placeholder={isZh ? '东经为正，如 117.18' : 'East + / West −'} />
+              </label>
+              <label class="sc-manual-field">
+                <span>{isZh ? '出生当时 UTC 时差' : 'UTC offset at birth'}</span>
+                <select id="scManualCityTimezone">
+                  <option value="">{isZh ? '选择时差' : 'Choose offset'}</option>
+                  {utcOffsets.map((offset) => <option value={offset}>{formatUtcOffset(offset)}</option>)}
+                </select>
+              </label>
+            </div>
+            <p class="sc-manual-help">
+              {isZh
+                ? '可从地图地点详情中查看经度。若出生日期适用夏令时，请填写当时实际使用的 UTC 时差。所有数据只保存在此浏览器。'
+                : 'Find longitude in a map place card. If daylight saving applied on the birth date, use the UTC offset observed then. These details stay in this browser.'}
+            </p>
+            <p class="sc-manual-error" id="scManualCityError" role="alert" hidden></p>
+            <div class="sc-manual-actions">
+              <button class="btn btn-ghost" id="scUseManualCity" type="button">{isZh ? '使用这个出生地' : 'Use this birthplace'}</button>
+              <button class="sc-manual-cancel" id="scManualCityCancel" type="button">{isZh ? '返回城市搜索' : 'Back to city search'}</button>
+            </div>
           </div>
 
           <!-- Selected city chip -->
@@ -207,7 +267,7 @@ const months = [
               <span class="sc-chip-dot"></span>
               <span class="sc-chip-name" id="scCityChipName"></span>
               <span class="sc-chip-country" id="scCityChipCountry"></span>
-              <button class="sc-chip-remove" id="scCityChipRemove" aria-label="Remove city">
+              <button class="sc-chip-remove" id="scCityChipRemove" aria-label={isZh ? '移除城市' : 'Remove city'}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
               </button>
             </span>
@@ -805,6 +865,76 @@ const months = [
   .sc-city-item-name { flex: 1; font-weight: 500; }
   .sc-city-item-country { font-size: 0.75rem; color: var(--bone-faint); }
   .sc-city-item-tz { font-size: 0.68rem; color: var(--gold-deep); background: rgba(212,175,106,0.08); padding: 0.1rem 0.45rem; border-radius: 999px; }
+  .sc-city-no-results {
+    margin: 0.55rem 0 0;
+    color: var(--bone-faint);
+    font-size: 0.76rem;
+    text-align: left;
+  }
+  .sc-city-no-results[hidden] { display: none; }
+
+  .sc-manual-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: -0.15rem 0 1rem;
+    padding: 0.35rem 0.15rem;
+    border: 0;
+    border-bottom: 1px solid var(--line-soft);
+    background: none;
+    color: var(--bone-dim);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .sc-manual-trigger:hover { color: var(--gold-bright); border-color: var(--gold); }
+  .sc-manual-trigger[hidden] { display: none; }
+  .sc-manual-city {
+    width: min(100%, 540px);
+    margin: 0 0 1.15rem;
+    padding: 1rem;
+    border: 1px solid var(--line-soft);
+    border-left: 2px solid var(--gold-deep);
+    border-radius: var(--radius);
+    background: rgba(212, 175, 106, 0.035);
+    text-align: left;
+  }
+  .sc-manual-city[hidden] { display: none; }
+  .sc-manual-heading { display: flex; align-items: flex-start; gap: 0.7rem; margin-bottom: 0.9rem; }
+  .sc-manual-heading > .han { color: var(--gold); font-size: 1.05rem; letter-spacing: 0.1em; }
+  .sc-manual-heading div { display: grid; gap: 0.12rem; }
+  .sc-manual-heading strong { color: var(--bone); font-size: 0.88rem; }
+  .sc-manual-heading small { color: var(--bone-faint); font-size: 0.7rem; line-height: 1.45; }
+  .sc-manual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+  .sc-manual-name { grid-column: 1 / -1; }
+  .sc-manual-field { display: grid; gap: 0.3rem; }
+  .sc-manual-field > span { color: var(--bone-faint); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .sc-manual-field input,
+  .sc-manual-field select {
+    width: 100%;
+    min-height: 45px;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-s);
+    background: var(--ink-1);
+    color: var(--bone);
+    font: 500 0.84rem/1.2 var(--font-body);
+  }
+  .sc-manual-field input:focus,
+  .sc-manual-field select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212, 175, 106, 0.12); }
+  .sc-manual-field select { color-scheme: dark; }
+  .sc-manual-help { margin: 0.65rem 0 0; color: var(--bone-faint); font-size: 0.68rem; line-height: 1.5; }
+  .sc-manual-error { margin: 0.55rem 0 0; color: #f1a7a7; font-size: 0.74rem; }
+  .sc-manual-error[hidden] { display: none; }
+  .sc-manual-actions { display: flex; align-items: center; gap: 0.9rem; margin-top: 0.8rem; }
+  .sc-manual-actions .btn { min-height: 42px; padding: 0.6rem 1rem; font-size: 0.8rem; }
+  .sc-manual-cancel { padding: 0.35rem 0; border: 0; background: none; color: var(--bone-faint); font-size: 0.74rem; cursor: pointer; }
+  .sc-manual-cancel:hover { color: var(--bone); }
+  @media (max-width: 520px) {
+    .sc-manual-grid { grid-template-columns: 1fr; }
+    .sc-manual-name { grid-column: auto; }
+    .sc-manual-actions { align-items: stretch; flex-direction: column; gap: 0.45rem; }
+  }
 
   /* City chip */
   .sc-city-selected { margin-bottom: 1rem; text-align: center; }
@@ -1486,6 +1616,7 @@ const months = [
 
 <script>
   import { CITIES, searchCities, solarTimeCorrection } from '../data/cities';
+  import type { City } from '../data/cities';
   import BaZiEngine from '../lib/bazi/engine';
   import Readings from '../lib/bazi/readings';
   import { elementsDonut, elementBars, compass, pillarStrengthCards, ELEM_EN, ELEM_COLOR, STEM_EN, BRANCH_EN } from '../lib/charts';
@@ -1524,7 +1655,7 @@ const months = [
     cityTimezone: number;
     useSolarTime: boolean;
     gender: 'male' | 'female' | '';
-    cityData?: typeof CITIES[0]; // cached full city object to avoid re-lookup
+    cityData?: City; // cached full city object to avoid re-lookup
   }
 
   const state: CalcState = {
@@ -1562,9 +1693,9 @@ const months = [
         state.date = saved.date;
         state.hour = saved.hour || '';
         state.cityName = saved.cityName || '';
-        state.cityLon = saved.cityLon || 0;
-        state.cityLat = saved.cityLat || 0;
-        state.cityTimezone = saved.cityTimezone || 8;
+        state.cityLon = saved.cityLon ?? 0;
+        state.cityLat = saved.cityLat ?? 0;
+        state.cityTimezone = saved.cityTimezone ?? 8;
         state.useSolarTime = saved.useSolarTime || false;
         state.gender = saved.gender || '';
         return true;
@@ -1724,10 +1855,19 @@ const months = [
   const cityChipCountry = $('scCityChipCountry');
   const cityChipRemove = $('scCityChipRemove');
   const citySolar = $('scCitySolar');
+  const cityNoResults = $('scCityNoResults');
+  const manualCityOpen = $('scManualCityOpen') as HTMLButtonElement;
+  const manualCity = $('scManualCity');
+  const manualCityName = $('scManualCityName') as HTMLInputElement;
+  const manualCityLon = $('scManualCityLon') as HTMLInputElement;
+  const manualCityTimezone = $('scManualCityTimezone') as HTMLSelectElement;
+  const manualCityError = $('scManualCityError');
+  const useManualCity = $('scUseManualCity');
+  const manualCityCancel = $('scManualCityCancel');
   const skipCity = $('scSkipCity');
   const next2 = $('scNext2') as HTMLButtonElement;
 
-  let cityResults: typeof CITIES = [];
+  let cityResults: City[] = [];
   let cityHighlightIdx = -1;
 
   function showCityList() {
@@ -1738,6 +1878,22 @@ const months = [
     cityList.hidden = true;
     cityInput.setAttribute('aria-expanded', 'false');
     cityHighlightIdx = -1;
+  }
+
+  function setManualCityOpen(open: boolean) {
+    manualCity!.hidden = !open;
+    manualCityOpen.hidden = open;
+    manualCityOpen.setAttribute('aria-expanded', String(open));
+    cityInput.disabled = open;
+    if (open) {
+      clearTimeout(cityDebounceTimer);
+      hideCityList();
+      cityNoResults!.hidden = true;
+      setTimeout(() => manualCityName?.focus(), 50);
+    } else {
+      manualCityError!.hidden = true;
+      cityInput.focus();
+    }
   }
 
   function renderCityList(query: string) {
@@ -1751,6 +1907,7 @@ const months = [
         <span class="sc-city-item-tz">UTC${c.timezone >= 0 ? '+' : ''}${c.timezone}</span>
       </li>
     `).join('');
+    cityNoResults!.hidden = cityResults.length > 0;
     if (cityResults.length > 0) showCityList();
     else hideCityList();
   }
@@ -1777,7 +1934,15 @@ const months = [
     return COUNTRY_FLAGS[country] || '';
   }
 
-  function selectCity(city: typeof CITIES[0]) {
+  function formatCityUtcOffset(offset: number): string {
+    const sign = offset >= 0 ? '+' : '−';
+    const absolute = Math.abs(offset);
+    const hours = Math.floor(absolute);
+    const minutes = Math.round((absolute - hours) * 60);
+    return `UTC${sign}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+  }
+
+  function selectCity(city: City) {
     state.cityName = city.name;
     state.cityLat = city.lat;
     state.cityLon = city.lon;
@@ -1785,16 +1950,20 @@ const months = [
     state.cityData = city; // cache full object to avoid re-lookup
     cityInput.value = '';
     hideCityList();
+    cityNoResults!.hidden = true;
+    if (manualCity && !manualCity.hidden) setManualCityOpen(false);
     cityClear!.hidden = true;
 
     cityChipName!.textContent = city.name;
-    cityChipCountry!.textContent = `· ${city.nameCN} · ${city.country}`;
+    cityChipCountry!.textContent = city.nameCN
+      ? `· ${city.nameCN} · ${city.country}`
+      : `· ${city.country} · ${formatCityUtcOffset(city.timezone)}`;
     citySelected!.hidden = false;
     next2.disabled = false;
 
     if (state.useSolarTime && solarToggle?.checked) {
       const corr = solarTimeCorrection(city);
-      const sign = corr >= 0 ? '+' : '';
+      const sign = corr > 0 ? '+' : corr < 0 ? '−' : '';
       const absMin = Math.abs(Math.round(corr));
       citySolar!.hidden = false;
       citySolar!.textContent = isZh
@@ -1816,6 +1985,40 @@ const months = [
       cityDebounceTimer = setTimeout(() => renderCityList(q), 150);
     } else {
       hideCityList();
+      cityNoResults!.hidden = true;
+    }
+  });
+
+  manualCityOpen?.addEventListener('click', () => setManualCityOpen(true));
+  manualCityCancel?.addEventListener('click', () => setManualCityOpen(false));
+  useManualCity?.addEventListener('click', () => {
+    const name = manualCityName.value.trim();
+    const lon = Number(manualCityLon.value);
+    const timezoneValue = manualCityTimezone.value;
+    if (!name || !manualCityLon.value || !Number.isFinite(lon) || lon < -180 || lon > 180 || !timezoneValue) {
+      manualCityError!.textContent = isZh
+        ? '请填写城市名称、−180° 至 180° 的经度，并选择出生当时的 UTC 时差。'
+        : 'Enter a city name, a longitude from −180° to 180°, and the UTC offset used at birth.';
+      manualCityError!.hidden = false;
+      return;
+    }
+    selectCity({
+      name,
+      nameCN: '',
+      country: isZh ? '手动地点' : 'Manual location',
+      lat: 0,
+      lon,
+      timezone: Number(timezoneValue),
+      keywords: name.toLowerCase(),
+    });
+  });
+  [manualCityName, manualCityLon, manualCityTimezone].forEach((field) => field?.addEventListener('input', () => {
+    manualCityError!.hidden = true;
+  }));
+  manualCity?.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      useManualCity?.click();
     }
   });
 
@@ -1861,6 +2064,7 @@ const months = [
     cityInput.value = '';
     cityClear!.hidden = true;
     hideCityList();
+    cityNoResults!.hidden = true;
     cityInput.focus();
   });
 
@@ -1868,6 +2072,7 @@ const months = [
     state.cityName = '';
     state.cityLon = 0;
     state.cityLat = 0;
+    state.cityData = undefined;
     citySelected!.hidden = true;
     next2.disabled = true;
     saveState();
@@ -1883,6 +2088,7 @@ const months = [
     state.cityName = '';
     state.cityLon = 0;
     state.cityLat = 0;
+    state.cityData = undefined;
     next2.disabled = false;
     if (citySelected) citySelected.hidden = true;
     saveState();
@@ -1915,14 +2121,20 @@ const months = [
     // True Solar Time correction
     if (useSolarTime && cityName) {
       // Use cached city data to avoid O(n) re-lookup
-      const city = state.cityData || CITIES.find((c) => c.name === cityName);
-      if (city) {
-        const corr = solarTimeCorrection(city);
-        hourNum = hourNum + corr / 60;
-        // wrap around
-        if (hourNum >= 24) hourNum -= 24;
-        if (hourNum < 0) hourNum += 24;
-      }
+      const city = state.cityData || CITIES.find((c) => c.name === cityName) || {
+        name: cityName,
+        nameCN: '',
+        country: isZh ? '手动地点' : 'Manual location',
+        lat: cityLat,
+        lon: cityLon,
+        timezone: cityTimezone,
+        keywords: cityName.toLowerCase(),
+      };
+      const corr = solarTimeCorrection(city);
+      hourNum = hourNum + corr / 60;
+      // wrap around
+      if (hourNum >= 24) hourNum -= 24;
+      if (hourNum < 0) hourNum += 24;
     }
 
     // Hide steps, show loading — clear any previous animation
@@ -2398,11 +2610,19 @@ const months = [
       }
       updateNext0();
       if (state.hour) selectHour(state.hour);
-      if (state.cityName) {
-        const city = CITIES.find((c) => c.name === state.cityName);
-        if (city) selectCity(city);
-      }
       if (state.useSolarTime && solarToggle) solarToggle.checked = true;
+      if (state.cityName) {
+        const city = CITIES.find((c) => c.name === state.cityName) || {
+          name: state.cityName,
+          nameCN: '',
+          country: isZh ? '手动地点' : 'Manual location',
+          lat: state.cityLat,
+          lon: state.cityLon,
+          timezone: state.cityTimezone,
+          keywords: state.cityName.toLowerCase(),
+        };
+        selectCity(city);
+      }
       goToStep(currentStep);
     });
   }

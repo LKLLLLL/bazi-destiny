@@ -66,12 +66,12 @@ const jsonLd = [
       <section>
         <p class="step-label">03 / Location</p>
         <h2>Optional longitude correction</h2>
-        <p>When a supported city is selected and true solar time is enabled, the calculator estimates a correction using:</p>
+        <p>When a listed city is selected—or an unlisted birthplace is entered with its longitude and UTC offset—and true solar time is enabled, the calculator estimates a correction using:</p>
         <pre><code>(city longitude - time-zone standard meridian) x 4 minutes per degree</code></pre>
         <p>This correction can move the effective time across an hour-branch boundary. It is optional and affects the Hour Pillar, not the birth date entered by the user.</p>
         <div class="limitation">
           <h3>Timezone limitation</h3>
-          <p>The bundled city list uses static UTC offsets. It does not query a historical timezone or daylight-saving database. For births affected by historical DST, political timezone changes, or an unlisted location, users should confirm the appropriate civil time independently.</p>
+          <p>The bundled city list uses static UTC offsets. It does not query a historical timezone or daylight-saving database. For an unlisted birthplace, enter its longitude and the UTC offset observed on the birth date. Births affected by historical DST or political timezone changes should still be checked independently.</p>
         </div>
       </section>
 

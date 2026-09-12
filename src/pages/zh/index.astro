@@ -29,13 +29,6 @@ const years = destinyZh.map((r) => {
     </div>
   </section>
 
-  <section class="expert-section" aria-label="传统文化编辑">
-    <div class="wrap-narrow" data-reveal>
-      <ExpertCredential lang="zh" variant="card" />
-      <p class="expert-independence">MyBaziDestiny 为独立运营网站，并非惠州元妙古观官方网站。<a href="/zh/authors/ye-qingchun.html">查看叶青春道长简介及公开身份资料。</a></p>
-    </div>
-  </section>
-
   <section class="section zh-years" id="years">
     <div class="wrap">
       <div class="section-head" data-reveal>
@@ -75,6 +68,14 @@ const years = destinyZh.map((r) => {
       </div>
     </div>
   </section>
+
+  <section class="expert-section" aria-label="传统文化编辑">
+    <div class="wrap expert-row" data-reveal>
+      <p class="expert-kicker"><span class="han">审校</span> 文化内容审核</p>
+      <ExpertCredential lang="zh" variant="inline" />
+      <p class="expert-independence">MyBaziDestiny 为独立运营网站，并非惠州元妙古观官方网站。<a href="/zh/authors/ye-qingchun.html">查看编辑简介及公开身份资料 →</a></p>
+    </div>
+  </section>
 </Base>
 
 <style>
@@ -83,9 +84,22 @@ const years = destinyZh.map((r) => {
   .zh-hero h1 span { color: var(--gold); }
   .zh-lead { margin-top: 1.2rem; color: var(--bone-dim); }
   .center { text-align: center; }
-  .expert-section { padding: 2.1rem 0; border-block: 1px solid var(--line-soft); background: rgba(212, 175, 106, 0.025); }
-  .expert-independence { margin: 0.65rem 0 0 4.2rem; color: var(--bone-faint); font-size: 0.74rem; line-height: 1.55; }
-  @media (max-width: 560px) { .expert-independence { margin-left: 0; } }
+  .expert-section { padding: 1.45rem 0; border-block: 1px solid var(--line-soft); background: rgba(212, 175, 106, 0.018); }
+  .expert-row { display: grid; grid-template-columns: auto minmax(14rem, .8fr) minmax(20rem, 1.2fr); align-items: center; gap: clamp(1.3rem, 3vw, 2.8rem); }
+  .expert-kicker { display: grid; gap: .15rem; margin: 0; color: var(--bone-faint); font-size: .65rem; font-weight: 700; letter-spacing: .14em; white-space: nowrap; }
+  .expert-kicker .han { color: var(--gold); font-size: 1.15rem; letter-spacing: .2em; }
+  .expert-independence { margin: 0; color: var(--bone-faint); font-size: 0.72rem; line-height: 1.55; }
+  .expert-independence a { color: var(--gold); }
+  .expert-independence a:hover { color: var(--gold-bright); }
+  @media (max-width: 900px) {
+    .expert-row { grid-template-columns: auto minmax(0, 1fr); }
+    .expert-independence { grid-column: 2; }
+  }
+  @media (max-width: 560px) {
+    .expert-row { grid-template-columns: 1fr; gap: .85rem; }
+    .expert-kicker { display: flex; align-items: baseline; gap: .55rem; }
+    .expert-independence { grid-column: auto; }
+  }
 
   .years-grid {
     display: grid;
