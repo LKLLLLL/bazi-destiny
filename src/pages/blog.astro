@@ -4,7 +4,10 @@ import Base from '../layouts/Base.astro';
 
 const posts = (await getCollection('blog'))
   .filter((post) => !post.data.noindex)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  .sort((a, b) =>
+    (b.data.updatedDate ?? b.data.pubDate).valueOf() -
+    (a.data.updatedDate ?? a.data.pubDate).valueOf()
+  );
 const [featured, ...rest] = posts;
 const tags = [...new Set(posts.map((p) => p.data.tag))];
 ---
@@ -35,6 +38,9 @@ const tags = [...new Set(posts.map((p) => p.data.tag))];
     <a href="/bazi-luck-pillars.html">Luck Pillars</a>
     <a href="/chinese-zodiac-years.html">Zodiac Years</a>
     <a href="/how-to-choose-bazi-calculator.html">Choose a Calculator</a>
+    <a href="/pursuit-of-jade-chinese-names.html">C-Drama Names</a>
+    <a href="/becoming-chinese-trend.html">Chinese Culture</a>
+    <a href="/taylor-swift-bazi-chart.html">Celebrity Charts</a>
   </nav>
 
   <div class="wrap blog-body">
@@ -46,7 +52,7 @@ const tags = [...new Set(posts.map((p) => p.data.tag))];
           <h2>{featured.data.title}</h2>
           <p>{featured.data.description}</p>
           <span class="f-meta">
-            {featured.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            {featured.data.updatedDate ? 'Updated ' : ''}{(featured.data.updatedDate ?? featured.data.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             {' · '}{featured.data.readTime} →
           </span>
         </div>
@@ -63,7 +69,7 @@ const tags = [...new Set(posts.map((p) => p.data.tag))];
           <h2>{post.data.title}</h2>
           <p>{post.data.description}</p>
           <span class="b-meta">
-            {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            {post.data.updatedDate ? 'Updated ' : ''}{(post.data.updatedDate ?? post.data.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             {' · '}{post.data.readTime}
           </span>
         </a>

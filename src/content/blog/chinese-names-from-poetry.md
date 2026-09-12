@@ -158,6 +158,8 @@ This is cultural personalization, not a claim that a name changes fate. Our [Chi
 
 For more on the underlying process, read [How to Choose a Chinese Name That Sounds Natural](/how-to-choose-a-chinese-name.html) and [Chinese Names Based on Your Birthday](/chinese-name-based-on-birthday.html).
 
+To see the same naming principles at work in current historical drama, explore the characters and jade imagery in [Pursuit of Jade Chinese Names: Fan Changyu and Xie Zheng](/pursuit-of-jade-chinese-names.html).
+
 ## Frequently Asked Questions
 
 ### What is the best Chinese classic for names?
@@ -175,4 +177,3 @@ Yes, but learn its existing associations first. A name tied strongly to a writer
 ### Do I need a Chinese surname?
 
 No. A foreign learner can use a Chinese given name socially, just as many Chinese speakers use an English given name. Surnames carry family lineage and do not need to be invented.
-

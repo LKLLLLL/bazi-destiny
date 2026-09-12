@@ -78,4 +78,4 @@ Birth time still matters within the system because two-hour periods determine th
 ---
 
 **Continue Learning:**
-[Complete Guide to BaZi](/complete-guide-bazi.html) · [Ten Gods](/bazi-ten-gods.html) · [Luck Pillars](/bazi-luck-pillars.html) · [BaZi vs Western Astrology](/bazi-vs-western-astrology.html)
+[Complete Guide to BaZi](/complete-guide-bazi.html) · [Ten Gods](/bazi-ten-gods.html) · [Luck Pillars](/bazi-luck-pillars.html) · [BaZi vs Western Astrology](/bazi-vs-western-astrology.html) · [Celebrity chart example](/taylor-swift-bazi-chart.html)
