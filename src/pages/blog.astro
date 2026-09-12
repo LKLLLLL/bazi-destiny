@@ -10,6 +10,12 @@ const posts = (await getCollection('blog'))
   );
 const [featured, ...rest] = posts;
 const tags = [...new Set(posts.map((p) => p.data.tag))];
+const topicHubs = [
+  { href: '/bazi-guides.html', han: '八字', title: 'BaZi & Four Pillars', description: 'Calculation, Day Master, Five Elements, Ten Gods, and Luck Pillars.' },
+  { href: '/chinese-name-guides.html', han: '取名', title: 'Chinese Names', description: 'Natural names, pinyin, poetry sources, and Five Elements traditions.' },
+  { href: '/chinese-culture-guides.html', han: '华风', title: 'Culture in Stories', description: 'C-drama, Liyue, cultivation webnovels, and current cultural trends.' },
+  { href: '/celebrity-bazi.html', han: '命例', title: 'Celebrity Charts', description: 'Public chart examples with source and birth-time confidence notes.' },
+];
 ---
 
 <Base
@@ -29,6 +35,11 @@ const tags = [...new Set(posts.map((p) => p.data.tag))];
   </header>
 
   <nav class="topic-nav wrap" aria-label="BaZi topic guides">
+    <span>Topic libraries</span>
+    <a href="/bazi-guides.html">BaZi Guides</a>
+    <a href="/chinese-name-guides.html">Chinese Names</a>
+    <a href="/chinese-culture-guides.html">Culture</a>
+    <a href="/celebrity-bazi.html">Celebrity Charts</a>
     <span>Start with</span>
     <a href="/what-is-bazi.html">BaZi Basics</a>
     <a href="/how-to-read-bazi-chart.html">Read a Chart</a>
@@ -38,13 +49,28 @@ const tags = [...new Set(posts.map((p) => p.data.tag))];
     <a href="/bazi-luck-pillars.html">Luck Pillars</a>
     <a href="/chinese-zodiac-years.html">Zodiac Years</a>
     <a href="/how-to-choose-bazi-calculator.html">Choose a Calculator</a>
-    <a href="/pursuit-of-jade-chinese-names.html">C-Drama Names</a>
-    <a href="/becoming-chinese-trend.html">Chinese Culture</a>
-    <a href="/cultivation-meaning-chinese-webnovels.html">Cultivation Terms</a>
-    <a href="/taylor-swift-bazi-chart.html">Celebrity Charts</a>
   </nav>
 
   <div class="wrap blog-body">
+    <section class="hub-strip" aria-labelledby="hub-strip-title">
+      <div class="hub-strip-head">
+        <p class="eyebrow"><span class="han">专题</span> Browse by subject</p>
+        <h2 id="hub-strip-title">Choose a learning path</h2>
+      </div>
+      <div class="hub-strip-grid">
+        {topicHubs.map((hub) => (
+          <a class="hub-tile panel" href={hub.href}>
+            <span class="hub-tile-han han" aria-hidden="true">{hub.han}</span>
+            <span class="hub-tile-copy">
+              <strong>{hub.title}</strong>
+              <small>{hub.description}</small>
+            </span>
+            <span aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
     {featured && (
       <a href={`/${featured.id}.html`} class="featured panel" data-reveal>
         <span class="f-emoji" aria-hidden="true">{featured.data.emoji}</span>
@@ -108,6 +134,17 @@ const tags = [...new Set(posts.map((p) => p.data.tag))];
   .topic-nav span { color: var(--gold); font-weight: 600; }
   .topic-nav a { color: var(--bone-dim); }
   .topic-nav a:hover { color: var(--bone); }
+  .hub-strip { margin-bottom: clamp(2rem, 5vw, 4rem); }
+  .hub-strip-head { margin-bottom: 1.1rem; }
+  .hub-strip-head h2 { margin-top: 0.4rem; font-size: clamp(1.7rem, 3vw, 2.35rem); }
+  .hub-strip-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; }
+  .hub-tile { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center; padding: 1.15rem; color: var(--bone); }
+  .hub-tile:hover { color: var(--bone); border-color: var(--gold); transform: translateY(-2px); }
+  .hub-tile-han { display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid var(--line); color: var(--gold); }
+  .hub-tile-copy { display: grid; gap: 0.25rem; }
+  .hub-tile-copy strong { font-family: var(--font-display); font-size: 1.08rem; }
+  .hub-tile-copy small { color: var(--bone-dim); line-height: 1.45; }
+  @media (max-width: 700px) { .hub-strip-grid { grid-template-columns: 1fr; } }
 
   .featured {
     display: grid;

@@ -1,0 +1,31 @@
+---
+import TopicHub from '../components/TopicHub.astro';
+
+const items = [
+  { href: '/taylor-swift-bazi-chart.html', title: 'Taylor Swift BaZi Chart Without a Birth Time', description: 'A date-based example using a reliable public birth date, with the Hour Pillar deliberately omitted.', label: 'Chart example' },
+  { href: '/how-to-read-bazi-chart.html', title: 'How to Read a BaZi Chart', description: 'Learn the sequence used to read pillars, Day Master, season, and Five Elements before comparing examples.' },
+  { href: '/bazi-day-master-guide.html', title: 'Day Master Guide', description: 'Understand what the Day Stem does—and why it should not be treated as a complete personality label.' },
+  { href: '/methodology.html', title: 'Calculation Methodology', description: 'See how year, month, day, hour, solar terms, and optional true solar time are calculated.', label: 'Method' },
+  { href: '/test-cases.html', title: 'Public Test Cases', description: 'Reproduce boundary cases before relying on any public-figure chart example.', label: 'Evidence' },
+  { href: '/calculator.html', title: 'Calculate Your Own BaZi Chart', description: 'Use known birth details privately in your browser and mark unknown information honestly.', label: 'Free tool' },
+];
+---
+
+<TopicHub
+  path="/celebrity-bazi.html"
+  title="Celebrity BaZi Charts with Source Notes"
+  seoTitle="Celebrity BaZi Charts with Verified Birth Sources"
+  description="Explore carefully sourced celebrity BaZi chart examples that disclose birth-data confidence, omit unsupported Hour Pillars, and avoid claims about private lives."
+  eyebrow="Public Chart Archive"
+  han="命例"
+  answer="A responsible celebrity BaZi example begins with a reliable public birth date and clearly states whether the birth time is known. If no dependable time is available, the Hour Pillar must be omitted. The resulting discussion is a cultural reading of public data—not a diagnosis, factual explanation of success, or claim about private intentions."
+  principles={[
+    'Use reliable public biographical sources and link them visibly.',
+    'Label the confidence of the birth date, place, and time separately.',
+    'Never invent an Hour Pillar or repeat an unsourced fan-site birth time.',
+    'Avoid medical, psychological, financial, or private-life claims about a real person.',
+  ]}
+  items={items}
+  primaryHref="/taylor-swift-bazi-chart.html"
+  primaryLabel="Read the Taylor Swift Example"
+/>

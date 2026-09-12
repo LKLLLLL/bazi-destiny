@@ -1,0 +1,33 @@
+---
+import TopicHub from '../components/TopicHub.astro';
+
+const items = [
+  { href: '/how-to-choose-a-chinese-name.html', title: 'How to Choose a Natural Chinese Name', description: 'Check characters, pinyin, tones, gender impression, homophones, and full-name rhythm.', label: 'Start here' },
+  { href: '/chinese-names-from-poetry.html', title: 'Chinese Names from the Shi Jing and Chu Ci', description: 'Explore classical lines, exact sources, adapted names, pinyin, and modern usage cautions.' },
+  { href: '/chinese-name-based-on-birthday.html', title: 'Chinese Names Based on a Birthday', description: 'Turn seasons, solar terms, and Five Elements imagery into natural rather than overly literal names.' },
+  { href: '/five-elements-chinese-names.html', title: 'Five Elements Chinese Names', description: 'Compare Wood, Fire, Earth, Metal, and Water naming imagery without reducing names to character radicals.' },
+  { href: '/chinese-herbal-botanical-names.html', title: 'Herbal and Botanical Chinese Names', description: 'Understand attractive plant imagery alongside pronunciation, medicinal, and everyday-language risks.' },
+  { href: '/pursuit-of-jade-chinese-names.html', title: 'Pursuit of Jade Character Names', description: 'Read Fan Changyu, Xie Zheng, courtesy names, and jade symbolism as a bridge from C-drama to naming culture.', label: 'C-drama' },
+  { href: '/genshin-impact-liyue-names.html', title: 'Genshin Impact Liyue Names', description: 'Learn how Liyue character names use plants, minerals, titles, wordplay, and literary associations.', label: 'Game culture' },
+  { href: '/chinese-name.html', title: 'Chinese Name Generator', description: 'Generate three name ideas, then verify sound, meaning, source, and contemporary usage.', label: 'Free tool' },
+];
+---
+
+<TopicHub
+  path="/chinese-name-guides.html"
+  title="Chinese Name and Poetry Guides"
+  seoTitle="Chinese Name Guides: Meanings, Poetry and Culture"
+  description="Choose a natural Chinese name with guides to characters, pinyin, tones, Shi Jing and Chu Ci sources, Five Elements, C-drama, and Liyue culture."
+  eyebrow="Chinese Naming Library"
+  han="取名"
+  answer="A natural Chinese name must work as a complete spoken and written name, not just as a list of attractive character meanings. Good choices consider pronunciation, tones, surname rhythm, homophones, gender and generation signals, cultural sources, and how the name feels in present-day use."
+  principles={[
+    'Verify the exact classical line when a name claims a Shi Jing, Chu Ci, or poetry source.',
+    'Distinguish a direct quotation from a modern name merely inspired by an older image.',
+    'Check the full name aloud and screen for unwanted homophones.',
+    'Treat Five Elements naming as one traditional lens rather than a guarantee of luck.',
+  ]}
+  items={items}
+  primaryHref="/chinese-name.html"
+  primaryLabel="Create My Chinese Name"
+/>

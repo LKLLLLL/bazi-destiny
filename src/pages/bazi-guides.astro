@@ -1,0 +1,34 @@
+---
+import TopicHub from '../components/TopicHub.astro';
+
+const items = [
+  { href: '/what-is-bazi.html', title: 'What Is BaZi?', description: 'A concise introduction to the Four Pillars, eight characters, Day Master, and Five Elements.', label: 'Start here' },
+  { href: '/how-to-read-bazi-chart.html', title: 'How to Read a BaZi Chart', description: 'Read the Year, Month, Day, and Hour pillars in a sensible order without jumping straight to predictions.' },
+  { href: '/bazi-day-master-guide.html', title: 'BaZi Day Master Guide', description: 'Learn how the Day Stem becomes the chart reference point and what the ten Day Masters represent.' },
+  { href: '/bazi-elements.html', title: 'Five Elements in BaZi', description: 'Understand Wood, Fire, Earth, Metal, and Water as relationships and seasonal qualities, not a simple score.' },
+  { href: '/bazi-ten-gods.html', title: 'The Ten Gods', description: 'See how element control, production, and polarity form the ten relational categories.' },
+  { href: '/bazi-luck-pillars.html', title: 'Luck Pillars and Da Yun', description: 'A transparent guide to direction, starting age, solar-term boundaries, and common calculator differences.' },
+  { href: '/how-to-choose-bazi-calculator.html', title: 'How to Choose a BaZi Calculator', description: 'Use an eight-point checklist to compare boundary rules, true solar time, disclosures, and reproducibility.' },
+  { href: '/methodology.html', title: 'Calculation Methodology', description: 'Review the exact calendar rules, assumptions, and limitations used by the MyBaziDestiny calculator.', label: 'Method' },
+  { href: '/test-cases.html', title: 'Public Boundary Test Cases', description: 'Reproduce published Li Chun, solar-term, Zi-hour, and true-solar-time examples.', label: 'Evidence' },
+];
+---
+
+<TopicHub
+  path="/bazi-guides.html"
+  title="BaZi and Four Pillars Guides"
+  seoTitle="BaZi Guides: Learn the Four Pillars Step by Step"
+  description="Learn BaZi step by step: Four Pillars, Day Master, Five Elements, Ten Gods, Luck Pillars, calculation rules, and public test cases."
+  eyebrow="BaZi Learning Path"
+  han="八字"
+  answer="BaZi, also called the Four Pillars of Destiny, represents a birth date and time through four stem-branch pairs. A careful reading begins with calendar boundaries and the Day Master, then examines season, element relationships, and timing. These guides separate reproducible chart calculation from traditional symbolic interpretation."
+  principles={[
+    'Verify the calendar rules before interpreting the chart.',
+    'Treat element counts as context, not a complete favorable-element verdict.',
+    'Mark an unknown birth time as unknown instead of inventing an Hour Pillar.',
+    'Use BaZi as a traditional cultural framework, not scientific prediction or high-stakes advice.',
+  ]}
+  items={items}
+  primaryHref="/calculator.html"
+  primaryLabel="Open the Free BaZi Calculator"
+/>

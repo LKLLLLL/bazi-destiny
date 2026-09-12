@@ -93,7 +93,7 @@ Respectful curiosity does not require perfection. It does require attention.
 
 If the Becoming Chinese trend has made you curious about the calendar behind zodiac signs and Five Elements, you can [calculate your BaZi chart here](/calculator.html). Enter accurate birth details, review the four pillars, and use the result as a starting point for learning.
 
-If your birth time is unknown, do not invent one. The Year, Month, and Day Pillars can still be informative, but the Hour Pillar should be marked as unavailable or exploratory. Our guide to [choosing a reliable BaZi calculator](/how-to-choose-bazi-calculator/) explains what trustworthy tools disclose.
+If your birth time is unknown, do not invent one. The Year, Month, and Day Pillars can still be informative, but the Hour Pillar should be marked as unavailable or exploratory. Our guide to [choosing a reliable BaZi calculator](/how-to-choose-bazi-calculator.html) explains what trustworthy tools disclose.
 
 The most interesting version of a “Chinese era” is not imitation. It is the moment a quick trend becomes sustained, context-aware curiosity.
 

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ExpertCredential from '../../components/ExpertCredential.astro';
+import { getCollection } from 'astro:content';
 import { ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../../lib/brand';
 import {
   YE_QINGCHUN_ID,
@@ -9,6 +10,20 @@ import {
   YE_QINGCHUN_ZH_PROFILE_PATH,
   yeQingchunPersonJsonLd,
 } from '../../lib/expert';
+
+const selectedIds = [
+  'what-is-bazi',
+  'bazi-day-master-guide',
+  'bazi-ten-gods',
+  'bazi-luck-pillars',
+  'chinese-names-from-poetry',
+  'pursuit-of-jade-chinese-names',
+  'becoming-chinese-trend',
+  'taylor-swift-bazi-chart',
+];
+const selectedEditorialWork = (await getCollection('blog'))
+  .filter((post) => selectedIds.includes(post.id) && !post.data.noindex)
+  .sort((a, b) => selectedIds.indexOf(a.id) - selectedIds.indexOf(b.id));
 
 const jsonLd = [
   {
@@ -57,6 +72,17 @@ const jsonLd = [
     <h2>Editorial role</h2>
     <p>His role is to help distinguish traditional terminology and cultural context from modern simplification. Reproducible calendar calculations are documented separately in the <a href="/methodology.html">calculation methodology</a> and <a href="/test-cases.html">public test cases</a>. Traditional interpretations are presented as cultural and symbolic frameworks, not scientifically validated predictions.</p>
 
+    <h2>Selected editorial work</h2>
+    <p>The following guides are representative of the cultural topics reviewed under this editorial scope. Article pages separately identify the MyBaziDestiny writing team and the traditional culture editor.</p>
+    <div class="profile-work-list">
+      {selectedEditorialWork.map((post) => (
+        <a href={`/${post.id}.html`}>
+          <span>{post.data.tag}</span>
+          <strong>{post.data.title}</strong>
+        </a>
+      ))}
+    </div>
+
     <h2>Public identity reference</h2>
     <p>A report republished from the Guangdong Taoist Association identifies Ye Qingchun as the abbot of Huizhou Yuanmiao Taoist Temple during the on-site documentation of living Taoist culture for the <cite>Continuation of the Taoist Canon</cite> project.</p>
     <p><a href={YE_QINGCHUN_PUBLIC_REFERENCE} rel="external noopener">Read the public identity reference (Chinese) →</a></p>
@@ -78,4 +104,9 @@ const jsonLd = [
   .profile-body { padding-top: 1.5rem; }
   .independence-note { margin-top: 2.2rem; padding: 1.15rem 1.25rem; border-left: 2px solid var(--gold); background: rgba(212, 175, 106, 0.05); }
   .independence-note p { margin-top: 0.35rem; }
+  .profile-work-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; margin: 1rem 0 2rem; }
+  .profile-work-list a { display: grid; gap: 0.25rem; padding: 0.9rem 1rem; border: 1px solid var(--line-soft); border-radius: var(--radius); background: rgba(212, 175, 106, 0.04); }
+  .profile-work-list span { color: var(--gold); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .profile-work-list strong { color: var(--bone); font-size: 0.92rem; line-height: 1.45; }
+  @media (max-width: 620px) { .profile-work-list { grid-template-columns: 1fr; } }
 </style>

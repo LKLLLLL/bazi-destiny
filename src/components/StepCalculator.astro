@@ -10,6 +10,12 @@ interface Props {
 
 const { lang = 'en' } = Astro.props;
 const isZh = lang === 'zh';
+const years = Array.from({ length: 131 }, (_, index) => 2030 - index);
+const days = Array.from({ length: 31 }, (_, index) => index + 1);
+const months = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
 ---
 
 <section class="step-calc-section" id="calculator" aria-label={isZh ? '八字排盘' : 'BaZi calculator'} data-step-calculator data-lang={lang}>
@@ -65,17 +71,34 @@ const isZh = lang === 'zh';
         <div class="sc-step-content">
           <h3 class="sc-step-title">{isZh ? '你的出生日期是？' : 'When were you born?'}</h3>
           <p class="sc-step-sub">{isZh ? '出生年月日决定年柱、月柱与日柱，是命盘的根基。' : 'Your birth date forms the foundation of your BaZi chart.'}</p>
-          <div class="sc-date-wrap">
-            <label class="sc-date-label" for="scDate">{isZh ? '出生日期' : 'Date of Birth · 出生日期'}</label>
-            <input
-              class="sc-date-input"
-              type="date"
-              id="scDate"
-              min="1900-01-01"
-              max="2030-12-31"
-              required
-            />
-          </div>
+          <fieldset class="sc-date-wrap">
+            <legend class="sc-date-label">{isZh ? '出生日期' : 'Date of Birth'}</legend>
+            <div class:list={['sc-date-fields', { 'is-zh': isZh }]}>
+              <label class="sc-date-field sc-date-year">
+                <span>{isZh ? '年' : 'Year'}</span>
+                <select id="scYear" autocomplete="bday-year" aria-label={isZh ? '出生年份' : 'Birth year'} required>
+                  <option value="">{isZh ? '年份' : 'Year'}</option>
+                  {years.map((year) => <option value={year}>{year}</option>)}
+                </select>
+              </label>
+              <label class="sc-date-field sc-date-month">
+                <span>{isZh ? '月' : 'Month'}</span>
+                <select id="scMonth" autocomplete="bday-month" aria-label={isZh ? '出生月份' : 'Birth month'} required>
+                  <option value="">{isZh ? '月份' : 'Month'}</option>
+                  {months.map((month, index) => <option value={index + 1}>{isZh ? `${index + 1} 月` : month}</option>)}
+                </select>
+              </label>
+              <label class="sc-date-field sc-date-day">
+                <span>{isZh ? '日' : 'Day'}</span>
+                <select id="scDay" autocomplete="bday-day" aria-label={isZh ? '出生日期' : 'Birth day'} required>
+                  <option value="">{isZh ? '日期' : 'Day'}</option>
+                  {days.map((day) => <option value={day}>{day}</option>)}
+                </select>
+              </label>
+            </div>
+            <p class="sc-date-format">{isZh ? '年 / 月 / 日' : 'Month / Day / Year'}</p>
+            <p class="sc-date-error" id="scDateError" role="alert" hidden>{isZh ? '请选择有效的出生日期。' : 'Choose a valid birth date.'}</p>
+          </fieldset>
           <fieldset class="sc-gender-row">
             <legend class="sc-date-label">{isZh ? '性别' : 'Gender'}</legend>
             <div class="sc-gender-options">
@@ -484,30 +507,50 @@ const isZh = lang === 'zh';
   .sc-step-sub { color: var(--bone-dim); font-size: 0.92rem; max-width: 42ch; margin-bottom: 1.8rem; }
 
   /* Step 1 — Date */
-  .sc-date-wrap { position: relative; margin-bottom: 1.8rem; }
-  .sc-date-input {
-    background: var(--ink-1);
+  .sc-date-wrap { position: relative; margin: 0 0 1.8rem; padding: 0; border: 0; min-inline-size: 0; }
+  .sc-date-fields {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.85fr) minmax(0, 1fr);
+    gap: 0.65rem;
+    width: min(100%, 430px);
+    margin-inline: auto;
+  }
+  .sc-date-fields:not(.is-zh) .sc-date-month { order: 1; }
+  .sc-date-fields:not(.is-zh) .sc-date-day { order: 2; }
+  .sc-date-fields:not(.is-zh) .sc-date-year { order: 3; }
+  .sc-date-fields.is-zh { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.85fr) minmax(0, 0.85fr); }
+  .sc-date-field { display: grid; gap: 0.35rem; text-align: left; }
+  .sc-date-field span {
+    padding-left: 0.2rem;
+    color: var(--bone-faint);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .sc-date-field select {
+    appearance: none;
+    width: 100%;
+    min-height: 54px;
+    padding: 0.8rem 2rem 0.8rem 0.85rem;
     border: 1px solid var(--line-soft);
     border-radius: var(--radius);
+    background-color: var(--ink-1);
+    background-image: linear-gradient(45deg, transparent 50%, var(--gold) 50%), linear-gradient(135deg, var(--gold) 50%, transparent 50%);
+    background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
     color: var(--bone);
-    font-family: var(--font-display);
-    font-size: clamp(1.3rem, 5vw, 2.2rem);
-    padding: 1rem 1rem;
-    text-align: center;
-    width: 100%;
-    max-width: 340px;
-    box-sizing: border-box;
-    color-scheme: dark;
+    font: 600 0.94rem/1.2 var(--font-body);
     transition: border-color 0.3s, box-shadow 0.3s;
-    -webkit-appearance: none;
   }
-  .sc-date-input::-webkit-datetime-edit { padding: 0; text-align: center; }
-  .sc-date-input::-webkit-datetime-edit-fields-wrapper { text-align: center; }
-  .sc-date-input::-webkit-datetime-edit-text { color: var(--bone-dim); opacity: 0.6; }
-  /* Show dd / mm / yyyy placeholder when empty */
-  .sc-date-input:not(:valid)::-webkit-datetime-edit-year-field,
-  .sc-date-input:not(:valid)::-webkit-datetime-edit-month-field,
-  .sc-date-input:not(:valid)::-webkit-datetime-edit-day-field { color: var(--bone-dim); }
+  .sc-date-field select:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212, 175, 106, 0.18);
+  }
+  .sc-date-field select:valid { border-color: var(--gold); }
+  .sc-date-format { margin-top: 0.55rem; color: var(--bone-faint); font-size: 0.72rem; letter-spacing: 0.06em; }
+  .sc-date-error { margin-top: 0.45rem; color: #f1a7a7; font-size: 0.78rem; }
   .sc-date-label {
     display: block;
     font-size: 0.75rem;
@@ -517,12 +560,10 @@ const isZh = lang === 'zh';
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
-  .sc-date-input:focus {
-    outline: none;
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(212, 175, 106, 0.18);
+  @media (max-width: 440px) {
+    .sc-date-fields { gap: 0.42rem; }
+    .sc-date-field select { min-height: 50px; padding-inline: 0.65rem 1.55rem; font-size: 0.84rem; background-position: calc(100% - 12px) 50%, calc(100% - 8px) 50%; }
   }
-  .sc-date-input:valid { border-color: var(--gold); }
 
   .sc-gender-row {
     min-inline-size: 0;
@@ -1567,20 +1608,66 @@ const isZh = lang === 'zh';
       if (el) el.hidden = i !== n;
     }
     updateProgress();
-    if (n === 0) setTimeout(() => $('scDate')?.focus(), 100);
+    if (n === 0) setTimeout(() => (isZh ? $('scYear') : $('scMonth'))?.focus(), 100);
     if (n === 2) setTimeout(() => $('scCityInput')?.focus(), 100);
   }
 
   // ── Step 1: Date ──
-  const dateInput = $('scDate') as HTMLInputElement;
+  const dateYear = $('scYear') as HTMLSelectElement;
+  const dateMonth = $('scMonth') as HTMLSelectElement;
+  const dateDay = $('scDay') as HTMLSelectElement;
+  const dateError = $('scDateError') as HTMLParagraphElement;
   const next0 = $('scNext0') as HTMLButtonElement;
 
-  dateInput?.addEventListener('input', () => {
-    const v = dateInput.value;
-    state.date = v;
+  function updateDayAvailability() {
+    const year = Number(dateYear?.value || 2000);
+    const month = Number(dateMonth?.value || 1);
+    const maxDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
+    dateDay?.querySelectorAll<HTMLOptionElement>('option').forEach((option) => {
+      if (!option.value) return;
+      option.disabled = Number(option.value) > maxDay;
+    });
+    if (Number(dateDay?.value) > maxDay) dateDay.value = '';
+  }
+
+  function updateDateState() {
+    const year = Number(dateYear?.value);
+    const month = Number(dateMonth?.value);
+    const day = Number(dateDay?.value);
+    const complete = Boolean(year && month && day);
+    const maxDay = complete ? new Date(Date.UTC(year, month, 0)).getUTCDate() : 0;
+    const valid = complete && year >= 1900 && year <= 2030 && day <= maxDay;
+
+    state.date = valid
+      ? `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+      : '';
+    if (dateError) dateError.hidden = !complete || valid;
     updateNext0();
     saveState();
-  });
+  }
+
+  function restoreDateFields(value: string) {
+    const [year, month, day] = value.split('-');
+    if (!year || !month || !day) return;
+    dateYear.value = String(Number(year));
+    dateMonth.value = String(Number(month));
+    updateDayAvailability();
+    dateDay.value = String(Number(day));
+  }
+
+  function resetDateFields() {
+    dateYear.value = '';
+    dateMonth.value = '';
+    dateDay.value = '';
+    updateDayAvailability();
+    if (dateError) dateError.hidden = true;
+  }
+
+  [dateYear, dateMonth].forEach((select) => select?.addEventListener('change', () => {
+    updateDayAvailability();
+    updateDateState();
+  }));
+  dateDay?.addEventListener('change', updateDateState);
 
   document.querySelectorAll<HTMLInputElement>('input[name="scGender"]').forEach(r => {
     r.addEventListener('change', () => {
@@ -1594,9 +1681,9 @@ const isZh = lang === 'zh';
     next0.disabled = !(state.date && state.gender);
   }
 
-  dateInput?.addEventListener('keydown', (e) => {
+  [dateYear, dateMonth, dateDay].forEach((select) => select?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !next0.disabled) goToStep(1);
-  });
+  }));
 
   next0?.addEventListener('click', () => goToStep(1));
 
@@ -2232,14 +2319,14 @@ const isZh = lang === 'zh';
     }
     state.date = ''; state.hour = ''; state.cityName = '';
     state.gender = '';
-    (dateInput as HTMLInputElement).value = '';
+    resetDateFields();
     document.querySelectorAll<HTMLInputElement>('input[name="scGender"]').forEach((r) => { r.checked = false; });
     next0.disabled = true;
     selectHour('');
     if (citySelected) citySelected.hidden = true;
     next2.disabled = true;
     updateProgress();
-    setTimeout(() => dateInput?.focus(), 200);
+    setTimeout(() => (isZh ? dateYear : dateMonth)?.focus(), 200);
   });
 
   // ── PayPal Unlock ──
@@ -2302,7 +2389,7 @@ const isZh = lang === 'zh';
       $('scWelcome')!.hidden = true;
       // Restore state
       if (state.date) {
-        (dateInput as HTMLInputElement).value = state.date;
+        restoreDateFields(state.date);
         currentStep = state.hour ? (state.cityName ? 2 : 1) : 0;
       }
       if (state.gender) {

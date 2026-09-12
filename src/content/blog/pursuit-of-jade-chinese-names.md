@@ -105,7 +105,7 @@ Then test the complete name:
 - Ask whether it sounds like a real contemporary person, a pen name, or a fictional hero.
 - Verify the meaning of the full combination, not just each isolated character.
 
-For a more classical direction, explore our guide to [Chinese names from the Shi Jing, Chu Ci, and poetry](/chinese-names-from-poetry/). For a name connected to birth information and Five Elements, read [how a birthday-based Chinese name is created](/chinese-name-based-on-birthday/).
+For a more classical direction, explore our guide to [Chinese names from the Shi Jing, Chu Ci, and poetry](/chinese-names-from-poetry.html). For a name connected to birth information and Five Elements, read [how a birthday-based Chinese name is created](/chinese-name-based-on-birthday.html).
 
 ## Create Your Own Chinese Name
 
@@ -116,4 +116,3 @@ Use our [Chinese name generator](/chinese-name.html) to explore original name id
 ### Sources and editorial note
 
 Series title, release details, principal characters, and courtesy names were checked against the [Pursuit of Jade series listing](https://wiki.d-addicts.com/Pursuit_of_Jade). Character explanations are linguistic and cultural readings, not official translations supplied by the production. This article does not reproduce dialogue, plot text, posters, or promotional stills.
-

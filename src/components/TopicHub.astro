@@ -1,0 +1,157 @@
+---
+import Base from '../layouts/Base.astro';
+import ExpertCredential from './ExpertCredential.astro';
+import { ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../lib/brand';
+import { YE_QINGCHUN_ID, yeQingchunPersonJsonLd } from '../lib/expert';
+
+interface HubItem {
+  href: string;
+  title: string;
+  description: string;
+  label?: string;
+}
+
+interface Props {
+  path: string;
+  title: string;
+  seoTitle: string;
+  description: string;
+  eyebrow: string;
+  han: string;
+  answer: string;
+  principles: string[];
+  items: HubItem[];
+  primaryHref: string;
+  primaryLabel: string;
+}
+
+const {
+  path,
+  title,
+  seoTitle,
+  description,
+  eyebrow,
+  han,
+  answer,
+  principles,
+  items,
+  primaryHref,
+  primaryLabel,
+} = Astro.props;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${SITE_URL}${path}#collection`,
+    name: title,
+    description,
+    url: `${SITE_URL}${path}`,
+    inLanguage: 'en',
+    dateModified: '2026-09-12',
+    isPartOf: { '@id': WEBSITE_ID },
+    publisher: { '@id': ORGANIZATION_ID },
+    reviewedBy: { '@id': YE_QINGCHUN_ID },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.title,
+        url: `${SITE_URL}${item.href}`,
+      })),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog.html` },
+      { '@type': 'ListItem', position: 3, name: title },
+    ],
+  },
+  yeQingchunPersonJsonLd,
+];
+---
+
+<Base title={seoTitle} description={description} path={path} jsonLd={jsonLd}>
+  <header class="hub-hero">
+    <div class="wrap-narrow">
+      <p class="eyebrow"><span class="han">{han}</span> {eyebrow}</p>
+      <h1>{title}</h1>
+      <p class="hub-lead">{description}</p>
+      <a class="btn btn-gold btn-lg" href={primaryHref}>{primaryLabel}</a>
+    </div>
+  </header>
+
+  <main class="wrap hub-main">
+    <section class="hub-answer panel" aria-labelledby="hub-answer-title">
+      <p class="hub-kicker">In brief</p>
+      <h2 id="hub-answer-title">What this collection covers</h2>
+      <p>{answer}</p>
+    </section>
+
+    <section aria-labelledby="hub-guides-title">
+      <div class="hub-heading">
+        <div>
+          <p class="hub-kicker">Explore the topic</p>
+          <h2 id="hub-guides-title">Guides and tools</h2>
+        </div>
+        <p>Start with the page closest to your question, then follow the contextual links instead of treating any single article as a complete reading.</p>
+      </div>
+      <div class="hub-grid">
+        {items.map((item) => (
+          <article class="hub-card card">
+            <span>{item.label ?? 'Guide'}</span>
+            <h3><a href={item.href}>{item.title}</a></h3>
+            <p>{item.description}</p>
+            <a class="hub-link" href={item.href} aria-label={`Read ${item.title}`}>Read guide →</a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="hub-method panel" aria-labelledby="hub-method-title">
+      <div>
+        <p class="hub-kicker">Editorial standard</p>
+        <h2 id="hub-method-title">How to use these guides</h2>
+      </div>
+      <ul>
+        {principles.map((principle) => <li>{principle}</li>)}
+      </ul>
+    </section>
+
+    <ExpertCredential variant="card" />
+  </main>
+</Base>
+
+<style>
+  .hub-hero { padding: calc(68px + clamp(3.2rem, 8vh, 6rem)) 0 clamp(2.2rem, 5vh, 4rem); border-bottom: 1px solid var(--line-soft); }
+  .hub-hero h1 { margin-top: 0.85rem; max-width: 14ch; font-size: clamp(2.5rem, 6vw, 4.5rem); }
+  .hub-lead { max-width: 68ch; margin: 1.1rem 0 1.5rem; color: var(--bone-dim); font-size: 1.05rem; line-height: 1.8; }
+  .hub-main { display: grid; gap: clamp(2.6rem, 6vw, 5rem); padding-top: clamp(2rem, 5vw, 4rem); }
+  .hub-answer { padding: clamp(1.4rem, 3vw, 2.2rem); border-left: 3px solid var(--gold); }
+  .hub-answer h2 { margin: 0.35rem 0 0.7rem; font-size: clamp(1.5rem, 3vw, 2.1rem); }
+  .hub-answer p:last-child { max-width: 80ch; color: var(--bone-dim); font-size: 1rem; line-height: 1.8; }
+  .hub-kicker { color: var(--gold); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+  .hub-heading { display: grid; grid-template-columns: 1fr minmax(260px, 42ch); gap: 2rem; align-items: end; margin-bottom: 1.4rem; }
+  .hub-heading h2, .hub-method h2 { margin-top: 0.35rem; font-size: clamp(1.8rem, 4vw, 2.6rem); }
+  .hub-heading > p { color: var(--bone-dim); line-height: 1.7; }
+  .hub-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .hub-card { display: flex; flex-direction: column; min-height: 250px; padding: 1.35rem; }
+  .hub-card > span { color: var(--gold); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  .hub-card h3 { margin: 0.55rem 0; font-size: 1.18rem; line-height: 1.4; }
+  .hub-card h3 a { color: var(--bone); }
+  .hub-card p { flex: 1; color: var(--bone-dim); font-size: 0.86rem; line-height: 1.65; }
+  .hub-link { margin-top: 0.8rem; color: var(--gold); font-size: 0.82rem; font-weight: 700; }
+  .hub-method { display: grid; grid-template-columns: minmax(220px, 0.8fr) 1.4fr; gap: 2rem; padding: clamp(1.4rem, 3vw, 2.2rem); }
+  .hub-method ul { margin: 0; padding-left: 1.2rem; color: var(--bone-dim); }
+  .hub-method li + li { margin-top: 0.65rem; }
+  @media (max-width: 880px) { .hub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) {
+    .hub-heading, .hub-method { grid-template-columns: 1fr; gap: 1rem; }
+    .hub-grid { grid-template-columns: 1fr; }
+    .hub-card { min-height: 0; }
+  }
+</style>

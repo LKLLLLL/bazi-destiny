@@ -27,6 +27,17 @@ export async function getStaticPaths() {
 
 const { kind, post, rec } = Astro.props as any;
 const isNameArticle = kind === 'article' && post.data.tag === 'Chinese Names';
+const topicHub = kind === 'article'
+  ? post.data.tag === 'Chinese Names'
+    ? { href: '/chinese-name-guides.html', label: 'Chinese Name and Poetry Guides' }
+    : post.data.tag === 'Chinese Culture'
+      ? { href: '/chinese-culture-guides.html', label: 'Chinese Culture Guides' }
+      : post.data.tag === 'Celebrity BaZi'
+        ? { href: '/celebrity-bazi.html', label: 'Celebrity BaZi Charts' }
+        : ['BaZi Guide', 'Guide', 'Five Elements', 'Career', 'Feng Shui'].includes(post.data.tag)
+          ? { href: '/bazi-guides.html', label: 'BaZi and Four Pillars Guides' }
+          : null
+  : null;
 
 let Content: any = null;
 let related: any[] = [];
@@ -62,6 +73,7 @@ const articleLd =
           dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString().slice(0, 10),
           author: { '@id': ORGANIZATION_ID },
           editor: { '@id': YE_QINGCHUN_ID },
+          reviewedBy: { '@id': YE_QINGCHUN_ID },
           publisher: {
             '@id': ORGANIZATION_ID,
           },
@@ -165,11 +177,16 @@ const PAGE_ICONS: Record<string, string> = {
           {post.data.updatedDate && <><span aria-hidden="true"> · </span>Updated {post.data.updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</>}
           <span aria-hidden="true"> · </span>{post.data.readTime}<span aria-hidden="true"> · </span><a href="/about.html">MyBaziDestiny editorial team</a>
         </p>
+        {topicHub && <p class="art-collection">Part of the <a href={topicHub.href}>{topicHub.label}</a> collection</p>}
         <ExpertCredential variant="inline" />
       </div>
     </header>
 
     <article class="wrap-narrow art-body prose">
+      <aside class="art-summary" aria-label="Article summary">
+        <strong>In brief</strong>
+        <p>{post.data.description}</p>
+      </aside>
       <Content />
       <aside class="art-editorial-note">
         <strong>About this guide</strong>
@@ -245,6 +262,11 @@ const PAGE_ICONS: Record<string, string> = {
     font-size: 0.86rem;
     line-height: 1.65;
   }
+  .art-summary { margin: 0 0 2rem; padding: 1rem 1.15rem; border-left: 3px solid var(--gold); background: rgba(212, 175, 106, 0.06); }
+  .art-summary strong { color: var(--gold); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .art-summary p { margin: 0.35rem 0 0; color: var(--bone-dim); line-height: 1.7; }
+  .art-collection { margin-top: 0.55rem; color: var(--bone-faint); font-size: 0.8rem; }
+  .art-collection a { color: var(--gold); }
   .art-editorial-note strong { color: var(--bone); }
 
   .art-cta {

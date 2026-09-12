@@ -3,20 +3,24 @@ import { readFile, readdir } from 'node:fs/promises';
 const root = new URL('../', import.meta.url);
 const errors = [];
 
-const [homeSource, calculatorSource, sitemapSource] = await Promise.all([
+const [homeSource, calculatorSource, calculatorComponent, sitemapSource] = await Promise.all([
   readFile(new URL('src/pages/index.astro', root), 'utf8'),
   readFile(new URL('src/pages/calculator.astro', root), 'utf8'),
+  readFile(new URL('src/components/StepCalculator.astro', root), 'utf8'),
   readFile(new URL('src/pages/sitemap.xml.ts', root), 'utf8'),
 ]);
 
 if (/title="Free BaZi Calculator/i.test(homeSource)) {
   errors.push('index.astro: homepage must not compete with the calculator page for the primary calculator title');
 }
-if (!/title="Free BaZi Calculator & Analysis \| MyBaziDestiny"/.test(calculatorSource)) {
+if (!/title="Free BaZi Calculator & Four Pillars Analysis"/.test(calculatorSource)) {
   errors.push('calculator.astro: primary calculator search title is missing or changed');
 }
-if (!/>Free BaZi Calculator and Analysis<\/h1>/.test(calculatorSource)) {
+if (!/>Free BaZi & Four Pillars of Destiny Calculator<\/h1>/.test(calculatorSource)) {
   errors.push('calculator.astro: primary calculator H1 is missing or changed');
+}
+if (/type="date"/.test(calculatorComponent) || !/Month \/ Day \/ Year/.test(calculatorComponent)) {
+  errors.push('StepCalculator.astro: English date input must use an explicit Month / Day / Year interface');
 }
 if (/new Date\(\)\.toISOString\(\)/.test(sitemapSource)) {
   errors.push('sitemap.xml.ts: lastmod must describe content changes, not the build date');
@@ -41,6 +45,9 @@ const indexedMetadata = [];
 for (const file of blogFiles) {
   const source = await readFile(new URL(file, blogDir), 'utf8');
   const data = frontmatter(source);
+  for (const match of source.matchAll(/\]\((\/[^)#?]+\/)\)/g)) {
+    if (match[1] !== '/') errors.push(`${file}: directory-style internal link ${match[1]} should use the canonical file URL`);
+  }
   if (data.noindex === 'true') continue;
   const title = data.seoTitle || data.title || '';
   const description = data.description || '';

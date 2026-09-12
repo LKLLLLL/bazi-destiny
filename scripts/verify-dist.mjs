@@ -16,7 +16,7 @@ const productImages = [
   'products/naming-verdict-4x3.png',
   'products/naming-verdict-16x9.png',
 ];
-const requiredFiles = ['index.html', 'pricing.html', 'methodology.html', 'test-cases.html', 'test-cases.json', 'llms.txt', 'sitemap.xml', '272bd5de5baf4ae5b83bf3b043803fa9.txt', ...productImages];
+const requiredFiles = ['index.html', 'pricing.html', 'methodology.html', 'test-cases.html', 'test-cases.json', 'llms.txt', 'sitemap.xml', 'bazi-guides.html', 'chinese-name-guides.html', 'chinese-culture-guides.html', 'celebrity-bazi.html', '272bd5de5baf4ae5b83bf3b043803fa9.txt', ...productImages];
 const errors = [];
 for (const file of requiredFiles) {
   if (!existsSync(join(ROOT, file))) errors.push(`missing required output ${file}`);
@@ -62,10 +62,39 @@ if (errors.length === 0) {
     errors.push('sitemap.xml: calculator page is missing its reviewed content update date');
   }
 
+  function filesUnder(directory) {
+    return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+      const path = join(directory, entry.name);
+      return entry.isDirectory() ? filesUnder(path) : [path];
+    });
+  }
+
+  const htmlFiles = filesUnder(ROOT).filter((file) => file.endsWith('.html'));
+  const brokenLinks = new Set();
+  for (const file of htmlFiles) {
+    const html = readFileSync(file, 'utf8');
+    for (const match of html.matchAll(/href="([^"]+)"/g)) {
+      const href = match[1];
+      if (!href.startsWith('/') || href.startsWith('//')) continue;
+      const pathname = decodeURIComponent(href.split(/[?#]/)[0]);
+      if (!pathname || pathname.startsWith('/api/')) continue;
+      const target = pathname === '/'
+        ? join(ROOT, 'index.html')
+        : pathname.endsWith('/')
+          ? join(ROOT, pathname.slice(1), 'index.html')
+          : join(ROOT, pathname.slice(1));
+      const directoryIndex = join(ROOT, pathname.slice(1), 'index.html');
+      if (!existsSync(target) && !existsSync(directoryIndex)) {
+        brokenLinks.add(`${file.slice(ROOT.length + 1)} -> ${href}`);
+      }
+    }
+  }
+  for (const link of brokenLinks) errors.push(`broken internal link: ${link}`);
+
   const stalePattern = /Soul Guide|Destiny Master|Explorer(?:'s)? Reading|\$29\.90|Pro\s*\/\s*Ultimate|Limited-Time Free/gi;
-  for (const file of readdirSync(ROOT).filter((name) => name.endsWith('.html'))) {
-    const matches = readFileSync(join(ROOT, file), 'utf8').match(stalePattern);
-    if (matches) errors.push(`${file}: stale offer text found (${[...new Set(matches)].join(', ')})`);
+  for (const file of htmlFiles) {
+    const matches = readFileSync(file, 'utf8').match(stalePattern);
+    if (matches) errors.push(`${file.slice(ROOT.length + 1)}: stale offer text found (${[...new Set(matches)].join(', ')})`);
   }
 }
 

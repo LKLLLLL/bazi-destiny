@@ -12,6 +12,10 @@ const STATIC_LASTMOD = new Map<string, string>([
   ['/editorial-policy.html', '2026-09-12'],
   ['/authors/ye-qingchun.html', '2026-09-12'],
   ['/zh/authors/ye-qingchun.html', '2026-09-12'],
+  ['/bazi-guides.html', '2026-09-12'],
+  ['/chinese-name-guides.html', '2026-09-12'],
+  ['/chinese-culture-guides.html', '2026-09-12'],
+  ['/celebrity-bazi.html', '2026-09-12'],
 ]);
 
 export const GET: APIRoute = async () => {
@@ -32,6 +36,10 @@ export const GET: APIRoute = async () => {
     { loc: '/bazi-reading.html', alt: '/zh/bazi-reading.html', priority: '0.9', changefreq: 'monthly' },
     { loc: '/chinese-name.html', priority: '0.9', changefreq: 'monthly' },
     { loc: '/blog.html', priority: '0.9', changefreq: 'weekly' },
+    { loc: '/bazi-guides.html', priority: '0.9', changefreq: 'monthly', lastmod: STATIC_LASTMOD.get('/bazi-guides.html') },
+    { loc: '/chinese-name-guides.html', priority: '0.9', changefreq: 'monthly', lastmod: STATIC_LASTMOD.get('/chinese-name-guides.html') },
+    { loc: '/chinese-culture-guides.html', priority: '0.8', changefreq: 'weekly', lastmod: STATIC_LASTMOD.get('/chinese-culture-guides.html') },
+    { loc: '/celebrity-bazi.html', priority: '0.8', changefreq: 'monthly', lastmod: STATIC_LASTMOD.get('/celebrity-bazi.html') },
     { loc: '/chinese-zodiac-years.html', priority: '0.8', changefreq: 'monthly' },
     { loc: '/love-match.html', alt: '/zh/love-match.html', priority: '0.9', changefreq: 'monthly' },
     { loc: '/palm-reading.html', alt: '/zh/palm-reading.html', priority: '0.8', changefreq: 'monthly' },

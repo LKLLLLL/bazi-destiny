@@ -1,6 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import ExpertCredential from '../../../components/ExpertCredential.astro';
+import { getCollection } from 'astro:content';
 import { ORGANIZATION_ID, SITE_URL, WEBSITE_ID } from '../../../lib/brand';
 import {
   YE_QINGCHUN_ID,
@@ -9,6 +10,20 @@ import {
   YE_QINGCHUN_ZH_PROFILE_PATH,
   yeQingchunPersonJsonLd,
 } from '../../../lib/expert';
+
+const selectedIds = [
+  'what-is-bazi',
+  'bazi-day-master-guide',
+  'bazi-ten-gods',
+  'bazi-luck-pillars',
+  'chinese-names-from-poetry',
+  'pursuit-of-jade-chinese-names',
+  'becoming-chinese-trend',
+  'taylor-swift-bazi-chart',
+];
+const selectedEditorialWork = (await getCollection('blog'))
+  .filter((post) => selectedIds.includes(post.id) && !post.data.noindex)
+  .sort((a, b) => selectedIds.indexOf(a.id) - selectedIds.indexOf(b.id));
 
 const jsonLd = [
   {
@@ -57,6 +72,17 @@ const jsonLd = [
     <h2>编辑职责</h2>
     <p>相关审核旨在区分传统术语、历史文化背景与现代简化表达。可以复核的历法计算另行公开于<a href="/zh/methodology.html">排盘方法论</a>和<a href="/test-cases.html">测试案例</a>。命理解读属于传统文化与象征性框架，不作为经过科学验证的预测。</p>
 
+    <h2>参与审核的代表内容</h2>
+    <p>以下英文指南代表该编辑职责所覆盖的部分文化主题。文章页面会分别标明 MyBaziDestiny 编辑团队与传统文化编辑，避免混淆写作和文化审核责任。</p>
+    <div class="profile-work-list">
+      {selectedEditorialWork.map((post) => (
+        <a href={`/${post.id}.html`}>
+          <span>{post.data.tag} · 英文</span>
+          <strong>{post.data.title}</strong>
+        </a>
+      ))}
+    </div>
+
     <h2>公开身份资料</h2>
     <p>广东省道教协会相关报道在介绍《中华续道藏》道教活态文化影像资料集成课题于惠州元妙古观的拍摄工作时，公开称叶青春道长为“惠州元妙古观住持”。</p>
     <p><a href={YE_QINGCHUN_PUBLIC_REFERENCE} rel="external noopener">查看公开身份资料 →</a></p>
@@ -77,4 +103,9 @@ const jsonLd = [
   .profile-body h2 { font-family: var(--font-han); }
   .independence-note { margin-top: 2.2rem; padding: 1.15rem 1.25rem; border-left: 2px solid var(--gold); background: rgba(212, 175, 106, 0.05); }
   .independence-note p { margin-top: 0.35rem; }
+  .profile-work-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; margin: 1rem 0 2rem; }
+  .profile-work-list a { display: grid; gap: 0.25rem; padding: 0.9rem 1rem; border: 1px solid var(--line-soft); border-radius: var(--radius); background: rgba(212, 175, 106, 0.04); }
+  .profile-work-list span { color: var(--gold); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .profile-work-list strong { color: var(--bone); font-size: 0.92rem; line-height: 1.45; }
+  @media (max-width: 620px) { .profile-work-list { grid-template-columns: 1fr; } }
 </style>
