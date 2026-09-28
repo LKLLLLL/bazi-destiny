@@ -23,6 +23,7 @@ interface Props {
   items: HubItem[];
   primaryHref: string;
   primaryLabel: string;
+  updatedDate?: string;
 }
 
 const {
@@ -37,6 +38,7 @@ const {
   items,
   primaryHref,
   primaryLabel,
+  updatedDate = '2026-09-12',
 } = Astro.props;
 
 const jsonLd = [
@@ -48,7 +50,7 @@ const jsonLd = [
     description,
     url: `${SITE_URL}${path}`,
     inLanguage: 'en',
-    dateModified: '2026-09-12',
+    dateModified: updatedDate,
     isPartOf: { '@id': WEBSITE_ID },
     publisher: { '@id': ORGANIZATION_ID },
     reviewedBy: { '@id': YE_QINGCHUN_ID },

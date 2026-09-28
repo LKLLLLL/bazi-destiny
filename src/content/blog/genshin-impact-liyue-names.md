@@ -5,12 +5,15 @@ description: "Explore the Chinese characters, pronunciation, wordplay, literary 
 emoji: "璃"
 tag: "Chinese Names"
 pubDate: 2026-07-29
+updatedDate: 2026-09-28
 readTime: "9 min read"
 ---
 
 Liyue's character names feel unusually rich because they are written inside an existing language and cultural tradition. A name may sound graceful in English while also evoking a medicinal herb, a classical expression, a natural image, or a deliberate pun in Chinese.
 
 This guide looks at the Chinese characters behind well-known Liyue names, how they are pronounced in Mandarin, and what associations a Chinese reader may hear. It is an independent linguistic reading, not a claim about the developers' private naming process.
+
+For Liyue's current seasonal event, see our culture-first comparison of the fictional [Moonchase Festival and the real Mid-Autumn Festival](/genshin-moonchase-festival-chinese-culture.html).
 
 ## What Does Liyue Mean?
 
