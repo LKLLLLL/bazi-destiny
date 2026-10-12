@@ -5,6 +5,7 @@ description: "Is Genshin Impact's Moonchase Festival real? Explore how Liyue's f
 emoji: "月"
 tag: "Chinese Culture"
 pubDate: 2026-09-28
+updatedDate: 2026-10-12
 readTime: "8 min read"
 faq:
   - q: "Is the Moonchase Festival a real Chinese festival?"
@@ -21,9 +22,9 @@ faq:
 
 The distinction matters. Liyue is fantasy worldbuilding, while Mid-Autumn is a living festival observed in different ways by real families and communities. Comparing them can illuminate both, as long as resemblance is not mistaken for a one-to-one copy or an official statement of inspiration.
 
-## Why Are People Searching for Moonchase Again?
+## Why Did Moonchase Return in Version 7.1?
 
-Moonchase has returned as a current Genshin event. HoYoverse's [official news listing](https://genshin.hoyoverse.com/en/news/396) announced **“Silverwing in Pursuit of the Moon”** for September 24, 2026, and describes it as the return of the Moonchase Festival.
+Moonchase returned as a limited-time Genshin event in Version 7.1. HoYoverse's [official news listing](https://genshin.hoyoverse.com/en/news/396) announced **“Silverwing in Pursuit of the Moon”** beginning September 24, 2026, as the return of the Moonchase Festival. Its event window has now closed; the official schedule listed October 12, 2026, at 03:59 server time as the end.
 
 This guide does not reproduce event dialogue, artwork, or quest details. It focuses on a more durable question: **which parts resemble real Chinese festival culture, and which belong only to Teyvat?**
 
